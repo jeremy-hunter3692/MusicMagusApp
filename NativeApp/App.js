@@ -1,62 +1,45 @@
+import React, { useState } from 'react'
 import { StatusBar } from 'expo-status-bar'
 import { StyleSheet, Text, View } from 'react-native'
 import { keys, getIntervalNo } from './KeyCards'
+import DisplayNoteNames from './DisplayNoteNames'
+import HexKey from './HexKey'
+import Button from './Button'
+import { returnRandomkeyCard } from './KeyCards'
+import DisplayIntervals from './DisplayIntervals'
+// function howManyCircles(array) {
+//   console.log(array)
+//   return array.map((x) =>
+//     x === true ? <View style={styles.circleFull}></View> : console.log(x)
+//   )
+// }
+// function displayCirclesHex(array) {
+//   return array.map((x, idx) => fillCricleBool(x, idx))
+// }
 
-// const displayingKeys = printAccidentalNos()
-// console.log(keys)
-function howManyCircles(array) {
-  console.log(array)
-  return array.map((x) =>
-    x === true ? <View style={styles.circleFull}></View> : console.log(x)
-  )
-}
-
-function displayCirclesHex(array) {
-  return array.map((x, idx) => fillCricleBool(x, idx))
-}
-
-function fillCricleBool(inpt, key) {
-  return inpt ? (
-    <View key={key} style={styles.circleFull}></View>
-  ) : (
-    <View key={key} style={styles.circleOutline}></View>
-  )
-}
+let random = returnRandomkeyCard()
 
 export default function App() {
+  const [hexKey, setHexKey] = useState(keys[0])
+  const [randomKey, setRandomKey] = useState(random.name)
+  function getKey(musicKey) {
+    setHexKey(musicKey)
+  }
   return (
     <>
+      {/* <DisplayNoteNames /> */}
+      {`\n`}
+      {`\n`}
+
+      <Text>Key: {randomKey}</Text>
+      <DisplayIntervals />
       <View style={styles.container}>
+        <HexKey musicKey={hexKey} bgColor={bgColor} />
         <Text>
-          {`Number of Accidentals in each Key\n`}
           {keys.map((x, idx) => (
-            <>
-              <Text key={idx}>
-                {`${x.name} :   ${getIntervalNo(
-                  x.intervals,
-                  true
-                )} Accidentals\n`}
-                {/* {displayCirclesHex(x.intervals)} */}
-                {'\n'}
-              </Text>
-              <View style={styles.hexContainer}>
-                <View style={styles.outColumn}>
-                  {fillCricleBool(x.intervals[5])}
-                  {fillCricleBool(x.intervals[4])}
-                </View>
-                <View style={styles.column}>
-                  {fillCricleBool(x.intervals[6])}
-                  {fillCricleBool(x.intervals[0])}
-                  {fillCricleBool(x.intervals[3])}
-                </View>
-                <View style={styles.outColumn}>
-                  {fillCricleBool(x.intervals[1])}
-                  {fillCricleBool(x.intervals[2])}
-                </View>
-              </View>
-              {'\n'}
-              {'\n'}
-            </>
+            <Text key={idx}>
+              <Button onPress={getKey} title={x.name} data={x} />
+            </Text>
           ))}
         </Text>
         <StatusBar style="auto" />
@@ -68,35 +51,10 @@ export default function App() {
 const bgColor = 'white'
 
 const styles = StyleSheet.create({
-  hexContainer: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-  },
-  column: { padding: 0, alignItems: 'center' },
-  outColumn: { padding: 0, alignItems: 'center', marginVertical: 5 },
   container: {
     flex: 1,
     backgroundColor: '#fff',
     alignItems: 'center',
     justifyContent: 'center',
-  },
-  //Going to need to change margin and probably other stuff as a variable to keep hex intact
-  circleFull: {
-    width: 10,
-    height: 10,
-    margin: 0,
-    padding: 0,
-    borderRadius: 5, // Half of the width and height to make it a perfect circle
-    backgroundColor: 'black',
-  },
-  circleOutline: {
-    width: 10,
-    height: 10,
-    margin: 0,
-    padding: 0,
-    border: 'solid',
-    borderColor: 'black',
-    borderRadius: 5, // Half of the width and height to make it a perfect circle
-    backgroundColor: bgColor,
   },
 })

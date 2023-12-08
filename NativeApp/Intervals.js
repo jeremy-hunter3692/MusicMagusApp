@@ -5,7 +5,7 @@
 //Perfect are purple -flying creature
 
 //each has symbols for how close in semitones it is to the nearest root note
-const intervals = [
+export const intervals = [
   { name: '1', distanceToRoot: 0, up: false },
   { name: 'b2', distanceToRoot: 1, up: false },
   { name: '2', distanceToRoot: 2, up: false },
@@ -19,3 +19,8 @@ const intervals = [
   { name: 'b5', distanceToRoot: 2, up: true },
   { name: '7', distanceToRoot: 1, up: true },
 ]
+
+export function returnIntervalCard() {
+  let idx = Math.floor(Math.random() * intervals.length) //should probably hard code this for saftey
+  return intervals[idx]
+}
