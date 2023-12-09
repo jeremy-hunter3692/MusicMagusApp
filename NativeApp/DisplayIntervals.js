@@ -1,12 +1,17 @@
 import { StatusBar } from 'expo-status-bar'
 import { StyleSheet, Text, View } from 'react-native'
 import { intervals } from './Intervals.js'
-console.log('int', intervals)
-const DisplayIntervals = () => {
+import Button from './Button.js'
+
+const DisplayIntervals = ({ userAnswerSetter }) => {
+  function setAnswer(inpt) {
+    userAnswerSetter(inpt)
+    console.log('at disaply', inpt)
+  }
   return (
     <Text>
       {intervals.map((x) => {
-        return `|${x.name}: ${x.up ? 'Up   ' : 'down   '}${x.distanceToRoot}|`
+        return <Button onPress={setAnswer} data={x.name} title={x.name} />
       })}
     </Text>
   )

@@ -38,7 +38,7 @@ export function getIntervalNo(array, value) {
 export function printAccidentalNos() {
   return keys.map((x) => [x.name, getIntervalNo(x.intervals, true)])
 }
-
+//MAKE THIS REUSEABLE 
 export function returnRandomkeyCard() {
   let idx = Math.floor(Math.random() * keys.length) //should probably hard code this for saftey
   return keys[idx]

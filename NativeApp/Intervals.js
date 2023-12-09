@@ -12,11 +12,11 @@ export const intervals = [
   { name: 'b3', distanceToRoot: 3, up: false },
   { name: '3', distanceToRoot: 4, up: false },
   { name: '4', distanceToRoot: 5, up: false },
-  { name: '#4/b5', distanceToRoot: 6 },
+  { name: '#4/b5', distanceToRoot: 6, up: null},
   { name: '5', distanceToRoot: 5, up: true },
   { name: 'b6', distanceToRoot: 4, up: true },
   { name: '6', distanceToRoot: 3, up: true },
-  { name: 'b5', distanceToRoot: 2, up: true },
+  { name: 'b7', distanceToRoot: 2, up: true },
   { name: '7', distanceToRoot: 1, up: true },
 ]
 
