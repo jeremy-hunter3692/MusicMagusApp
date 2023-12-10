@@ -19,21 +19,22 @@ import { getCorrectAnswer } from './functions'
 // }
 function returnRandomCard(array) {
   let idx = Math.floor(Math.random() * array.length) //could hard code this for saftey?
-  return array[idx]
+  return { value: array[idx], idx: idx }
 }
 
-//////TO DO REFACTOR getting correct interval
+
 //write test for this before refactoring
 let randomRoot = returnRandomCard(keys)
-
 let rnIdx = Math.floor(Math.random() * noteNames.length)
 let randomNote = noteNames[rnIdx].name
 
 export default function App() {
   const [hexKey, setHexKey] = useState(keys[0])
-  const [randomKey, setRandomKey] = useState(randomRoot.name)
+  const [randomKey, setRandomKey] = useState(randomRoot.value.name)
   const [userAnswer, setUserAnswer] = useState()
-  const [answer, setAnswer] = useState(getCorrectAnswer(randomRoot.name, randomNote))
+  const [answer, setAnswer] = useState(
+    getCorrectAnswer(randomRoot.idx, rnIdx)
+  )
   const [resultDisplay, setResultDisplay] = useState()
 
   function checkAnswer(inpt) {
