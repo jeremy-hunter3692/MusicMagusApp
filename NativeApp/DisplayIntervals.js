@@ -6,7 +6,7 @@ import Button from './Button.js'
 const DisplayIntervals = ({ userAnswerSetter }) => {
   function setAnswer(inpt) {
     userAnswerSetter(inpt)
-    console.log('at disaply', inpt)
+ 
   }
   return (
     <Text>

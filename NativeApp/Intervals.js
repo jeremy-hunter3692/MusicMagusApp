@@ -20,7 +20,3 @@ export const intervals = [
   { name: '7', distanceToRoot: 1, up: true },
 ]
 
-export function returnIntervalCard() {
-  let idx = Math.floor(Math.random() * intervals.length) //should probably hard code this for saftey
-  return intervals[idx]
-}

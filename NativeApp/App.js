@@ -5,10 +5,8 @@ import { keys, getIntervalNo } from './KeyCards'
 import Question from './Question'
 import HexKey from './HexKey'
 import Button from './Button'
-import { returnRandomkeyCard } from './KeyCards'
 import { noteNames } from './NoteNames'
-import { intervals } from './Intervals'
-import { math } from 'canvas-sketch-util'
+import { getCorrectAnswer } from './functions'
 
 // function howManyCircles(array) {
 //   console.log(array)
@@ -19,38 +17,33 @@ import { math } from 'canvas-sketch-util'
 // function displayCirclesHex(array) {
 //   return array.map((x, idx) => fillCricleBool(x, idx))
 // }
+function returnRandomCard(array) {
+  let idx = Math.floor(Math.random() * array.length) //could hard code this for saftey?
+  return array[idx]
+}
 
-let randomRoot = returnRandomkeyCard()
+//////TO DO REFACTOR getting correct interval
+//write test for this before refactoring
+let randomRoot = returnRandomCard(keys)
+
 let rnIdx = Math.floor(Math.random() * noteNames.length)
 let randomNote = noteNames[rnIdx].name
-let answerInSemiTones = noteNames.findIndex((x) => x.name === randomNote)
-let rootInSemiTones = noteNames.findIndex((x) => x.name === randomRoot.name)
-
-let distInSemiTones = rootInSemiTones - answerInSemiTones
-let trueDist =
-  rootInSemiTones > answerInSemiTones ? 12 - distInSemiTones : distInSemiTones
-
-let trueAnswer = intervals[Math.abs(trueDist)]
-// console.log(noteNames)
-// console.log(rootInSemiTones, answerInSemiTones)
-// console.log('d', distInSemiTones)
-// console.log('true', Math.abs(trueDist), trueAnswer)
 
 export default function App() {
   const [hexKey, setHexKey] = useState(keys[0])
   const [randomKey, setRandomKey] = useState(randomRoot.name)
   const [userAnswer, setUserAnswer] = useState()
-  const [answer, setAnswer] = useState(trueAnswer)
+  const [answer, setAnswer] = useState(getCorrectAnswer(randomRoot.name, randomNote))
+  const [resultDisplay, setResultDisplay] = useState()
 
   function checkAnswer(inpt) {
-    console.log('check', inpt, answer)
-    return inpt === answer.name
+    return inpt === answer
   }
-
-  console.log(checkAnswer(userAnswer))
 
   function userAnswerSetter(inpt) {
     setUserAnswer(inpt)
+    setResultDisplay(checkAnswer(inpt))
+    console.log(inpt, checkAnswer(inpt), resultDisplay)
   }
 
   function getKey(musicKey) {
@@ -64,6 +57,7 @@ export default function App() {
           randomNote={randomNote}
           userAnswerSetter={userAnswerSetter}
         />
+        <Text> Answer: {resultDisplay && 'true'}</Text>
         <View style={styles.container}>
           <HexKey musicKey={hexKey} bgColor={bgColor} />
           <Text>
