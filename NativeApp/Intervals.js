@@ -3,7 +3,6 @@
 //Major Orange  - land creature
 //Red for tirtone  - ambibians
 //Perfect are purple -flying creature
-
 //each has symbols for how close in semitones it is to the nearest root note
 export const intervals = [
   { name: '1', distanceToRoot: 0, up: false },

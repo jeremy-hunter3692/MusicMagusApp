@@ -2,13 +2,18 @@ import React, { useState } from 'react'
 import { StatusBar } from 'expo-status-bar'
 import { StyleSheet, Text, View } from 'react-native'
 import DisplayIntervals from './DisplayIntervals'
+import { getCorrectAnswer, returnRandomCard } from './functions'
 
-const Question = ({ randomKey, randomNote, userAnswerSetter}) => {
+// let randomRoot = returnRandomCard(keys)
+
+// let randomNote = returnRandomCard(noteNames)
+
+const Question = ({ randomRoot, randomNote, userAnswerSetter }) => {
   return (
     <>
       Question component
       <Text>
-        Key: {randomKey} Note: {randomNote}
+        Key: {randomRoot} Note: {randomNote}
       </Text>
       <DisplayIntervals userAnswerSetter={userAnswerSetter} />
     </>
