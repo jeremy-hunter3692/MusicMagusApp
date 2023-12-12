@@ -1,10 +1,11 @@
 import { intervals } from './Intervals'
 
 export function getCorrectAnswer(rootNote, questionValue) {
-  console.log(rootNote.value.name, questionValue.value.name)
-  let distInSemiTones = rootNote.idx - questionValue.idx
+  console.log(rootNote, questionValue)
+  let distInSemiTones = rootNote - questionValue
   let trueDist =
     rootNote > questionValue ? 12 - distInSemiTones : distInSemiTones
+  console.log(trueDist)
   return intervals[Math.abs(trueDist)].name
 }
 

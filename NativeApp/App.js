@@ -15,23 +15,27 @@ import { getCorrectAnswer, returnRandomCard } from './functions'
 
 export default function App() {
   const [hexKey, setHexKey] = useState(keys[0])
-  const [randomRoot, setRandomRoot] = useState(returnRandomCard(keys))
-  const [questionNote, setQuestionNote] = useState(returnRandomCard(noteNames))
-  const [userAnswer, setUserAnswer] = useState()
-  const [answer, setAnswer] = useState(
-    getCorrectAnswer(randomRoot, questionNote)
+  const [randomRoot, setRandomRoot] = useState(() => returnRandomCard(keys))
+  const [questionNote, setQuestionNote] = useState(() =>
+    returnRandomCard(noteNames)
   )
-  const [resultDisplay, setResultDisplay] = useState()
+  const [userAnswer, setUserAnswer] = useState()
 
-  // console.log({ answer }, { randomRoot }, questionNote.value.name)
+  const [resultDisplay, setResultDisplay] = useState()
+  let answer
+  console.log({ answer }, { randomRoot }, { questionNote })
 
   function checkAnswer(inpt) {
+    console.log('inpt', inpt, answer)
     return inpt === answer
   }
 
   function userAnswerSetter(inpt) {
+    answer = getCorrectAnswer(randomRoot.idx, questionNote.idx)
+    console.log(answer)
     setUserAnswer(inpt)
     setResultDisplay(checkAnswer(inpt))
+    console.log(checkAnswer(inpt), resultDisplay)
   }
 
   function getKey(musicKey) {
@@ -39,9 +43,9 @@ export default function App() {
   }
   // REFACTOR THIS
   function reload() {
+    setResultDisplay(null)
     setRandomRoot(returnRandomCard(keys))
     setQuestionNote(returnRandomCard(noteNames))
-    setAnswer(getCorrectAnswer(randomRoot, questionNote))
   }
 
   return (
@@ -53,7 +57,7 @@ export default function App() {
           userAnswerSetter={userAnswerSetter}
         />
         <Button onPress={reload} title={'New Question'} />
-        <Text> Answer: {resultDisplay && 'true'}</Text>
+        <Text> Answer: {resultDisplay && 'True' }</Text>
         <View style={styles.container}>
           <HexKey musicKey={hexKey} bgColor={bgColor} />
           <Text>
