@@ -3,11 +3,10 @@ import { StatusBar } from 'expo-status-bar'
 import { StyleSheet, Text, View } from 'react-native'
 import { keys, getIntervalNo } from './KeyCards'
 import Question from './Question'
-import HexKey from './HexKey'
+import HexKey from './HexKeyCiclesDisplay'
 import Button from './Button'
 import { noteNames } from './NoteNames'
-
-import { getCorrectAnswer, returnRandomCard } from './functions'
+import DisplayNoteNames from './DisplayNoteNames'
 
 // let randomRoot = returnRandomCard(keys)
 
@@ -15,64 +14,25 @@ import { getCorrectAnswer, returnRandomCard } from './functions'
 
 export default function App() {
   const [hexKey, setHexKey] = useState(keys[0])
-  const [randomRoot, setRandomRoot] = useState(() => returnRandomCard(keys))
-  const [questionNote, setQuestionNote] = useState(() =>
-    returnRandomCard(noteNames)
-  )
-  const [userAnswer, setUserAnswer] = useState()
-
-  const [resultDisplay, setResultDisplay] = useState()
-  let answer
-  console.log({ answer }, { randomRoot }, { questionNote })
-
-  function checkAnswer(inpt) {
-    console.log('inpt', inpt, answer)
-    return inpt === answer
-  }
-
-  function userAnswerSetter(inpt) {
-    answer = getCorrectAnswer(randomRoot.idx, questionNote.idx)
-    console.log(answer)
-    setUserAnswer(inpt)
-    setResultDisplay(checkAnswer(inpt))
-    console.log(checkAnswer(inpt), resultDisplay)
-  }
-
   function getKey(musicKey) {
     setHexKey(musicKey)
   }
-  // REFACTOR THIS
-  function reload() {
-    setResultDisplay(null)
-    setRandomRoot(returnRandomCard(keys))
-    setQuestionNote(returnRandomCard(noteNames))
-  }
-
   return (
     <>
+      {' '}
+      <StatusBar style="auto" />
       <View style={styles.topContainer}>
-        <Question
-          randomRoot={randomRoot.value.name}
-          randomNote={questionNote.value.name}
-          userAnswerSetter={userAnswerSetter}
-        />
-        <Button onPress={reload} title={'New Question'} />
-        <Text> Answer: {resultDisplay && 'True' }</Text>
+        <Question />
         <View style={styles.container}>
+          <DisplayNoteNames />
           <HexKey musicKey={hexKey} bgColor={bgColor} />
           <Text>
             {keys.map((x, idx) => (
               <Text key={idx}>
-                <Button
-                  onPress={getKey}
-                  title={x.name}
-                  data={x}
-                  answerSetter={userAnswerSetter}
-                />
+                <Button onPress={getKey} title={x.name} data={x} />
               </Text>
             ))}
           </Text>
-          <StatusBar style="auto" />
         </View>
       </View>
     </>
