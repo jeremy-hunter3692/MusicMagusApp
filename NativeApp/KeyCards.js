@@ -4,18 +4,66 @@
 //denotes where the accidentals are
 
 export const keys = [
-  { name: 'C', intervals: [false, false, false, false, false, false, false] },
-  { name: 'Db', intervals: [true, true, false, true, true, true, false] },
-  { name: 'D', intervals: [false, false, true, false, false, false, true] },
-  { name: 'Eb', intervals: [true, false, false, true, true, false, false] },
-  { name: 'E', intervals: [false, true, true, false, false, true, true] },
-  { name: 'F', intervals: [false, false, false, true, false, false, false] },
-  { name: 'F#', intervals: [true, true, true, false, true, true, true] },
-  { name: 'G', intervals: [false, false, false, false, false, false, true] },
-  { name: 'Ab', intervals: [true, true, false, true, true, false, false] },
-  { name: 'A', intervals: [false, false, true, false, false, true, true] },
-  { name: 'Bb', intervals: [true, false, false, true, false, false, false] },
-  { name: 'B', intervals: [false, true, true, false, true, true, true] },
+  {
+    name: 'C',
+    intervals: [false, false, false, false, false, false, false],
+    imgSrc: require('./assets/keyCards/C.png'),
+  },
+  {
+    name: 'Db',
+    intervals: [true, true, false, true, true, true, false],
+    imgSrc: require('./assets/keyCards/Db.png'),
+  },
+  {
+    name: 'D',
+    intervals: [false, false, true, false, false, false, true],
+    imgSrc: require('./assets/keyCards/D.png'),
+  },
+  {
+    name: 'Eb',
+    intervals: [true, false, false, true, true, false, false],
+    imgSrc: require('./assets/keyCards/Eb.png'),
+  },
+  {
+    name: 'E',
+    intervals: [false, true, true, false, false, true, true],
+    imgSrc: require('./assets/keyCards/E.png'),
+  },
+  {
+    name: 'F',
+    intervals: [false, false, false, true, false, false, false],
+    imgSrc: require('./assets/keyCards/F.png'),
+  },
+  {
+    name: 'F#',
+    intervals: [true, true, true, false, true, true, true],
+    imgSrc: require('./assets/keyCards/Gb.png'),
+  },
+  {
+    name: 'G',
+    intervals: [false, false, false, false, false, false, true],
+    imgSrc: require('./assets/keyCards/G.png'),
+  },
+  {
+    name: 'Ab',
+    intervals: [true, true, false, true, true, false, false],
+    imgSrc: require('./assets/keyCards/Ab.png'),
+  },
+  {
+    name: 'A',
+    intervals: [false, false, true, false, false, true, true],
+    imgSrc: require('./assets/keyCards/A.png'),
+  },
+  {
+    name: 'Bb',
+    intervals: [true, false, false, true, false, false, false],
+    imgSrc: require('./assets/keyCards/Bb.png'),
+  },
+  {
+    name: 'B',
+    intervals: [false, true, true, false, true, true, true],
+    imgSrc: require('./assets/keyCards/B.png'),
+  },
 ]
 
 export function getIntervalNo(array, value) {

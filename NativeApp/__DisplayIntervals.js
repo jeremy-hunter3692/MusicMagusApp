@@ -1,6 +1,6 @@
 import { StatusBar } from 'expo-status-bar'
 import { StyleSheet, Text, View, Image, TouchableOpacity } from 'react-native'
-import { intervals } from './Intervals.js'
+import { intervals  } from './Intervals.js'
 import CardButton from './CardButton.js'
 import Button from './Button.js'
 
@@ -19,6 +19,8 @@ const intervalImgs = [
   require('./assets/intervalCards/7.png'),
 ]
 
+const images = intervalImgs
+
 const DisplayIntervals = ({ userAnswerSetter }) => {
   function setAnswer(inpt) {
     userAnswerSetter(inpt)
@@ -33,7 +35,7 @@ const DisplayIntervals = ({ userAnswerSetter }) => {
               <CardButton
                 onPress={setAnswer}
                 data={x.name}
-                source={intervalImgs[idx]}
+                source={images[idx]}
               />
             </TouchableOpacity>
           ) //<Button onPress={setAnswer} data={x.name} titl4e={x.name} />

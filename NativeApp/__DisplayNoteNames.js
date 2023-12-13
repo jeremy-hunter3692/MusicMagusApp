@@ -3,26 +3,14 @@ import { StatusBar } from 'expo-status-bar'
 import { StyleSheet, Text, View, Image, TouchableOpacity } from 'react-native'
 import CardButton from './CardButton'
 
-const noteImgs = [
-  require('./assets/noteCards/C.png'),
-  require('./assets/noteCards/Db.png'),
-  require('./assets/noteCards/D.png'),
-  require('./assets/noteCards/Eb.png'),
-  require('./assets/noteCards/E.png'),
-  require('./assets/noteCards/F.png'),
-  require('./assets/noteCards/Gb.png'),
-  require('./assets/noteCards/G.png'),
-  require('./assets/noteCards/Ab.png'),
-  require('./assets/noteCards/A.png'),
-  require('./assets/noteCards/Bb.png'),
-  require('./assets/noteCards/B.png'),
-]
 
-function setAnswer(inpt) {
-  console.log('card', inpt)
-}
 
-const DisplayNoteNames = () => {
+const DisplayNoteNames = ({ userAnswerSetter }) => {
+  function setAnswer(inpt) {
+    userAnswerSetter()
+    console.log('card', inpt)
+  }
+
   return (
     <>
       <View style={styles.imgCont}>

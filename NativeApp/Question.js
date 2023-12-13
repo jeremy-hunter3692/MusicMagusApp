@@ -2,7 +2,8 @@ import React, { useState } from 'react'
 import { StatusBar } from 'expo-status-bar'
 import { StyleSheet, Text, View } from 'react-native'
 import { keys, getIntervalNo } from './KeyCards'
-import DisplayIntervals from './DisplayIntervals'
+import DisplayCards from './DisplayCards'
+import { intervals } from './Intervals'
 import Button from './Button'
 import { noteNames } from './NoteNames'
 import { getCorrectAnswer, returnRandomCard } from './functions'
@@ -39,16 +40,16 @@ const Question = () => {
     setQuestionNote(returnRandomCard(noteNames))
   }
 
- 
-
   return (
     <>
       Question component
       <Text>
         Key: {randomRoot.value.name} Note: {questionNote.value.name}
       </Text>
- 
-      <DisplayIntervals userAnswerSetter={userAnswerSetter} />
+      <DisplayCards
+        userAnswerSetter={userAnswerSetter}
+        cardsArray={intervals}
+      />
       <Button onPress={reload} title={'New Question'} />
       <Text> Answer: {resultDisplay && 'True'}</Text>
     </>

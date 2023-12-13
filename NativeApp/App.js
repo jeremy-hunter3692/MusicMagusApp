@@ -6,7 +6,7 @@ import Question from './Question'
 import HexKey from './HexKeyCiclesDisplay'
 import Button from './Button'
 import { noteNames } from './NoteNames'
-import DisplayNoteNames from './DisplayNoteNames'
+import DisplayCards from './DisplayCards'
 
 // let randomRoot = returnRandomCard(keys)
 
@@ -17,6 +17,10 @@ export default function App() {
   function getKey(musicKey) {
     setHexKey(musicKey)
   }
+
+  function appLevel(inpt) {
+    console.log('TODO-App leve', inpt)
+  }
   return (
     <>
       {' '}
@@ -24,7 +28,8 @@ export default function App() {
       <View style={styles.topContainer}>
         <Question />
         <View style={styles.container}>
-          <DisplayNoteNames />
+          <DisplayCards userAnswerSetter={appLevel} cardsArray={noteNames} />
+          <DisplayCards userAnswerSetter={appLevel} cardsArray={keys} />
           <HexKey musicKey={hexKey} bgColor={bgColor} />
           <Text>
             {keys.map((x, idx) => (
