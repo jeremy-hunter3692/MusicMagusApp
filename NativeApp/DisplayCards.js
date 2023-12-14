@@ -1,11 +1,10 @@
 import { StatusBar } from 'expo-status-bar'
 import { StyleSheet, Text, View, Image, TouchableOpacity } from 'react-native'
-import { intervals } from './Intervals.js'
 import CardButton from './CardButton.js'
-import Button from './Button.js'
+
 
 const DisplayCards = ({ userAnswerSetter, cardsArray }) => {
-  console.log(cardsArray)
+
   function setAnswer(inpt) {
     userAnswerSetter(inpt)
   }
@@ -13,12 +12,12 @@ const DisplayCards = ({ userAnswerSetter, cardsArray }) => {
   return (
     <>
       <View style={styles.imgCont}>
-        {cardsArray.map((x, idx) => {
+        {cardsArray.map((x) => {
           return (
             <TouchableOpacity onPress={setAnswer}>
               <CardButton onPress={setAnswer} data={x.name} source={x.imgSrc} />
             </TouchableOpacity>
-          ) //<Button onPress={setAnswer} data={x.name} titl4e={x.name} />
+          ) //<Button onPress={setAnswer} data={x.name} title={x.name} />
         })}
       </View>
     </>

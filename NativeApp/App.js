@@ -2,6 +2,7 @@ import React, { useState } from 'react'
 import { StatusBar } from 'expo-status-bar'
 import { StyleSheet, Text, View } from 'react-native'
 import { keys, getIntervalNo } from './KeyCards'
+import KeyAndIntervalQuestion from './KeyAndIntervalQuestion'
 import Question from './Question'
 import HexKey from './HexKeyCiclesDisplay'
 import Button from './Button'
@@ -26,18 +27,17 @@ export default function App() {
       {' '}
       <StatusBar style="auto" />
       <View style={styles.topContainer}>
+        {/* <KeyAndIntervalQuestion /> */}
         <Question />
         <View style={styles.container}>
-          <DisplayCards userAnswerSetter={appLevel} cardsArray={noteNames} />
-          <DisplayCards userAnswerSetter={appLevel} cardsArray={keys} />
-          <HexKey musicKey={hexKey} bgColor={bgColor} />
+          {/* <HexKey musicKey={hexKey} bgColor={bgColor} />
           <Text>
             {keys.map((x, idx) => (
               <Text key={idx}>
                 <Button onPress={getKey} title={x.name} data={x} />
               </Text>
             ))}
-          </Text>
+          </Text> */}
         </View>
       </View>
     </>
