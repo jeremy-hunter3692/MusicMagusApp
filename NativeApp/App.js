@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import { StatusBar } from 'expo-status-bar'
-import { StyleSheet, Text, View } from 'react-native'
+import { StyleSheet, Text, View, TouchableOpacity } from 'react-native'
 import { keys, getIntervalNo } from './KeyCards'
 import KeyAndIntervalQuestion from './KeyAndIntervalQuestion'
 import Question from './Question'
@@ -15,6 +15,8 @@ import DisplayCards from './DisplayCards'
 
 export default function App() {
   const [hexKey, setHexKey] = useState(keys[0])
+  const [question, setQuestion] = useState(true)
+
   function getKey(musicKey) {
     setHexKey(musicKey)
   }
@@ -27,8 +29,9 @@ export default function App() {
       {' '}
       <StatusBar style="auto" />
       <View style={styles.topContainer}>
+  
         {/* <KeyAndIntervalQuestion /> */}
-        <Question />
+        <Question switchBool={question} />
         <View style={styles.container}>
           {/* <HexKey musicKey={hexKey} bgColor={bgColor} />
           <Text>
