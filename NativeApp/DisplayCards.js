@@ -12,7 +12,7 @@ const DisplayCards = ({ userAnswerSetter, cardsArray }) => {
   return (
     <>
       <View style={styles.imgCont}>
-        {cardsArray.map((x) => {
+        {cardsArray?.map((x) => {
           return (
             <TouchableOpacity onPress={setAnswer}>
               <CardButton onPress={setAnswer} data={x.name} source={x.imgSrc} />

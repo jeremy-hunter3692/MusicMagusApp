@@ -11,6 +11,7 @@ import {
   returnRandomCard,
   getAnswerKeyAndInterval,
 } from './functions'
+let intervalAsQuestion = true
 
 //put all state up a level and abstrat the component one?
 const Question = () => {
@@ -18,7 +19,8 @@ const Question = () => {
   const [questionNote, setQuestionNote] = useState(returnRandomCard(intervals))
   const [userAnswer, setUserAnswer] = useState()
   const [resultDisplay, setResultDisplay] = useState()
-  const [question, setQuestion] = useState(false)
+  // const [intervalAsQuestion, setQuestionBool] = useState(false)
+  const [cardsArray, setCardsArray] = useState(noteNames)
   let answer
 
   function checkAnswer(inpt) {
@@ -26,7 +28,7 @@ const Question = () => {
   }
 
   function userAnswerSetter(inpt) {
-    answer = question
+    answer = intervalAsQuestion
       ? getCorrectAnswer(randomRoot, questionNote)
       : getAnswerKeyAndInterval(randomRoot, questionNote, noteNames)
     setUserAnswer(inpt)
@@ -34,36 +36,50 @@ const Question = () => {
   }
 
   function reload() {
+    console.log('reload', intervalAsQuestion)
     setResultDisplay(null)
     setRandomRoot(returnRandomCard(keys))
-    setQuestionNote(returnRandomCard(question ? noteNames : intervals))
-    console.log(question, questionNote)
+    setQuestionNote(
+      intervalAsQuestion
+        ? returnRandomCard(intervals)
+        : returnRandomCard(noteNames)
+    )
+    intervalAsQuestion ? setCardsArray(noteNames) : setCardsArray(intervals)
   }
 
-  function changeQuestion() {
-    setQuestion(!question)
+  function changeQuestionType() {
+    console.log(intervalAsQuestion)
+    intervalAsQuestion = !intervalAsQuestion
+    console.log('2nd', intervalAsQuestion)
+    setResultDisplay(null)
     reload()
-  } // reload()
+    // setRandomRoot(returnRandomCard(keys))
+    // intervalAsQuestion
+    //   ? setQuestionNote(returnRandomCard(intervals))
+    //   : setQuestionNote(returnRandomCard(noteNames))
+
+    // intervalAsQuestion ? setCardsArray(noteNames) : setCardsArray(intervals)
+  }
 
   return (
     <>
       <Text>Question component</Text>
-      <TouchableOpacity onPress={() => changeQuestion()}>
-        <Text>Change Question</Text>
+      <TouchableOpacity onPress={() => changeQuestionType()}>
+        <Text>Change Question Type</Text>
       </TouchableOpacity>
       Key:{' '}
       <Image
-        source={randomRoot.value.imgSrc}
+        source={randomRoot?.value.imgSrc}
         style={{ width: 100, height: 170 }}
       />{' '}
       Note:{' '}
       <Image
-        source={questionNote.value.imgSrc}
+        source={questionNote?.value.imgSrc}
         style={{ width: 100, height: 170 }}
       />
       <DisplayCards
         userAnswerSetter={userAnswerSetter}
-        cardsArray={question ? intervals : noteNames}
+        cardsArray={cardsArray}
       />
       <Button onPress={reload} title={'New Question'} />
       <Text> Answer: {resultDisplay && 'True'}</Text>
