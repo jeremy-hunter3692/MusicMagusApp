@@ -1,6 +1,7 @@
 import { StatusBar } from 'expo-status-bar'
 import { StyleSheet, Text, View } from 'react-native'
-import { getIntervalNo } from './KeyCards'
+import { keys, getIntervalNo } from './KeyCards'
+
 function fillCricleBool(inpt, key) {
   return inpt ? (
     <View key={key} style={styles.circleFull}></View>

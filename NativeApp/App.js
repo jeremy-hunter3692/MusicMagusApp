@@ -15,7 +15,6 @@ import DisplayCards from './DisplayCards'
 
 export default function App() {
   const [hexKey, setHexKey] = useState(keys[0])
-  const [question, setQuestion] = useState(true)
 
   function getKey(musicKey) {
     setHexKey(musicKey)
@@ -29,19 +28,18 @@ export default function App() {
       {' '}
       <StatusBar style="auto" />
       <View style={styles.topContainer}>
-  
         {/* <KeyAndIntervalQuestion /> */}
-        <Question switchBool={question} />
-        <View style={styles.container}>
-          {/* <HexKey musicKey={hexKey} bgColor={bgColor} />
+        <Question />
+        {/* <View style={styles.container}>
+          <HexKey musicKey={hexKey} bgColor={bgColor} />
           <Text>
             {keys.map((x, idx) => (
               <Text key={idx}>
                 <Button onPress={getKey} title={x.name} data={x} />
               </Text>
             ))}
-          </Text> */}
-        </View>
+          </Text>
+        </View> */}
       </View>
     </>
   )

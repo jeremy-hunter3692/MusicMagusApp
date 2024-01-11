@@ -36,7 +36,7 @@ export const keys = [
   },
   {
     name: 'F#',
-    intervals: [true, true, true, false, true, true, true],
+    intervals: [true, true, true, true, true, true, false],
     imgSrc: require('./assets/keyCards/Gb.png'),
   },
   {

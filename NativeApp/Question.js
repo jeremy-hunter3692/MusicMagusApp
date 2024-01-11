@@ -5,6 +5,7 @@ import { keys, getIntervalNo } from './KeyCards'
 import DisplayCards from './DisplayCards'
 import { intervals } from './Intervals'
 import Button from './Button'
+import HexKey from './HexKeyCiclesDisplay'
 import { noteNames } from './NoteNames'
 import {
   getCorrectAnswer,
@@ -19,24 +20,23 @@ const Question = () => {
   const [questionNote, setQuestionNote] = useState(returnRandomCard(intervals))
   const [userAnswer, setUserAnswer] = useState()
   const [resultDisplay, setResultDisplay] = useState()
-  // const [intervalAsQuestion, setQuestionBool] = useState(false)
   const [cardsArray, setCardsArray] = useState(noteNames)
   let answer
 
   function checkAnswer(inpt) {
+    console.log('check', inpt, answer, inpt === answer)
     return inpt === answer
   }
 
   function userAnswerSetter(inpt) {
     answer = intervalAsQuestion
-      ? getCorrectAnswer(randomRoot, questionNote)
-      : getAnswerKeyAndInterval(randomRoot, questionNote, noteNames)
+      ? getAnswerKeyAndInterval(randomRoot, questionNote, noteNames)
+      : getCorrectAnswer(randomRoot, questionNote)
     setUserAnswer(inpt)
     setResultDisplay(checkAnswer(inpt))
   }
 
   function reload() {
-    console.log('reload', intervalAsQuestion)
     setResultDisplay(null)
     setRandomRoot(returnRandomCard(keys))
     setQuestionNote(
@@ -48,43 +48,47 @@ const Question = () => {
   }
 
   function changeQuestionType() {
-    console.log(intervalAsQuestion)
     intervalAsQuestion = !intervalAsQuestion
-    console.log('2nd', intervalAsQuestion)
-    setResultDisplay(null)
     reload()
-    // setRandomRoot(returnRandomCard(keys))
-    // intervalAsQuestion
-    //   ? setQuestionNote(returnRandomCard(intervals))
-    //   : setQuestionNote(returnRandomCard(noteNames))
-
-    // intervalAsQuestion ? setCardsArray(noteNames) : setCardsArray(intervals)
   }
 
   return (
     <>
-      <Text>Question component</Text>
+      <HexKey musicKey={randomRoot.value} />
+      <Text>__________________</Text>
+      <View style={styles.questionCardsCont}>
+        <Image source={randomRoot?.value.imgSrc} style={styles.questionCards} />
+        <Image
+          source={questionNote?.value.imgSrc}
+          style={styles.questionCards}
+        />
+      </View>
+
       <TouchableOpacity onPress={() => changeQuestionType()}>
         <Text>Change Question Type</Text>
       </TouchableOpacity>
-      Key:{' '}
-      <Image
-        source={randomRoot?.value.imgSrc}
-        style={{ width: 100, height: 170 }}
-      />{' '}
-      Note:{' '}
-      <Image
-        source={questionNote?.value.imgSrc}
-        style={{ width: 100, height: 170 }}
-      />
+      <Button onPress={reload} title={'New Question'} />
+      <Text> Answer: {resultDisplay && 'True'}</Text>
       <DisplayCards
         userAnswerSetter={userAnswerSetter}
         cardsArray={cardsArray}
       />
-      <Button onPress={reload} title={'New Question'} />
-      <Text> Answer: {resultDisplay && 'True'}</Text>
     </>
   )
 }
 
 export default Question
+
+const styles = StyleSheet.create({
+  questionCardsCont: {
+    flex: 1,
+    flexDirection: 'row',
+
+    justifyContent: 'space-evenly',
+  },
+  questionCards: {
+    width: 100,
+    height: 170,
+    margin: 10,
+  },
+})

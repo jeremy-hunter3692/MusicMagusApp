@@ -1,6 +1,5 @@
 import { intervals } from './Intervals'
 
-
 export function getCorrectAnswer(rootNote, questionValue) {
   // console.log(rootNote, questionValue)
   let distInSemiTones = rootNote.idx - questionValue.idx
@@ -14,7 +13,8 @@ export function getCorrectAnswer(rootNote, questionValue) {
 }
 
 export function returnRandomCard(array) {
-  let idx = Math.floor(Math.random() * array.length) //could hard code this for saftey?
+  let idx = Math.floor(Math.random() * (array.length - 1) + 1) //could hard code this for saftey?
+  console.log('random card idx:', idx)
   return { value: array[idx], idx: idx }
 }
 
