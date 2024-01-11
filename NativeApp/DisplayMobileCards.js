@@ -27,12 +27,11 @@ const DisplayMobileCards = ({ userAnswerSetter, cardsArray }) => {
             <TouchableOpacity key={idx} onPress={() => setAnswer(x)}>
               {x.name === selected?.name ? (
                 <View key={idx}>
-                  {console.log('if', x.name, selected.name)}
                   <CardButton
                     onPress={setAnswer}
                     data={x}
                     source={x.imgSrc}
-                    position={{ ...styles.card, top: idx * 25, zIndex: 10 }}
+                    position={{ ...styles.card, top: idx * 25 }}
                   />
                 </View>
               ) : (
@@ -41,7 +40,7 @@ const DisplayMobileCards = ({ userAnswerSetter, cardsArray }) => {
                     onPress={setAnswer}
                     data={x}
                     source={x.imgSrc}
-                    position={{ ...styles.card, top: idx * 25, zIndex: 0 }}
+                    position={{ ...styles.card, top: idx * 25 }}
                   />
                 </View>
               )}
