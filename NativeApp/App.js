@@ -56,9 +56,12 @@ const styles = StyleSheet.create({
   },
   topContainer: {
     flex: 1,
+    margin: 0,
     backgroundColor: bgColor,
     alignItems: 'center',
     justifyContent: 'center',
+    flexDirection: 'row',
+    justifyContent: 'space-around',
   },
 })
 

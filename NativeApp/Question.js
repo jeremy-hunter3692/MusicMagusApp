@@ -3,6 +3,7 @@ import { StatusBar } from 'expo-status-bar'
 import { StyleSheet, Text, View, Image, TouchableOpacity } from 'react-native'
 import { keys, getIntervalNo } from './KeyCards'
 import DisplayCards from './DisplayCards'
+import DisplayMobileCards from './DisplayMobileCards'
 import { intervals } from './Intervals'
 import Button from './Button'
 import HexKey from './HexKeyCiclesDisplay'
@@ -54,25 +55,35 @@ const Question = () => {
 
   return (
     <>
-      <HexKey musicKey={randomRoot.value} />
-      <Text>__________________</Text>
-      <View style={styles.questionCardsCont}>
-        <Image source={randomRoot?.value.imgSrc} style={styles.questionCards} />
-        <Image
-          source={questionNote?.value.imgSrc}
-          style={styles.questionCards}
-        />
-      </View>
+      
+        <HexKey musicKey={randomRoot.value} />
+        <Text>__________________</Text>
+        <View style={styles.questionCardsCont}>
+          <Image
+            source={randomRoot?.value.imgSrc}
+            style={styles.questionCards}
+          />
+          <Image
+            source={questionNote?.value.imgSrc}
+            style={styles.questionCards}
+          />
+        </View>
 
-      <TouchableOpacity onPress={() => changeQuestionType()}>
-        <Text>Change Question Type</Text>
-      </TouchableOpacity>
-      <Button onPress={reload} title={'New Question'} />
-      <Text> Answer: {resultDisplay && 'True'}</Text>
-      <DisplayCards
+        <TouchableOpacity onPress={() => changeQuestionType()}>
+          <Text>Change Question Type</Text>
+        </TouchableOpacity>
+        <Button onPress={reload} title={'New Question'} />
+        <Text> Answer: {resultDisplay && 'True'}</Text>
+        <DisplayMobileCards
+          key={intervalAsQuestion ? 'noteNames' : 'intervals'}
+          userAnswerSetter={userAnswerSetter}
+          cardsArray={cardsArray}
+        />
+        {/* <DisplayCards
         userAnswerSetter={userAnswerSetter}
         cardsArray={cardsArray}
-      />
+      /> */}
+   
     </>
   )
 }

@@ -13,8 +13,7 @@ export function getCorrectAnswer(rootNote, questionValue) {
 }
 
 export function returnRandomCard(array) {
-  let idx = Math.floor(Math.random() * (array.length - 1) + 1) //could hard code this for saftey?
-  console.log('random card idx:', idx)
+  let idx = Math.floor(Math.random() * (array.length - 1) + 1) // min max for removing root questions could hard code this for saftey?
   return { value: array[idx], idx: idx }
 }
 
