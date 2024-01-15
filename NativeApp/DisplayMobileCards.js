@@ -25,25 +25,14 @@ const DisplayMobileCards = ({ userAnswerSetter, cardsArray }) => {
         {cardsArray?.map((x, idx) => {
           return (
             <TouchableOpacity key={idx} onPress={() => setAnswer(x)}>
-              {x.name === selected?.name ? (
-                <View key={idx}>
-                  <CardButton
-                    onPress={setAnswer}
-                    data={x}
-                    source={x.imgSrc}
-                    position={{ ...styles.card, top: idx * 25 }}
-                  />
-                </View>
-              ) : (
-                <View key={idx}>
-                  <CardButton
-                    onPress={setAnswer}
-                    data={x}
-                    source={x.imgSrc}
-                    position={{ ...styles.card, top: idx * 25 }}
-                  />
-                </View>
-              )}
+              <View key={idx}>
+                <CardButton
+                  onPress={setAnswer}
+                  data={x}
+                  source={x.imgSrc}
+                  position={{ ...styles.card, top: idx * 25 }}
+                />
+              </View>
             </TouchableOpacity>
           )
         })}

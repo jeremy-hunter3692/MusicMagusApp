@@ -2,7 +2,7 @@ import React from 'react'
 import { TouchableOpacity, Image, Text, View } from 'react-native'
 
 const CardButton = ({ onPress, data, source, position }) => {
-  console.log('styles', position.zIndex, position.top)
+  // console.log('styles', position.zIndex, position.top)
   return (
     <TouchableOpacity onPress={() => onPress(data)}>
       <View>

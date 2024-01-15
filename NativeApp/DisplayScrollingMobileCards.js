@@ -16,7 +16,7 @@ const DisplayScrollingMobileCards = ({ userAnswerSetter, cardsArray }) => {
     setSelected((prevSelected) => (prevSelected === inpt ? null : inpt))
     userAnswerSetter(inpt.name)
   }
-  console.log('sel', selected)
+
   return (
     <>
       <View style={styles.imgCont}>
@@ -27,31 +27,20 @@ const DisplayScrollingMobileCards = ({ userAnswerSetter, cardsArray }) => {
             position={styles.selectedCard}
           />
         ) : (
-          console.log('no')
+          ''
         )}
         <ScrollView style={styles.scrollView}>
           {cardsArray?.map((x, idx) => {
             return (
               <TouchableOpacity key={idx} onPress={() => setAnswer(x)}>
-                {x.name === selected?.name ? (
-                  <View key={idx}>
-                    <CardButton
-                      onPress={setAnswer}
-                      data={x}
-                      source={x.imgSrc}
-                      position={{ ...styles.card, top: idx * 25 }}
-                    />
-                  </View>
-                ) : (
-                  <View key={idx}>
-                    <CardButton
-                      onPress={setAnswer}
-                      data={x}
-                      source={x.imgSrc}
-                      position={{ ...styles.card, top: idx * 25 }}
-                    />
-                  </View>
-                )}
+                <View key={idx}>
+                  <CardButton
+                    onPress={setAnswer}
+                    data={x}
+                    source={x.imgSrc}
+                    position={{ ...styles.card, top: idx * 25 }}
+                  />
+                </View>
               </TouchableOpacity>
             )
           })}
@@ -79,7 +68,8 @@ const styles = StyleSheet.create({
   },
   selectedCard: {
     position: 'absolute',
-    left: 150,
+    top: -100,
+    left: 350,
     width: 100,
     height: 150,
     margin: 10,

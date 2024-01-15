@@ -6,6 +6,7 @@ import { keys, getIntervalNo } from './KeyCards'
 import DisplayCards from './DisplayCards'
 import DisplayMobileCards from './DisplayMobileCards'
 import DisplayScrollingMobileCards from './DisplayScrollingMobileCards'
+import DisplayScrollWheelCards from './DisplayScrollWheelCards'
 /////
 import { intervals } from './Intervals'
 import Button from './Button'
@@ -73,7 +74,7 @@ const Question = () => {
       </TouchableOpacity>
       <Button onPress={reload} title={'New Question'} />
       <Text> Answer: {resultDisplay && 'True'}</Text>
-      <DisplayScrollingMobileCards
+      <DisplayScrollWheelCards
         key={intervalAsQuestion ? 'noteNames' : 'intervals'}
         userAnswerSetter={userAnswerSetter}
         cardsArray={cardsArray}
