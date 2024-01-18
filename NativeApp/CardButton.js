@@ -10,7 +10,7 @@ const CardButton = ({ onPress, data, source, position }) => {
           source={source}
           style={position || { width: 100, height: 150, margin: 5 }}
         />
-        <Text></Text>
+      
       </View>
     </TouchableOpacity>
   )
