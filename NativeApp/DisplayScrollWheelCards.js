@@ -12,19 +12,25 @@ import CardButton from './CardButton.js'
 
 const scrollRate = 50
 const displayAmountAdjust = 5
-
+let count = 1
+let addedCards = false
+let removedCards = false
+let every50
 const DisplayScrollWheelCards = ({ userAnswerSetter, cardsArray }) => {
   const [selected, setSelected] = useState(0)
   const [visibleItems, setVisibleItems] = useState(['Hi'])
   const [displayArray, setDisplayArray] = useState(cardsArray)
-  const [count, setCount] = useState(1)
+
   // const [display, setDisplay] = useState(0)
   const prevScrollY = useRef(1)
-  console.log(
-    { count },
-    cardsArray.length * count,
-    cardsArray.length * count + cardsArray.length * count
-  )
+  console.log(displayArray.length, selected)
+  // console.log(
+  //   displayArray.length,
+  //   { selected },
+  //   { count },
+  //   cardsArray.length * count,
+  //   cardsArray.length * count + cardsArray.length * count
+  // )
   function setAnswer(inpt) {
     console.log('set Answer clicked')
   }
@@ -36,10 +42,15 @@ const DisplayScrollWheelCards = ({ userAnswerSetter, cardsArray }) => {
   //   setSelected(Math.floor(checkedY / scrollRate))
   // }
   function isNumberInRange(number, min, max) {
-    return number >= min && number <= max
+    return number >= min && number < max
   }
 
   function handleScroll(event) {
+    if (displayArray.length > 24) {
+      console.log('first if')
+      displayArray.slice(cardsArray.length)
+      console.log(displayArray.length)
+    }
     const scrollY = event.nativeEvent.contentOffset.y
 
     if (prevScrollY.current < scrollY) {
@@ -47,56 +58,87 @@ const DisplayScrollWheelCards = ({ userAnswerSetter, cardsArray }) => {
         setSelected(Math.floor(scrollY / scrollRate))
       } else {
         let intervalEveryCard = Math.floor(scrollY / scrollRate)
-        console.log(intervalEveryCard)
-        !isNumberInRange(
-          intervalEveryCard,
-          cardsArray.length * count,
-          cardsArray.length * count + cardsArray.length
-        )
-          ? setCount((x) => x + 1)
-          : ''
+        if (
+          !isNumberInRange(
+            intervalEveryCard,
+            cardsArray.length * count,
+            cardsArray.length * count + cardsArray.length
+          )
+        ) {
+          count++
 
-        //check if a 50 has gone past.
-        //increase subcount
-        setSelected(intervalEveryCard - cardsArray.length * count - 1)
+          displayArray.slice(cardsArray.length)
+          console.log(displayArray.length)
+
+          console.log({ intervalEveryCard })
+        }
+
+        setSelected(intervalEveryCard - cardsArray.length * count)
+
         setDisplayArray(displayArray.concat(cardsArray))
-        // setSelected(
-        //   Math.floor(scrollY / scrollRate) - cardsArray.length * count
-        // )
-
-        // setSelected(
-        //   Math.floor(scrollY / scrollRate) - cardsArray.length * count3
-        // )
-
-        // setCount((x) => x + 1):''
       }
-
-      // selected > cardsArray.length - 3
-      //   ? setDisplayArray(displayArray.concat(cardsArray))
-      //   : console.log('no add')
     } else {
       console.log('down')
     }
-    //have a reset of scrollY when above cross over length
-    // let crossOverLength = cardsArray.length * scrollRate
-    // let tempSelected = Math.floor(scrollY / scrollRate)
-    // setVisibleItems([tempSelected])
 
-    // if (scrollY >= crossOverLength) {
-    //   console.log('if', cardsArray.length * scrollRate)
-    //   setSelected(Math.floor(tempSelected - cardsArray.length))
-    //   setDisplayArray(displayArray.concat(cardsArray))
-    // } else {
-    //   console.log('else', Math.floor(tempSelected / scrollRate))
-    //   setSelected(tempSelected)
+    prevScrollY.current = scrollY
+  }
 
-    // }
+  function addToDisplayArr() {
+    setDisplayArray(displayArray.concat(cardsArray))
+
+    console.log('added2')
+  }
+
+  function removeFromDisplayArr() {
+    setDisplayArray(displayArray.slice(cardsArray.length))
+    console.log('removed')
+
+    removedCards = true
+  }
+  function handleSrollTwo(e) {
+    const scrollY = e.nativeEvent.contentOffset.y
+    const initArrLength = cardsArray.length
+    const scrollRateAsInt = Math.floor(scrollY / scrollRate)
+
+    if (prevScrollY.current <= scrollY) {
+      if (scrollRateAsInt > every50) {
+        // count >= 11 ? 0 : prevSelected + 1
+        setSelected((prevSelected) =>
+          prevSelected >= 11 ? 0 : prevSelected + 1
+        )
+      }
+      ///////////////////////////
+      if (
+        selected > 4 &&
+        selected < 7 &&
+        displayArray.length > cardsArray.length * 4
+      ) {
+        removeFromDisplayArr()
+      }
+      // // console.log('up', addedCards, removedCards, scrollRateAsInt)
+      if (
+        selected > 4 &&
+        selected < 7 &&
+        displayArray.length < cardsArray.length * 5
+      ) {
+        addToDisplayArr()
+      }
+      //  else {
+      //   setSelected(scrollRateAsInt)
+      // }
+    } else {
+      console.log('down')
+    }
+    every50 = scrollRateAsInt
     prevScrollY.current = scrollY
   }
 
   return (
     <>
-      <Text>{visibleItems}</Text>{' '}
+      {displayArray.map((x, idx) => (
+        <Text key={idx}>{x.name}</Text>
+      ))}
       <View style={styles.imgCont}>
         {cardsArray[selected] ? (
           <CardButton
@@ -110,8 +152,8 @@ const DisplayScrollWheelCards = ({ userAnswerSetter, cardsArray }) => {
 
         <ScrollView
           style={styles.scrollView}
-          onScroll={handleScroll}
-          scrollEventThrottle={50}
+          onScroll={handleSrollTwo}
+          scrollEventThrottle={100}
         >
           {/* {Array.from({ length: visibleItems }, (x, idx) => { */}
 
