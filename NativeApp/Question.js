@@ -3,10 +3,12 @@ import { StatusBar } from 'expo-status-bar'
 import { StyleSheet, Text, View, Image, TouchableOpacity } from 'react-native'
 import { keys, getIntervalNo } from './KeyCards'
 /////
+import ScrollWheelExample from './DisplayWheelGesture'
 import DisplayCards from './DisplayCards'
 import DisplayMobileCards from './DisplayMobileCards'
 import DisplayScrollingMobileCards from './DisplayScrollingMobileCards'
-import DisplayScrollWheelCards from './DisplayScrollWheelCards'
+import StaticImgs from './StaticImgs'
+// import DisplayScrollWheelCards from './DisplayScrollWheelCards'
 /////
 import { intervals } from './Intervals'
 import Button from './Button'
@@ -73,12 +75,13 @@ const Question = () => {
         <Text>Change Question Type</Text>
       </TouchableOpacity>
       <Button onPress={reload} title={'New Question'} />
+      <StaticImgs cardsArray={cardsArray} />
       <Text> Answer: {resultDisplay && 'True'}</Text>
-      <DisplayScrollWheelCards
+      {/* <DisplayScrollWheelCards
         key={intervalAsQuestion ? 'noteNames' : 'intervals'}
         userAnswerSetter={userAnswerSetter}
         cardsArray={cardsArray}
-      />
+      /> */}
       {/* <DisplayCards
         userAnswerSetter={userAnswerSetter}
         cardsArray={cardsArray}

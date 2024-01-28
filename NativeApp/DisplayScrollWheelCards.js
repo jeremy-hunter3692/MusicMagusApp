@@ -1,4 +1,3 @@
-import { StatusBar } from 'expo-status-bar'
 import {
   StyleSheet,
   Text,
@@ -16,21 +15,15 @@ let count = 1
 let addedCards = false
 let removedCards = false
 let every50
+
 const DisplayScrollWheelCards = ({ userAnswerSetter, cardsArray }) => {
   const [selected, setSelected] = useState(0)
   const [visibleItems, setVisibleItems] = useState(['Hi'])
   const [displayArray, setDisplayArray] = useState(cardsArray)
 
-  // const [display, setDisplay] = useState(0)
   const prevScrollY = useRef(1)
-  console.log(displayArray.length, selected)
-  // console.log(
-  //   displayArray.length,
-  //   { selected },
-  //   { count },
-  //   cardsArray.length * count,
-  //   cardsArray.length * count + cardsArray.length * count
-  // )
+
+  console.log(displayArray.length)
   function setAnswer(inpt) {
     console.log('set Answer clicked')
   }
@@ -85,50 +78,38 @@ const DisplayScrollWheelCards = ({ userAnswerSetter, cardsArray }) => {
   }
 
   function addToDisplayArr() {
-    setDisplayArray(displayArray.concat(cardsArray))
-
-    console.log('added2')
+    let thing = displayArray.concat(cardsArray)
+    setDisplayArray(thing)
   }
 
   function removeFromDisplayArr() {
-    setDisplayArray(displayArray.slice(cardsArray.length))
-    console.log('removed')
-
-    removedCards = true
+    let thing2 = displayArray.slice(displayArray.length - cardsArray.length * 3)
+    setDisplayArray(thing2)
   }
+
   function handleSrollTwo(e) {
     const scrollY = e.nativeEvent.contentOffset.y
-    const initArrLength = cardsArray.length
+
     const scrollRateAsInt = Math.floor(scrollY / scrollRate)
 
     if (prevScrollY.current <= scrollY) {
       if (scrollRateAsInt > every50) {
-        // count >= 11 ? 0 : prevSelected + 1
-        setSelected((prevSelected) =>
-          prevSelected >= 11 ? 0 : prevSelected + 1
-        )
+        count = count >= 11 ? 0 : count + 1
+        // setSelected((prevSelected) =>
+        //   prevSelected >= 11 ? 0 : prevSelected + 1
+        // )
+        setSelected(count)
       }
       ///////////////////////////
-      if (
-        selected > 4 &&
-        selected < 7 &&
-        displayArray.length > cardsArray.length * 4
-      ) {
+      if (count > 3 && count < 5 && displayArray.length > cardsArray.length) {
         removeFromDisplayArr()
       }
       // // console.log('up', addedCards, removedCards, scrollRateAsInt)
-      if (
-        selected > 4 &&
-        selected < 7 &&
-        displayArray.length < cardsArray.length * 5
-      ) {
+      if (count > 9) {
         addToDisplayArr()
       }
-      //  else {
-      //   setSelected(scrollRateAsInt)
-      // }
     } else {
-      console.log('down')
+      console.log('down why is this showing')
     }
     every50 = scrollRateAsInt
     prevScrollY.current = scrollY
@@ -136,9 +117,6 @@ const DisplayScrollWheelCards = ({ userAnswerSetter, cardsArray }) => {
 
   return (
     <>
-      {displayArray.map((x, idx) => (
-        <Text key={idx}>{x.name}</Text>
-      ))}
       <View style={styles.imgCont}>
         {cardsArray[selected] ? (
           <CardButton
