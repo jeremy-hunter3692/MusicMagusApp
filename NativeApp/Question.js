@@ -79,10 +79,12 @@ const Question = () => {
       <Button onPress={reload} title={'New Question'} />
       <Text> Answer: {resultDisplay && 'True'}</Text>
       {/* <StaticImgs cardsArray={cardsArray} /> */}
-      <HorizontalFlatList
-        cardsArray={cardsArray}
-        userAnswerSetter={userAnswerSetter}
-      />
+      <View style={styles.flatCont}>
+        <HorizontalFlatList
+          cardsArray={cardsArray}
+          userAnswerSetter={userAnswerSetter}
+        />
+      </View>
       {/* <DisplayScrollWheelCards
         key={intervalAsQuestion ? 'noteNames' : 'intervals'}
         userAnswerSetter={userAnswerSetter}
@@ -109,5 +111,16 @@ const styles = StyleSheet.create({
     width: 100,
     height: 170,
     margin: 10,
+  },
+  flatCont: {
+    flex: 1,
+
+    width: '100%',
+    height: '100%',
+
+    // borderWidth: 5,
+    // borderColor: 'red',
+    // borderRadius: 10,
+    flexDirection: 'row',
   },
 })
