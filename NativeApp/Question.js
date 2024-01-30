@@ -8,6 +8,7 @@ import DisplayCards from './DisplayCards'
 import DisplayMobileCards from './DisplayMobileCards'
 import DisplayScrollingMobileCards from './DisplayScrollingMobileCards'
 import StaticImgs from './StaticImgs'
+import HorizontalFlatList from './HorizontalFlatlist'
 // import DisplayScrollWheelCards from './DisplayScrollWheelCards'
 /////
 import { intervals } from './Intervals'
@@ -36,6 +37,7 @@ const Question = () => {
   }
 
   function userAnswerSetter(inpt) {
+    console.log('clicked', inpt)
     answer = intervalAsQuestion
       ? getAnswerKeyAndInterval(randomRoot, questionNote, noteNames)
       : getCorrectAnswer(randomRoot, questionNote)
@@ -71,12 +73,16 @@ const Question = () => {
         />
       </View>
 
-      <TouchableOpacity onPress={() => changeQuestionType()}>
+      <TouchableOpacity onPress={() => changeQuestionType(userAnswerSetter)}>
         <Text>Change Question Type</Text>
       </TouchableOpacity>
       <Button onPress={reload} title={'New Question'} />
-      <StaticImgs cardsArray={cardsArray} />
       <Text> Answer: {resultDisplay && 'True'}</Text>
+      {/* <StaticImgs cardsArray={cardsArray} /> */}
+      <HorizontalFlatList
+        cardsArray={cardsArray}
+        userAnswerSetter={userAnswerSetter}
+      />
       {/* <DisplayScrollWheelCards
         key={intervalAsQuestion ? 'noteNames' : 'intervals'}
         userAnswerSetter={userAnswerSetter}

@@ -104,16 +104,16 @@ const StaticImgs = ({ userAnswerSetter, cardsArray }) => {
           ref={scrollViewRef}
         >
           <Image
-            source={cardsArray[selected].imgSrc}
+            source={cardsArray[indexInLimits(2)].imgSrc}
             style={{ ...styles.card, top: 1 * scrollRate }}
           />
           <Image
             source={cardsArray[indexInLimits(1)].imgSrc}
-            style={{ ...styles.card, top: 2 * scrollRate }}
+            style={{ ...styles.cardTwo, top: 2 * scrollRate }}
           />
           <Image
-            source={cardsArray[indexInLimits(2)].imgSrc}
-            style={{ ...styles.card, top: 3 * scrollRate }}
+            source={cardsArray[selected].imgSrc}
+            style={{ ...styles.selectedCard, top: 3 * scrollRate }}
           />
         </View>
       </View>
@@ -137,14 +137,24 @@ const styles = StyleSheet.create({
     margin: 10,
     padding: 5,
   },
+  cardTwo: {
+    position: 'absolute',
+    width: 100,
+    height: 150,
+    margin: 10,
+    padding: 5,
+    zIndex: 1,
+  },
   selectedCard: {
     position: 'absolute',
     top: 0,
-    left: 550,
+    left: 25,
+    margin: 10,
+    padding: 5,
     width: 100,
     height: 150,
 
-    zIndex: 1,
+    zIndex: 2,
   },
   scrollArea: {
     height: 100,
