@@ -13,7 +13,8 @@ export function getCorrectAnswer(rootNote, questionValue) {
 }
 
 export function returnRandomCard(array) {
-  let idx = Math.floor(Math.random() * (array.length - 1) + 1) // min max for removing root questions could hard code this for saftey?
+  // let idx = Math.floor(Math.random() * (array.length - 1) + 1) //TODO not returning C in questions min max for removing root questions could hard code this for saftey?
+  let idx = Math.floor(Math.random() * array.length)
   return { value: array[idx], idx: idx }
 }
 

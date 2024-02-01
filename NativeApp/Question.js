@@ -3,6 +3,7 @@ import { StatusBar } from 'expo-status-bar'
 import { StyleSheet, Text, View, Image, TouchableOpacity } from 'react-native'
 import { keys, getIntervalNo } from './KeyCards'
 /////
+import Drones from './Drones'
 import ScrollWheelExample from './DisplayWheelGesture'
 import DisplayCards from './DisplayCards'
 import DisplayMobileCards from './DisplayMobileCards'
@@ -72,7 +73,7 @@ const Question = () => {
           style={styles.questionCards}
         />
       </View>
-
+      <Drones note={randomRoot}/>
       <TouchableOpacity onPress={() => changeQuestionType(userAnswerSetter)}>
         <Text>Change Question Type</Text>
       </TouchableOpacity>

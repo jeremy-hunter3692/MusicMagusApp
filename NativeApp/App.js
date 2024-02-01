@@ -4,7 +4,7 @@ import { StyleSheet, Text, View, TouchableOpacity } from 'react-native'
 import { keys, getIntervalNo } from './KeyCards'
 import KeyAndIntervalQuestion from './KeyAndIntervalQuestion'
 import Question from './Question'
-
+import Drones from './Drones'
 import HexKey from './HexKeyCiclesDisplay'
 import Button from './Button'
 import { noteNames } from './NoteNames'
@@ -30,6 +30,7 @@ export default function App() {
       <StatusBar style="auto" />
       <View style={styles.topContainer}>
         {/* <KeyAndIntervalQuestion /> */}
+      
         <Question />
         {/* <View style={styles.container}>
           <HexKey musicKey={hexKey} bgColor={bgColor} />
