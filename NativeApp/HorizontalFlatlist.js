@@ -20,28 +20,21 @@ const HorizontalFlatList = ({ cardsArray, userAnswerSetter }) => {
     userAnswerSetter(inpt)
   }
 
+  const fadeColor = ['rgba(2,255,255,1)', 'transparent']
+
   return (
     <>
-      {/* <LinearGradient
-        colors={[
-          'rgba(255,255,255,0)',
-          'rgba(255,255,255,0)',
-          'rgba(255,255,255,0)',
-        ]}
-        style={styles.gradient}
-      /> */}
-
       <View style={styles.sideViews}></View>
 
       <View style={styles.container}>
         <LinearGradient
-          colors={['rgba(255,255,255,1)', 'transparent']}
+          colors={fadeColor}
           style={styles.gradient}
           start={{ x: 0, y: 1 }}
           end={{ x: 0, y: 1 }}
         />
         <LinearGradient
-          colors={['rgba(255,255,255,1)', 'transparent']}
+          colors={fadeColor}
           style={styles.gradientRight}
           start={{ x: 1, y: 1 }}
           end={{ x: 0, y: 1 }}
@@ -56,28 +49,15 @@ const HorizontalFlatList = ({ cardsArray, userAnswerSetter }) => {
       </View>
 
       <View style={styles.sideViews}></View>
-      {/* <LinearGradient
-        colors={['rgba(192,32,64,0.9)', 'transparent']}
-        style={{
-          position: 'absolute',
-          width: 300,
-          top: 0,
-          left: 100,
-          right: 100,
-          bottom: 0,
-          height: '%100',
-        }}
-        start={{ x: 1, y: 1 }}
-        end={{ x: 0, y: 1 }}
-      /> */}
     </>
   )
 }
 
 const styles = StyleSheet.create({
   container: {
+    padding: 10,
     flex: 1,
-
+    height: 170,
     width: 500,
   },
   gradient: {
@@ -87,17 +67,17 @@ const styles = StyleSheet.create({
     left: 0,
     right: 0,
     bottom: 0,
-    height: '%100',
+    height: '%60',
     zIndex: 2,
   },
   gradientRight: {
     position: 'absolute',
     width: 150,
     top: 0,
-    left: 350,
+    left: 360,
     right: 0,
     bottom: 0,
-    height: '%100',
+    height: '%60',
     zIndex: 2,
   },
   item: {

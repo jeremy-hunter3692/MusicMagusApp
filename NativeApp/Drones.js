@@ -2,65 +2,73 @@ import React, { useState, useEffect } from 'react'
 import { View, FlatList, Text, StyleSheet, Image, Button } from 'react-native'
 import { Audio } from 'expo-av'
 
+const fadeOutSpeed = 50000
+const timeDelay = 4000
 const Drones = ({ note }) => {
-  const [sound, setSound] = useState()
+  const [currentPlayingDrone, setCurrentPlayingDrone] = useState()
 
   const playSound = async () => {
-    console.log(note.value)
+    let thing = await startSound()
+    // console.log('thing', thing)
+    fadeOut(thing)
+    setTimeout(() => startSound(), timeDelay - timeDelay / 4)
+  }
+
+  function fadeOut(audioSound) {
+    return new Promise((resolve) =>
+      setTimeout(async () => {
+        console.log('fade')
+        setVolume(1, audioSound)
+        resolve()
+      }, timeDelay)
+    )
+  }
+
+  const startSound = async () => {
+    console.log('start')
+    const source = note.value.audioSrc
+    const status = { volume: 1 }
+
     try {
-      const { sound } = await Audio.Sound.createAsync(note.value.audioSrc)
-      setSound(sound)
+      const { sound } = await Audio.Sound.createAsync(source, status)
+      // setSound(sound)
       await sound.playAsync()
+      return sound
     } catch (error) {
       console.log('Error playing sound:', error)
     }
-    setVolume()
   }
 
-  async function setVolume(volume) {
-    try {
-      await sound.setVolumeAsync(volume)
-    } catch (error) {
-      console.error('Failed to set volume:', error)
-    }
+  function fauxVol() {
+    sound ? setVolume(1, 10000) : console.log('no sound')
   }
 
-  async function fadeVolume(targetVolume, duration) {
-    console.log('fade', sound, sound.volume)
-    const initialVolume = await sound.getVolumeAsync()
-    const volumeChange = targetVolume - initialVolume
-    const intervalDuration = 100 // Adjust interval duration as needed
-    const steps = duration / intervalDuration
-    const volumeStep = volumeChange / steps
-
+  async function setVolume(volume, sound) {
+    // console.log('setVol/fade', sound)
+    const steps = fadeOutSpeed
     for (let i = 0; i < steps; i++) {
-      const newVolume = initialVolume + volumeStep * i
+      const rate = volume / steps
+      const newVolume = volume - rate * i
       await sound.setVolumeAsync(newVolume)
-      await new Promise((resolve) => setTimeout(resolve, intervalDuration))
     }
-
-    // Set final volume to ensure accuracy
-    await sound.setVolumeAsync(targetVolume)
   }
-
-  // Usage
-  fadeVolume(0.5, 5000) // Fade volume to 50% over 5 seconds
 
   const stopSound = async () => {
-    if (sound) {
-      await sound.stopAsync()
-    }
+    await sound.stopAsync()
   }
 
   useEffect(() => {
-    return sound ? () => sound.unloadAsync() : undefined
-  }, [sound])
+    return currentPlayingDrone
+      ? () => currentPlayingDrone.unloadAsync()
+      : undefined
+  }, [currentPlayingDrone])
 
   return (
     <View>
-      <Button title="Play Sound" onPress={playSound} />
-      <Button title="Stop Sound" onPress={stopSound} />
-      <Button title="fade" onPress={fadeVolume(0, 1000)} />
+      <Button title="Play Drone" onPress={playSound} />
+      //TO DO figure out global sound object and fade out
+      <Button title="Stop Drone" onPress={stopSound} />
+      {/* <Button title="fade" onPress={fauxVol} /> */}
     </View>
   )
 }
