@@ -73,19 +73,23 @@ const Question = () => {
           style={styles.questionCards}
         />
       </View>
-      <Drones note={randomRoot}/>
-      <TouchableOpacity onPress={() => changeQuestionType(userAnswerSetter)}>
-        <Text>Change Question Type</Text>
-      </TouchableOpacity>
+
+      <Button
+        onPress={() => changeQuestionType(userAnswerSetter)}
+        title={'Change Question Type'}
+      />
+
       <Button onPress={reload} title={'New Question'} />
-      <Text> Answer: {resultDisplay && 'True'}</Text>
+
       {/* <StaticImgs cardsArray={cardsArray} /> */}
+      {resultDisplay && <Text style={styles.answer}> CORRECT! </Text>}
       <View style={styles.flatCont}>
         <HorizontalFlatList
           cardsArray={cardsArray}
           userAnswerSetter={userAnswerSetter}
         />
       </View>
+
       {/* <DisplayScrollWheelCards
         key={intervalAsQuestion ? 'noteNames' : 'intervals'}
         userAnswerSetter={userAnswerSetter}
@@ -95,6 +99,7 @@ const Question = () => {
         userAnswerSetter={userAnswerSetter}
         cardsArray={cardsArray}
       /> */}
+      <Drones note={randomRoot} />
     </>
   )
 }
@@ -112,6 +117,10 @@ const styles = StyleSheet.create({
     width: 100,
     height: 170,
     margin: 10,
+  },
+  answer: {
+    color: 'white',
+    backgroundColor: 'black',
   },
   flatCont: {
     flex: 1,

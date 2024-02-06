@@ -20,7 +20,7 @@ const HorizontalFlatList = ({ cardsArray, userAnswerSetter }) => {
     userAnswerSetter(inpt)
   }
 
-  const fadeColor = ['rgba(2,255,255,1)', 'transparent']
+  const fadeColor = ['rgba(255,255,255,1)', 'transparent']
 
   return (
     <>
