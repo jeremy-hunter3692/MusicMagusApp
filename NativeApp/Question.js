@@ -23,23 +23,24 @@ import {
   getAnswerKeyAndInterval,
 } from './functions'
 let intervalAsQuestion = true
+let answer = ''
 
 //put all state up a level and abstrat the component one?
 const Question = () => {
   const [randomRoot, setRandomRoot] = useState(returnRandomCard(keys))
   const [questionNote, setQuestionNote] = useState(returnRandomCard(intervals))
   const [userAnswer, setUserAnswer] = useState()
-  const [resultDisplay, setResultDisplay] = useState()
+  const [resultDisplay, setResultDisplay] = useState(false)
   const [cardsArray, setCardsArray] = useState(noteNames)
-  let answer
 
   function checkAnswer(inpt) {
-    console.log('check', inpt, answer, inpt === answer)
-    return inpt === answer
+    // console.log('check', inpt, answer, inpt === answer)
+    //Answer name might not be the correct syntax for this now
+    return inpt === answer.name
   }
 
   function userAnswerSetter(inpt) {
-    console.log('clicked', inpt)
+    // console.log('clicked', inpt)
     answer = intervalAsQuestion
       ? getAnswerKeyAndInterval(randomRoot, questionNote, noteNames)
       : getCorrectAnswer(randomRoot, questionNote)
@@ -48,7 +49,7 @@ const Question = () => {
   }
 
   function reload() {
-    setResultDisplay(null)
+    setResultDisplay(false)
     setRandomRoot(returnRandomCard(keys))
     setQuestionNote(
       intervalAsQuestion
@@ -62,6 +63,7 @@ const Question = () => {
     intervalAsQuestion = !intervalAsQuestion
     reload()
   }
+  console.log(resultDisplay, answer)
 
   return (
     <>
@@ -69,6 +71,12 @@ const Question = () => {
       <Text>__________________</Text>
       <View style={styles.questionCardsCont}>
         <Image source={randomRoot?.value.imgSrc} style={styles.questionCards} />
+
+        {resultDisplay ? (
+          <Image source={answer?.imgSrc} style={styles.questionCards} />
+        ) : (
+          <Image source={cardsArray[0]?.imgSrc} style={styles.questionCards} />
+        )}
         <Image
           source={questionNote?.value.imgSrc}
           style={styles.questionCards}
@@ -82,25 +90,13 @@ const Question = () => {
 
       <Button onPress={reload} title={'New Question'} />
 
-      {/* <StaticImgs cardsArray={cardsArray} /> */}
       {resultDisplay && <Text style={styles.answer}> CORRECT! </Text>}
-      {/* <View style={styles.flatCont}>
-        <HorizontalFlatList
-          cardsArray={cardsArray}
-          userAnswerSetter={userAnswerSetter}
-        />
-      </View> */}
-      <DisplayCardsGrid cardsArray={cardsArray} />
 
-      {/* <DisplayScrollWheelCards
-        key={intervalAsQuestion ? 'noteNames' : 'intervals'}
+      <DisplayCardsGrid
         userAnswerSetter={userAnswerSetter}
         cardsArray={cardsArray}
-      /> */}
-      {/* <DisplayCards
-        userAnswerSetter={userAnswerSetter}
-        cardsArray={cardsArray}
-      /> */}
+      />
+
       <Drones note={randomRoot} />
     </>
   )

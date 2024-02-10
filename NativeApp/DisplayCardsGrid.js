@@ -3,7 +3,6 @@ import { StyleSheet, Text, View, Image, TouchableOpacity } from 'react-native'
 import CardButton from './CardButton.js'
 
 const DisplayCardsGrid = ({ userAnswerSetter, cardsArray }) => {
-  console.log('displayGrid')
   function setAnswer(inpt) {
     userAnswerSetter(inpt)
   }

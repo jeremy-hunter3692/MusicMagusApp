@@ -25,5 +25,5 @@ export function getAnswerKeyAndInterval(rootNote, questionValue, array) {
     answerIdx >= array.length
       ? array[answerIdx - array.length]
       : array[answerIdx]
-  return answer.name
+  return answer
 }
