@@ -5,21 +5,19 @@ const CardButton = ({ onPress, data, source, position }) => {
   // console.log('styles', position.zIndex, position.top)
   return (
     <TouchableOpacity onPress={() => onPress(data)}>
-      <View style={position}>
-        <Image
-          source={source}
-          style={{
-            width: 100,
-            height: 150,
-            marginLeft: 0,
-            margineRight: 0,
-            marginBottom: 0,
-            padding: 0,
-            borderRadius: 10,
-          }}
-          // style={position || { width: 100, height: 150, margin: 5 }}
-        />
-      </View>
+      <Image
+        source={source}
+        style={{
+          width: 100,
+          height: 150,
+          marginLeft: 5,
+          margineRight: 5,
+          marginBottom: 0,
+          padding: 0,
+          borderRadius: 10,
+        }}
+        // style={position || { width: 100, height: 150, margin: 5 }}
+      />
     </TouchableOpacity>
   )
 }

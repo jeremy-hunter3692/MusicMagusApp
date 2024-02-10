@@ -27,18 +27,18 @@ const HorizontalFlatList = ({ cardsArray, userAnswerSetter }) => {
       <View style={styles.sideViews}></View>
 
       <View style={styles.container}>
-        <LinearGradient
+        {/* <LinearGradient
           colors={fadeColor}
           style={styles.gradient}
           start={{ x: 0, y: 1 }}
           end={{ x: 0, y: 1 }}
-        />
-        <LinearGradient
+        /> */}
+        {/* <LinearGradient
           colors={fadeColor}
           style={styles.gradientRight}
           start={{ x: 1, y: 1 }}
           end={{ x: 0, y: 1 }}
-        />
+        /> */}
         <FlatList
           data={cardsArray}
           horizontal

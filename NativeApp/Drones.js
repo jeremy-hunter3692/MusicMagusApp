@@ -67,7 +67,7 @@ const Drones = ({ note }) => {
 
   return (
     <View>
-      <Button title="Play Drone" onPress={playLoop} />
+      {/* <Button title="Play Drone" onPress={playLoop} /> */}
       {/* //TO DO figure out global sound object and fade out */}
       <Button title="Stop Drone" onPress={() => clearInterval(intervalId)} />
       {/* <Button title="fade" onPress={fauxVol} /> */}

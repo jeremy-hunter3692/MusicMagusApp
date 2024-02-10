@@ -9,6 +9,7 @@ import DisplayCards from './DisplayCards'
 import DisplayMobileCards from './DisplayMobileCards'
 import DisplayScrollingMobileCards from './DisplayScrollingMobileCards'
 import StaticImgs from './StaticImgs'
+import DisplayCardsGrid from './DisplayCardsGrid'
 import HorizontalFlatList from './HorizontalFlatlist'
 // import DisplayScrollWheelCards from './DisplayScrollWheelCards'
 /////
@@ -83,12 +84,13 @@ const Question = () => {
 
       {/* <StaticImgs cardsArray={cardsArray} /> */}
       {resultDisplay && <Text style={styles.answer}> CORRECT! </Text>}
-      <View style={styles.flatCont}>
+      {/* <View style={styles.flatCont}>
         <HorizontalFlatList
           cardsArray={cardsArray}
           userAnswerSetter={userAnswerSetter}
         />
-      </View>
+      </View> */}
+      <DisplayCardsGrid cardsArray={cardsArray} />
 
       {/* <DisplayScrollWheelCards
         key={intervalAsQuestion ? 'noteNames' : 'intervals'}
