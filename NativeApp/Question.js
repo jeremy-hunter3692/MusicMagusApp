@@ -23,6 +23,7 @@ import {
   getAnswerKeyAndInterval,
 } from './functions'
 let intervalAsQuestion = true
+const blankCard = require('./assets/blankcard.png')
 let answer = ''
 
 //put all state up a level and abstrat the component one?
@@ -34,7 +35,7 @@ const Question = () => {
   const [cardsArray, setCardsArray] = useState(noteNames)
 
   function checkAnswer(inpt) {
-    // console.log('check', inpt, answer, inpt === answer)
+    console.log('check', inpt, answer, inpt === answer)
     //Answer name might not be the correct syntax for this now
     return inpt === answer.name
   }
@@ -75,22 +76,21 @@ const Question = () => {
         {resultDisplay ? (
           <Image source={answer?.imgSrc} style={styles.questionCards} />
         ) : (
-          <Image source={cardsArray[0]?.imgSrc} style={styles.questionCards} />
+          <Image source={blankCard} style={styles.questionCards} />
         )}
         <Image
           source={questionNote?.value.imgSrc}
           style={styles.questionCards}
         />
       </View>
-
-      <Button
-        onPress={() => changeQuestionType(userAnswerSetter)}
-        title={'Change Question Type'}
-      />
-
-      <Button onPress={reload} title={'New Question'} />
-
       {resultDisplay && <Text style={styles.answer}> CORRECT! </Text>}
+      <View style={styles.questionButtons}>
+        <Button
+          onPress={() => changeQuestionType(userAnswerSetter)}
+          title={'Change Question Type'}
+        />
+        <Button onPress={reload} title={'New Question'} />
+      </View>
 
       <DisplayCardsGrid
         userAnswerSetter={userAnswerSetter}
@@ -106,14 +106,20 @@ export default Question
 
 const styles = StyleSheet.create({
   questionCardsCont: {
-    flex: 1,
+    // flex: 1,
     flexDirection: 'row',
 
     justifyContent: 'space-evenly',
+    marginBottom: 0,
+    padding: 0,
+  },
+  questionButtons: {
+    flexDirection: 'row',
+    margin: 0,
   },
   questionCards: {
-    width: 100,
-    height: 170,
+    width: 130,
+    height: 200,
     margin: 10,
   },
   answer: {

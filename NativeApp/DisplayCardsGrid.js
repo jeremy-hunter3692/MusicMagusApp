@@ -4,6 +4,7 @@ import CardButton from './CardButton.js'
 
 const DisplayCardsGrid = ({ userAnswerSetter, cardsArray }) => {
   function setAnswer(inpt) {
+    console.log('set', inpt)
     userAnswerSetter(inpt)
   }
 
@@ -56,8 +57,9 @@ const styles = StyleSheet.create({
   imgCont: {
     flex: 1,
     flexDirection: 'row',
-    margin: 0,
+    marginBottom: 15,
     padding: 0,
+
     alignItems: 'center',
     justifyContent: 'center',
   },

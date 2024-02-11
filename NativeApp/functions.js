@@ -3,13 +3,13 @@ import { intervals } from './Intervals'
 export function getCorrectAnswer(rootNote, questionValue) {
   // console.log(rootNote, questionValue)
   let distInSemiTones = rootNote.idx - questionValue.idx
-  console.log('dist', distInSemiTones, rootNote, questionValue)
+  // console.log('dist', distInSemiTones, rootNote, questionValue)
   let trueDist =
     rootNote.idx > questionValue.idx && rootNote.idx != 11
       ? 12 - distInSemiTones
       : distInSemiTones
-  console.log('true', trueDist)
-  return intervals[Math.abs(trueDist)].name
+  // console.log('true', trueDist)
+  return intervals[Math.abs(trueDist)]
 }
 
 export function returnRandomCard(array) {
