@@ -30,7 +30,7 @@ export default function App() {
       <StatusBar style="auto" />
       <View style={styles.topContainer}>
         {/* <KeyAndIntervalQuestion /> */}
-      
+
         <Question />
         {/* <View style={styles.container}>
           <HexKey musicKey={hexKey} bgColor={bgColor} />
@@ -50,21 +50,20 @@ export default function App() {
 const bgColor = '#fff'
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: bgColor,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
   topContainer: {
     flex: 1,
+    borderWidth: 5,
+    borderRadius: 10,
     margin: 0,
-
+    padding: 5,
     backgroundColor: bgColor,
     alignItems: 'center',
     justifyContent: 'center',
     flexDirection: 'column',
-    justifyContent: 'space-around',
+    justifyContent: 'flex-start',
+
+    maxWidth: '%100',
+    minHeight: '%50',
   },
 })
 

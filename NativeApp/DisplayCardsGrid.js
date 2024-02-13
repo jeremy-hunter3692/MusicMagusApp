@@ -7,9 +7,8 @@ import CardButton from './CardButton.js'
 const DisplayCardsGrid = ({ userAnswerSetter, cardsArray }) => {
   function setAnswer(inpt) {
     console.log('setAnswer', inpt)
-    let audioSource = findNote(inpt)
-    playNote(audioSource.audioSrc)
-
+    let source = findNote(inpt)
+    playNote(source.audioSrc)
     userAnswerSetter(inpt)
   }
 
@@ -55,33 +54,19 @@ const DisplayCardsGrid = ({ userAnswerSetter, cardsArray }) => {
 
   return (
     <>
-      <View style={styles.container}>
-        <View style={styles.imgCont}>
-          {firstHalfArray?.map((x) => {
-            return (
-              <TouchableOpacity onPress={setAnswer}>
-                <CardButton
-                  onPress={setAnswer}
-                  data={x.name}
-                  source={x.imgSrc}
-                />
-              </TouchableOpacity>
-            ) //<Button onPress={setAnswer} data={x.name} title={x.name} />
-          })}
-        </View>
-        <View style={styles.imgCont}>
-          {secondHalfArray?.map((x) => {
-            return (
-              <TouchableOpacity onPress={setAnswer}>
-                <CardButton
-                  onPress={setAnswer}
-                  data={x.name}
-                  source={x.imgSrc}
-                />
-              </TouchableOpacity>
-            ) //<Button onPress={setAnswer} data={x.name} title={x.name} />
-          })}
-        </View>
+      <View style={styles.imgCont}>
+        {firstHalfArray?.map((x) => {
+          return (
+            <CardButton onPress={setAnswer} data={x.name} source={x.imgSrc} />
+          )
+        })}
+      </View>
+      <View style={styles.imgCont}>
+        {secondHalfArray?.map((x) => {
+          return (
+            <CardButton onPress={setAnswer} data={x.name} source={x.imgSrc} />
+          )
+        })}
       </View>
     </>
   )
@@ -89,17 +74,19 @@ const DisplayCardsGrid = ({ userAnswerSetter, cardsArray }) => {
 
 const styles = StyleSheet.create({
   container: {
-    margin: 20,
     flex: 1,
+    margin: 20,
+
     flexDirection: 'column',
   },
   imgCont: {
+    // backgroundColor: 'blue',
     flex: 1,
     flexDirection: 'row',
-    marginBottom: 15,
+    marginBottom: 3,
+    marginTop: 3,
     padding: 0,
-
-    alignItems: 'center',
+    // alignItems: 'center',
     justifyContent: 'center',
   },
   card: {

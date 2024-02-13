@@ -1,20 +1,21 @@
 import React, { useState } from 'react'
 import { StatusBar } from 'expo-status-bar'
-import { StyleSheet, Text, View, Image, TouchableOpacity } from 'react-native'
+import {
+  StyleSheet,
+  Text,
+  View,
+  Image,
+  TouchableOpacity,
+  Pressable,
+  Dimensions,
+} from 'react-native'
 import { keys, getIntervalNo } from './KeyCards'
-/////
+
 import Drones from './Drones'
-import ScrollWheelExample from './DisplayWheelGesture'
-import DisplayCards from './DisplayCards'
-import DisplayMobileCards from './DisplayMobileCards'
-import DisplayScrollingMobileCards from './DisplayScrollingMobileCards'
-import StaticImgs from './StaticImgs'
 import DisplayCardsGrid from './DisplayCardsGrid'
-import HorizontalFlatList from './HorizontalFlatlist'
-// import DisplayScrollWheelCards from './DisplayScrollWheelCards'
-/////
+
 import { intervals } from './Intervals'
-import Button from './Button'
+// import Button from './Button'
 import HexKey from './HexKeyCiclesDisplay'
 import { noteNames } from './NoteNames'
 import {
@@ -25,7 +26,7 @@ import {
 let intervalAsQuestion = true
 const blankCard = require('./assets/blankcard.png')
 let answer = ''
-
+const screenWidth = Dimensions.get('window').width
 //put all state up a level and abstrat the component one?
 const Question = () => {
   const [randomRoot, setRandomRoot] = useState(returnRandomCard(keys))
@@ -68,8 +69,8 @@ const Question = () => {
 
   return (
     <>
-      <HexKey musicKey={randomRoot.value} />
-      <Text>__________________</Text>
+      {/* <HexKey musicKey={randomRoot.value} /> */}
+      {/* <Text>__________________</Text> */}
       <View style={styles.questionCardsCont}>
         <Image source={randomRoot?.value.imgSrc} style={styles.questionCards} />
 
@@ -85,17 +86,22 @@ const Question = () => {
       </View>
       {resultDisplay && <Text style={styles.answer}> CORRECT! </Text>}
       <View style={styles.questionButtons}>
-        <Button
+        <Pressable
           onPress={() => changeQuestionType(userAnswerSetter)}
-          title={'Change Question Type'}
-        />
-        <Button onPress={reload} title={'New Question'} />
+          style={styles.button}
+        >
+          <Text style={styles.buttonText}>Change Question Type</Text>
+        </Pressable>
+        <Pressable onPress={reload} style={styles.button}>
+          <Text style={styles.buttonText}>New Question</Text>
+        </Pressable>
       </View>
-
-      <DisplayCardsGrid
-        userAnswerSetter={userAnswerSetter}
-        cardsArray={cardsArray}
-      />
+      <View style={styles.answerCards}>
+        <DisplayCardsGrid
+          userAnswerSetter={userAnswerSetter}
+          cardsArray={cardsArray}
+        />
+      </View>
 
       <Drones note={randomRoot} />
     </>
@@ -106,20 +112,34 @@ export default Question
 
 const styles = StyleSheet.create({
   questionCardsCont: {
-    // flex: 1,
+    flex: 1,
     flexDirection: 'row',
-
     justifyContent: 'space-evenly',
     marginBottom: 0,
     padding: 0,
+  },
+  answerCards: {
+    flex: 1,
   },
   questionButtons: {
     flexDirection: 'row',
     margin: 0,
   },
+  button: {
+    margin: 5,
+    padding: 10,
+    backgroundColor: 'blue',
+    borderWidth: 3,
+    borderColor: 'blue',
+    borderRadius: 10,
+  },
+  buttonText: {
+    color: 'white',
+  },
   questionCards: {
-    width: 130,
-    height: 200,
+    width: (screenWidth * 0.3 ) - 20,
+    // width: 130,
+    height: screenWidth * 0.2 * 2,
     margin: 10,
   },
   answer: {
