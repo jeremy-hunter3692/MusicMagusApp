@@ -1,7 +1,7 @@
 import React, { useRef, useState } from 'react'
 import { View, Text } from 'react-native'
 import { ScrollView } from 'react-native-gesture-handler'
-import CardButton from './CardButton.js'
+import CardButton from '../CardButton.js'
 import Animated, {
   useSharedValue,
   useAnimatedGestureHandler,

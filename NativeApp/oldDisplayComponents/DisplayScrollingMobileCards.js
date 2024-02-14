@@ -1,15 +1,22 @@
 import { StatusBar } from 'expo-status-bar'
-import { StyleSheet, Text, View, Image, TouchableOpacity } from 'react-native'
+import {
+  StyleSheet,
+  Text,
+  View,
+  Image,
+  TouchableOpacity,
+  ScrollView,
+} from 'react-native'
 import React, { useState } from 'react'
-import CardButton from './CardButton.js'
+import CardButton from '../CardButton.js'
 
-const DisplayMobileCards = ({ userAnswerSetter, cardsArray }) => {
+const DisplayScrollingMobileCards = ({ userAnswerSetter, cardsArray }) => {
   const [selected, setSelected] = useState(null)
   function setAnswer(inpt) {
     setSelected((prevSelected) => (prevSelected === inpt ? null : inpt))
     userAnswerSetter(inpt.name)
   }
-  console.log('sel', selected)
+
   return (
     <>
       <View style={styles.imgCont}>
@@ -20,22 +27,24 @@ const DisplayMobileCards = ({ userAnswerSetter, cardsArray }) => {
             position={styles.selectedCard}
           />
         ) : (
-          console.log('no')
+          ''
         )}
-        {cardsArray?.map((x, idx) => {
-          return (
-            <TouchableOpacity key={idx} onPress={() => setAnswer(x)}>
-              <View key={idx}>
-                <CardButton
-                  onPress={setAnswer}
-                  data={x}
-                  source={x.imgSrc}
-                  position={{ ...styles.card, top: idx * 25 }}
-                />
-              </View>
-            </TouchableOpacity>
-          )
-        })}
+        <ScrollView style={styles.scrollView}>
+          {cardsArray?.map((x, idx) => {
+            return (
+              <TouchableOpacity key={idx} onPress={() => setAnswer(x)}>
+                <View key={idx}>
+                  <CardButton
+                    onPress={setAnswer}
+                    data={x}
+                    source={x.imgSrc}
+                    position={{ ...styles.card, top: idx * 25 }}
+                  />
+                </View>
+              </TouchableOpacity>
+            )
+          })}
+        </ScrollView>
       </View>
     </>
   )
@@ -59,12 +68,16 @@ const styles = StyleSheet.create({
   },
   selectedCard: {
     position: 'absolute',
-    left: 150,
+    top: -100,
+    left: 350,
     width: 100,
     height: 150,
     margin: 10,
     padding: 5,
     zIndex: 1,
   },
+  scrollView: {
+    height: 300,
+  },
 })
-export default DisplayMobileCards
+export default DisplayScrollingMobileCards

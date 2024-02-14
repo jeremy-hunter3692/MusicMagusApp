@@ -1,5 +1,5 @@
 import { getCorrectAnswer, getAnswerKeyAndInterval } from './functions'
-import { noteNames } from './NoteNames'
+import { noteNames } from '../data/NoteNames'
 
 test.each([
   [{ idx: 0 }, { idx: 11 }, '7'],

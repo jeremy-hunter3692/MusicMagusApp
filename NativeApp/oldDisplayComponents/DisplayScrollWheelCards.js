@@ -7,7 +7,7 @@ import {
   ScrollView,
 } from 'react-native'
 import React, { useState, useRef } from 'react'
-import CardButton from './CardButton.js'
+import CardButton from '../CardButton.js'
 
 const scrollRate = 50
 const displayAmountAdjust = 5

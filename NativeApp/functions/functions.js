@@ -1,4 +1,4 @@
-import { intervals } from './Intervals'
+import { intervals } from '../data/Intervals'
 
 export function getCorrectAnswer(rootNote, questionValue) {
   // console.log(rootNote, questionValue)

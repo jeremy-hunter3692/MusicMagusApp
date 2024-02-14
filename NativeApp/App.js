@@ -1,14 +1,9 @@
 import React, { useState } from 'react'
 import { StatusBar } from 'expo-status-bar'
-import { StyleSheet, Text, View, TouchableOpacity } from 'react-native'
-import { keys, getIntervalNo } from './KeyCards'
-import KeyAndIntervalQuestion from './KeyAndIntervalQuestion'
+import { StyleSheet, Text, View, useWindowDimensions } from 'react-native'
+import { keys, getIntervalNo } from './data/KeyCards'
 import Question from './Question'
-import Drones from './Drones'
 import HexKey from './HexKeyCiclesDisplay'
-import Button from './Button'
-import { noteNames } from './NoteNames'
-import DisplayCards from './DisplayCards'
 
 // let randomRoot = returnRandomCard(keys)
 
@@ -16,23 +11,45 @@ import DisplayCards from './DisplayCards'
 
 export default function App() {
   const [hexKey, setHexKey] = useState(keys[0])
+  const windowSize = useWindowDimensions()
+  const { height, width, scale, fontScale } = useWindowDimensions()
 
   function getKey(musicKey) {
     setHexKey(musicKey)
   }
 
   function appLevel(inpt) {
-    console.log('TODO-App leve', inpt)
+    console.log('TODO-App level', inpt)
   }
   return (
     <>
       {' '}
       <StatusBar style="auto" />
-      <View style={styles.topContainer}>
-        {/* <KeyAndIntervalQuestion /> */}
+      <View
+        style={{
+          flex: 1,
+          height: height * 0.95,
+          width: width * 0.1,
+          // borderWidth: 5,
+          borderRadius: 10,
+          margin: 0,
+          padding: 5,
+          backgroundColor: bgColor,
+          alignItems: 'center',
+          justifyContent: 'center',
+          flexDirection: 'column',
+        }}
+      >
+        <Question windowSize={windowSize} />
+      </View>
+    </>
+  )
+}
 
-        <Question />
-        {/* <View style={styles.container}>
+const bgColor = '#fff'
+
+{
+  /* <View style={styles.container}>
           <HexKey musicKey={hexKey} bgColor={bgColor} />
           <Text>
             {keys.map((x, idx) => (
@@ -41,31 +58,12 @@ export default function App() {
               </Text>
             ))}
           </Text>
-        </View> */}
-      </View>
-    </>
-  )
+        </View> */
 }
 
-const bgColor = '#fff'
+// const styles = StyleSheet.create({
 
-const styles = StyleSheet.create({
-  topContainer: {
-    flex: 1,
-    borderWidth: 5,
-    borderRadius: 10,
-    margin: 0,
-    padding: 5,
-    backgroundColor: bgColor,
-    alignItems: 'center',
-    justifyContent: 'center',
-    flexDirection: 'column',
-    justifyContent: 'flex-start',
-
-    maxWidth: '%100',
-    minHeight: '%50',
-  },
-})
+// })
 
 // function howManyCircles(array) {
 //   console.log(array)

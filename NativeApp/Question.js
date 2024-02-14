@@ -9,32 +9,46 @@ import {
   Pressable,
   Dimensions,
 } from 'react-native'
-import { keys, getIntervalNo } from './KeyCards'
+import { keys, getIntervalNo } from './data/KeyCards'
 
 import Drones from './Drones'
 import DisplayCardsGrid from './DisplayCardsGrid'
-
-import { intervals } from './Intervals'
+import CardButton from './CardButton'
+import { intervals } from './data/Intervals'
 // import Button from './Button'
 import HexKey from './HexKeyCiclesDisplay'
-import { noteNames } from './NoteNames'
+import { noteNames } from './data/NoteNames'
 import {
   getCorrectAnswer,
   returnRandomCard,
   getAnswerKeyAndInterval,
-} from './functions'
-let intervalAsQuestion = true
+} from './functions/functions'
+import { playNote, setVolume } from './functions/audioFunctions.js'
 const blankCard = require('./assets/blankcard.png')
+
+let intervalAsQuestion = true
 let answer = ''
-const screenWidth = Dimensions.get('window').width
+
 //put all state up a level and abstrat the component one?
-const Question = () => {
+const Question = ({ windowSize }) => {
   const [randomRoot, setRandomRoot] = useState(returnRandomCard(keys))
   const [questionNote, setQuestionNote] = useState(returnRandomCard(intervals))
   const [userAnswer, setUserAnswer] = useState()
   const [resultDisplay, setResultDisplay] = useState(false)
   const [cardsArray, setCardsArray] = useState(noteNames)
 
+  answer = intervalAsQuestion
+    ? getAnswerKeyAndInterval(randomRoot, questionNote, keys)
+    : getCorrectAnswer(randomRoot, questionNote)
+
+  const { height: h, width: w, scale, fontScale } = windowSize
+  const questionCards = {
+    // flex: 4,
+    height: w * 0.33,
+    width: w * 0.33,
+    // aspectRatio: 2 / 3,
+    // maxWidth: width * 0.3 - 300,
+  }
   function checkAnswer(inpt) {
     console.log('check', inpt, answer, inpt === answer)
     //Answer name might not be the correct syntax for this now
@@ -43,9 +57,7 @@ const Question = () => {
 
   function userAnswerSetter(inpt) {
     // console.log('clicked', inpt)
-    answer = intervalAsQuestion
-      ? getAnswerKeyAndInterval(randomRoot, questionNote, noteNames)
-      : getCorrectAnswer(randomRoot, questionNote)
+
     setUserAnswer(inpt)
     setResultDisplay(checkAnswer(inpt))
   }
@@ -67,21 +79,39 @@ const Question = () => {
   }
   console.log(resultDisplay, answer)
 
+  function qLevePlayNote(inpt) {
+    console.log('w', inpt)
+    playNote(inpt.audioSrc)
+  }
+
+  console.log(answer)
   return (
     <>
       {/* <HexKey musicKey={randomRoot.value} /> */}
       {/* <Text>__________________</Text> */}
       <View style={styles.questionCardsCont}>
-        <Image source={randomRoot?.value.imgSrc} style={styles.questionCards} />
+        <CardButton
+          data={randomRoot?.value.audioSrc}
+          source={randomRoot?.value.imgSrc}
+          style={questionCards}
+          onPress={playNote}
+        />
 
         {resultDisplay ? (
-          <Image source={answer?.imgSrc} style={styles.questionCards} />
+          <CardButton
+            data={answer?.name}
+            source={answer?.imgSrc}
+            style={questionCards}
+            onPress={qLevePlayNote}
+          />
         ) : (
-          <Image source={blankCard} style={styles.questionCards} />
+          <CardButton source={blankCard} style={questionCards} />
         )}
-        <Image
+        <CardButton
+          data={answer?.audioSrc}
           source={questionNote?.value.imgSrc}
-          style={styles.questionCards}
+          style={questionCards}
+          onPress={playNote}
         />
       </View>
       {resultDisplay && <Text style={styles.answer}> CORRECT! </Text>}
@@ -112,20 +142,36 @@ export default Question
 
 const styles = StyleSheet.create({
   questionCardsCont: {
-    flex: 1,
+    // backgroundColor: 'red',
+    flex: 8,
     flexDirection: 'row',
-    justifyContent: 'space-evenly',
+    justifyContent: 'center',
+    alignItems: 'flex-end',
     marginBottom: 0,
     padding: 0,
   },
+  // questionCards: {
+  //   flex: 8,
+  //   // aspectRatio: 2 / 3,
+  //   // margin: 10,
+  // },
   answerCards: {
-    flex: 1,
+    flex: 8,
+    // backgroundColor: 'blue',
+    // borderWidth: 5,
+    // justifyContent: 'center',
+    // alignItems: 'stretch',
   },
   questionButtons: {
+    // backgroundColor: 'yellow',
+    flex: 1.5,
     flexDirection: 'row',
-    margin: 0,
+    justifyContent: 'space-between',
+    // alignItems: 'center',
+    margin: 5,
   },
   button: {
+    // flex: 1,
     margin: 5,
     padding: 10,
     backgroundColor: 'blue',
@@ -134,27 +180,13 @@ const styles = StyleSheet.create({
     borderRadius: 10,
   },
   buttonText: {
+    // justifyContent: 'center',
+    alignItems: 'center',
     color: 'white',
   },
-  questionCards: {
-    width: (screenWidth * 0.3 ) - 20,
-    // width: 130,
-    height: screenWidth * 0.2 * 2,
-    margin: 10,
-  },
+
   answer: {
     color: 'white',
     backgroundColor: 'black',
-  },
-  flatCont: {
-    flex: 1,
-
-    width: '100%',
-    height: '100%',
-
-    // borderWidth: 5,
-    // borderColor: 'red',
-    // borderRadius: 10,
-    flexDirection: 'row',
   },
 })

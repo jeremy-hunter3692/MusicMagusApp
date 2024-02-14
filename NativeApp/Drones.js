@@ -1,5 +1,13 @@
 import React, { useState, useEffect } from 'react'
-import { View, FlatList, Text, StyleSheet, Image, Button } from 'react-native'
+import {
+  View,
+  FlatList,
+  Text,
+  StyleSheet,
+  Image,
+  Button,
+  Pressable,
+} from 'react-native'
 import { Audio } from 'expo-av'
 let playing = true
 const fadeOutSpeed = 50000
@@ -69,10 +77,24 @@ const Drones = ({ note }) => {
     <View>
       {/* <Button title="Play Drone" onPress={playLoop} /> */}
       {/* //TO DO figure out global sound object and fade out */}
-      <Button title="Stop Drone" onPress={() => clearInterval(intervalId)} />
+      <Pressable onPress={() => clearInterval(intervalId)}>
+        <Text style={styles.button}>Stop Drone</Text>
+      </Pressable>
       {/* <Button title="fade" onPress={fauxVol} /> */}
     </View>
   )
 }
+
+const styles = StyleSheet.create({
+  button: {
+    color: 'white',
+    margin: 5,
+    padding: 10,
+    backgroundColor: 'blue',
+    borderWidth: 3,
+    borderColor: 'blue',
+    borderRadius: 10,
+  },
+})
 
 export default Drones

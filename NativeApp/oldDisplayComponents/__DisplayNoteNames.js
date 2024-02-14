@@ -1,9 +1,7 @@
 import { noteNames } from './NoteNames'
 import { StatusBar } from 'expo-status-bar'
 import { StyleSheet, Text, View, Image, TouchableOpacity } from 'react-native'
-import CardButton from './CardButton'
-
-
+import CardButton from '../CardButton'
 
 const DisplayNoteNames = ({ userAnswerSetter }) => {
   function setAnswer(inpt) {

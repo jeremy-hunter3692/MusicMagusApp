@@ -1,6 +1,6 @@
 import React from 'react'
 import { View, FlatList, Text, StyleSheet, Image } from 'react-native'
-import CardButton from './CardButton'
+import CardButton from '../CardButton'
 import { LinearGradient } from 'expo-linear-gradient'
 
 const HorizontalFlatList = ({ cardsArray, userAnswerSetter }) => {

@@ -1,7 +1,7 @@
 import { StatusBar } from 'expo-status-bar'
 import { StyleSheet, Text, View, Image, TouchableOpacity } from 'react-native'
-import { intervals  } from './Intervals.js'
-import CardButton from './CardButton.js'
+import { intervals } from './Intervals.js'
+import CardButton from '../CardButton.js'
 import Button from './Button.js'
 
 const intervalImgs = [

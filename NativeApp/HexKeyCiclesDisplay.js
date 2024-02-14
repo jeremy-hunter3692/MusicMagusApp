@@ -1,6 +1,6 @@
 import { StatusBar } from 'expo-status-bar'
 import { StyleSheet, Text, View } from 'react-native'
-import { keys, getIntervalNo } from './KeyCards'
+import { keys, getIntervalNo } from './data/KeyCards'
 
 function fillCricleBool(inpt, key) {
   return inpt ? (
