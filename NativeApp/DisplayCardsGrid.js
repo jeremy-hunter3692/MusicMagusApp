@@ -44,22 +44,22 @@ const DisplayCardsGrid = ({ userAnswerSetter, cardsArray }) => {
 
 const styles = StyleSheet.create({
   imgContTop: {
-    flex: 1,
+    // flex: 1,
     // widht: 300,
     // backgroundColor: 'yellow',
     flexDirection: 'row',
     marginBottom: 1,
-    marginTop: 1,
+    marginTop: 0,
     padding: 0,
     alignItems: 'flex-end',
     justifyContent: 'center',
   },
   imgContBottom: {
-    flex: 1,
+    // flex: 1,
     // backgroundColor: 'yellow',
     flexDirection: 'row',
-    marginBottom: 1,
-    marginTop: 1,
+    marginBottom: 10,
+    marginTop: 0,
     padding: 0,
     alignItems: 'flex-start',
     justifyContent: 'center',

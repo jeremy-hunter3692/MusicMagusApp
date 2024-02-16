@@ -33,10 +33,10 @@ export default function App() {
           // borderWidth: 5,
           borderRadius: 10,
           margin: 0,
-          padding: 5,
+          padding: 10,
           backgroundColor: bgColor,
-          alignItems: 'center',
-          justifyContent: 'center',
+          // alignItems: 'center',
+          // justifyContent: 'center',
           flexDirection: 'column',
         }}
       >

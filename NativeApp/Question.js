@@ -118,11 +118,14 @@ const Question = ({ windowSize }) => {
       <View style={styles.questionButtons}>
         <Pressable
           onPress={() => changeQuestionType(userAnswerSetter)}
-          style={styles.button}
+          // style={styles.button}
         >
-          <Text style={styles.buttonText}>Change Question Type</Text>
+          <Text style={styles.buttonText}>Change Question</Text>
         </Pressable>
-        <Pressable onPress={reload} style={styles.button}>
+        <Pressable
+          onPress={reload}
+          // style={styles.button}
+        >
           <Text style={styles.buttonText}>New Question</Text>
         </Pressable>
       </View>
@@ -143,7 +146,7 @@ export default Question
 const styles = StyleSheet.create({
   questionCardsCont: {
     // backgroundColor: 'red',
-    flex: 8,
+    flex: 6,
     flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'flex-end',
@@ -156,35 +159,34 @@ const styles = StyleSheet.create({
   //   // margin: 10,
   // },
   answerCards: {
-    flex: 8,
+    flex: 7,
     // backgroundColor: 'blue',
     // borderWidth: 5,
     // justifyContent: 'center',
     // alignItems: 'stretch',
   },
   questionButtons: {
-    // backgroundColor: 'yellow',
-    flex: 1.5,
+    // backgroundColor: 'pink',
+    flex: 0.5,
     flexDirection: 'row',
-    justifyContent: 'space-between',
-    // alignItems: 'center',
-    margin: 5,
+    justifyContent: 'center',
+    alignItems: 'center',
+    margin: 10,
+    padding: 2,
   },
-  button: {
-    // flex: 1,
-    margin: 5,
-    padding: 10,
+
+  buttonText: {
     backgroundColor: 'blue',
+    fontSize: 10,
+    flex: 1,
+    alignItems: 'center',
+    color: 'white',
+    margin: 2,
+    padding: 5,
     borderWidth: 3,
     borderColor: 'blue',
     borderRadius: 10,
   },
-  buttonText: {
-    // justifyContent: 'center',
-    alignItems: 'center',
-    color: 'white',
-  },
-
   answer: {
     color: 'white',
     backgroundColor: 'black',
