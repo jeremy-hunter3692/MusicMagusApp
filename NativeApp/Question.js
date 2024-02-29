@@ -91,7 +91,15 @@ const Question = ({ windowSize }) => {
     if (note.name === randomRoot.value.name) {
       playNote(note.audioSrc['2'])
     } else {
-      playNote(note.audioSrc['1'])
+      let cardIdx = getIdxAndNotes(note)
+      let questionIdx = randomRoot.idx
+      if (cardIdx[0][1] > questionIdx) {
+        console.log('lwoweroct')
+        playNote(cardIdx[0][0].audioSrc['1'])
+      } else {
+        console.log('hightoct')
+        playNote(cardIdx[0][0].audioSrc['2'])
+      }
     }
   }
 
@@ -113,8 +121,10 @@ const Question = ({ windowSize }) => {
     console.log(answerIdx[0][1], questionIdx)
     // console.log({ answerIdx })
     if (answerIdx[0][1] > questionIdx) {
+      console.log('lwoweroct')
       playNote(answerIdx[0][0].audioSrc['1'])
     } else {
+      console.log('hightoct')
       playNote(answerIdx[0][0].audioSrc['2'])
     }
   }
