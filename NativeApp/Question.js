@@ -10,7 +10,7 @@ import {
   Dimensions,
 } from 'react-native'
 import { keys, getIntervalNo } from './data/KeyCards'
-
+import { noteAudioSrc } from './data/NotesAudiosSrc.js'
 import DisplayCardsGrid from './DisplayCardsGrid'
 import CardButton from './CardButton'
 import { intervals } from './data/Intervals'
@@ -89,14 +89,16 @@ const Question = ({ windowSize }) => {
   }
 
   function cardOnPress(note) {
-    console.log('cardon', note)
     if (note.name === randomRoot.value.name) {
-      console.log('play octave higher')
-      // playOctavehigher()
+      playNote(note.audioSrc['2'])
     } else {
-      console.log('play note')
-      playNote(note)
+      playNote(note.audioSrc['1'])
     }
+  }
+
+  function answerCardOnPress(note) {
+    let res = noteAudioSrc.filter((x) => x.name === note.name)
+    playNote(res[0].audioSrc['1'])
   }
 
   function rootCardPress() {
@@ -138,16 +140,16 @@ const Question = ({ windowSize }) => {
             data={answer?.name}
             source={answer?.imgSrc}
             style={questionCards}
-            onPress={qLevePlayNote}
+            onPress={cardOnPress}
           />
         ) : (
           <CardButton source={blankCard} style={questionCards} />
         )}
         <CardButton
-          data={answer?.audioSrc}
+          data={answer}
           source={questionNote?.value.imgSrc}
           style={questionCards}
-          onPress={cardOnPress}
+          onPress={answerCardOnPress}
         />
       </View>
       {resultDisplay && <Text style={styles.answer}> CORRECT! </Text>}

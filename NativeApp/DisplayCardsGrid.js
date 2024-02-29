@@ -8,7 +8,7 @@ import CardButton from './CardButton.js'
 const DisplayCardsGrid = ({ userAnswerSetter, cardsArray, cardOnPress }) => {
   function setAnswer(inpt) {
     // console.log('setAnswer', inpt)
-    let source = findNote(inpt.name, noteAudioSrc).audioSrc['1']
+    let source = findNote(inpt.name, noteAudioSrc)
 
     console.log(source)
     // playNote(source.audioSrc)
