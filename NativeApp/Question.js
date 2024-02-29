@@ -84,7 +84,6 @@ const Question = ({ windowSize }) => {
 
   function checkAnswer(inpt) {
     console.log('check', inpt, answer, inpt === answer)
-
     return inpt === answer.name
   }
 
@@ -96,9 +95,28 @@ const Question = ({ windowSize }) => {
     }
   }
 
+  function getIdxAndNotes(note) {
+    console.log({ note })
+    let getIdxArr = noteAudioSrc.map((x, idx) => {
+      if (x.name === note.name) {
+        return [x, idx]
+      }
+    })
+
+    let res = getIdxArr.filter((x) => x != undefined)
+    return res
+  }
+
   function answerCardOnPress(note) {
-    let res = noteAudioSrc.filter((x) => x.name === note.name)
-    playNote(res[0].audioSrc['1'])
+    let answerIdx = getIdxAndNotes(note)
+    let questionIdx = randomRoot.idx
+    console.log(answerIdx[0][1], questionIdx)
+    // console.log({ answerIdx })
+    if (answerIdx[0][1] > questionIdx) {
+      playNote(answerIdx[0][0].audioSrc['1'])
+    } else {
+      playNote(answerIdx[0][0].audioSrc['2'])
+    }
   }
 
   function rootCardPress() {
