@@ -1,6 +1,13 @@
 import React, { useState } from 'react'
 import { StatusBar } from 'expo-status-bar'
-import { StyleSheet, Text, View, useWindowDimensions } from 'react-native'
+import {
+  Button,
+  Pressable,
+  StyleSheet,
+  Text,
+  View,
+  useWindowDimensions,
+} from 'react-native'
 import { keys, getIntervalNo } from './data/KeyCards'
 import Question from './Question'
 import HexKey from './HexKeyCiclesDisplay'
@@ -11,6 +18,8 @@ import HexKey from './HexKeyCiclesDisplay'
 
 export default function App() {
   const [hexKey, setHexKey] = useState(keys[0])
+  const [start, setStart] = useState(false)
+
   const windowSize = useWindowDimensions()
   const { height, width, scale, fontScale } = useWindowDimensions()
 
@@ -40,7 +49,18 @@ export default function App() {
           flexDirection: 'column',
         }}
       >
-        <Question windowSize={windowSize} />
+        <Question windowSize={windowSize}/>
+        {/* <Pressable
+          onPress={() => setStart(true)}
+          style={{
+            height: 50,
+            backgroundColor: 'blue',
+            justifyContent: 'center',
+          }}
+        >
+          <Text style={{ color: 'white', alignItems: 'center' }}>Start </Text>
+        </Pressable>
+        {start && <Question windowSize={windowSize} />} */}
       </View>
     </>
   )

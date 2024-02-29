@@ -47,6 +47,13 @@ const Question = ({ windowSize }) => {
   const [resultDisplay, setResultDisplay] = useState(false)
   const [cardsArray, setCardsArray] = useState(noteNames)
 
+  useEffect(() => {
+    startDrone(randomRoot.value.audioSrc)
+    setTimeout(() => {
+      answerCardOnPress(answer)
+    }, 1000)
+  }, [])
+
   answer = intervalAsQuestion
     ? getAnswerKeyAndInterval(randomRoot, questionNote, noteNames)
     : getCorrectAnswer(randomRoot, questionNote)
@@ -67,6 +74,8 @@ const Question = ({ windowSize }) => {
   }
 
   function reload() {
+    console.log('reload', rootDronePlaying.id)
+    clearInterval(rootDronePlaying.id)
     setResultDisplay(false)
     setRandomRoot(returnRandomCard(keys))
     setQuestionNote(
@@ -91,6 +100,7 @@ const Question = ({ windowSize }) => {
     if (note.name === randomRoot.value.name) {
       playNote(note.audioSrc['2'])
     } else {
+      //DRY THIS UP 1
       let cardIdx = getIdxAndNotes(note)
       let questionIdx = randomRoot.idx
       if (cardIdx[0][1] > questionIdx) {
@@ -119,7 +129,7 @@ const Question = ({ windowSize }) => {
     let answerIdx = getIdxAndNotes(note)
     let questionIdx = randomRoot.idx
     console.log(answerIdx[0][1], questionIdx)
-    // console.log({ answerIdx })
+    //DRY THIS UP 1
     if (answerIdx[0][1] > questionIdx) {
       console.log('lwoweroct')
       playNote(answerIdx[0][0].audioSrc['1'])
@@ -136,6 +146,7 @@ const Question = ({ windowSize }) => {
   function startDrone(note) {
     let intervalId = playLoop(note)
     setRootDronePlaying({ bool: true, id: intervalId })
+    console.log(intervalId)
     //set interval id somewhere to be cleared later
   }
 

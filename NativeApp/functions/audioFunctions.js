@@ -55,7 +55,7 @@ export async function setVolumeFade(sound, up) {
   }
 }
 export const playDrone = async (note) => {
-  let audioPlaying = await playNoteAsDrone(note)
+  let audioPlaying = await playNoteAsDrone(note, 5000)
   // fadeOutTimer(audioPlaying, false)
 }
 
