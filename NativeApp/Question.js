@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { StatusBar } from 'expo-status-bar'
 import {
   StyleSheet,
@@ -11,19 +11,25 @@ import {
 } from 'react-native'
 import { keys, getIntervalNo } from './data/KeyCards'
 
-import Drones from './Drones'
 import DisplayCardsGrid from './DisplayCardsGrid'
 import CardButton from './CardButton'
 import { intervals } from './data/Intervals'
 // import Button from './Button'
-import HexKey from './HexKeyCiclesDisplay'
 import { noteNames } from './data/NoteNames'
 import {
   getCorrectAnswer,
   returnRandomCard,
   getAnswerKeyAndInterval,
 } from './functions/functions'
-import { playNote, setVolume } from './functions/audioFunctions.js'
+import {
+  playNote,
+  setVolume,
+  playDrone,
+  playLoop,
+  stopDrone,
+} from './functions/audioFunctions.js'
+import { random } from 'canvas-sketch-util'
+
 const blankCard = require('./assets/blankcard.png')
 
 let intervalAsQuestion = true
@@ -33,12 +39,16 @@ let answer = ''
 const Question = ({ windowSize }) => {
   const [randomRoot, setRandomRoot] = useState(returnRandomCard(keys))
   const [questionNote, setQuestionNote] = useState(returnRandomCard(intervals))
+  const [rootDronePlaying, setRootDronePlaying] = useState({
+    id: '',
+    bool: false,
+  })
   const [userAnswer, setUserAnswer] = useState()
   const [resultDisplay, setResultDisplay] = useState(false)
   const [cardsArray, setCardsArray] = useState(noteNames)
 
   answer = intervalAsQuestion
-    ? getAnswerKeyAndInterval(randomRoot, questionNote, keys)
+    ? getAnswerKeyAndInterval(randomRoot, questionNote, noteNames)
     : getCorrectAnswer(randomRoot, questionNote)
 
   const { height: h, width: w, scale, fontScale } = windowSize
@@ -49,15 +59,9 @@ const Question = ({ windowSize }) => {
     // aspectRatio: 2 / 3,
     // maxWidth: width * 0.3 - 300,
   }
-  function checkAnswer(inpt) {
-    console.log('check', inpt, answer, inpt === answer)
-    //Answer name might not be the correct syntax for this now
-    return inpt === answer.name
-  }
 
   function userAnswerSetter(inpt) {
     // console.log('clicked', inpt)
-
     setUserAnswer(inpt)
     setResultDisplay(checkAnswer(inpt))
   }
@@ -77,24 +81,56 @@ const Question = ({ windowSize }) => {
     intervalAsQuestion = !intervalAsQuestion
     reload()
   }
-  console.log(resultDisplay, answer)
 
-  function qLevePlayNote(inpt) {
-    console.log('w', inpt)
-    playNote(inpt.audioSrc)
+  function checkAnswer(inpt) {
+    console.log('check', inpt, answer, inpt === answer)
+
+    return inpt === answer.name
   }
 
-  console.log(answer)
+  function cardOnPress(note) {
+    console.log('cardon', note)
+    if (note.name === randomRoot.value.name) {
+      console.log('play octave higher')
+      // playOctavehigher()
+    } else {
+      console.log('play note')
+      playNote(note)
+    }
+  }
+
+  function rootCardPress() {
+    rootDronePlaying.bool ? stopDrone() : startDrone(randomRoot.value.audioSrc)
+  }
+
+  function startDrone(note) {
+    let intervalId = playLoop(note)
+    setRootDronePlaying({ bool: true, id: intervalId })
+    //set interval id somewhere to be cleared later
+  }
+
+  function stopDrone() {
+    clearInterval(setRootDronePlaying.id)
+    setRootDronePlaying({ bool: false, id: null })
+  }
+
+  // function qLevePlayNote(inpt) {
+  //   console.log('w', inpt)
+  //   playNote(inpt.audioSrc)
+  // }
+
+  console.log({ answer })
+
   return (
     <>
       {/* <HexKey musicKey={randomRoot.value} /> */}
       {/* <Text>__________________</Text> */}
       <View style={styles.questionCardsCont}>
         <CardButton
-          data={randomRoot?.value.audioSrc}
+          data={randomRoot}
           source={randomRoot?.value.imgSrc}
           style={questionCards}
-          onPress={playNote}
+          onPress={rootCardPress}
         />
 
         {resultDisplay ? (
@@ -111,13 +147,13 @@ const Question = ({ windowSize }) => {
           data={answer?.audioSrc}
           source={questionNote?.value.imgSrc}
           style={questionCards}
-          onPress={playNote}
+          onPress={cardOnPress}
         />
       </View>
       {resultDisplay && <Text style={styles.answer}> CORRECT! </Text>}
       <View style={styles.questionButtons}>
         <Pressable
-          onPress={() => changeQuestionType(userAnswerSetter)}
+          onPress={() => changeQuestionType()}
           // style={styles.button}
         >
           <Text style={styles.buttonText}>Change Question</Text>
@@ -131,12 +167,11 @@ const Question = ({ windowSize }) => {
       </View>
       <View style={styles.answerCards}>
         <DisplayCardsGrid
+          cardOnPress={cardOnPress}
           userAnswerSetter={userAnswerSetter}
           cardsArray={cardsArray}
         />
       </View>
-
-      <Drones note={randomRoot} />
     </>
   )
 }

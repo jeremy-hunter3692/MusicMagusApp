@@ -2,17 +2,23 @@ import { StatusBar } from 'expo-status-bar'
 import { StyleSheet, Text, View, Image, TouchableOpacity } from 'react-native'
 import { playNote, setVolume } from './functions/audioFunctions.js'
 import { keys } from './data/KeyCards.js'
+import { noteAudioSrc } from './data/NotesAudiosSrc.js'
 import CardButton from './CardButton.js'
 
-const DisplayCardsGrid = ({ userAnswerSetter, cardsArray }) => {
+const DisplayCardsGrid = ({ userAnswerSetter, cardsArray, cardOnPress }) => {
   function setAnswer(inpt) {
-    console.log('setAnswer', inpt)
-    let source = findNote(inpt)
-    playNote(source.audioSrc)
-    userAnswerSetter(inpt)
+    // console.log('setAnswer', inpt)
+    let source = findNote(inpt.name, noteAudioSrc).audioSrc['1']
+
+    console.log(source)
+    // playNote(source.audioSrc)
+    cardOnPress(source)
+    userAnswerSetter(inpt.name)
   }
-  function findNote(inpt) {
-    const result = keys.filter((x) => x.name === inpt)
+
+  function findNote(inpt, array = keys) {
+    console.log(inpt, array)
+    const result = array.filter((x) => x.name === inpt)
     return result[0]
   }
 
@@ -26,16 +32,12 @@ const DisplayCardsGrid = ({ userAnswerSetter, cardsArray }) => {
     <>
       <View style={styles.imgContTop}>
         {firstHalfArray?.map((x) => {
-          return (
-            <CardButton onPress={setAnswer} data={x.name} source={x.imgSrc} />
-          )
+          return <CardButton onPress={setAnswer} data={x} source={x.imgSrc} />
         })}
       </View>
       <View style={styles.imgContBottom}>
         {secondHalfArray?.map((x) => {
-          return (
-            <CardButton onPress={setAnswer} data={x.name} source={x.imgSrc} />
-          )
+          return <CardButton onPress={setAnswer} data={x} source={x.imgSrc} />
         })}
       </View>
     </>

@@ -8,7 +8,7 @@ export function getCorrectAnswer(rootNote, questionValue) {
     rootNote.idx > questionValue.idx && rootNote.idx != 11
       ? 12 - distInSemiTones
       : distInSemiTones
-  // console.log('true', trueDist)
+  console.log('true', trueDist, intervals[Math.abs(trueDist)])
   return intervals[Math.abs(trueDist)]
 }
 
