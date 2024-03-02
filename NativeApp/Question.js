@@ -76,6 +76,7 @@ const Question = ({ windowSize }) => {
   function reload() {
     console.log('reload', rootDronePlaying.id)
     clearInterval(rootDronePlaying.id)
+
     setResultDisplay(false)
     setRandomRoot(returnRandomCard(keys))
     setQuestionNote(
@@ -84,6 +85,10 @@ const Question = ({ windowSize }) => {
         : returnRandomCard(noteNames)
     )
     intervalAsQuestion ? setCardsArray(noteNames) : setCardsArray(intervals)
+    startDrone(randomRoot.value.audioSrc)
+    setTimeout(() => {
+      answerCardOnPress(answer)
+    }, 1000)
   }
 
   function changeQuestionType() {
@@ -146,12 +151,13 @@ const Question = ({ windowSize }) => {
   function startDrone(note) {
     let intervalId = playLoop(note)
     setRootDronePlaying({ bool: true, id: intervalId })
-    console.log(intervalId)
+    console.log({ intervalId }, rootDronePlaying)
     //set interval id somewhere to be cleared later
   }
 
   function stopDrone() {
-    clearInterval(setRootDronePlaying.id)
+    console.log('stop', setRootDronePlaying.id)
+    clearInterval(rootDronePlaying.id)
     setRootDronePlaying({ bool: false, id: null })
   }
 
@@ -204,6 +210,14 @@ const Question = ({ windowSize }) => {
           // style={styles.button}
         >
           <Text style={styles.buttonText}>New Question</Text>
+        </Pressable>
+      </View>
+      <View>
+        <Pressable
+          onPress={stopDrone}
+          // style={styles.button}
+        >
+          <Text style={styles.buttonText}>Stop Drone</Text>
         </Pressable>
       </View>
       <View style={styles.answerCards}>

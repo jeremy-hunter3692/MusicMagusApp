@@ -59,13 +59,13 @@ export const playDrone = async (note) => {
   // fadeOutTimer(audioPlaying, false)
 }
 
-export const playLoop = async (note) => {
+export const playLoop = (note) => {
   playDrone(note)
   let id = setInterval(() => {
     console.log('triggered play drone')
     playDrone(note)
   }, 4000)
-
+  console.log({ id })
   return id
 }
 
