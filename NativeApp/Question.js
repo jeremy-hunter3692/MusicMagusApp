@@ -14,6 +14,7 @@ import { noteAudioSrc } from './data/NotesAudiosSrc.js'
 import DisplayCardsGrid from './DisplayCardsGrid'
 import CardButton from './CardButton'
 import { intervals } from './data/Intervals'
+import Drones from './Drones.js'
 // import Button from './Button'
 import { noteNames } from './data/NoteNames'
 import {
@@ -25,10 +26,10 @@ import {
   playNote,
   setVolume,
   playDrone,
+  setVolumeFade,
   playLoop,
   stopDrone,
 } from './functions/audioFunctions.js'
-import { random } from 'canvas-sketch-util'
 
 const blankCard = require('./assets/blankcard.png')
 
@@ -48,7 +49,7 @@ const Question = ({ windowSize }) => {
   const [cardsArray, setCardsArray] = useState(noteNames)
 
   useEffect(() => {
-    startDrone(randomRoot.value.audioSrc)
+    // startDrone(randomRoot.value.audioSrc)
     setTimeout(() => {
       answerCardOnPress(answer)
     }, 1000)
@@ -149,14 +150,21 @@ const Question = ({ windowSize }) => {
   }
 
   function startDrone(note) {
-    let intervalId = playLoop(note)
-    setRootDronePlaying({ bool: true, id: intervalId })
+    let returnedObj = playLoop(note)
+    let { intervalId, currentSound } = returnedObj
+    console.log({ returnedObj })
+    setRootDronePlaying({
+      bool: true,
+      id: intervalId,
+      currentSound: currentSound,
+    })
     console.log({ intervalId }, rootDronePlaying)
     //set interval id somewhere to be cleared later
   }
 
   function stopDrone() {
-    console.log('stop', setRootDronePlaying.id)
+    setVolumeFade(rootDronePlaying.currentSound, false, 100)
+    console.log('stop', rootDronePlaying)
     clearInterval(rootDronePlaying.id)
     setRootDronePlaying({ bool: false, id: null })
   }
@@ -213,12 +221,7 @@ const Question = ({ windowSize }) => {
         </Pressable>
       </View>
       <View>
-        <Pressable
-          onPress={stopDrone}
-          // style={styles.button}
-        >
-          <Text style={styles.buttonText}>Stop Drone</Text>
-        </Pressable>
+        <Drones note={randomRoot} />
       </View>
       <View style={styles.answerCards}>
         <DisplayCardsGrid

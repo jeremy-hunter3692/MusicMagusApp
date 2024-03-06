@@ -16,22 +16,24 @@ const Drones = ({ note }) => {
   const [currentPlayingDrone, setCurrentPlayingDrone] = useState()
   const [intervalId, setIntervalId] = useState()
 
+  console.log(currentPlayingDrone)
   const playDrone = async () => {
     let thing = await startSound()
+    setCurrentPlayingDrone(thing)
     fadeOut(thing, false)
   }
 
-  const playLoop = async () => {
+  const playLoop = () => {
     playDrone()
     let id = setInterval(() => playDrone(), timeDelay)
     setIntervalId(id)
   }
 
-  function fadeOut(audioSound, upDown) {
+  function fadeOut(audioSound, upDown, rate = timeDelay) {
     return setTimeout(() => {
       console.log('fade')
       setVolume(audioSound, upDown)
-    }, timeDelay)
+    }, rate)
   }
 
   const startSound = async () => {
@@ -60,12 +62,15 @@ const Drones = ({ note }) => {
   }
 
   const stopSound = async () => {
-    await sound.stopAsync()
+    clearInterval(intervalId)
+
+    currentPlayingDrone.unloadAsync()
   }
 
-  function fauxVol() {
-    sound ? setVolume(1, 10000) : console.log('no sound')
-  }
+  useEffect(() => {
+    playLoop(note)
+  }, [])
+
   //clean up
   useEffect(() => {
     return currentPlayingDrone
@@ -77,9 +82,9 @@ const Drones = ({ note }) => {
     <View>
       {/* <Button title="Play Drone" onPress={playLoop} /> */}
       {/* //TO DO figure out global sound object and fade out */}
-      {/* <Pressable onPress={() => clearInterval(intervalId)}>
+      <Pressable onPress={() => stopSound()}>
         <Text style={styles.button}>Stop Drone</Text>
-      </Pressable> */}
+      </Pressable>
       {/* <Button title="fade" onPress={fauxVol} /> */}
     </View>
   )

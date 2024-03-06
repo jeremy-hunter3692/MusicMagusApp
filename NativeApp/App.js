@@ -10,6 +10,8 @@ import {
 } from 'react-native'
 import { keys, getIntervalNo } from './data/KeyCards'
 import Question from './Question'
+import HexKeyTutorial from './HexKeyTutorial.js'
+import HexKeyWithCards from './HexKeyWithCards.js'
 import HexKey from './HexKeyCiclesDisplay'
 
 // let randomRoot = returnRandomCard(keys)
@@ -34,6 +36,7 @@ export default function App() {
     <>
       {' '}
       <StatusBar style="auto" />
+      <HexKeyWithCards />
       <View
         style={{
           flex: 1,
@@ -49,7 +52,7 @@ export default function App() {
           flexDirection: 'column',
         }}
       >
-        <Question windowSize={windowSize}/>
+        {/* <Question windowSize={windowSize} /> */}
         {/* <Pressable
           onPress={() => setStart(true)}
           style={{

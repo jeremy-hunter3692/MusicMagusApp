@@ -2,7 +2,7 @@ import { Audio } from 'expo-av'
 const fadeOutSpeed = 9000
 
 export const playNote = async (note) => {
-  console.log('start', note)
+  console.log('start PlatNote', note)
   const source = note
   const status = { volume: 1 }
   try {
@@ -17,7 +17,7 @@ export const playNote = async (note) => {
 }
 
 export const playNoteAsDrone = async (note, timeDelay = 1000) => {
-  console.log('start', note)
+  console.log('start platNoteAsDrone')
   const source = note
   const status = { volume: 1 }
   try {
@@ -26,6 +26,7 @@ export const playNoteAsDrone = async (note, timeDelay = 1000) => {
     setTimeout(() => {
       setVolumeFade(sound, false)
     }, timeDelay)
+    return sound
   } catch (error) {
     console.log('Error playing sound:', error)
   }
@@ -43,10 +44,11 @@ const startSound = async (note) => {
   }
 }
 
-export async function setVolumeFade(sound, up) {
+export async function setVolumeFade(sound, up, rate = fadeOutSpeed) {
+  console.log('fade', sound, up, rate)
   const upDown = up ? 1 : -1
   const volume = up ? 0 : 1
-  const steps = fadeOutSpeed
+  const steps = rate
   for (let i = 0; i < steps; i++) {
     const rate = (1 / steps) * upDown
     const newVolume = volume + rate * i
@@ -54,19 +56,16 @@ export async function setVolumeFade(sound, up) {
     // console.log(up, upDown, newVolume)
   }
 }
-export const playDrone = async (note) => {
-  let audioPlaying = await playNoteAsDrone(note, 5000)
-  // fadeOutTimer(audioPlaying, false)
-}
 
 export const playLoop = (note) => {
-  playDrone(note)
+  let currentSound
+  playNoteAsDrone(note, 5000)
   let id = setInterval(() => {
     console.log('triggered play drone')
-    playDrone(note)
+    currentSound = playNoteAsDrone(note, 5000)
   }, 4000)
   console.log({ id })
-  return id
+  return { id: id, currentSound: currentSound }
 }
 
 export function fadeOutTimer(sound, upDown) {
@@ -74,5 +73,3 @@ export function fadeOutTimer(sound, upDown) {
     setVolumeFade(sound, upDown)
   }, 4000)
 }
-
-export function stopDrone(note) {}
