@@ -33,7 +33,7 @@ const CircleHex = ({ idx, data, name, clickHandler, size }) => {
               }
         }
       >
-        <Text style={{ color: data ? 'white' : 'black' }}>{name}</Text>
+        {/* <Text style={{ color: data ? 'white' : 'black' }}>{name}</Text> */}
       </View>
     </Pressable>
   )

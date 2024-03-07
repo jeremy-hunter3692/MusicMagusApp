@@ -36,7 +36,6 @@ export default function App() {
     <>
       {' '}
       <StatusBar style="auto" />
-      <HexKeyWithCards />
       <View
         style={{
           flex: 1,
@@ -52,6 +51,7 @@ export default function App() {
           flexDirection: 'column',
         }}
       >
+        <HexKeyWithCards musicKey={'C'} />
         {/* <Question windowSize={windowSize} /> */}
         {/* <Pressable
           onPress={() => setStart(true)}
