@@ -18,6 +18,7 @@ const HexKeyWithCards = ({ musicKey }) => {
     false,
   ])
 
+  const [root, setRoot] = useState(noteNames.find((x) => x.name === musicKey))
   function clickHandler(inpt) {
     setData((prev) => {
       const newData = [...prev]
@@ -30,6 +31,8 @@ const HexKeyWithCards = ({ musicKey }) => {
 
   function returnCorrectNoteCard(chosenRoot = musicKey) {
     let rootIdx = noteNames.findIndex((x) => x.name === chosenRoot)
+
+    console.log(root)
     let source = ''
     let length = noteNames.length
 
@@ -47,9 +50,9 @@ const HexKeyWithCards = ({ musicKey }) => {
           let finalIdx = 0
           finalIdx = count + rootIdx > length ? count - length : count
           finalIdx = finalIdx + rootIdx
-      
+
           finalIdx = data[idx + 1] ? finalIdx - 1 : finalIdx
-    
+
           source = noteNames[finalIdx]
           // console.log('end of if', finalIdx)
         } else {
@@ -194,10 +197,7 @@ const HexKeyWithCards = ({ musicKey }) => {
           {returnCorrectIntervalCard()}
         </View>
         <View style={{ flexDirection: 'row' }}>
-          <Image
-            source={cardsArray[0].imgSrc}
-            style={{ width: 100, height: 150 }}
-          />
+          <Image source={root.imgSrc} style={{ width: 100, height: 150 }} />
           {returnCorrectNoteCard()}
         </View>
       </View>

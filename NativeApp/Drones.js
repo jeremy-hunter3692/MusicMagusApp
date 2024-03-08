@@ -12,11 +12,12 @@ import { Audio } from 'expo-av'
 let playing = true
 const fadeOutSpeed = 50000
 const timeDelay = 4000
+const globalvolume = 0.5
 const Drones = ({ note }) => {
   const [currentPlayingDrone, setCurrentPlayingDrone] = useState()
   const [intervalId, setIntervalId] = useState()
 
-  console.log(currentPlayingDrone)
+
   const playDrone = async () => {
     let thing = await startSound()
     setCurrentPlayingDrone(thing)
@@ -39,7 +40,7 @@ const Drones = ({ note }) => {
   const startSound = async () => {
     console.log('start')
     const source = note.value.audioSrc
-    const status = { volume: 1 }
+    const status = { volume: globalvolume }
     try {
       const { sound } = await Audio.Sound.createAsync(source, status)
       await sound.playAsync()
@@ -50,11 +51,11 @@ const Drones = ({ note }) => {
   }
 
   async function setVolume(sound, up) {
-    const upDown = up ? 1 : -1
-    const volume = up ? 0 : 1
+    const upDown = up ? globalvolume : -1
+    const volume = up ? 0 : globalvolume
     const steps = fadeOutSpeed
     for (let i = 0; i < steps; i++) {
-      const rate = (1 / steps) * upDown
+      const rate = (globalvolume / steps) * upDown
       const newVolume = volume + rate * i
       await sound.setVolumeAsync(newVolume)
       // console.log(up, upDown, newVolume)

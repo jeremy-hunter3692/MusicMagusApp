@@ -169,12 +169,6 @@ const Question = ({ windowSize }) => {
     setRootDronePlaying({ bool: false, id: null })
   }
 
-  // function qLevePlayNote(inpt) {
-  //   console.log('w', inpt)
-  //   playNote(inpt.audioSrc)
-  // }
-
-  console.log({ answer })
 
   return (
     <>
