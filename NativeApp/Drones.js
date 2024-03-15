@@ -17,7 +17,6 @@ const Drones = ({ note }) => {
   const [currentPlayingDrone, setCurrentPlayingDrone] = useState()
   const [intervalId, setIntervalId] = useState()
 
-
   const playDrone = async () => {
     let thing = await startSound()
     setCurrentPlayingDrone(thing)
@@ -80,7 +79,7 @@ const Drones = ({ note }) => {
   }, [currentPlayingDrone])
 
   return (
-    <View>
+    <View styles={{ flex: 0.2,   justifyContent: 'center' }}>
       {/* <Button title="Play Drone" onPress={playLoop} /> */}
       {/* //TO DO figure out global sound object and fade out */}
       <Pressable onPress={() => stopSound()}>
@@ -94,12 +93,14 @@ const Drones = ({ note }) => {
 const styles = StyleSheet.create({
   button: {
     color: 'white',
+    width: 100,
     margin: 5,
     padding: 10,
     backgroundColor: 'blue',
     borderWidth: 3,
     borderColor: 'blue',
     borderRadius: 10,
+  
   },
 })
 

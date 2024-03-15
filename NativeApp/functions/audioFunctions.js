@@ -1,6 +1,7 @@
 import { Audio } from 'expo-av'
 const fadeOutSpeed = 9000
 const globalvolume = 0.8
+
 export const playNote = async (note) => {
   console.log('start PlatNote', note)
   const source = note

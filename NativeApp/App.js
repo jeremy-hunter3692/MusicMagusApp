@@ -51,8 +51,8 @@ export default function App() {
           flexDirection: 'column',
         }}
       >
-        <HexKeyWithCards musicKey={'F#'} />
-        {/* <Question windowSize={windowSize} /> */}
+        {/* <HexKeyWithCards musicKey={'B'} /> */}
+        <Question windowSize={windowSize} />
         {/* <Pressable
           onPress={() => setStart(true)}
           style={{

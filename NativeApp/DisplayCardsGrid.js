@@ -3,26 +3,29 @@ import { StyleSheet, Text, View, Image, TouchableOpacity } from 'react-native'
 import { playNote, setVolume } from './functions/audioFunctions.js'
 import { keys } from './data/KeyCards.js'
 import { noteAudioSrc } from './data/NotesAudiosSrc.js'
+
 import CardButton from './CardButton.js'
 
 const DisplayCardsGrid = ({ userAnswerSetter, cardsArray, cardOnPress }) => {
   function setAnswer(inpt) {
     // console.log('setAnswer', inpt)
-    let source = findNote(inpt.name, noteAudioSrc)
 
-    console.log(source)
+    let source = findNote(inpt.name, noteAudioSrc)
+    source ? cardOnPress(source) : cardOnPress(inpt)
+    //find the note based off the interval
+    // console.log(source)
     // playNote(source.audioSrc)
-    cardOnPress(source)
+
     userAnswerSetter(inpt.name)
   }
 
   function findNote(inpt, array = keys) {
-    console.log(inpt, array)
     const result = array.filter((x) => x.name === inpt)
     return result[0]
   }
 
   const firstHalfArray = cardsArray.slice(0, cardsArray.length / 2)
+
   const secondHalfArray = cardsArray.slice(
     cardsArray.length / 2,
     cardsArray.length

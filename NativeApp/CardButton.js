@@ -10,7 +10,8 @@ const CardButton = ({ onPress, data, source, position }) => {
         source={source}
         style={{
           // flex: 1,
-          width: width * 0.1,
+          width: width * 0.09,
+
           // resizeMode: 'cover',
           // height: 'auto',
           // minWidth: 60,
@@ -18,7 +19,7 @@ const CardButton = ({ onPress, data, source, position }) => {
           // width: screenWidth / 6 - 15,
           aspectRatio: 2 / 3,
           // height: '100%',
-          margin: 0,
+          margin: 5,
 
           // borderRadius: 10,
         }}
