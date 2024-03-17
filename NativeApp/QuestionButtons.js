@@ -4,28 +4,32 @@ import DropDown from './DropDown'
 
 const QuestionButtons = ({ changeQuestionType, reload, stopDrone }) => {
   const [showDropDown, setShowDropDown] = useState(false)
-  console.log(showDropDown)
+
   function dropDownSwap() {
     setShowDropDown(!showDropDown)
   }
+
   return (
     <>
       <View style={styles.questionButtons}>
         {showDropDown ? (
-          <DropDown changeQuestionType={changeQuestionType}  dropDownSwap={dropDownSwap}/>
+          <DropDown
+            changeQuestionType={changeQuestionType}
+            dropDownSwap={dropDownSwap}
+          />
         ) : (
           <>
-            <Pressable
-              onPress={dropDownSwap}
-              // style={styles.button}
-            >
-              <Text style={styles.buttonText}>Question Type</Text>
-            </Pressable>
             <Pressable
               onPress={reload}
               // style={styles.button}
             >
               <Text style={styles.buttonText}>New Question</Text>
+            </Pressable>
+            <Pressable
+              onPress={dropDownSwap}
+              // style={styles.button}
+            >
+              <Text style={styles.buttonText}>Question Type</Text>
             </Pressable>
             <Pressable
               onPress={stopDrone}

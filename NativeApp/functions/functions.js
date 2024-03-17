@@ -18,6 +18,9 @@ export function returnRandomCard(array) {
   return { value: array[idx], idx: idx }
 }
 
+export function getAnswerKeys() {
+  console.log(' get answer keys fired')
+}
 export function getAnswerKeyAndInterval(rootNote, questionValue, array) {
   let answerIdx = rootNote.idx + questionValue.idx
 

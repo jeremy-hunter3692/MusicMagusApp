@@ -35,12 +35,26 @@ const DisplayCardsGrid = ({ userAnswerSetter, cardsArray, cardOnPress }) => {
     <>
       <View style={styles.imgContTop}>
         {firstHalfArray?.map((x) => {
-          return <CardButton onPress={setAnswer} data={x} source={x.imgSrc} />
+          return (
+            <CardButton
+              onPress={setAnswer}
+              data={x}
+              source={x.imgSrc}
+              key={x.name}
+            />
+          )
         })}
       </View>
       <View style={styles.imgContBottom}>
         {secondHalfArray?.map((x) => {
-          return <CardButton onPress={setAnswer} data={x} source={x.imgSrc} />
+          return (
+            <CardButton
+              onPress={setAnswer}
+              data={x}
+              source={x.imgSrc}
+              key={x.name}
+            />
+          )
         })}
       </View>
     </>

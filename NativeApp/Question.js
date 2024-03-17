@@ -14,6 +14,7 @@ import {
   getCorrectAnswer,
   returnRandomCard,
   getAnswerKeyAndInterval,
+  getAnswerKeys,
 } from './functions/functions'
 import {
   playNote,
@@ -26,13 +27,13 @@ import {
 import { random } from 'canvas-sketch-util'
 
 const blankCard = require('./assets/blankcard.png')
-let intervalAsQuestion = true
+let questionType = 'Interval'
 let answer = ''
-
 //put all state up a level and abstrat the component one?
 
 const Question = ({ windowSize }) => {
   const [randomRoot, setRandomRoot] = useState(returnRandomCard(keys))
+
   const [questionNote, setQuestionNote] = useState(returnRandomCard(intervals))
   const [rootDronePlaying, setRootDronePlaying] = useState({
     id: '',
@@ -41,12 +42,14 @@ const Question = ({ windowSize }) => {
   const [userAnswer, setUserAnswer] = useState()
   const [resultDisplay, setResultDisplay] = useState(false)
   const [cardsArray, setCardsArray] = useState(noteNames)
+
   const { height: h, width: w, scale, fontScale } = windowSize
+
   const questionCards = {
     height: w * 0.33,
     width: w * 0.33,
   }
-
+  console.log({ questionType })
   // useEffect(() => {
   //   startDrone(randomRoot.value.audioSrc)
   //   setTimeout(() => {
@@ -54,36 +57,53 @@ const Question = ({ windowSize }) => {
   //   }, 1000)
   // }, [])
 
-  answer = intervalAsQuestion
-    ? getAnswerKeyAndInterval(randomRoot, questionNote, noteNames)
-    : getCorrectAnswer(randomRoot, questionNote)
+  answer =
+    questionType === 'Interval'
+      ? getAnswerKeyAndInterval(randomRoot, questionNote, noteNames)
+      : questionType === 'Note'
+      ? getCorrectAnswer(randomRoot, questionNote)
+      : getAnswerKeys()
   // console.log({ answer })
 
   function userAnswerSetter(inpt) {
-    // console.log('clicked', inpt)
     setUserAnswer(inpt)
     setResultDisplay(checkAnswer(inpt))
   }
 
   function reload() {
-    // console.log('reload', rootDronePlaying.id)
+    console.log('reload') //, rootDronePlaying.id)
     // clearInterval(rootDronePlaying.id)
     setResultDisplay(false)
-    setRandomRoot(returnRandomCard(keys))
+
     setQuestionNote(
-      intervalAsQuestion
+      questionType === 'Interval'
         ? returnRandomCard(intervals)
-        : returnRandomCard(noteNames)
+        : questionType === 'Note'
+        ? returnRandomCard(noteNames)
+        : returnRandomCard(intervals)
     )
-    intervalAsQuestion ? setCardsArray(noteNames) : setCardsArray(intervals)
+    setRandomRoot(
+      questionType === 'keys'
+        ? returnRandomCard(noteNames)
+        : returnRandomCard(keys)
+    )
+
+    setCardsArray(
+      questionType === 'Interval'
+        ? noteNames
+        : questionType === 'Note'
+        ? intervals
+        : keys
+    )
     // startDrone(randomRoot.value.audioSrc)
     setTimeout(() => {
       // answerCardOnPress(answer)
     }, 1000)
   }
 
-  function changeQuestionType() {
-    intervalAsQuestion = !intervalAsQuestion
+  function changeQuestionType(inpt) {
+    questionType = inpt === 1 ? 'Interval' : inpt === 2 ? 'Note' : 'Key'
+
     reload()
   }
 
