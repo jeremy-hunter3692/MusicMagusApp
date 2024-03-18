@@ -39,12 +39,12 @@ export default function App() {
       <View
         style={{
           flex: 1,
-          height: height * 0.95,
+          height: height * 0.85,
           width: width * 0.1,
           // borderWidth: 5,
           borderRadius: 10,
           margin: 0,
-          padding: 10,
+          padding: 0,
           backgroundColor: bgColor,
           // alignItems: 'center',
           // justifyContent: 'center',

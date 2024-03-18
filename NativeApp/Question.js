@@ -29,11 +29,9 @@ import { random } from 'canvas-sketch-util'
 const blankCard = require('./assets/blankcard.png')
 let questionType = 'Interval'
 let answer = ''
-//put all state up a level and abstrat the component one?
 
 const Question = ({ windowSize }) => {
   const [randomRoot, setRandomRoot] = useState(returnRandomCard(keys))
-
   const [questionNote, setQuestionNote] = useState(returnRandomCard(intervals))
   const [rootDronePlaying, setRootDronePlaying] = useState({
     id: '',
@@ -45,11 +43,6 @@ const Question = ({ windowSize }) => {
 
   const { height: h, width: w, scale, fontScale } = windowSize
 
-  const questionCards = {
-    height: w * 0.33,
-    width: w * 0.33,
-  }
-  console.log({ questionType })
   // useEffect(() => {
   //   startDrone(randomRoot.value.audioSrc)
   //   setTimeout(() => {
@@ -62,16 +55,21 @@ const Question = ({ windowSize }) => {
       ? getAnswerKeyAndInterval(randomRoot, questionNote, noteNames)
       : questionType === 'Note'
       ? getCorrectAnswer(randomRoot, questionNote)
-      : getAnswerKeys()
-  // console.log({ answer })
+      : getAnswerKeys(randomRoot, questionNote, keys)
+  console.log(answer.name)
 
   function userAnswerSetter(inpt) {
     setUserAnswer(inpt)
-    setResultDisplay(checkAnswer(inpt))
+    setResultDisplay(inpt === answer.name)
   }
 
+  // function checkAnswer(inpt) {
+  //   console.log('check', inpt, answer, inpt === answer)
+  //   return inpt === answer.name
+  // }
+
   function reload() {
-    console.log('reload') //, rootDronePlaying.id)
+    // console.log('reload', rootDronePlaying.id)
     // clearInterval(rootDronePlaying.id)
     setResultDisplay(false)
 
@@ -83,7 +81,7 @@ const Question = ({ windowSize }) => {
         : returnRandomCard(intervals)
     )
     setRandomRoot(
-      questionType === 'keys'
+      questionType === 'Key'
         ? returnRandomCard(noteNames)
         : returnRandomCard(keys)
     )
@@ -103,13 +101,7 @@ const Question = ({ windowSize }) => {
 
   function changeQuestionType(inpt) {
     questionType = inpt === 1 ? 'Interval' : inpt === 2 ? 'Note' : 'Key'
-
     reload()
-  }
-
-  function checkAnswer(inpt) {
-    console.log('check', inpt, answer, inpt === answer)
-    return inpt === answer.name
   }
 
   function cardOnPress(note) {
@@ -170,7 +162,7 @@ const Question = ({ windowSize }) => {
   }
 
   function rootCardPress() {
-    // rootDronePlaying.bool ? stopDrone() : startDrone(randomRoot.value.audioSrc)
+    rootDronePlaying.bool ? stopDrone() : startDrone(randomRoot.value.audioSrc)
   }
 
   function startDrone(note) {
@@ -191,6 +183,11 @@ const Question = ({ windowSize }) => {
     // console.log('stop', rootDronePlaying)
     clearInterval(rootDronePlaying.id)
     setRootDronePlaying({ bool: false, id: null })
+  }
+
+  const questionCards = {
+    height: w * 0.33,
+    width: w * 0.33,
   }
 
   return (
