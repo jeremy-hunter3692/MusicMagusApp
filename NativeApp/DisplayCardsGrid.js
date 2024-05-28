@@ -8,13 +8,12 @@ import CardButton from './CardButton.js'
 
 const DisplayCardsGrid = ({ userAnswerSetter, cardsArray, cardOnPress }) => {
   function setAnswer(inpt) {
-    // console.log('setAnswer', inpt)
-
+    // console.log('setAnswer in Display Gird', inpt)
+   //find the note based off the interval
     let source = findNote(inpt.name, noteAudioSrc)
     source ? cardOnPress(source) : cardOnPress(inpt)
-    //find the note based off the interval
+ 
     // console.log(source)
-    // playNote(source.audioSrc)
 
     userAnswerSetter(inpt.name)
   }
@@ -63,9 +62,9 @@ const DisplayCardsGrid = ({ userAnswerSetter, cardsArray, cardOnPress }) => {
 
 const styles = StyleSheet.create({
   imgContTop: {
-    // flex: 1,
-    // widht: 300,
-    // backgroundColor: 'yellow',
+    flex: 1,
+
+    // backgroundColor: 'blue',
     flexDirection: 'row',
     marginBottom: 1,
     marginTop: 0,
@@ -74,10 +73,10 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   imgContBottom: {
-    // flex: 1,
+    flex: 1,
     // backgroundColor: 'yellow',
     flexDirection: 'row',
-    marginBottom: 10,
+    marginBottom: 5,
     marginTop: 0,
     padding: 0,
     alignItems: 'flex-start',

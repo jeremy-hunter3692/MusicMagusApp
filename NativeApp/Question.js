@@ -8,7 +8,6 @@ import CardButton from './CardButton'
 import { intervals } from './data/Intervals'
 import QuestionButtons from './QuestionButtons.js'
 import Drones from './Drones.js'
-// import Button from './Button'
 import { noteNames } from './data/NoteNames'
 import {
   getCorrectAnswer,
@@ -20,11 +19,10 @@ import {
   playNote,
   setVolume,
   playDrone,
-  setVolumeFade,
+  volumeFadeDownOrUp,
   playLoop,
   stopDrone,
 } from './functions/audioFunctions.js'
-import { random } from 'canvas-sketch-util'
 
 const blankCard = require('./assets/blankcard.png')
 let questionType = 'Interval'
@@ -33,22 +31,23 @@ let answer = ''
 const Question = ({ windowSize }) => {
   const [randomRoot, setRandomRoot] = useState(returnRandomCard(keys))
   const [questionNote, setQuestionNote] = useState(returnRandomCard(intervals))
+  const [cardsArray, setCardsArray] = useState(noteNames)
+  const [userAnswer, setUserAnswer] = useState()
+  const [resultDisplay, setResultDisplay] = useState(false)
+
   const [rootDronePlaying, setRootDronePlaying] = useState({
     id: '',
     bool: false,
   })
-  const [userAnswer, setUserAnswer] = useState()
-  const [resultDisplay, setResultDisplay] = useState(false)
-  const [cardsArray, setCardsArray] = useState(noteNames)
 
   const { height: h, width: w, scale, fontScale } = windowSize
 
-  // useEffect(() => {
-  //   startDrone(randomRoot.value.audioSrc)
-  //   setTimeout(() => {
-  //     answerCardOnPress(answer)
-  //   }, 1000)
-  // }, [])
+  useEffect(() => {
+    startDrone(randomRoot.value.audioSrc)
+    setTimeout(() => {
+      answerCardOnPress(answer)
+    }, 1000)
+  }, [])
 
   answer =
     questionType === 'Interval'
@@ -56,34 +55,40 @@ const Question = ({ windowSize }) => {
       : questionType === 'Note'
       ? getCorrectAnswer(randomRoot, questionNote)
       : getAnswerKeys(randomRoot, questionNote, keys)
-  console.log(answer.name)
 
   function userAnswerSetter(inpt) {
+    // console.log('userAnswer', inpt)
     setUserAnswer(inpt)
     setResultDisplay(inpt === answer.name)
   }
 
-  // function checkAnswer(inpt) {
-  //   console.log('check', inpt, answer, inpt === answer)
-  //   return inpt === answer.name
-  // }
+  function returnQuestionNoteWithoutRoot(randomRootVar) {
+    // console.log('top:', randomRootVar.value.name)
+    let result
+    do {
+      result = returnRandomCard(noteNames)
+      // console.log('ran ternary/while', result.value.name)
+    } while (result.value.name === randomRootVar.value.name)
+    // console.log('after', result.value.name)
+    return result
+  }
 
   function reload() {
     // console.log('reload', rootDronePlaying.id)
     // clearInterval(rootDronePlaying.id)
     setResultDisplay(false)
-
-    setQuestionNote(
-      questionType === 'Interval'
-        ? returnRandomCard(intervals)
-        : questionType === 'Note'
-        ? returnRandomCard(noteNames)
-        : returnRandomCard(intervals)
-    )
-    setRandomRoot(
+    let randomRootVar =
       questionType === 'Key'
         ? returnRandomCard(noteNames)
         : returnRandomCard(keys)
+    setRandomRoot(randomRootVar)
+
+    setQuestionNote(
+      questionType === 'Interval'
+        ? returnRandomCard(intervals, true)
+        : questionType === 'Note'
+        ? returnQuestionNoteWithoutRoot(randomRootVar)
+        : returnRandomCard(intervals, true)
     )
 
     setCardsArray(
@@ -105,9 +110,8 @@ const Question = ({ windowSize }) => {
   }
 
   function cardOnPress(note) {
-    console.log({ note })
     let altSource = 0
-    console.log(altSource, altSource)
+
     altSource =
       note.up === null
         ? randomRoot.idx + 6
@@ -116,21 +120,19 @@ const Question = ({ windowSize }) => {
         : note.distanceToRoot + randomRoot.idx
 
     altSource = altSource >= 12 ? altSource - 12 : altSource
-    console.log(altSource, noteAudioSrc[altSource].name)
+    // console.log(altSource, noteAudioSrc[altSource].name)
 
     // console.log('TEMP', note)
     if (note.name === randomRoot.value.name) {
-      // playNote(note.audioSrc['2'])
+      playNote(note.audioSrc['2'])
     } else {
       //DRY THIS UP 1
       let cardIdx = getIdxAndNotes(note)
       let questionIdx = randomRoot.idx
       if (cardIdx[0][1] > questionIdx) {
-        // console.log('lwoweroct')
-        // playNote(cardIdx[0][0].audioSrc['1'])
+        playNote(cardIdx[0][0].audioSrc['1'])
       } else {
-        // console.log('hightoct')
-        // playNote(cardIdx[0][0].audioSrc['2'])
+        playNote(cardIdx[0][0].audioSrc['2'])
       }
     }
   }
@@ -154,10 +156,10 @@ const Question = ({ windowSize }) => {
     //DRY THIS UP 1
     if (answerIdx[0][1] > questionIdx) {
       // console.log('lwoweroct')
-      // playNote(answerIdx[0][0].audioSrc['1'])
+      playNote(answerIdx[0][0].audioSrc['1'])
     } else {
       // console.log('hightoct')
-      // playNote(answerIdx[0][0].audioSrc['2'])
+      playNote(answerIdx[0][0].audioSrc['2'])
     }
   }
 
@@ -166,23 +168,37 @@ const Question = ({ windowSize }) => {
   }
 
   function startDrone(note) {
-    let returnedObj = playLoop(note)
-    let { intervalId, currentSound } = returnedObj
-    console.log({ returnedObj })
-    setRootDronePlaying({
-      bool: true,
-      id: intervalId,
-      currentSound: currentSound,
-    })
-    // console.log({ intervalId }, rootDronePlaying)
-    //set interval id somewhere to be cleared later
+    const returnedObj = playLoop(note)
+
+    returnedObj
+      .then((result) => {
+        console.log(result)
+        const { intervalId, currentSound } = result
+
+        console.log(intervalId, currentSound)
+        setRootDronePlaying({
+          bool: true,
+          id: intervalId,
+          currentSound: currentSound,
+        })
+      })
+      .catch((error) => {
+        console.error('Error starting drone:', error)
+      })
+
+    // set interval id somewhere to be cleared later
   }
 
   function stopDrone() {
-    setVolumeFade(rootDronePlaying.currentSound, false, 100)
+    volumeFadeDownOrUp(rootDronePlaying.currentSound, false, 100)
     // console.log('stop', rootDronePlaying)
-    clearInterval(rootDronePlaying.id)
-    setRootDronePlaying({ bool: false, id: null })
+    console.log(rootDronePlaying.currentSound)
+    let id = rootDronePlaying.id
+    rootDronePlaying.currentSound.stopAsync()
+    console.log({ id })
+    clearInterval(id)
+
+    setRootDronePlaying({ bool: false, id: null, currentSound: null })
   }
 
   const questionCards = {
@@ -220,10 +236,10 @@ const Question = ({ windowSize }) => {
         <QuestionButtons
           reload={reload}
           changeQuestionType={changeQuestionType}
+          stopDrone={stopDrone}
         />
       </View>
-      {resultDisplay && <Text style={styles.answer}> CORRECT! </Text>}
-      <View>{/* <Drones note={randomRoot} /> */}</View>
+      {/* <View> <Drones note={randomRoot} /> </View> */}
       <View style={styles.answerCards}>
         <DisplayCardsGrid
           cardOnPress={cardOnPress}
@@ -232,6 +248,9 @@ const Question = ({ windowSize }) => {
           answer={answer}
         />
       </View>
+      <Text style={styles.answer}>
+        {resultDisplay ? 'CORRECT!' : 'Less correct'}
+      </Text>
     </>
   )
 }
@@ -240,28 +259,19 @@ export default Question
 
 const styles = StyleSheet.create({
   questionCardsCont: {
-    // backgroundColor: 'red',
-    flex: 6,
+    flex: 2,
     flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'flex-end',
     marginBottom: 0,
     padding: 0,
   },
-  // questionCards: {
-  //   flex: 8,
-  //   // aspectRatio: 2 / 3,
-  //   // margin: 10,
-  // },
   answerCards: {
-    flex: 7,
-    // backgroundColor: 'blue',
-    // borderWidth: 5,
-    // justifyContent: 'center',
-    // alignItems: 'stretch',
+    flex: 4,
   },
-
   answer: {
+    textAlign: 'center',
+    flex: 1,
     color: 'white',
     backgroundColor: 'black',
   },

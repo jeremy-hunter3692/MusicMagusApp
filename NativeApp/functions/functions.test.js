@@ -11,7 +11,7 @@ test.each([
 ])('finds interval between two notes', (note1, note2, expected) => {
   let answer = getCorrectAnswer(note1, note2)
 
-  expect(answer).toBe(expected)
+  expect(answer.name).toBe(expected)
 })
 
 test.each([
@@ -23,5 +23,5 @@ test.each([
 ])('finds note x interval away from root notes', (note1, note2, expected) => {
   let answer = getAnswerKeyAndInterval(note1, note2, noteNames)
 
-  expect(answer).toBe(expected)
+  expect(answer.name).toBe(expected)
 })

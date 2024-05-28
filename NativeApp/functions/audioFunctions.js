@@ -1,43 +1,36 @@
 import { Audio } from 'expo-av'
-const fadeOutSpeed = 9000
+const fadeOutSpeed = 80000
 const globalvolume = 0.8
+const fadeStartTime = 3000
 
-export const playNote = async (note) => {
-  console.log('start PlatNote', note)
+export const playNote = async (
+  note,
+  fadeSpeed = fadeOutSpeed,
+  fadeDelay = 1000
+) => {
   const source = note
-  const status = { volume: globalvolume }
   try {
-    const { sound } = await Audio.Sound.createAsync(source, status)
-    await sound.playAsync()
-    // setTimeout(() => {
-    //   setVolume(sound, false)
-    // }, 1000)
-  } catch (error) {
-    console.log('Error playing sound:', error)
-  }
-}
-
-export const playNoteAsDrone = async (note, timeDelay = 1000) => {
-  console.log('start platNoteAsDrone')
-  const source = note
-  const status = { volume: 1 }
-  try {
-    const { sound } = await Audio.Sound.createAsync(source, status)
-    await sound.playAsync()
+    const initStatus = { volume: 1, isLooping: true, shouldPlay: true }
+    const { sound } = await Audio.Sound.createAsync(source, initStatus)
+    sound.playAsync()
     setTimeout(() => {
-      setVolumeFade(sound, false)
-    }, timeDelay)
+      volumeFadeDownOrUp(sound, false, fadeSpeed)
+    }, fadeDelay)
+
     return sound
   } catch (error) {
     console.log('Error playing sound:', error)
   }
 }
 
-const startSound = async (note) => {
-  const source = note.value.audioSrc
-  const status = { volume: 1 }
+export const playNoteForLooping = async (note) => {
+  const source = note
   try {
-    const { sound } = await Audio.Sound.createAsync(source, status)
+    const initStatus = {
+      volume: globalvolume,
+      isLooping: true,
+    }
+    const { sound } = await Audio.Sound.createAsync(source, initStatus)
     await sound.playAsync()
     return sound
   } catch (error) {
@@ -45,32 +38,41 @@ const startSound = async (note) => {
   }
 }
 
-export async function setVolumeFade(sound, up, rate = fadeOutSpeed) {
-  console.log('fade', sound, up, rate)
+export const playLoop = async (note) => {
+  let currentSound = await playNoteForLooping(note)
+  console.log({ currentSound })
+  let id = setInterval(() => {
+    playNoteForLooping(note)
+  }, fadeStartTime)
+
+  return { intervalId: id, currentSound: currentSound }
+}
+
+export function volumeFadeDownOrUp(sound, up, rate = fadeOutSpeed) {
+  // causing a clicking issue in the fade out, probably because it's jumping up to a newvolume rather than working off the global?
+
   const upDown = up ? 1 : -1
-  const volume = up ? 0 : 1
-  const steps = rate
-  for (let i = 0; i < steps; i++) {
-    const rate = (1 / steps) * upDown
-    const newVolume = volume + rate * i
-    await sound.setVolumeAsync(newVolume)
-    // console.log(up, upDown, newVolume)
+  const volume = up ? 0 : globalvolume
+
+  for (let i = 0; i < rate; i++) {
+    const steps = (1 / rate) * upDown
+    const newVolume = volume + steps * i
+    sound.setVolumeAsync(newVolume)
   }
 }
 
-export const playLoop = (note) => {
-  let currentSound
-  playNoteAsDrone(note, 5000)
-  let id = setInterval(() => {
-    console.log('triggered play drone')
-    currentSound = playNoteAsDrone(note, 5000)
-  }, 4000)
-  console.log({ id })
-  return { id: id, currentSound: currentSound }
-}
-
-export function fadeOutTimer(sound, upDown) {
-  return setTimeout(() => {
-    setVolumeFade(sound, upDown)
-  }, 4000)
-}
+// export const playNoteAsDrone = async (note, timeDelay = 1000) => {
+//   console.log('start playNoteAsDrone:', note, timeDelay)
+//   const source = note
+//   const status = { volume: globalvolume, isLooping: true }
+//   try {
+//     const { sound } = await Audio.Sound.createAsync(source, status)
+//     await sound.playAsync()
+//     // setTimeout(() => {
+//     //   volumeFadeDownOrUp(sound, false)
+//     // }, timeDelay)
+//     return sound
+//   } catch (error) {
+//     console.log('Error playing sound:', error)
+//   }
+// }

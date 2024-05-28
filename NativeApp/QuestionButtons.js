@@ -5,6 +5,10 @@ import DropDown from './DropDown'
 const QuestionButtons = ({ changeQuestionType, reload, stopDrone }) => {
   const [showDropDown, setShowDropDown] = useState(false)
 
+  function changeQuestionAndReset(inpt) {
+    changeQuestionType(inpt)
+    setShowDropDown(false)
+  }
   function dropDownSwap() {
     setShowDropDown(!showDropDown)
   }
@@ -14,7 +18,7 @@ const QuestionButtons = ({ changeQuestionType, reload, stopDrone }) => {
       <View style={styles.questionButtons}>
         {showDropDown ? (
           <DropDown
-            changeQuestionType={changeQuestionType}
+            changeQuestionType={changeQuestionAndReset}
             dropDownSwap={dropDownSwap}
           />
         ) : (
