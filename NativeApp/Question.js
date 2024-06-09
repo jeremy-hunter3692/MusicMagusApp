@@ -22,6 +22,7 @@ import {
   volumeFadeDownOrUp,
   playLoop,
   stopDrone,
+  playNoteForLooping,
 } from './functions/audioFunctions.js'
 
 const blankCard = require('./assets/blankcard.png')
@@ -174,40 +175,39 @@ const Question = ({ windowSize }) => {
   }
 
   const startDrone = async (note) => {
-    const returnedObj = await playLoop(note)
+    const soundOne = await playNoteForLooping(note)
+    let soundTwo = null
+    let timeoutId = setTimeout(async () => {
+      soundTwo = await playNoteForLooping(note)
+      setRootDronePlaying((state) => ({ ...state, currentSoundTwo: soundTwo }))
+    }, 2900)
 
-    console.log(returnedObj)
-    // returnedObj
-    //   .then((result) => {
-    //     console.log('in start', result)
-    const { currentSoundTwo, currentSound, intervalId } = returnedObj
+    console.log('start drone', soundOne, soundTwo, timeoutId)
 
-    //     // console.log(intervalId, currentSound)
     setRootDronePlaying({
       bool: true,
-      id: intervalId,
-      currentSound: currentSound,
-      currentSoundTwo: currentSoundTwo,
+      id: timeoutId,
+      currentSound: soundOne,
+      currentSoundTwo: soundTwo,
     })
-    //   })
-    //   .catch((error) => {
-    //     console.error('Error starting drone:', error)
-    //   })
-
-    // set interval id somewhere to be cleared later
   }
 
   function stopDrone() {
-    console.log('stop drone', rootDronePlaying)
-    rootDronePlaying.currentSound.stopAsync()
-    rootDronePlaying.currentSoundTwo.stopAsync()
-
-    setRootDronePlaying({
-      bool: false,
-      id: null,
-      currentSound: null,
-      currentSoundTwo: null,
-    })
+    if (rootDronePlaying.currentSoundTwo) {
+      console.log('if', rootDronePlaying)
+      rootDronePlaying.currentSound.stopAsync()
+      rootDronePlaying.currentSoundTwo.stopAsync()
+      setRootDronePlaying({
+        bool: false,
+        id: null,
+        currentSound: null,
+        currentSoundTwo: null,
+      })
+    } else {
+      console.log('else', rootDronePlaying, rootDronePlaying.id)
+      rootDronePlaying.currentSound.stopAsync()
+      clearTimeout(rootDronePlaying.id)
+    }
   }
 
   const questionCards = {

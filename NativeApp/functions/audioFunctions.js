@@ -32,11 +32,11 @@ export const playNoteForLooping = async (note) => {
     const { sound } = await Audio.Sound.createAsync(source, initStatus)
     await sound.playAsync()
 
-    sound.setOnPlaybackStatusUpdate((status) => {
-      if (status.positionMillis > 5999) {
-        console.log('Sound just finished a loop')
-      }
-    })
+    // sound.setOnPlaybackStatusUpdate((status) => {
+    //   if (status.positionMillis > 5999) {
+    //     console.log('Sound just finished a loop')
+    //   }
+    // })
     return sound
   } catch (error) {
     console.log('Error playing sound:', error)
