@@ -129,10 +129,10 @@ const Question = ({ windowSize }) => {
       //DRY THIS UP 1
       let cardIdx = getIdxAndNotes(note)
       let questionIdx = randomRoot.idx
-      if (cardIdx[0][1] > questionIdx) {
-        playNote(cardIdx[0][0].audioSrc['1'])
+      if (cardIdx[1] > questionIdx) {
+        playNote(cardIdx[0].audioSrc['1'])
       } else {
-        playNote(cardIdx[0][0].audioSrc['2'])
+        playNote(cardIdx[0].audioSrc['2'])
       }
     }
   }
@@ -146,59 +146,68 @@ const Question = ({ windowSize }) => {
     })
 
     let res = getIdxArr.filter((x) => x != undefined)
-    return res
+    // console.log('res', res)
+    return res[0]
   }
 
   function answerCardOnPress(note) {
     let answerIdx = getIdxAndNotes(note)
     let questionIdx = randomRoot.idx
-    // console.log(answerIdx[0][1], questionIdx)
-    //DRY THIS UP 1
-    if (answerIdx[0][1] > questionIdx) {
-      // console.log('lwoweroct')
-      playNote(answerIdx[0][0].audioSrc['1'])
-    } else {
-      // console.log('hightoct')
-      playNote(answerIdx[0][0].audioSrc['2'])
-    }
+
+    let targetNote =
+      answerIdx[1] > questionIdx
+        ? answerIdx[0].audioSrc['1']
+        : answerIdx[0].audioSrc['2']
+    playNote(targetNote)
+
+    // if (answerIdx[0][1] > questionIdx) {
+    //   // console.log('lwoweroct')
+    //   playNote(answerIdx[0][0].audioSrc['1'])
+    // } else {
+    //   // console.log('hightoct')
+    //   playNote(answerIdx[0][0].audioSrc['2'])
+    // }
   }
 
   function rootCardPress() {
     rootDronePlaying.bool ? stopDrone() : startDrone(randomRoot.value.audioSrc)
   }
 
-  function startDrone(note) {
-    const returnedObj = playLoop(note)
+  const startDrone = async (note) => {
+    const returnedObj = await playLoop(note)
 
-    returnedObj
-      .then((result) => {
-        console.log(result)
-        const { intervalId, currentSound } = result
+    console.log(returnedObj)
+    // returnedObj
+    //   .then((result) => {
+    //     console.log('in start', result)
+    const { currentSoundTwo, currentSound, intervalId } = returnedObj
 
-        console.log(intervalId, currentSound)
-        setRootDronePlaying({
-          bool: true,
-          id: intervalId,
-          currentSound: currentSound,
-        })
-      })
-      .catch((error) => {
-        console.error('Error starting drone:', error)
-      })
+    //     // console.log(intervalId, currentSound)
+    setRootDronePlaying({
+      bool: true,
+      id: intervalId,
+      currentSound: currentSound,
+      currentSoundTwo: currentSoundTwo,
+    })
+    //   })
+    //   .catch((error) => {
+    //     console.error('Error starting drone:', error)
+    //   })
 
     // set interval id somewhere to be cleared later
   }
 
   function stopDrone() {
-    volumeFadeDownOrUp(rootDronePlaying.currentSound, false, 100)
-    // console.log('stop', rootDronePlaying)
-    console.log(rootDronePlaying.currentSound)
-    let id = rootDronePlaying.id
+    console.log('stop drone', rootDronePlaying)
     rootDronePlaying.currentSound.stopAsync()
-    console.log({ id })
-    clearInterval(id)
+    rootDronePlaying.currentSoundTwo.stopAsync()
 
-    setRootDronePlaying({ bool: false, id: null, currentSound: null })
+    setRootDronePlaying({
+      bool: false,
+      id: null,
+      currentSound: null,
+      currentSoundTwo: null,
+    })
   }
 
   const questionCards = {

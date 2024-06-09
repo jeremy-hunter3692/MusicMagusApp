@@ -30,22 +30,20 @@ export default function App() {
   }
   return (
     <>
-  
-        <View
-          style={{
-            flex: 1,
-            borderRadius: 10,
-            margin: 0,
-            padding: 0,
-            backgroundColor: bgColor,
-            flexDirection: 'column',
-          }}
-        >
-          <Question windowSize={windowSize} />
-        </View>
-   
+      <View
+        style={{
+          flex: 1,
+          borderRadius: 10,
+          margin: 0,
+          padding: 0,
+          backgroundColor: bgColor,
+          flexDirection: 'column',
+        }}
+      >
+        <Question windowSize={windowSize} />
+      </View>
     </>
   )
 }
 
-const bgColor = '#fff'
+const bgColor = '#405d27'
