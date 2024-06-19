@@ -7,7 +7,7 @@ import DisplayCardsGrid from './DisplayCardsGrid'
 import CardButton from './CardButton'
 import { intervals } from './data/Intervals'
 import QuestionButtons from './QuestionButtons.js'
-import Drones from './Drones.js'
+// import Drones from './Drones.js'
 import { noteNames } from './data/NoteNames'
 import {
   getCorrectAnswer,
@@ -15,15 +15,7 @@ import {
   getAnswerKeyAndInterval,
   getAnswerKeys,
 } from './functions/functions'
-import {
-  playNote,
-  setVolume,
-  playDrone,
-  volumeFadeDownOrUp,
-  playLoop,
-  stopDrone,
-  playNoteForLooping,
-} from './functions/audioFunctions.js'
+import { playSound, playNoteForLooping } from './audioPlayer.js'
 
 const blankCard = require('./assets/blankcard.png')
 let questionType = 'Interval'
@@ -31,15 +23,24 @@ let answer = ''
 
 const Question = ({ windowSize }) => {
   const [randomRoot, setRandomRoot] = useState(returnRandomCard(keys))
-  const [questionNote, setQuestionNote] = useState(returnRandomCard(intervals))
+  const [questionNote, setQuestionNote] = useState(
+    returnRandomCard(intervals, true)
+  )
   const [cardsArray, setCardsArray] = useState(noteNames)
   const [userAnswer, setUserAnswer] = useState()
   const [resultDisplay, setResultDisplay] = useState(false)
-
+  const [sounds, setSounds] = useState([])
   const [rootDronePlaying, setRootDronePlaying] = useState({
     id: '',
     bool: false,
   })
+  console.log('loaded obj', notesLoaded)
+  answer =
+    questionType === 'Interval'
+      ? getAnswerKeyAndInterval(randomRoot, questionNote, noteNames)
+      : questionType === 'Note'
+      ? getCorrectAnswer(randomRoot, questionNote)
+      : getAnswerKeys(randomRoot, questionNote, keys)
 
   const { height: h, width: w, scale, fontScale } = windowSize
 
@@ -50,33 +51,21 @@ const Question = ({ windowSize }) => {
     }, 1000)
   }, [])
 
-  answer =
-    questionType === 'Interval'
-      ? getAnswerKeyAndInterval(randomRoot, questionNote, noteNames)
-      : questionType === 'Note'
-      ? getCorrectAnswer(randomRoot, questionNote)
-      : getAnswerKeys(randomRoot, questionNote, keys)
-
   function userAnswerSetter(inpt) {
-    // console.log('userAnswer', inpt)
     setUserAnswer(inpt)
     setResultDisplay(inpt === answer.name)
   }
 
   function returnQuestionNoteWithoutRoot(randomRootVar) {
-    // console.log('top:', randomRootVar.value.name)
     let result
     do {
       result = returnRandomCard(noteNames)
-      // console.log('ran ternary/while', result.value.name)
     } while (result.value.name === randomRootVar.value.name)
-    // console.log('after', result.value.name)
     return result
   }
 
   function reload() {
-    // console.log('reload', rootDronePlaying.id)
-    // clearInterval(rootDronePlaying.id)
+    stopDrone()
     setResultDisplay(false)
     let randomRootVar =
       questionType === 'Key'
@@ -99,21 +88,31 @@ const Question = ({ windowSize }) => {
         ? intervals
         : keys
     )
-    // startDrone(randomRoot.value.audioSrc)
+    startDrone(randomRoot.value.audioSrc)
     setTimeout(() => {
-      // answerCardOnPress(answer)
+      answerCardOnPress(answer)
     }, 1000)
   }
 
   function changeQuestionType(inpt) {
     questionType = inpt === 1 ? 'Interval' : inpt === 2 ? 'Note' : 'Key'
+    // console.log(questionType)
     reload()
   }
 
-  function cardOnPress(note) {
-    let altSource = 0
+  function getIdxAndNotes(note) {
+    let getIdxArr = noteAudioSrc.map((x, idx) => {
+      if (x.name === note.name) {
+        return [x, idx]
+      }
+    })
+    let res = getIdxArr.filter((x) => x != undefined)
+    return res[0]
+  }
 
-    altSource =
+  function cardOnPress(note) {
+    // let altSource = 0
+    let altSource =
       note.up === null
         ? randomRoot.idx + 6
         : note.up
@@ -121,9 +120,7 @@ const Question = ({ windowSize }) => {
         : note.distanceToRoot + randomRoot.idx
 
     altSource = altSource >= 12 ? altSource - 12 : altSource
-    // console.log(altSource, noteAudioSrc[altSource].name)
 
-    // console.log('TEMP', note)
     if (note.name === randomRoot.value.name) {
       playNote(note.audioSrc['2'])
     } else {
@@ -138,36 +135,20 @@ const Question = ({ windowSize }) => {
     }
   }
 
-  function getIdxAndNotes(note) {
-    // console.log({ note })
-    let getIdxArr = noteAudioSrc.map((x, idx) => {
-      if (x.name === note.name) {
-        return [x, idx]
-      }
+  function playNote(note) {
+    playSound(note).then((res) => {
+      setSounds((prevSounds) => [...prevSounds, res])
     })
-
-    let res = getIdxArr.filter((x) => x != undefined)
-    // console.log('res', res)
-    return res[0]
   }
 
   function answerCardOnPress(note) {
     let answerIdx = getIdxAndNotes(note)
     let questionIdx = randomRoot.idx
-
     let targetNote =
       answerIdx[1] > questionIdx
         ? answerIdx[0].audioSrc['1']
         : answerIdx[0].audioSrc['2']
     playNote(targetNote)
-
-    // if (answerIdx[0][1] > questionIdx) {
-    //   // console.log('lwoweroct')
-    //   playNote(answerIdx[0][0].audioSrc['1'])
-    // } else {
-    //   // console.log('hightoct')
-    //   playNote(answerIdx[0][0].audioSrc['2'])
-    // }
   }
 
   function rootCardPress() {
@@ -182,7 +163,7 @@ const Question = ({ windowSize }) => {
       setRootDronePlaying((state) => ({ ...state, currentSoundTwo: soundTwo }))
     }, 2900)
 
-    console.log('start drone', soundOne, soundTwo, timeoutId)
+    // console.log('start drone', soundOne, soundTwo, timeoutId)
 
     setRootDronePlaying({
       bool: true,
@@ -194,20 +175,21 @@ const Question = ({ windowSize }) => {
 
   function stopDrone() {
     if (rootDronePlaying.currentSoundTwo) {
-      console.log('if', rootDronePlaying)
       rootDronePlaying.currentSound.stopAsync()
       rootDronePlaying.currentSoundTwo.stopAsync()
-      setRootDronePlaying({
-        bool: false,
-        id: null,
-        currentSound: null,
-        currentSoundTwo: null,
-      })
+      rootDronePlaying.currentSound.unloadAsync()
+      rootDronePlaying.currentSoundTwo.unloadAsync()
     } else {
-      console.log('else', rootDronePlaying, rootDronePlaying.id)
       rootDronePlaying.currentSound.stopAsync()
+      rootDronePlaying.currentSound.unloadAsync()
       clearTimeout(rootDronePlaying.id)
     }
+    setRootDronePlaying({
+      bool: false,
+      id: null,
+      currentSound: null,
+      currentSoundTwo: null,
+    })
   }
 
   const questionCards = {

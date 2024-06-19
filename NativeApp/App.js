@@ -34,7 +34,7 @@ export default function App() {
         style={{
           flex: 1,
           borderRadius: 10,
-          margin: 0,
+          margin: 10,
           padding: 0,
           backgroundColor: bgColor,
           flexDirection: 'column',
@@ -46,4 +46,4 @@ export default function App() {
   )
 }
 
-const bgColor = '#405d27'
+const bgColor = '#196f0c'

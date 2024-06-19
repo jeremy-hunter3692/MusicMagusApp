@@ -1,35 +1,44 @@
+import React, { useState, useEffect } from 'react'
+
 import { Audio } from 'expo-av'
 const fadeOutSpeed = 1000
 const globalvolume = 0.6
 const bassDroneVolume = 0.4
-const fadeStartTime = 500
 
-export const playNote = async (note) => {
+
+
+
+
+
+export const playSound = async (note) => {
   const source = note
   try {
-    const initStatus = {
+    const initalStatus = {
       volume: globalvolume,
       isLooping: false,
-      shouldPlay: false,
     }
-    const { sound } = await Audio.Sound.createAsync(source, initStatus)
+    const { sound } = await Audio.Sound.createAsync(source, initalStatus)
     console.log('play note')
-    sound.playAsync()
+
+    await sound.playAsync()
     return sound
   } catch (error) {
     console.log('Error playing sound:', error)
   }
 }
 
+
+
 export const playNoteForLooping = async (note) => {
   console.log('note started')
   const source = note
   try {
-    const initStatus = {
+    const initalStatus = {
       volume: bassDroneVolume,
       isLooping: true,
     }
-    const { sound } = await Audio.Sound.createAsync(source, initStatus)
+    const { sound } = await Audio.Sound.createAsync(source, initalStatus)
+
     await sound.playAsync()
 
     // sound.setOnPlaybackStatusUpdate((status) => {
