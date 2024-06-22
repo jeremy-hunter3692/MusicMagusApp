@@ -3,82 +3,74 @@ import { Audio } from 'expo-av'
 const fadeOutSpeed = 1000
 const globalvolume = 0.6
 const bassDroneVolume = 0.4
+//TOO DOO CLEAN UP CONSOLE LOGS
+const playNoteForLooping = async (note) => {
+  // console.log('4PLAYLOOP')
+  const source = note
+  try {
+    const initalStatus = {
+      volume: bassDroneVolume,
+      isLooping: true,
+    }
+    const { sound } = await Audio.Sound.createAsync(source, initalStatus)
+    // console.log('pre 4loop resturn', sound)
+    return sound
+  } catch (error) {
+    console.log('Error loding sound:', error)
+  }
+}
+let timeoutId = null
+let rootOne = null
+let rootTwo = null
 
 const DronePlayer = ({ rootValue, dronePlaying }) => {
-  
-  const [rootDronePlaying, setRootDronePlaying] = useState({
-    id: '',
-  })
-
-  console.log('render audio player', dronePlaying)
-
   useEffect(() => {
-    console.log('start', rootValue, dronePlaying)
-    dronePlaying ? startDrone(rootValue) : stopDrone()
-    setTimeout(() => {
-      // answerCardOnPress(answer)
-    }, 1000)
+    // console.log('USEstart', rootValue, dronePlaying)
+    async function loadSoundObjs() {
+      rootOne = await playNoteForLooping(rootValue)
+      rootTwo = await playNoteForLooping(rootValue)
+    }
+
+    async function startUp() {
+      await loadSoundObjs()
+
+      // console.log('async in USe', rootOne, rootTwo)
+      startDrone()
+    }
+    startUp()
+
+    return () => {
+      stopDrone()
+    }
   }, [dronePlaying])
 
-  const startDrone = async (note) => {
-    const soundOne = await playNoteForLooping(note)
-    let soundTwo = null
-    let timeoutId = setTimeout(async () => {
-      soundTwo = await playNoteForLooping(note)
-      setRootDronePlaying((state) => ({ ...state, currentSoundTwo: soundTwo }))
-    }, 2900)
-
-    // console.log('start drone', soundOne, soundTwo, timeoutId)
-
-    setRootDronePlaying({
-      id: timeoutId,
-      currentSound: soundOne,
-      currentSoundTwo: soundTwo,
-    })
-  }
-
-  const playNoteForLooping = async (note) => {
-    console.log('note started')
-    const source = note
-    try {
-      const initalStatus = {
-        volume: bassDroneVolume,
-        isLooping: true,
-      }
-      const { sound } = await Audio.Sound.createAsync(source, initalStatus)
-
-      await sound.playAsync()
-
-      // sound.setOnPlaybackStatusUpdate((status) => {
-      //   if (status.positionMillis > 5999) {
-      //     console.log('Sound just finished a loop')
-      //   }
-      // })
-      return sound
-    } catch (error) {
-      console.log('Error playing sound:', error)
+  const startDrone = async () => {
+    if (rootOne) {
+      // console.log('if root sound 1')
+      await rootOne.playAsync()
+    }
+    if (rootTwo) {
+      console.log('if root sound 2')
+      timeoutId = setTimeout(async () => {
+        await rootTwo.playAsync()
+        // console.log('in timeout')
+      }, 3000)
     }
   }
 
-  function stopDrone() {
-    if (rootDronePlaying.currentSoundTwo) {
-      rootDronePlaying.currentSound.stopAsync()
-      rootDronePlaying.currentSoundTwo.stopAsync()
-      rootDronePlaying.currentSound.unloadAsync()
-      rootDronePlaying.currentSoundTwo.unloadAsync()
-    } else {
-      rootDronePlaying.currentSound.stopAsync()
-      rootDronePlaying.currentSound.unloadAsync()
-      clearTimeout(rootDronePlaying.id)
+  const stopDrone = async () => {
+    if (root) {
+      await rootOne.stopAsync()
+      await rootOne.unloadAsync()
     }
-    setRootDronePlaying({
-      id: null,
-      currentSound: null,
-      currentSoundTwo: null,
-    })
+    if (rootTwo) {
+      await rootTwo.stopAsync()
+      await rootTwo.unloadAsync()
+    }
+    clearTimeout(timeoutId)
   }
 
-  return
+  return null
 }
 
 export default DronePlayer

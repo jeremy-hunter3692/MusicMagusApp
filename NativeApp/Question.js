@@ -8,7 +8,7 @@ import CardButton from './CardButton'
 import { intervals } from './data/Intervals'
 import QuestionButtons from './QuestionButtons.js'
 import DronePlayer from './DronePlayer.js'
-import NotePlayer from './NotePlayer.js'
+import NotePlayer from './SingleNotePlayer.js'
 import { noteNames } from './data/NoteNames'
 import {
   getCorrectAnswer,
@@ -24,14 +24,13 @@ let answer = ''
 const Question = ({ windowSize }) => {
   const [randomRoot, setRandomRoot] = useState(returnRandomCard(keys))
   const [droneOn, setDroneOn] = useState(true)
-  // const [playingNote, setPlayingNote] = useState()
   const [questionNote, setQuestionNote] = useState(
     returnRandomCard(intervals, true)
   )
   const [cardsArray, setCardsArray] = useState(noteNames)
-
   const [resultDisplay, setResultDisplay] = useState(false)
 
+  console.log('q red render:', droneOn)
   answer =
     questionType === 'Interval'
       ? getAnswerKeyAndInterval(randomRoot, questionNote, noteNames)
@@ -55,7 +54,7 @@ const Question = ({ windowSize }) => {
 
   function reload() {
     //This isn't right figure out reload replacement
-    setDroneOn(true)
+    // setDroneOn(true)
     setResultDisplay(false)
     let randomRootVar =
       questionType === 'Key'
@@ -101,7 +100,6 @@ const Question = ({ windowSize }) => {
   }
 
   function cardOnPress(note) {
-    console.log('card on press note', note)
     let result
     let altSource =
       note.up === null
@@ -109,7 +107,6 @@ const Question = ({ windowSize }) => {
         : note.up
         ? randomRoot.idx - note.distanceToRoot
         : note.distanceToRoot + randomRoot.idx
-
     altSource = altSource >= 12 ? altSource - 12 : altSource
     if (note.name === randomRoot.value.name) {
       result = note.audioSrc['2']
@@ -123,13 +120,7 @@ const Question = ({ windowSize }) => {
         result = cardIdx[0].audioSrc['2']
       }
     }
-    // console.log(result)
     return result
-  }
-
-  function playNote(note) {
-    console.log('play note')
-    return <NotePlayer noteToPlay={note} />
   }
 
   function answerCardOnPress(note) {
@@ -153,10 +144,10 @@ const Question = ({ windowSize }) => {
 
   return (
     <>
-      <DronePlayer
+      {/* <DronePlayer
         rootValue={randomRoot.value.audioSrc}
         dronePlaying={droneOn}
-      />
+      /> */}
 
       <View style={styles.questionCardsCont}>
         <CardButton
@@ -177,7 +168,6 @@ const Question = ({ windowSize }) => {
             data={answer?.name}
             source={answer?.imgSrc}
             style={questionCards}
-            onPress={cardOnPress}
           />
         ) : (
           <CardButton source={blankCard} style={questionCards} />
