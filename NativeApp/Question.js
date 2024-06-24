@@ -15,6 +15,9 @@ import {
   returnRandomCard,
   getAnswerKeyAndInterval,
   getAnswerKeys,
+  getAltOctaveNotes,
+  getIdxAndNotes,
+  getIntervalCardsAsNotes,
 } from './functions/functions'
 
 const blankCard = require('./assets/blankcard.png')
@@ -24,13 +27,15 @@ let answer = ''
 const Question = ({ windowSize }) => {
   const [randomRoot, setRandomRoot] = useState(returnRandomCard(keys))
   const [droneOn, setDroneOn] = useState(true)
+  const [droneReload, setDroneReload] = useState(false)
   const [questionNote, setQuestionNote] = useState(
     returnRandomCard(intervals, true)
   )
   const [cardsArray, setCardsArray] = useState(noteNames)
   const [resultDisplay, setResultDisplay] = useState(false)
-
-  console.log('q red render:', droneOn)
+  //can't be the best way to do this \/
+  let answerAutoPlay = true
+  // console.log('q red render:', autoPlay)
   answer =
     questionType === 'Interval'
       ? getAnswerKeyAndInterval(randomRoot, questionNote, noteNames)
@@ -54,8 +59,10 @@ const Question = ({ windowSize }) => {
 
   function reload() {
     //This isn't right figure out reload replacement
-    // setDroneOn(true)
+    answerAutoPlay = false
+    setDroneReload((prev) => !prev)
     setResultDisplay(false)
+    // setDroneOn(false)
     let randomRootVar =
       questionType === 'Key'
         ? returnRandomCard(noteNames)
@@ -78,52 +85,23 @@ const Question = ({ windowSize }) => {
         : keys
     )
     // startDrone(randomRoot.value.audioSrc)
-    // setTimeout(() => {
-    //   answerCardOnPress(answer)
-    // }, 1000)
   }
 
   function changeQuestionType(inpt) {
     questionType = inpt === 1 ? 'Interval' : inpt === 2 ? 'Note' : 'Key'
-    // console.log(questionType)
     reload()
   }
 
-  function getIdxAndNotes(note) {
-    let getIdxArr = noteAudioSrc.map((x, idx) => {
-      if (x.name === note.name) {
-        return [x, idx]
-      }
-    })
-    let res = getIdxArr.filter((x) => x != undefined)
-    return res[0]
-  }
-
   function cardOnPress(note) {
-    let result
-    let altSource =
-      note.up === null
-        ? randomRoot.idx + 6
-        : note.up
-        ? randomRoot.idx - note.distanceToRoot
-        : note.distanceToRoot + randomRoot.idx
-    altSource = altSource >= 12 ? altSource - 12 : altSource
-    if (note.name === randomRoot.value.name) {
-      result = note.audioSrc['2']
-    } else {
-      //DRY THIS UP 1
-      let cardIdx = getIdxAndNotes(note)
-      let questionIdx = randomRoot.idx
-      if (cardIdx[1] > questionIdx) {
-        result = cardIdx[0].audioSrc['1']
-      } else {
-        result = cardIdx[0].audioSrc['2']
-      }
-    }
-    return result
+    // REWORK for key question
+    let fixedNote =
+      questionType === 'Note' ? getIntervalCardsAsNotes(note, randomRoot) : note
+    fixedNote = getAltOctaveNotes(fixedNote, randomRoot)
+    return fixedNote
   }
 
   function answerCardOnPress(note) {
+    console.log('answer card', note)
     let answerIdx = getIdxAndNotes(note)
     let questionIdx = randomRoot.idx
     let targetNote =
@@ -144,42 +122,45 @@ const Question = ({ windowSize }) => {
 
   return (
     <>
-      {/* <DronePlayer
+      <DronePlayer
         rootValue={randomRoot.value.audioSrc}
         dronePlaying={droneOn}
-      /> */}
-
-      <View style={styles.questionCardsCont}>
-        <CardButton
-          data={randomRoot}
-          source={randomRoot?.value.imgSrc}
-          style={questionCards}
-          onPress={rootCardPress}
-        />
-
-        <CardButton
-          data={answer}
-          source={questionNote?.value.imgSrc}
-          style={questionCards}
-          onPress={answerCardOnPress}
-        />
-        {resultDisplay ? (
+        reload={droneReload}
+      />
+      <View style={styles.qCardsAndButtons}>
+        <View style={styles.questionCardsCont}>
           <CardButton
-            data={answer?.name}
-            source={answer?.imgSrc}
+            data={randomRoot}
+            source={randomRoot?.value.imgSrc}
             style={questionCards}
+            onPress={rootCardPress}
           />
-        ) : (
-          <CardButton source={blankCard} style={questionCards} />
-        )}
 
-        <QuestionButtons
-          reload={reload}
-          changeQuestionType={changeQuestionType}
-          stopDrone={() => setDroneOn(false)}
-        />
+          <CardButton
+            data={answer}
+            source={questionNote?.value.imgSrc}
+            style={questionCards}
+            onPress={answerCardOnPress}
+          
+          />
+          {resultDisplay ? (
+            <CardButton
+              data={answer?.name}
+              source={answer?.imgSrc}
+              style={questionCards}
+            />
+          ) : (
+            <CardButton source={blankCard} style={questionCards} />
+          )}
+        </View>
+        <View style={styles.questionButtons}>
+          <QuestionButtons
+            reload={reload}
+            changeQuestionType={changeQuestionType}
+            stopDrone={() => setDroneOn(false)}
+          />
+        </View>
       </View>
-      {/* <View> <Drones note={randomRoot} /> </View> */}
       <View style={styles.answerCards}>
         <DisplayCardsGrid
           cardOnPress={cardOnPress}
@@ -198,14 +179,25 @@ const Question = ({ windowSize }) => {
 export default Question
 
 const styles = StyleSheet.create({
+  qCardsAndButtons: {
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'flex-start',
+  },
   questionCardsCont: {
-    flex: 2,
     flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'flex-end',
     marginBottom: 0,
+    marginRight: 0,
     padding: 0,
   },
+  questionButtons: {
+    alignItems: 'center',
+    marginTop: 50,
+    padding: 2,
+  },
+
   answerCards: {
     flex: 4,
   },

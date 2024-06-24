@@ -1,20 +1,16 @@
 import { StatusBar } from 'expo-status-bar'
 import { StyleSheet, Text, View, Image, TouchableOpacity } from 'react-native'
-import { playNote, setVolume } from './DronePlayer.js'
 import { keys } from './data/KeyCards.js'
 import { noteAudioSrc } from './data/NotesAudiosSrc.js'
-import PlaySound from './SingleNotePlayer.js'
 
 import CardButton from './CardButton.js'
-let inpt = null
+
 const DisplayCardsGrid = ({ userAnswerSetter, cardsArray, cardOnPress }) => {
   function setAnswer(inpt) {
     //find the note based off the interval
-    console.log('setAnswer. inpt:', inpt)
     let source = findNote(inpt.name, noteAudioSrc)
     let res = source ? cardOnPress(source) : cardOnPress(inpt)
     userAnswerSetter(inpt.name)
-
     return res
   }
 

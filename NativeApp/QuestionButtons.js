@@ -54,15 +54,13 @@ const styles = StyleSheet.create({
     // backgroundColor: 'pink',
     flexDirection: 'column',
     justifyContent: 'center',
-
-    margin: 10,
-    padding: 2,
   },
 
   buttonText: {
     backgroundColor: 'blue',
     fontSize: 10,
     flex: 1,
+
     alignItems: 'center',
     color: 'white',
     margin: 2,

@@ -25,7 +25,6 @@ let rootTwo = null
 
 const DronePlayer = ({ rootValue, dronePlaying }) => {
   useEffect(() => {
-    // console.log('USEstart', rootValue, dronePlaying)
     async function loadSoundObjs() {
       rootOne = await playNoteForLooping(rootValue)
       rootTwo = await playNoteForLooping(rootValue)
@@ -33,16 +32,14 @@ const DronePlayer = ({ rootValue, dronePlaying }) => {
 
     async function startUp() {
       await loadSoundObjs()
-
-      // console.log('async in USe', rootOne, rootTwo)
       startDrone()
     }
-    startUp()
+    dronePlaying ? startUp() : stopDrone
 
     return () => {
       stopDrone()
     }
-  }, [dronePlaying])
+  }, [dronePlaying, rootValue])
 
   const startDrone = async () => {
     if (rootOne) {
@@ -50,7 +47,6 @@ const DronePlayer = ({ rootValue, dronePlaying }) => {
       await rootOne.playAsync()
     }
     if (rootTwo) {
-      console.log('if root sound 2')
       timeoutId = setTimeout(async () => {
         await rootTwo.playAsync()
         // console.log('in timeout')

@@ -5,7 +5,6 @@ import { Audio } from 'expo-av'
 const PlaySound = ({ inpt, playBool }) => {
   const [note, setNote] = useState(inpt)
   const isPlayingRef = useRef(false)
-  console.log('top', note, inpt, isPlayingRef, playBool)
   useEffect(() => {
     return note
       ? () => {
