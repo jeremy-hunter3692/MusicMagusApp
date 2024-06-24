@@ -2,26 +2,39 @@ import React, { useEffect, useState } from 'react'
 import PlaySound from './SingleNotePlayer'
 import { Pressable, Image, Text, View, useWindowDimensions } from 'react-native'
 
-const CardButton = ({ onPress, data, source, autoPlay = false, position }) => {
+let hasPlayed = false
+const CardButton = ({
+  onPress,
+  data,
+  source,
+  autoPlay = false,
+  reTrig,
+  position,
+}) => {
   const { height, width, scale, fontScale } = useWindowDimensions()
   const cardWidth = width * 0.1
   const [note, setNote] = useState()
   const [playBool, setPlayBool] = useState()
-  console.log('cbLoad', autoPlay)
 
-  // useEffect(() => {
-  //   console.log('use/reload?')
-  //   setTimeout(() => (autoPlay ? cardButtonOnPress(data) : ''), 1000)
-  // }, [])
+  autoPlay ? console.log('cbLoad', autoPlay, hasPlayed, reTrig) : ''
 
   function cardButtonOnPress(inpt) {
+    autoPlay ? console.log('cardBUT', data, inpt) : ''
     let res = onPress(inpt)
     setNote(res)
-    setPlayBool((bool) => !bool)
-
+    note ? setPlayBool((bool) => !bool) : ''
+    autoPlay = hasPlayed ? true : false
   }
-
-
+  useEffect(() => {
+    //need clean up timoutId somehow
+    hasPlayed = false
+    autoPlay ? console.log('use', hasPlayed) : ''
+    setTimeout(() => {
+      autoPlay && !hasPlayed
+        ? cardButtonOnPress(data)
+        : console.log('use Ternary false')
+    }, 1000)
+  }, [reTrig])
 
   return (
     <>

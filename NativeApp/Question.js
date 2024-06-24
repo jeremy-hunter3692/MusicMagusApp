@@ -23,8 +23,9 @@ import {
 const blankCard = require('./assets/blankcard.png')
 let questionType = 'Interval'
 let answer = ''
-
+let answerReTrig = false
 const Question = ({ windowSize }) => {
+  ///TO DOO write a funciton for checking questionType. Using it a lot
   const [randomRoot, setRandomRoot] = useState(returnRandomCard(keys))
   const [droneOn, setDroneOn] = useState(true)
   const [droneReload, setDroneReload] = useState(false)
@@ -33,8 +34,9 @@ const Question = ({ windowSize }) => {
   )
   const [cardsArray, setCardsArray] = useState(noteNames)
   const [resultDisplay, setResultDisplay] = useState(false)
+  const [reTrigAnsCard, setReTrigAnsCard] = useState(false)
   //can't be the best way to do this \/
-  let answerAutoPlay = true
+
   // console.log('q red render:', autoPlay)
   answer =
     questionType === 'Interval'
@@ -59,7 +61,7 @@ const Question = ({ windowSize }) => {
 
   function reload() {
     //This isn't right figure out reload replacement
-    answerAutoPlay = false
+    answerReTrig = !answerReTrig
     setDroneReload((prev) => !prev)
     setResultDisplay(false)
     // setDroneOn(false)
@@ -141,7 +143,8 @@ const Question = ({ windowSize }) => {
             source={questionNote?.value.imgSrc}
             style={questionCards}
             onPress={answerCardOnPress}
-          
+            autoPlay={true}
+            reTrig={answerReTrig}
           />
           {resultDisplay ? (
             <CardButton
