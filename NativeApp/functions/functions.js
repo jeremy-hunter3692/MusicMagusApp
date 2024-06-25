@@ -1,14 +1,15 @@
-import { intervals } from '../data/Intervals'
+import { intervals } from '../data/IntervalCards'
 import { noteAudioSrc } from '../data/NotesAudiosSrc'
-
-export function getCorrectAnswer(rootNote, questionValue) {
+//First three funcitons look suspiciously similar -- Also rename them better
+export function getIntervalBetweenTwoNoteCards(rootNote, questionValue) {
   let distInSemiTones = rootNote.idx - questionValue.idx
   let trueDist =
     rootNote.idx > questionValue.idx && rootNote.idx != 11
       ? 12 - distInSemiTones
       : distInSemiTones
 
-  return intervals[Math.abs(trueDist)]
+  let intervalCard = intervals[Math.abs(trueDist)]
+  return intervalCard
 }
 export function getAnswerKeyAndInterval(rootNote, questionValue, array) {
   let answerIdx = rootNote.idx + questionValue.idx
@@ -35,7 +36,7 @@ export function returnRandomCard(array, omitRoot = false) {
   return { value: array[idx], idx: idx }
 }
 
-//TO DOO write a test for htis
+//TO DOO write a test for this And re write as passing
 export function getAltOctaveNotes(note, randomRoot) {
   let result
   let altSource = note.distanceToRoot * (note.up ? -1 : 1)
@@ -54,7 +55,6 @@ export function getAltOctaveNotes(note, randomRoot) {
 }
 
 export function getIdxAndNotes(note, noteSourceArr) {
-
   let getIdxArr = noteAudioSrc.map((x, idx) => {
     if (x.name === note.name) {
       return [x, idx]
@@ -64,8 +64,8 @@ export function getIdxAndNotes(note, noteSourceArr) {
   return res[0]
 }
 
-export function getIntervalCardsAsNotes(note, randomRoot) {
-  let diff = note.distanceToRoot * (note.up ? -1 : 1)
+export function getIntervalCardAsNoteCard(intervalCard, randomRoot) {
+  let diff = intervalCard.distanceToRoot * (intervalCard.up ? -1 : 1)
   let diffAndRootsIdx = randomRoot.idx + diff
   let answerIdx =
     diffAndRootsIdx > 11

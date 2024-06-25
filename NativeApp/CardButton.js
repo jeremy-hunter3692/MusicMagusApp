@@ -16,7 +16,7 @@ const CardButton = ({
   const [note, setNote] = useState()
   const [playBool, setPlayBool] = useState()
 
-  autoPlay ? console.log('cbLoad', autoPlay, hasPlayed, reTrig) : ''
+  autoPlay ? console.log('cbLoad', data, autoPlay, hasPlayed, reTrig) : ''
 
   function cardButtonOnPress(inpt) {
     autoPlay ? console.log('cardBUT', data, inpt) : ''

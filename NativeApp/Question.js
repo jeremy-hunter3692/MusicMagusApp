@@ -11,16 +11,16 @@ import DronePlayer from './DronePlayer.js'
 import NotePlayer from './SingleNotePlayer.js'
 import { noteNames } from './data/NoteNames'
 import {
-  getCorrectAnswer,
+  getIntervalBetweenTwoNoteCards,
   returnRandomCard,
   getAnswerKeyAndInterval,
   getAnswerKeys,
   getAltOctaveNotes,
   getIdxAndNotes,
-  getIntervalCardsAsNotes,
+  getIntervalCardAsNoteCard,
 } from './functions/functions'
 
-const blankCard = require('./assets/blankcard.png')
+const blankCard = require('./assets/BassDrones.png')
 let questionType = 'Interval'
 let answer = ''
 let answerReTrig = false
@@ -34,15 +34,13 @@ const Question = ({ windowSize }) => {
   )
   const [cardsArray, setCardsArray] = useState(noteNames)
   const [resultDisplay, setResultDisplay] = useState(false)
-  const [reTrigAnsCard, setReTrigAnsCard] = useState(false)
-  //can't be the best way to do this \/
 
   // console.log('q red render:', autoPlay)
   answer =
     questionType === 'Interval'
-      ? getAnswerKeyAndInterval(randomRoot, questionNote, noteNames)
+      ? getKeyAndInterval(randomRoot, questionNote, noteNames)
       : questionType === 'Note'
-      ? getCorrectAnswer(randomRoot, questionNote)
+      ? getIntervalBetweenTwoNoteCards(randomRoot, questionNote)
       : getAnswerKeys(randomRoot, questionNote, keys)
 
   const { height: h, width: w, scale, fontScale } = windowSize
@@ -97,17 +95,17 @@ const Question = ({ windowSize }) => {
   function cardOnPress(note) {
     // REWORK for key question
     let fixedNote =
-      questionType === 'Note' ? getIntervalCardsAsNotes(note, randomRoot) : note
+      questionType === 'Note' ? getIntervalCardAsNoteCard(note, randomRoot) : note
     fixedNote = getAltOctaveNotes(fixedNote, randomRoot)
     return fixedNote
   }
 
   function answerCardOnPress(note) {
     console.log('answer card', note)
-    let answerIdx = getIdxAndNotes(note)
-    let questionIdx = randomRoot.idx
+    let answerIdx = questionType === 'Interval' ? getIdxAndNotes(note) : note
+
     let targetNote =
-      answerIdx[1] > questionIdx
+      answerIdx[1] > randomRoot.idx
         ? answerIdx[0].audioSrc['1']
         : answerIdx[0].audioSrc['2']
     return targetNote
@@ -139,6 +137,7 @@ const Question = ({ windowSize }) => {
           />
 
           <CardButton
+            //passing wrong data here
             data={answer}
             source={questionNote?.value.imgSrc}
             style={questionCards}
@@ -150,10 +149,13 @@ const Question = ({ windowSize }) => {
             <CardButton
               data={answer?.name}
               source={answer?.imgSrc}
-              style={questionCards}
+              style={{ questionCards }}
             />
           ) : (
-            <CardButton source={blankCard} style={questionCards} />
+            <CardButton
+              source={blankCard}
+              style={{ backgroundColor: 'yellow' }}
+            />
           )}
         </View>
         <View style={styles.questionButtons}>
