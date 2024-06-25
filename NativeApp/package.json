@@ -9,7 +9,6 @@
     "web": "expo start --web",
     "test": "jest"
   },
-
   "dependencies": {
     "@expo/webpack-config": "^19.0.0",
     "expo": "~49.0.15",
