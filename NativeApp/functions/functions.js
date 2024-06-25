@@ -1,4 +1,4 @@
-import { intervals } from '../data/Intervals'
+import { intervals } from '../data/IntervalCards'
 import { noteAudioSrc } from '../data/NotesAudiosSrc'
 
 export function getCorrectAnswer(rootNote, questionValue) {
@@ -49,12 +49,10 @@ export function getAltOctaveNotes(note, randomRoot) {
         ? cardIdx[0].audioSrc['1']
         : cardIdx[0].audioSrc['2']
   }
-
   return result
 }
 
 export function getIdxAndNotes(note, noteSourceArr) {
-
   let getIdxArr = noteAudioSrc.map((x, idx) => {
     if (x.name === note.name) {
       return [x, idx]

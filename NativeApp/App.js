@@ -1,4 +1,5 @@
 import React, { useState } from 'react'
+import QuestionHolder from './QuestionHolder'
 import { StatusBar } from 'expo-status-bar'
 import {
   Button,
@@ -40,7 +41,8 @@ export default function App() {
           flexDirection: 'column',
         }}
       >
-        <Question windowSize={windowSize} />
+        {/* <Question windowSize={windowSize} /> */}
+        <QuestionHolder windowSize={windowSize} />
       </View>
     </>
   )

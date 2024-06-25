@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import { StyleSheet, Text, View, Pressable } from 'react-native'
-import DropDown from './DropDown'
+import DropDown from './QuestionButtonDropDown'
 
 const QuestionButtons = ({ changeQuestionType, reload, stopDrone }) => {
   const [showDropDown, setShowDropDown] = useState(false)

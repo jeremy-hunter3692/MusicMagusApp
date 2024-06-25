@@ -1,15 +1,14 @@
 import React, { useState, useEffect } from 'react'
-
 import { StyleSheet, Text, View, Pressable } from 'react-native'
 import { keys, getIntervalNo } from './data/KeyCards'
 import { noteAudioSrc } from './data/NotesAudiosSrc.js'
 import DisplayCardsGrid from './DisplayCardsGrid'
 import CardButton from './CardButton'
-import { intervals } from './data/Intervals'
+import { intervals } from './data/IntervalCards.js'
 import QuestionButtons from './QuestionButtons.js'
 import DronePlayer from './DronePlayer.js'
 import NotePlayer from './SingleNotePlayer.js'
-import { noteNames } from './data/NoteNames'
+import { noteNames } from './data/NoteCards.js'
 import {
   getCorrectAnswer,
   returnRandomCard,
@@ -24,7 +23,7 @@ const blankCard = require('./assets/blankcard.png')
 let questionType = 'Interval'
 let answer = ''
 let answerReTrig = false
-const Question = ({ windowSize }) => {
+const Question = ({ windowSize, firstCard, secondCard }) => {
   ///TO DOO write a funciton for checking questionType. Using it a lot
   const [randomRoot, setRandomRoot] = useState(returnRandomCard(keys))
   const [droneOn, setDroneOn] = useState(true)
@@ -36,7 +35,8 @@ const Question = ({ windowSize }) => {
   const [resultDisplay, setResultDisplay] = useState(false)
   const [reTrigAnsCard, setReTrigAnsCard] = useState(false)
   //can't be the best way to do this \/
-
+  // const windowSize = useWindowDimensions()
+  // const { height: h, width: w, scale, fontScale } = windowSize
   // console.log('q red render:', autoPlay)
   answer =
     questionType === 'Interval'
@@ -44,8 +44,6 @@ const Question = ({ windowSize }) => {
       : questionType === 'Note'
       ? getCorrectAnswer(randomRoot, questionNote)
       : getAnswerKeys(randomRoot, questionNote, keys)
-
-  const { height: h, width: w, scale, fontScale } = windowSize
 
   function userAnswerSetter(inpt) {
     setResultDisplay(inpt === answer.name)
@@ -89,10 +87,11 @@ const Question = ({ windowSize }) => {
     // startDrone(randomRoot.value.audioSrc)
   }
 
-  function changeQuestionType(inpt) {
-    questionType = inpt === 1 ? 'Interval' : inpt === 2 ? 'Note' : 'Key'
-    reload()
-  }
+  //IN PARENT
+  // function changeQuestionType(inpt) {
+  //   questionType = inpt === 1 ? 'Interval' : inpt === 2 ? 'Note' : 'Key'
+  //   reload()
+  // }
 
   function cardOnPress(note) {
     // REWORK for key question
@@ -117,29 +116,24 @@ const Question = ({ windowSize }) => {
     droneOn ? setDroneOn(false) : setDroneOn(true)
   }
 
-  const questionCards = {
-    height: w * 0.33,
-    width: w * 0.33,
-  }
-
   return (
     <>
       <DronePlayer
         rootValue={randomRoot.value.audioSrc}
         dronePlaying={droneOn}
-        reload={droneReload}
+        // reload={droneReload}
       />
       <View style={styles.qCardsAndButtons}>
         <View style={styles.questionCardsCont}>
           <CardButton
-            data={randomRoot}
+            data={firstCard}
             source={randomRoot?.value.imgSrc}
             style={questionCards}
             onPress={rootCardPress}
           />
 
           <CardButton
-            data={answer}
+            data={secondCard}
             source={questionNote?.value.imgSrc}
             style={questionCards}
             onPress={answerCardOnPress}
@@ -156,22 +150,22 @@ const Question = ({ windowSize }) => {
             <CardButton source={blankCard} style={questionCards} />
           )}
         </View>
-        <View style={styles.questionButtons}>
+        {/* <View style={styles.questionButtons}>
           <QuestionButtons
             reload={reload}
             changeQuestionType={changeQuestionType}
             stopDrone={() => setDroneOn(false)}
           />
-        </View>
+        </View> */}
       </View>
-      <View style={styles.answerCards}>
+      {/* <View style={styles.answerCards}>
         <DisplayCardsGrid
           cardOnPress={cardOnPress}
           userAnswerSetter={userAnswerSetter}
           cardsArray={cardsArray}
           answer={answer}
         />
-      </View>
+      </View> */}
       <Text style={styles.answer}>
         {resultDisplay ? 'CORRECT!' : 'Less correct'}
       </Text>
@@ -180,6 +174,11 @@ const Question = ({ windowSize }) => {
 }
 
 export default Question
+
+const questionCards = {
+  height: 100,
+  width: 100,
+}
 
 const styles = StyleSheet.create({
   qCardsAndButtons: {

@@ -6,6 +6,7 @@ import { noteAudioSrc } from './data/NotesAudiosSrc.js'
 import CardButton from './CardButton.js'
 
 const DisplayCardsGrid = ({ userAnswerSetter, cardsArray, cardOnPress }) => {
+  console.log({ cardsArray })
   function setAnswer(inpt) {
     //find the note based off the interval
     let source = findNote(inpt.name, noteAudioSrc)
