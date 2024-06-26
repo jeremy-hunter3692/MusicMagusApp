@@ -20,10 +20,16 @@ import {
 } from './functions/functions'
 
 const blankCard = require('./assets/blankcard.png')
-let questionType = 'Interval'
+
 let answer = ''
 let answerReTrig = false
-const Question = ({ windowSize, firstCard, secondCard }) => {
+const Question = ({
+  windowSize,
+  firstCard,
+  secondCard,
+  questionType,
+  resultDisplay,
+}) => {
   ///TO DOO write a funciton for checking questionType. Using it a lot
   const [randomRoot, setRandomRoot] = useState(returnRandomCard(keys))
   const [droneOn, setDroneOn] = useState(true)
@@ -32,30 +38,37 @@ const Question = ({ windowSize, firstCard, secondCard }) => {
     returnRandomCard(intervals, true)
   )
   const [cardsArray, setCardsArray] = useState(noteNames)
-  const [resultDisplay, setResultDisplay] = useState(false)
+
   const [reTrigAnsCard, setReTrigAnsCard] = useState(false)
   //can't be the best way to do this \/
   // const windowSize = useWindowDimensions()
   // const { height: h, width: w, scale, fontScale } = windowSize
-  // console.log('q red render:', autoPlay)
-  answer =
-    questionType === 'Interval'
-      ? getAnswerKeyAndInterval(randomRoot, questionNote, noteNames)
-      : questionType === 'Note'
-      ? getCorrectAnswer(randomRoot, questionNote)
-      : getAnswerKeys(randomRoot, questionNote, keys)
 
-  function userAnswerSetter(inpt) {
-    setResultDisplay(inpt === answer.name)
+  if (questionType === 'Interval') {
+    arrayTemp = noteNames
+    // firstCardTemp = returnRandomCard(keys)
+    // secondCardTemp = returnRandomCard(intervals)
+  } else if (questionType === 'Note') {
+    arrayTemp = intervals
+    // firstCardTemp = returnRandomCard(noteNames)
+    // secondCardTemp = returnRandomCard(noteNames)
+  } else if (questionType === 'Key') {
+    arrayTemp = keys
+    // firstCardTemp = returnRandomCard(intervals)
+    // secondCardTemp = returnRandomCard(keys)
   }
 
-  function returnQuestionNoteWithoutRoot(randomRootVar) {
-    let result
-    do {
-      result = returnRandomCard(noteNames)
-    } while (result.value.name === randomRootVar.value.name)
-    return result
-  }
+  // function userAnswerSetter(inpt) {
+  //   setResultDisplay(inpt === answer.name)
+  // }
+
+  // function returnQuestionNoteWithoutRoot(randomRootVar) {
+  //   let result
+  //   do {
+  //     result = returnRandomCard(noteNames)
+  //   } while (result.value.name === randomRootVar.value.name)
+  //   return result
+  // }
 
   function reload() {
     //This isn't right figure out reload replacement
@@ -102,7 +115,7 @@ const Question = ({ windowSize, firstCard, secondCard }) => {
   }
 
   function answerCardOnPress(note) {
-    console.log('answer card', note)
+    // console.log('answer card', note)
     let answerIdx = getIdxAndNotes(note)
     let questionIdx = randomRoot.idx
     let targetNote =
@@ -127,14 +140,14 @@ const Question = ({ windowSize, firstCard, secondCard }) => {
         <View style={styles.questionCardsCont}>
           <CardButton
             data={firstCard}
-            source={randomRoot?.value.imgSrc}
+            source={firstCard.value.imgSrc}
             style={questionCards}
             onPress={rootCardPress}
           />
 
           <CardButton
             data={secondCard}
-            source={questionNote?.value.imgSrc}
+            source={secondCard?.value.imgSrc}
             style={questionCards}
             onPress={answerCardOnPress}
             autoPlay={true}
@@ -166,9 +179,6 @@ const Question = ({ windowSize, firstCard, secondCard }) => {
           answer={answer}
         />
       </View> */}
-      <Text style={styles.answer}>
-        {resultDisplay ? 'CORRECT!' : 'Less correct'}
-      </Text>
     </>
   )
 }

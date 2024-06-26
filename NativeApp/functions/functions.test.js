@@ -1,4 +1,8 @@
-import { getCorrectAnswer, getAnswerKeyAndInterval } from './functions'
+import {
+  getCorrectAnswer,
+  getAnswerKeyAndInterval,
+  getNoteCardIdxFromIntervalAndKeyCard,
+} from './functions'
 // import { noteNames } from '../data/NoteNames'
 
 // test.each([
@@ -26,9 +30,28 @@ import { getCorrectAnswer, getAnswerKeyAndInterval } from './functions'
 //   expect(answer.name).toBe(expected)
 // })
 
-test('returns alt source (8ve) if answer card is the same as the root', () => {
-  // const note = noteNames[0].audioSrc
-  // console.log(note, noteNames[0])
+// test('returns alt source (8ve) if answer card is the same as the root', () => {
+//   // const note = noteNames[0].audioSrc
+//   // console.log(note, noteNames[0])
 
-  expect(1).toBe(1)
+//   expect(1).toBe(1)
+// })
+
+describe('distance between two notes', () => {
+  test.each([
+    [0, 0, 0],
+    [0, 11, 11],
+    [0, 6, 6],
+    [11, 11, 10],
+    [4, 11, 3],
+    [11, 2, 1],
+    [11, 7, 6],
+  ])(
+    'returns idx of note card from keyCard and Interval',
+    (keyCard, intervalCard, expected) => {
+      let answer = getNoteCardIdxFromIntervalAndKeyCard(keyCard, intervalCard)
+
+      expect(answer).toBe(expected)
+    }
+  )
 })

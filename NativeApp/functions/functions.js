@@ -10,13 +10,27 @@ export function getCorrectAnswer(rootNote, questionValue) {
 
   return intervals[Math.abs(trueDist)]
 }
-export function getAnswerKeyAndInterval(rootNote, questionValue, array) {
-  let answerIdx = rootNote.idx + questionValue.idx
-  let answer =
-    answerIdx >= array.length
-      ? array[answerIdx - array.length]
-      : array[answerIdx]
-  return answer
+
+//TO DO re name and check these functions can't be dired up
+
+export function getDistBetweenTwoCardIdxs(firstCardIDX, secondCardIDX) {
+  return Math.abs(firstCardIDX - secondCardIDX)
+}
+export function getNoteCardIdxFromIntervalAndKeyCard(
+  rootCardIDX,
+  intervalCardIDX
+) {
+  let answerIdx = rootCardIDX + intervalCardIDX
+  console.log('in func', answerIdx)
+  answerIdx = answerIdx > 11 ? answerIdx - 12 : answerIdx
+  console.log('in func2', answerIdx)
+  return answerIdx
+}
+
+export function intervalOfWhatKey(noteCardIDX, IntervalCardIDX) {
+  let answerCardIDX = noteCardIDX - IntervalCardIDX
+  answerCardIDX < 0 ? answerCardIDX + 12 : answerCardIDX
+  return answerCardIDX
 }
 
 export function getAnswerKeys(question, interval, keysArray) {

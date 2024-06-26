@@ -16,10 +16,10 @@ const CardButton = ({
   const [note, setNote] = useState()
   const [playBool, setPlayBool] = useState()
 
-  autoPlay ? console.log('cbLoad', autoPlay, hasPlayed, reTrig) : ''
+  // autoPlay ? console.log('cbLoad', autoPlay, hasPlayed, reTrig) : ''
 
   function cardButtonOnPress(inpt) {
-    autoPlay ? console.log('cardBUT', data, inpt) : ''
+    // autoPlay ? console.log('cardBUT', data, inpt) : ''
     let res = onPress(inpt)
     setNote(res)
     note ? setPlayBool((bool) => !bool) : ''
@@ -28,11 +28,9 @@ const CardButton = ({
   useEffect(() => {
     //need clean up timoutId somehow
     hasPlayed = false
-    autoPlay ? console.log('use', hasPlayed) : ''
+    // autoPlay ? console.log('use', hasPlayed) : ''
     setTimeout(() => {
-      autoPlay && !hasPlayed
-        ? cardButtonOnPress(data)
-        : console.log('use Ternary false')
+      autoPlay && !hasPlayed ? cardButtonOnPress(data) : ''
     }, 1000)
   }, [reTrig])
 
