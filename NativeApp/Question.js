@@ -28,7 +28,7 @@ const Question = ({
   answer,
 }) => {
   ///TO DOO write a funciton for checking questionType. Using it a lot
-  const [randomRoot, setRandomRoot] = useState(returnRandomCard(keys))
+  // const [randomRoot, setRandomRoot] = useState()
   const [droneOn, setDroneOn] = useState(true)
   const [droneReload, setDroneReload] = useState(false)
   const [questionNote, setQuestionNote] = useState(
@@ -128,11 +128,11 @@ const Question = ({
 
   return (
     <>
-      <DronePlayer
+      {/* <DronePlayer
         rootValue={randomRoot.value.audioSrc}
         dronePlaying={droneOn}
         // reload={droneReload}
-      />
+      /> */}
       <View style={styles.qCardsAndButtons}>
         <View style={styles.questionCardsCont}>
           <CardButton

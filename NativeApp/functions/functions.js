@@ -33,20 +33,9 @@ export function intervalOfWhatKey(noteCardIDX, IntervalCardIDX) {
   return answerCardIDX
 }
 
-export function getAnswerKeys(question, interval, keysArray) {
-  let answerIdx = question.idx - interval.idx
-
-  answerIdx = answerIdx < 0 ? answerIdx + keysArray.length : answerIdx
-  return keysArray[answerIdx]
-}
-
-export function returnRandomCard(array, omitRoot = false) {
-  //TODO write a test to check the roots aren't returning in various quesiton catagories
-  //Could also write this as if intervals is passed as an array don't return 1/[0]?
-  let idx = omitRoot
-    ? Math.floor(Math.random() * (array.length - 1) + 1)
-    : Math.floor(Math.random() * array.length)
-  return { value: array[idx], idx: idx }
+export function findNoteEquivalent(inpt, array) {
+  const result = array.filter((x) => x.name === inpt)
+  return result[0]
 }
 
 //TO DOO write a test for htis
@@ -64,6 +53,22 @@ export function getAltOctaveNotes(note, root) {
         : cardIdx[0].audioSrc['2']
   }
   return result
+}
+
+export function getAnswerKeys(question, interval, keysArray) {
+  let answerIdx = question.idx - interval.idx
+
+  answerIdx = answerIdx < 0 ? answerIdx + keysArray.length : answerIdx
+  return keysArray[answerIdx]
+}
+
+export function returnRandomCard(array, omitRoot = false) {
+  //TODO write a test to check the roots aren't returning in various quesiton catagories
+  //Could also write this as if intervals is passed as an array don't return 1/[0]?
+  let idx = omitRoot
+    ? Math.floor(Math.random() * (array.length - 1) + 1)
+    : Math.floor(Math.random() * array.length)
+  return { value: array[idx], idx: idx }
 }
 
 export function getIdxAndNotes(note, noteSourceArr) {

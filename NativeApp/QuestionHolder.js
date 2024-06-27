@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { StyleSheet, View, Text } from 'react-native'
 //
+import DronePlayer from './DronePlayer.js'
 import DisplayCardsGrid from './DisplayCardsGrid.js'
 import QuestionButtons from './QuestionButtons.js'
 import Question from './Question.js'
@@ -12,6 +13,7 @@ import {
   getDistBetweenTwoCardIdxs,
   intervalOfWhatKey,
   getAltOctaveNotes,
+  findNoteEquivalent,
 } from './functions/functions'
 import { intervals } from './data/IntervalCards.js'
 import { keys } from './data/KeyCards.js'
@@ -85,14 +87,9 @@ const QuestionHolder = () => {
   }
 
   function getAudioSrcNotes(noteCard) {
-    let audioSrc = findNoteEquivalent(noteCard.name)
+    let audioSrc = findNoteEquivalent(noteCard.name, noteAudioSrc)
     let correctedAudioSrc = getAltOctaveNotes(audioSrc, firstCard)
     return correctedAudioSrc
-  }
-  function findNoteEquivalent(inpt, array = noteAudioSrc) {
-    console.log('find Notes')
-    const result = array.filter((x) => x.name === inpt)
-    return result[0]
   }
 
   function findKey() {
@@ -120,6 +117,11 @@ const QuestionHolder = () => {
 
   return (
     <>
+      <DronePlayer
+        rootValue={firstCard?.value.audioSrc}
+        dronePlaying={true}
+        // reload={droneReload}
+      />
       <View style={{ backgroundColor: 'yellow' }}>
         <QuestionButtons
           changeQuestionType={changeQuestionType}
