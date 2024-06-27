@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import PlaySound from './SingleNotePlayer'
-import { Pressable, Image, Text, View, useWindowDimensions } from 'react-native'
+import { Pressable, Image, View, useWindowDimensions } from 'react-native'
+import { noteAudioSrc } from './data/NotesAudiosSrc.js'
 
 let hasPlayed = false
 const CardButton = ({
@@ -9,6 +10,7 @@ const CardButton = ({
   source,
   autoPlay = false,
   reTrig,
+  findAudioSourceFunction,
   position,
 }) => {
   const { height, width, scale, fontScale } = useWindowDimensions()
@@ -16,11 +18,11 @@ const CardButton = ({
   const [note, setNote] = useState()
   const [playBool, setPlayBool] = useState()
 
-  // autoPlay ? console.log('cbLoad', autoPlay, hasPlayed, reTrig) : ''
-
   function cardButtonOnPress(inpt) {
-    // autoPlay ? console.log('cardBUT', data, inpt) : ''
-    let res = onPress(inpt)
+    // let noteSource = findNote(inpt.name, noteAudioSrc)
+    let res = findAudioSourceFunction(inpt)
+    onPress(inpt)
+    console.log('res', res, 'inpt', inpt)
     setNote(res)
     note ? setPlayBool((bool) => !bool) : ''
     autoPlay = hasPlayed ? true : false

@@ -21,9 +21,9 @@ export function getNoteCardIdxFromIntervalAndKeyCard(
   intervalCardIDX
 ) {
   let answerIdx = rootCardIDX + intervalCardIDX
-  console.log('in func', answerIdx)
+  // console.log('in func', answerIdx)
   answerIdx = answerIdx > 11 ? answerIdx - 12 : answerIdx
-  console.log('in func2', answerIdx)
+  // console.log('in func2', answerIdx)
   return answerIdx
 }
 
@@ -50,16 +50,16 @@ export function returnRandomCard(array, omitRoot = false) {
 }
 
 //TO DOO write a test for htis
-export function getAltOctaveNotes(note, randomRoot) {
+export function getAltOctaveNotes(note, root) {
   let result
   let altSource = note.distanceToRoot * (note.up ? -1 : 1)
   altSource = altSource > 11 ? altSource - 11 : altSource
-  if (note.name === randomRoot.value.name) {
+  if (note.name === root.value.name) {
     result = note.audioSrc['2']
   } else {
     let cardIdx = getIdxAndNotes(note)
     result =
-      cardIdx[1] > randomRoot.idx
+      cardIdx[1] > root.idx
         ? cardIdx[0].audioSrc['1']
         : cardIdx[0].audioSrc['2']
   }
@@ -77,6 +77,7 @@ export function getIdxAndNotes(note, noteSourceArr) {
 }
 
 export function getIntervalCardsAsNotes(note, randomRoot) {
+  console.log('get interval cards')
   let diff = note.distanceToRoot * (note.up ? -1 : 1)
   let diffAndRootsIdx = randomRoot.idx + diff
   let answerIdx =

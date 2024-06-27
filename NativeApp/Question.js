@@ -2,26 +2,22 @@ import React, { useState, useEffect } from 'react'
 import { StyleSheet, Text, View, Pressable } from 'react-native'
 import { keys, getIntervalNo } from './data/KeyCards'
 import { noteAudioSrc } from './data/NotesAudiosSrc.js'
-import DisplayCardsGrid from './DisplayCardsGrid'
+
 import CardButton from './CardButton'
 import { intervals } from './data/IntervalCards.js'
-import QuestionButtons from './QuestionButtons.js'
+
 import DronePlayer from './DronePlayer.js'
 import NotePlayer from './SingleNotePlayer.js'
 import { noteNames } from './data/NoteCards.js'
 import {
-  getCorrectAnswer,
   returnRandomCard,
-  getAnswerKeyAndInterval,
-  getAnswerKeys,
-  getAltOctaveNotes,
+
   getIdxAndNotes,
   getIntervalCardsAsNotes,
 } from './functions/functions'
 
 const blankCard = require('./assets/blankcard.png')
 
-let answer = ''
 let answerReTrig = false
 const Question = ({
   windowSize,
@@ -29,6 +25,7 @@ const Question = ({
   secondCard,
   questionType,
   resultDisplay,
+  answer,
 }) => {
   ///TO DOO write a funciton for checking questionType. Using it a lot
   const [randomRoot, setRandomRoot] = useState(returnRandomCard(keys))
@@ -44,19 +41,19 @@ const Question = ({
   // const windowSize = useWindowDimensions()
   // const { height: h, width: w, scale, fontScale } = windowSize
 
-  if (questionType === 'Interval') {
-    arrayTemp = noteNames
-    // firstCardTemp = returnRandomCard(keys)
-    // secondCardTemp = returnRandomCard(intervals)
-  } else if (questionType === 'Note') {
-    arrayTemp = intervals
-    // firstCardTemp = returnRandomCard(noteNames)
-    // secondCardTemp = returnRandomCard(noteNames)
-  } else if (questionType === 'Key') {
-    arrayTemp = keys
-    // firstCardTemp = returnRandomCard(intervals)
-    // secondCardTemp = returnRandomCard(keys)
-  }
+  // if (questionType === 'Interval') {
+  //   arrayTemp = noteNames
+  //   // firstCardTemp = returnRandomCard(keys)
+  //   // secondCardTemp = returnRandomCard(intervals)
+  // } else if (questionType === 'Note') {
+  //   arrayTemp = intervals
+  //   // firstCardTemp = returnRandomCard(noteNames)
+  //   // secondCardTemp = returnRandomCard(noteNames)
+  // } else if (questionType === 'Key') {
+  //   arrayTemp = keys
+  //   // firstCardTemp = returnRandomCard(intervals)
+  //   // secondCardTemp = returnRandomCard(keys)
+  // }
 
   // function userAnswerSetter(inpt) {
   //   setResultDisplay(inpt === answer.name)
@@ -116,13 +113,13 @@ const Question = ({
 
   function answerCardOnPress(note) {
     // console.log('answer card', note)
-    let answerIdx = getIdxAndNotes(note)
-    let questionIdx = randomRoot.idx
-    let targetNote =
-      answerIdx[1] > questionIdx
-        ? answerIdx[0].audioSrc['1']
-        : answerIdx[0].audioSrc['2']
-    return targetNote
+    // let answerIdx = getIdxAndNotes(note)
+    // let questionIdx = randomRoot.idx
+    // let targetNote =
+    //   answerIdx[1] > questionIdx
+    //     ? answerIdx[0].audioSrc['1']
+    //     : answerIdx[0].audioSrc['2']
+    // return targetNote
   }
 
   function rootCardPress() {
