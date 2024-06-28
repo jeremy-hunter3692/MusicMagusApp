@@ -1,35 +1,40 @@
 import { intervals } from '../data/IntervalCards'
 import { noteAudioSrc } from '../data/NotesAudiosSrc'
 
-export function getCorrectAnswer(rootNote, questionValue) {
-  let distInSemiTones = rootNote.idx - questionValue.idx
-  let trueDist =
-    rootNote.idx > questionValue.idx && rootNote.idx != 11
-      ? 12 - distInSemiTones
-      : distInSemiTones
+// export function getCorrectAnswer(rootNote, questionValue) {
+//   let distInSemiTones = rootNote.idx - questionValue.idx
+//   let trueDist =
+//     rootNote.idx > questionValue.idx && rootNote.idx != 11
+//       ? 12 - distInSemiTones
+//       : distInSemiTones
 
-  return intervals[Math.abs(trueDist)]
-}
+//   return intervals[Math.abs(trueDist)]
+// }
 
 //TO DO re name and check these functions can't be dired up
+//test this its' not working for correct interval anys
+// export function getDistBetweenTwoCardIdxs(firstCardIDX, secondCardIDX) {
+//   return Math.abs(firstCardIDX - secondCardIDX)
+// }
 
-export function getDistBetweenTwoCardIdxs(firstCardIDX, secondCardIDX) {
-  return Math.abs(firstCardIDX - secondCardIDX)
+export function distanceUpInIntervals(rootNote, targetNote) {
+  return (targetNote - rootNote + 12) % 12
 }
+
 export function getNoteCardIdxFromIntervalAndKeyCard(
   rootCardIDX,
   intervalCardIDX
 ) {
   let answerIdx = rootCardIDX + intervalCardIDX
-  // console.log('in func', answerIdx)
+
   answerIdx = answerIdx > 11 ? answerIdx - 12 : answerIdx
-  // console.log('in func2', answerIdx)
+
   return answerIdx
 }
 
 export function intervalOfWhatKey(noteCardIDX, IntervalCardIDX) {
   let answerCardIDX = noteCardIDX - IntervalCardIDX
-  answerCardIDX < 0 ? answerCardIDX + 12 : answerCardIDX
+  answerCardIDX = answerCardIDX < 0 ? answerCardIDX + 12 : answerCardIDX
   return answerCardIDX
 }
 
@@ -55,12 +60,12 @@ export function getAltOctaveNotes(note, root) {
   return result
 }
 
-export function getAnswerKeys(question, interval, keysArray) {
-  let answerIdx = question.idx - interval.idx
+// export function getAnswerKeys(question, interval, keysArray) {
+//   let answerIdx = question.idx - interval.idx
 
-  answerIdx = answerIdx < 0 ? answerIdx + keysArray.length : answerIdx
-  return keysArray[answerIdx]
-}
+//   answerIdx = answerIdx < 0 ? answerIdx + keysArray.length : answerIdx
+//   return keysArray[answerIdx]
+// }
 
 export function returnRandomCard(array, omitRoot = false) {
   //TODO write a test to check the roots aren't returning in various quesiton catagories
@@ -81,10 +86,10 @@ export function getIdxAndNotes(note, noteSourceArr) {
   return res[0]
 }
 
-export function getIntervalCardsAsNotes(note, randomRoot) {
+export function getIntervalCardsAsNotes(note, root) {
   console.log('get interval cards')
   let diff = note.distanceToRoot * (note.up ? -1 : 1)
-  let diffAndRootsIdx = randomRoot.idx + diff
+  let diffAndRootsIdx = root.idx + diff
   let answerIdx =
     diffAndRootsIdx > 11
       ? diffAndRootsIdx - 12

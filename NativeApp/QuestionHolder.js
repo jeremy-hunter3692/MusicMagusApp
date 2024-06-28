@@ -7,6 +7,7 @@ import QuestionButtons from './QuestionButtons.js'
 import Question from './Question.js'
 //
 import {
+  distanceUpInIntervals,
   returnRandomCard,
   getIntervalCardsAsNotes,
   getNoteCardIdxFromIntervalAndKeyCard,
@@ -34,7 +35,7 @@ const QuestionHolder = () => {
   //Might not need, props should re load the children correctly...?
   const [dronePlaying, setDronePlaying] = useState(true)
   // const [reload, setRoload] = useState
-
+  console.log('correct', correctAnswer)
   useEffect(() => {
     let arrayTemp = []
     let firstCardTemp = 0
@@ -43,30 +44,28 @@ const QuestionHolder = () => {
 
     if (questionType === 'Interval') {
       arrayTemp = noteNames
-
       firstCardTemp = returnRandomCard(keys)
       secondCardTemp = returnRandomCard(intervals)
-
       answerIdxTemp = getNoteCardIdxFromIntervalAndKeyCard(
         firstCardTemp.idx,
         secondCardTemp.idx
       )
     } else if (questionType === 'Note') {
       arrayTemp = intervals
-
       firstCardTemp = returnRandomCard(keys)
       secondCardTemp = returnRandomCard(noteNames)
-      answerIdxTemp = getDistBetweenTwoCardIdxs(
+      //
+      answerIdxTemp = distanceUpInIntervals(
         firstCardTemp.idx,
         secondCardTemp.idx
       )
+      console.log('IDXS', firstCardTemp.idx, secondCardTemp.idx, answerIdxTemp)
     } else if (questionType === 'Key') {
       arrayTemp = keys
-
       firstCardTemp = returnRandomCard(noteNames)
       secondCardTemp = returnRandomCard(intervals)
+      //root note and then target note - ie. start Idx and Target Idx
       answerIdxTemp = intervalOfWhatKey(firstCardTemp.idx, secondCardTemp.idx)
-      // console.log('key', firstCardTemp, secondCardTemp, answerIdxTemp)
     }
     setDisplayInputCardArray(arrayTemp)
     setFirstCard(firstCardTemp)
@@ -76,25 +75,34 @@ const QuestionHolder = () => {
   }, [questionType, reloadBool])
 
   function getAudioSrcFromCard(cardAny) {
+    console.log('audio src from card')
     let audioSrc =
       questionType === 'Interval'
         ? getAudioSrcNotes(cardAny)
         : questionType === 'Note'
-        ? getIntervalCardsAsNotes()
-        : findKey()
+        ? getAudioSrcInterval(cardAny)
+        : getAudioSrcKeys(cardAny)
 
     return audioSrc
   }
 
-  function getAudioSrcNotes(noteCard) {
-    let audioSrc = findNoteEquivalent(noteCard.name, noteAudioSrc)
+  function getAudioSrcInterval(intervalCard) {
+    let audioSrc = getIntervalCardsAsNotes(intervalCard, firstCard)
     let correctedAudioSrc = getAltOctaveNotes(audioSrc, firstCard)
     return correctedAudioSrc
   }
 
-  function findKey() {
-    console.log('temp for Find keys audio source')
+  function getAudioSrcNotes(cardAny) {
+    //TO DO make this work for standard things
+    getAltOctaveNotes(note, root)
   }
+
+  function getAudioSrcKeys(cardAny) {
+    let res = noteAudioSrc.filter((x) => x.name === cardAny.name)
+    console.log(res[0].audioSrc['1'], cardAny, 'keys audio src finder')
+    return res[0].audioSrc['1']
+  }
+
   function changeQuestionType(inpt) {
     let type = inpt === 1 ? 'Interval' : inpt === 2 ? 'Note' : 'Key'
     setQuestionType(type)
@@ -116,12 +124,13 @@ const QuestionHolder = () => {
   }
 
   return (
+    // <>
+    //   <DronePlayer
+    //     rootValue={firstCard?.value.audioSrc}
+    //     dronePlaying={dronePlaying}
+    //     // reload={droneReload}
+    //   />
     <>
-      <DronePlayer
-        rootValue={firstCard?.value.audioSrc}
-        dronePlaying={true}
-        // reload={droneReload}
-      />
       <View style={{ backgroundColor: 'yellow' }}>
         <QuestionButtons
           changeQuestionType={changeQuestionType}

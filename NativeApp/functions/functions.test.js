@@ -2,6 +2,7 @@ import {
   getCorrectAnswer,
   getAnswerKeyAndInterval,
   getNoteCardIdxFromIntervalAndKeyCard,
+  distanceUpInIntervals,
 } from './functions'
 // import { noteNames } from '../data/NoteNames'
 
@@ -50,6 +51,23 @@ describe('distance between two notes', () => {
     'returns idx of note card from keyCard and Interval',
     (keyCard, intervalCard, expected) => {
       let answer = getNoteCardIdxFromIntervalAndKeyCard(keyCard, intervalCard)
+
+      expect(answer).toBe(expected)
+    }
+  )
+})
+describe('distanceUpInIntervals', () => {
+  test.each([
+    [0, 0, 0],
+    [0, 7, 7],
+    [11, 0, 1],
+    [11, 10, 11],
+    [6,0,6]
+    
+  ])(
+    'gets distance or itirating forward through array. I.e  given  what interval is y(note) from x(key)',
+    (rootNoteIDX, secondCardIdx, expected) => {
+      let answer = distanceUpInIntervals(rootNoteIDX, secondCardIdx)
 
       expect(answer).toBe(expected)
     }
