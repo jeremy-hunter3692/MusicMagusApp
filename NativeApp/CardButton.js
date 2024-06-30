@@ -4,6 +4,7 @@ import { Pressable, Image, View, useWindowDimensions } from 'react-native'
 import { noteAudioSrc } from './data/NotesAudiosSrc.js'
 
 let hasPlayed = false
+
 const CardButton = ({
   onPress,
   data,
@@ -28,12 +29,11 @@ const CardButton = ({
     autoPlay = hasPlayed ? true : false
   }
   useEffect(() => {
-    //need clean up timoutId somehow
     hasPlayed = false
-    // autoPlay ? console.log('use', hasPlayed) : ''
-    setTimeout(() => {
+    let timeOutId = setTimeout(() => {
       autoPlay && !hasPlayed ? cardButtonOnPress(data) : ''
     }, 1000)
+    return () => clearTimeout(timeOutId)
   }, [reTrig])
 
   return (

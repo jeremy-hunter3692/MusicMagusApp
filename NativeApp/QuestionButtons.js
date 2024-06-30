@@ -8,6 +8,7 @@ const QuestionButtons = ({ changeQuestionType, reload, stopDrone }) => {
   function changeQuestionAndReset(inpt) {
     changeQuestionType(inpt)
     setShowDropDown(false)
+    reload()
   }
   function dropDownSwap() {
     setShowDropDown(!showDropDown)
@@ -54,6 +55,8 @@ const styles = StyleSheet.create({
     // backgroundColor: 'pink',
     flexDirection: 'column',
     justifyContent: 'center',
+    flex: 1,
+
   },
 
   buttonText: {

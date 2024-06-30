@@ -76,8 +76,8 @@ export function returnRandomCard(array, omitRoot = false) {
   return { value: array[idx], idx: idx }
 }
 
-export function getIdxAndNotes(note, noteSourceArr) {
-  let getIdxArr = noteAudioSrc.map((x, idx) => {
+export function getIdxAndNotes(note, array = noteAudioSrc) {
+  let getIdxArr = array.map((x, idx) => {
     if (x.name === note.name) {
       return [x, idx]
     }

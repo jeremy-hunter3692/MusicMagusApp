@@ -11,10 +11,8 @@ import {
   returnRandomCard,
   getIntervalCardsAsNotes,
   getNoteCardIdxFromIntervalAndKeyCard,
-  getDistBetweenTwoCardIdxs,
   intervalOfWhatKey,
   getAltOctaveNotes,
-  findNoteEquivalent,
 } from './functions/functions'
 import { intervals } from './data/IntervalCards.js'
 import { keys } from './data/KeyCards.js'
@@ -28,7 +26,7 @@ const QuestionHolder = () => {
   const [displayInputCardArray, setDisplayInputCardArray] = useState(noteNames)
   const [firstCard, setFirstCard] = useState(() => returnRandomCard(keys))
   const [secondCard, setSecondCard] = useState(() =>
-    returnRandomCard(intervals)
+    returnRandomCard(intervals, true)
   )
   const [correctAnswer, setCorrectAnswer] = useState()
   const [userAnswer, setUserAnswer] = useState()
@@ -45,7 +43,7 @@ const QuestionHolder = () => {
     if (questionType === 'Interval') {
       arrayTemp = noteNames
       firstCardTemp = returnRandomCard(keys)
-      secondCardTemp = returnRandomCard(intervals)
+      secondCardTemp = returnRandomCard(intervals, true)
       answerIdxTemp = getNoteCardIdxFromIntervalAndKeyCard(
         firstCardTemp.idx,
         secondCardTemp.idx
@@ -53,8 +51,7 @@ const QuestionHolder = () => {
     } else if (questionType === 'Note') {
       arrayTemp = intervals
       firstCardTemp = returnRandomCard(keys)
-      secondCardTemp = returnRandomCard(noteNames)
-      //
+      secondCardTemp = returnRandomCard(noteNames, true)
       answerIdxTemp = distanceUpInIntervals(
         firstCardTemp.idx,
         secondCardTemp.idx
@@ -63,7 +60,7 @@ const QuestionHolder = () => {
     } else if (questionType === 'Key') {
       arrayTemp = keys
       firstCardTemp = returnRandomCard(noteNames)
-      secondCardTemp = returnRandomCard(intervals)
+      secondCardTemp = returnRandomCard(intervals, true)
       //root note and then target note - ie. start Idx and Target Idx
       answerIdxTemp = intervalOfWhatKey(firstCardTemp.idx, secondCardTemp.idx)
     }
@@ -71,11 +68,9 @@ const QuestionHolder = () => {
     setFirstCard(firstCardTemp)
     setSecondCard(secondCardTemp)
     setCorrectAnswer(arrayTemp[answerIdxTemp])
-    // setFindFunction(funcTemp)
   }, [questionType, reloadBool])
 
   function getAudioSrcFromCard(cardAny) {
-    console.log('audio src from card')
     let audioSrc =
       questionType === 'Interval'
         ? getAudioSrcNotes(cardAny)
@@ -103,6 +98,8 @@ const QuestionHolder = () => {
     return res[0].audioSrc['1']
   }
 
+  function droneReload() {}
+
   function changeQuestionType(inpt) {
     let type = inpt === 1 ? 'Interval' : inpt === 2 ? 'Note' : 'Key'
     setQuestionType(type)
@@ -124,34 +121,37 @@ const QuestionHolder = () => {
   }
 
   return (
-    // <>
-    //   <DronePlayer
-    //     rootValue={firstCard?.value.audioSrc}
-    //     dronePlaying={dronePlaying}
-    //     // reload={droneReload}
-    //   />
     <>
-      <View style={{ backgroundColor: 'yellow' }}>
-        <QuestionButtons
-          changeQuestionType={changeQuestionType}
-          reload={reload}
-          stopDrone={stopDrone}
-        />
-        <Question
-          firstCard={firstCard}
-          secondCard={secondCard}
-          rootCardPress={rootCardPress}
-          resultDisplay={userAnswer?.name === correctAnswer?.name}
-          answer={correctAnswer}
-        />
+      <DronePlayer
+        rootValue={firstCard?.value.audioSrc}
+        dronePlaying={dronePlaying}
+        reload={droneReload}
+      />
+      <View>
+        <View style={styles.questionCardsCont}>
+          <Question
+            firstCard={firstCard}
+            secondCard={secondCard}
+            rootCardPress={rootCardPress}
+            resultDisplay={userAnswer?.name === correctAnswer?.name}
+            answer={correctAnswer}
+          />
+          <View style={styles.questionButtons}>
+            <QuestionButtons
+              changeQuestionType={changeQuestionType}
+              reload={reload}
+              stopDrone={stopDrone}
+            />
+          </View>
+        </View>
+        {displayInputCardArray && (
+          <DisplayCardsGrid
+            cardsArray={displayInputCardArray}
+            userAnswerSetter={userAnswerSetter}
+            findNoteFunction={getAudioSrcFromCard}
+          />
+        )}
       </View>
-      {displayInputCardArray && (
-        <DisplayCardsGrid
-          cardsArray={displayInputCardArray}
-          userAnswerSetter={userAnswerSetter}
-          findNoteFunction={getAudioSrcFromCard}
-        />
-      )}
       <Text style={styles.answer}>
         {userAnswer?.name === correctAnswer?.name ? 'CORRECT!' : 'Less correct'}
       </Text>
@@ -160,6 +160,7 @@ const QuestionHolder = () => {
 }
 
 export default QuestionHolder
+
 const styles = StyleSheet.create({
   qCardsAndButtons: {
     flexDirection: 'row',
@@ -167,26 +168,23 @@ const styles = StyleSheet.create({
     alignItems: 'flex-start',
   },
   questionCardsCont: {
+    backgroundColor: 'yellow',
     flexDirection: 'row',
     justifyContent: 'center',
-    alignItems: 'flex-end',
     marginBottom: 0,
     marginRight: 0,
     padding: 0,
   },
   questionButtons: {
+    justifyContent: 'center',
     alignItems: 'center',
-    marginTop: 50,
-    padding: 2,
-  },
-
-  answerCards: {
-    flex: 4,
   },
   answer: {
+    color:'white',
+    backgroundColor:'black',
     textAlign: 'center',
-    flex: 1,
-    color: 'white',
-    backgroundColor: 'black',
+    
+    marginTop: 20,
+    fontSize: 18,
   },
 })
