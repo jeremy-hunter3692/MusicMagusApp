@@ -89,7 +89,7 @@ const QuestionHolder = () => {
 
   function getAudioSrcNotes(cardAny) {
     //TO DO make this work for standard things
-    getAltOctaveNotes(note, root)
+    getAltOctaveNotes(cardAny, root)
   }
 
   function getAudioSrcKeys(cardAny) {
@@ -106,7 +106,8 @@ const QuestionHolder = () => {
   }
 
   function rootCardPress() {
-    droneOn ? setDroneOn(false) : setDroneOn(true)
+    //to do error with sound not loaded on pressing this
+    dronePlaying ? setDronePlaying(false) : setDronePlaying(true)
   }
 
   function reload() {
@@ -127,7 +128,7 @@ const QuestionHolder = () => {
         dronePlaying={dronePlaying}
         reload={droneReload}
       />
-      <View>
+      <View style={styles.qCardsAndButtons}>
         <View style={styles.questionCardsCont}>
           <Question
             firstCard={firstCard}
@@ -144,14 +145,15 @@ const QuestionHolder = () => {
             />
           </View>
         </View>
-        {displayInputCardArray && (
-          <DisplayCardsGrid
-            cardsArray={displayInputCardArray}
-            userAnswerSetter={userAnswerSetter}
-            findNoteFunction={getAudioSrcFromCard}
-          />
-        )}
       </View>
+      {displayInputCardArray && (
+        <DisplayCardsGrid
+          cardsArray={displayInputCardArray}
+          userAnswerSetter={userAnswerSetter}
+          findNoteFunction={getAudioSrcFromCard}
+        />
+      )}
+
       <Text style={styles.answer}>
         {userAnswer?.name === correctAnswer?.name ? 'CORRECT!' : 'Less correct'}
       </Text>
@@ -163,11 +165,15 @@ export default QuestionHolder
 
 const styles = StyleSheet.create({
   qCardsAndButtons: {
+    flex: 1,
     flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'flex-start',
   },
   questionCardsCont: {
+    flex: 4,
+    borderWidth: 1,
+    borderColor: 'red',
     backgroundColor: 'yellow',
     flexDirection: 'row',
     justifyContent: 'center',
@@ -176,14 +182,20 @@ const styles = StyleSheet.create({
     padding: 0,
   },
   questionButtons: {
+    // flex: 1,
+    minHeight: 200,
+    minWidth: 100,
+    flexShrink: 0,
+    borderWidth: 1,
+    // borderColor: 'red',
     justifyContent: 'center',
     alignItems: 'center',
   },
   answer: {
-    color:'white',
-    backgroundColor:'black',
+    color: 'white',
+    backgroundColor: 'black',
     textAlign: 'center',
-    
+
     marginTop: 20,
     fontSize: 18,
   },

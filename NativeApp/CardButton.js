@@ -21,10 +21,11 @@ const CardButton = ({
 
   function cardButtonOnPress(inpt) {
     // let noteSource = findNote(inpt.name, noteAudioSrc)
-    let res = findAudioSourceFunction(inpt)
+    let res = findAudioSourceFunction ? findAudioSourceFunction(inpt) : ''
     onPress(inpt)
     // console.log('res', res, 'inpt', inpt)
-    setNote(res)
+    res ? setNote(res) : ''
+
     note ? setPlayBool((bool) => !bool) : ''
     autoPlay = hasPlayed ? true : false
   }

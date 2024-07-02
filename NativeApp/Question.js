@@ -11,7 +11,6 @@ import NotePlayer from './SingleNotePlayer.js'
 import { noteNames } from './data/NoteCards.js'
 import {
   returnRandomCard,
-
   getIdxAndNotes,
   getIntervalCardsAsNotes,
 } from './functions/functions'
@@ -23,20 +22,11 @@ const Question = ({
   windowSize,
   firstCard,
   secondCard,
-  questionType,
+
   resultDisplay,
   answer,
+  rootCardPress,
 }) => {
-  ///TO DOO write a funciton for checking questionType. Using it a lot
-  // const [randomRoot, setRandomRoot] = useState()
-  const [droneOn, setDroneOn] = useState(true)
-  const [droneReload, setDroneReload] = useState(false)
-  const [questionNote, setQuestionNote] = useState(
-    returnRandomCard(intervals, true)
-  )
-  const [cardsArray, setCardsArray] = useState(noteNames)
-
-  const [reTrigAnsCard, setReTrigAnsCard] = useState(false)
   //can't be the best way to do this \/
   // const windowSize = useWindowDimensions()
   // const { height: h, width: w, scale, fontScale } = windowSize
@@ -49,7 +39,7 @@ const Question = ({
   //   arrayTemp = intervals
   //   // firstCardTemp = returnRandomCard(noteNames)
   //   // secondCardTemp = returnRandomCard(noteNames)
-  // } else if (questionType === 'Key') {
+  // } else if (wquestionType === 'Key') {
   //   arrayTemp = keys
   //   // firstCardTemp = returnRandomCard(intervals)
   //   // secondCardTemp = returnRandomCard(keys)
@@ -67,35 +57,35 @@ const Question = ({
   //   return result
   // }
 
-  function reload() {
-    //This isn't right figure out reload replacement
-    answerReTrig = !answerReTrig
-    setDroneReload((prev) => !prev)
-    setResultDisplay(false)
-    // setDroneOn(false)
-    let randomRootVar =
-      questionType === 'Key'
-        ? returnRandomCard(noteNames)
-        : returnRandomCard(keys)
-    setRandomRoot(randomRootVar)
+  // function reload() {
+  //   //This isn't right figure out reload replacement
+  //   answerReTrig = !answerReTrig
+  //   setDroneReload((prev) => !prev)
+  //   setResultDisplay(false)
+  //   // setDroneOn(false)
+  //   let randomRootVar =
+  //     questionType === 'Key'
+  //       ? returnRandomCard(noteNames)
+  //       : returnRandomCard(keys)
+  //   setRandomRoot(randomRootVar)
 
-    setQuestionNote(
-      questionType === 'Interval'
-        ? returnRandomCard(intervals, true)
-        : questionType === 'Note'
-        ? returnQuestionNoteWithoutRoot(randomRootVar)
-        : returnRandomCard(intervals, true)
-    )
+  //   setQuestionNote(
+  //     questionType === 'Interval'
+  //       ? returnRandomCard(intervals, true)
+  //       : questionType === 'Note'
+  //       ? returnQuestionNoteWithoutRoot(randomRootVar)
+  //       : returnRandomCard(intervals, true)
+  //   )
 
-    setCardsArray(
-      questionType === 'Interval'
-        ? noteNames
-        : questionType === 'Note'
-        ? intervals
-        : keys
-    )
-    // startDrone(randomRoot.value.audioSrc)
-  }
+  //   setCardsArray(
+  //     questionType === 'Interval'
+  //       ? noteNames
+  //       : questionType === 'Note'
+  //       ? intervals
+  //       : keys
+  //   )
+  //   // startDrone(randomRoot.value.audioSrc)
+  // }
 
   //IN PARENT
   // function changeQuestionType(inpt) {
@@ -103,16 +93,16 @@ const Question = ({
   //   reload()
   // }
 
-  function cardOnPress(note) {
-    // REWORK for key question
-    let fixedNote =
-      questionType === 'Note' ? getIntervalCardsAsNotes(note, randomRoot) : note
-    fixedNote = getAltOctaveNotes(fixedNote, randomRoot)
-    return fixedNote
-  }
+  // function cardOnPress(note) {
+  //   // REWORK for key question
+  //   let fixedNote =
+  //     questionType === 'Note' ? getIntervalCardsAsNotes(note, randomRoot) : note
+  //   fixedNote = getAltOctaveNotes(fixedNote, randomRoot)
+  //   return fixedNote
+  // }
 
   function answerCardOnPress(note) {
-    // console.log('answer card', note)
+    console.log('answer card', note)
     // let answerIdx = getIdxAndNotes(note)
     // let questionIdx = randomRoot.idx
     // let targetNote =
@@ -122,24 +112,19 @@ const Question = ({
     // return targetNote
   }
 
-  function rootCardPress() {
-    droneOn ? setDroneOn(false) : setDroneOn(true)
+  function droneSetter() {
+    rootCardPress()
   }
 
   return (
     <>
-      {/* <DronePlayer
-        rootValue={randomRoot.value.audioSrc}
-        dronePlaying={droneOn}
-        // reload={droneReload}
-      /> */}
       <View style={styles.qCardsAndButtons}>
         <View style={styles.questionCardsCont}>
           <CardButton
             data={firstCard}
             source={firstCard.value.imgSrc}
             style={questionCards}
-            onPress={rootCardPress}
+            onPress={droneSetter}
           />
 
           <CardButton
