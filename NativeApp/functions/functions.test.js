@@ -3,40 +3,35 @@ import {
   getAnswerKeyAndInterval,
   getNoteCardIdxFromIntervalAndKeyCard,
   distanceUpInIntervals,
+  intervalOfWhatKey,
+  getAltOctaveNotes,
 } from './functions'
-// import { noteNames } from '../data/NoteNames'
+import { noteNames } from '../data/NoteCards'
 
-// test.each([
-//   [{ idx: 0 }, { idx: 11 }, '7'],
-//   [{ idx: 1 }, { idx: 0 }, '7'],
-//   [{ idx: 11 }, { idx: 0 }, '7'],
-//   [{ idx: 4 }, { idx: 2 }, 'b7'],
-//   [{ idx: 6 }, { idx: 0 }, '#4/b5'],
-//   [{ idx: 0 }, { idx: 6 }, '#4/b5'],
-// ])('finds interval between two notes', (note1, note2, expected) => {
-//   let answer = getCorrectAnswer(note1, note2)
+test.each([
+  [0, 8, 'E'],
+  [8, 1, 'G'],
+  [0, 0, 'C'],
+  [11, 0, 'B'],
+  [11, 8, 'Eb'],
+  [4, 6, 'Bb'],
+])(
+  'finds note x interval away from root notes',
+  (noteCardIdx, intervalCardIdx, expected) => {
+    let answerIdx = intervalOfWhatKey(noteCardIdx, intervalCardIdx)
+    let actualAnswer = noteNames[answerIdx]
+    expect(actualAnswer.name).toBe(expected)
+  }
+)
+describe('getAltOvtaveNotes(notes, root)', () => {
+  test.todo('returns alt source (8ve) if answer card is the same as the root')
+  test('returns an audio source', () => {
+    const note = getAltOctaveNotes({ name: 'C' }, { value: { name: 'C' } })
+    console.log('nt', note)
 
-//   expect(answer.name).toBe(expected)
-// })
-
-// test.each([
-//   [{ idx: 8 }, { idx: 4 }, 'C'],
-//   [{ idx: 6 }, { idx: 11 }, 'F'],
-//   [{ idx: 11 }, { idx: 11 }, 'Bb'],
-//   [{ idx: 10 }, { idx: 11 }, 'A'],
-//   [{ idx: 11 }, { idx: 1 }, 'C'],
-// ])('finds note x interval away from root notes', (note1, note2, expected) => {
-//   let answer = getAnswerKeyAndInterval(note1, note2, noteNames)
-
-//   expect(answer.name).toBe(expected)
-// })
-
-// test('returns alt source (8ve) if answer card is the same as the root', () => {
-//   // const note = noteNames[0].audioSrc
-//   // console.log(note, noteNames[0])
-
-//   expect(1).toBe(1)
-// })
+    expect(note.slice(-4)).toBe('.ogg')
+  })
+})
 
 describe('distance between two notes', () => {
   test.each([
@@ -56,14 +51,14 @@ describe('distance between two notes', () => {
     }
   )
 })
+
 describe('distanceUpInIntervals', () => {
   test.each([
     [0, 0, 0],
     [0, 7, 7],
     [11, 0, 1],
     [11, 10, 11],
-    [6,0,6]
-    
+    [6, 0, 6],
   ])(
     'gets distance or itirating forward through array. I.e  given  what interval is y(note) from x(key)',
     (rootNoteIDX, secondCardIdx, expected) => {

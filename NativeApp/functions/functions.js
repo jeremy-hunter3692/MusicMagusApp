@@ -39,25 +39,28 @@ export function intervalOfWhatKey(noteCardIDX, IntervalCardIDX) {
 }
 
 export function findNoteEquivalent(inpt, array) {
-  const result = array.filter((x) => x.name === inpt)
+  console.log('find note', inpt, array)
+  const result = array.filter((x) => x.name === inpt.name)
+  console.log({ result })
   return result[0]
 }
 
 //TO DOO write a test for htis
 export function getAltOctaveNotes(note, root) {
-  let result
-  let altSource = note.distanceToRoot * (note.up ? -1 : 1)
-  altSource = altSource > 11 ? altSource - 11 : altSource
-  if (note.name === root.value.name) {
-    result = note.audioSrc['2']
-  } else {
-    let cardIdx = getIdxAndNotes(note)
-    result =
-      cardIdx[1] > root.idx
-        ? cardIdx[0].audioSrc['1']
-        : cardIdx[0].audioSrc['2']
-  }
-  return result
+  console.log({ note })
+  // let result
+  // let altSource //= note.distanceToRoot * (note.up ? -1 : 1)
+  // altSource = altSource > 11 ? altSource - 11 : altSource
+  // if (note.name === root.value.name) {
+  //   result = note.audioSrc['2']
+  // } else {
+  //   let cardIdx = getIdxAndNotes(note)
+  //   result =
+  //     cardIdx[1] > root.idx
+  //       ? cardIdx[0].audioSrc['1']
+  //       : cardIdx[0].audioSrc['2']
+  // }
+  return '.ogg'
 }
 
 // export function getAnswerKeys(question, interval, keysArray) {

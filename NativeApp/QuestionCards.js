@@ -1,0 +1,70 @@
+import React, { useState, useEffect } from 'react'
+import { StyleSheet, View } from 'react-native'
+import CardButton from './CardButton'
+
+const blankCard = require('./assets/blankcard.png')
+
+let answerReTrig = false
+const QuestionCards = ({
+  firstCard,
+  secondCard,
+  findNoteFunction,
+  resultDisplay,
+  answer,
+  rootCardPress,
+  answerCardOnPress,
+}) => {
+  function droneSetter() {
+    rootCardPress()
+  }
+  console.log({ answer })
+  return (
+    <>
+      <View style={styles.questionCardsCont}>
+        <CardButton
+          data={firstCard}
+          source={firstCard.value.imgSrc}
+          style={questionCards}
+          onPress={droneSetter}
+        />
+        <CardButton
+          data={secondCard}
+          source={secondCard?.value.imgSrc}
+          style={questionCards}
+          answer={answer}
+          onPress={answerCardOnPress}
+          findAudioSourceFunction={findNoteFunction}
+          autoPlay={true}
+          reTrig={answerReTrig}
+        />
+        {resultDisplay ? (
+          <CardButton
+            data={answer?.name}
+            source={answer?.imgSrc}
+            style={questionCards}
+          />
+        ) : (
+          <CardButton source={blankCard} style={questionCards} />
+        )}
+      </View>
+    </>
+  )
+}
+
+export default QuestionCards
+
+const questionCards = {
+  height: 100,
+  width: 100,
+}
+
+const styles = StyleSheet.create({
+  questionCardsCont: {
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'flex-end',
+    marginBottom: 0,
+    marginRight: 0,
+    padding: 0,
+  },
+})

@@ -4,7 +4,7 @@ import { StyleSheet, View, Text } from 'react-native'
 import DronePlayer from './DronePlayer.js'
 import DisplayCardsGrid from './DisplayCardsGrid.js'
 import QuestionButtons from './QuestionButtons.js'
-import Question from './Question.js'
+import QuestionCards from './QuestionCards.js'
 //
 import {
   distanceUpInIntervals,
@@ -13,6 +13,7 @@ import {
   getNoteCardIdxFromIntervalAndKeyCard,
   intervalOfWhatKey,
   getAltOctaveNotes,
+  findNoteEquivalent,
 } from './functions/functions'
 import { intervals } from './data/IntervalCards.js'
 import { keys } from './data/KeyCards.js'
@@ -34,6 +35,7 @@ const QuestionHolder = () => {
   const [dronePlaying, setDronePlaying] = useState(true)
   // const [reload, setRoload] = useState
   console.log('correct', correctAnswer)
+
   useEffect(() => {
     let arrayTemp = []
     let firstCardTemp = 0
@@ -70,15 +72,15 @@ const QuestionHolder = () => {
     setCorrectAnswer(arrayTemp[answerIdxTemp])
   }, [questionType, reloadBool])
 
-  function getAudioSrcFromCard(cardAny) {
-    let audioSrc =
+  function getAudioSrcIdxFromCard(cardAny) {
+    console.log({ cardAny })
+    let audioSrcIdx =
       questionType === 'Interval'
         ? getAudioSrcNotes(cardAny)
         : questionType === 'Note'
         ? getAudioSrcInterval(cardAny)
         : getAudioSrcKeys(cardAny)
-
-    return audioSrc
+    return audioSrcIdx
   }
 
   function getAudioSrcInterval(intervalCard) {
@@ -86,18 +88,22 @@ const QuestionHolder = () => {
     let correctedAudioSrc = getAltOctaveNotes(audioSrc, firstCard)
     return correctedAudioSrc
   }
-
-  function getAudioSrcNotes(cardAny) {
-    //TO DO make this work for standard things
-    getAltOctaveNotes(cardAny, root)
-  }
-
   function getAudioSrcKeys(cardAny) {
     let res = noteAudioSrc.filter((x) => x.name === cardAny.name)
-    console.log(res[0].audioSrc['1'], cardAny, 'keys audio src finder')
-    return res[0].audioSrc['1']
+    // console.log(res[0].audioSrc['1'], cardAny, 'keys audio src finder')
+    return res[0]
   }
 
+  function getAudioSrcNotes(cardAny) {
+    let audioSource = findNoteEquivalent(cardAny, noteAudioSrc)
+
+    let altOctave = getAltOctaveNotes(audioSource, firstCard)
+    return altOctave
+  }
+
+  function answerCardOnPress(inpt) {
+    console.log('answer press', inpt)
+  }
   function droneReload() {}
 
   function changeQuestionType(inpt) {
@@ -128,13 +134,14 @@ const QuestionHolder = () => {
         dronePlaying={dronePlaying}
         reload={droneReload}
       />
-      <View style={styles.qCardsAndButtons}>
+      <View style={styles.qCardsAndButtonsCont}>
         <View style={styles.questionCardsCont}>
-          <Question
+          <QuestionCards
             firstCard={firstCard}
             secondCard={secondCard}
             rootCardPress={rootCardPress}
             resultDisplay={userAnswer?.name === correctAnswer?.name}
+            answerCardOnPress={answerCardOnPress}
             answer={correctAnswer}
           />
           <View style={styles.questionButtons}>
@@ -146,13 +153,16 @@ const QuestionHolder = () => {
           </View>
         </View>
       </View>
-      {displayInputCardArray && (
-        <DisplayCardsGrid
-          cardsArray={displayInputCardArray}
-          userAnswerSetter={userAnswerSetter}
-          findNoteFunction={getAudioSrcFromCard}
-        />
-      )}
+
+      <View style={{ flex: 1 }}>
+        {displayInputCardArray && (
+          <DisplayCardsGrid
+            cardsArray={displayInputCardArray}
+            userAnswerSetter={userAnswerSetter}
+            findNoteFunction={getAudioSrcIdxFromCard}
+          />
+        )}
+      </View>
 
       <Text style={styles.answer}>
         {userAnswer?.name === correctAnswer?.name ? 'CORRECT!' : 'Less correct'}
@@ -164,7 +174,7 @@ const QuestionHolder = () => {
 export default QuestionHolder
 
 const styles = StyleSheet.create({
-  qCardsAndButtons: {
+  qCardsAndButtonsCont: {
     flex: 1,
     flexDirection: 'row',
     justifyContent: 'center',
@@ -195,8 +205,6 @@ const styles = StyleSheet.create({
     color: 'white',
     backgroundColor: 'black',
     textAlign: 'center',
-
-    marginTop: 20,
-    fontSize: 18,
+    flex: 1,
   },
 })
