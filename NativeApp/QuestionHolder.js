@@ -31,10 +31,11 @@ const QuestionHolder = () => {
   )
   const [correctAnswer, setCorrectAnswer] = useState()
   const [userAnswer, setUserAnswer] = useState()
+
   //Might not need, props should re load the children correctly...?
   const [dronePlaying, setDronePlaying] = useState(true)
   // const [reload, setRoload] = useState
-  console.log('correct', correctAnswer)
+  // console.log('correct', correctAnswer)
 
   useEffect(() => {
     let arrayTemp = []
@@ -101,9 +102,7 @@ const QuestionHolder = () => {
     return fixedAudioSource
   }
 
-  function answerCardOnPress(inpt) {
-    console.log('answer press', inpt)
-  }
+
   function droneReload() {}
 
   function changeQuestionType(inpt) {

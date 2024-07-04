@@ -3,7 +3,7 @@ import PlaySound from './SingleNotePlayer'
 import { Pressable, Image, View, useWindowDimensions } from 'react-native'
 import { getAltOctaveNotes } from './functions/functions'
 import { noteAudioSrc } from './data/NotesAudiosSrc'
-let hasPlayed = false
+let hasPlayed = true
 
 const CardButton = ({
   onPress,
@@ -23,10 +23,12 @@ const CardButton = ({
 
   function cardButtonOnPress(inpt) {
     if (autoPlay === true) {
+      console.log('auto')
+      //ANSWEr ISNT BEIGMN PASSED DOWN?
       //TO DO -This all feels like a lot maybe do at top level and pass down
       let answerNote = noteAudioSrc.filter((x) => x.name === answer.name)
-
       let corrected = getAltOctaveNotes(answerNote[0], root, noteAudioSrc)
+
       setNote(corrected)
     }
 
@@ -34,18 +36,17 @@ const CardButton = ({
     onPress(inpt)
     res ? setNote(res) : ''
     note ? setPlayBool((bool) => !bool) : ''
-    autoPlay = hasPlayed ? true : false
+    hasPlayed = true
   }
   useEffect(() => {
     hasPlayed = false
+    console.log('use')
     // console.log('use answer', { autoPlay }, { answer })
     let timeOutId = setTimeout(() => {
-      autoPlay && !hasPlayed
-        ? cardButtonOnPress(data)
-        : console.log('no onpress')
+      autoPlay && !hasPlayed && answer ? cardButtonOnPress(data) : ''
     }, 1000)
     return () => clearTimeout(timeOutId)
-  }, [reTrig])
+  }, [answer])
 
   return (
     <>

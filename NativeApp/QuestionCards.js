@@ -36,7 +36,6 @@ const QuestionCards = ({
           onPress={answerCardOnPress}
           findAudioSourceFunction={findNoteFunction}
           autoPlay={true}
-          reTrig={answerReTrig}
         />
         {resultDisplay ? (
           <CardButton

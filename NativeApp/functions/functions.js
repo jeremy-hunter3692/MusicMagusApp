@@ -51,7 +51,6 @@ export function getAltOctaveNotes(note, root, testArray = noteAudioSrc) {
   //WE ARE PASSING A NOTE HERE INSTEAD OF IDX
   // console.log({ note })
   let noteWithIdx = getIdxAndNotes(note, testArray)
-  console.log(noteWithIdx)
   // let altSource //= note.distanceToRoot * (note.up ? -1 : 1)
   // altSource = altSource > 11 ? altSource - 11 : altSource
   // console.log(testArray[0].audioSrc['1'])
@@ -64,7 +63,7 @@ export function getAltOctaveNotes(note, root, testArray = noteAudioSrc) {
         : noteWithIdx.note.audioSrc['2']
   }
   return result
-} 
+}
 
 // export function getAnswerKeys(question, interval, keysArray) {
 //   let answerIdx = question.idx - interval.idx
