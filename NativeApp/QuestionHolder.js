@@ -94,11 +94,11 @@ const QuestionHolder = () => {
     return res[0]
   }
 
-  function getAudioSrcNotes(cardAny) {
-    let audioSource = findNoteEquivalent(cardAny, noteAudioSrc)
+  function getAudioSrcNotes(inpt) {
+    let audioSource = findNoteEquivalent(inpt, noteAudioSrc)
 
-    let altOctave = getAltOctaveNotes(audioSource, firstCard)
-    return altOctave
+    let fixedAudioSource = getAltOctaveNotes(audioSource, firstCard)
+    return fixedAudioSource
   }
 
   function answerCardOnPress(inpt) {
@@ -129,44 +129,48 @@ const QuestionHolder = () => {
 
   return (
     <>
-      <DronePlayer
-        rootValue={firstCard?.value.audioSrc}
-        dronePlaying={dronePlaying}
-        reload={droneReload}
-      />
-      <View style={styles.qCardsAndButtonsCont}>
-        <View style={styles.questionCardsCont}>
-          <QuestionCards
-            firstCard={firstCard}
-            secondCard={secondCard}
-            rootCardPress={rootCardPress}
-            resultDisplay={userAnswer?.name === correctAnswer?.name}
-            answerCardOnPress={answerCardOnPress}
-            answer={correctAnswer}
-          />
-          <View style={styles.questionButtons}>
-            <QuestionButtons
-              changeQuestionType={changeQuestionType}
-              reload={reload}
-              stopDrone={stopDrone}
+      <View>
+        <DronePlayer
+          rootValue={firstCard?.value.audioSrc}
+          dronePlaying={dronePlaying}
+          reload={droneReload}
+        />
+        <View style={styles.qCardsAndButtonsCont}>
+          <View style={styles.questionCardsCont}>
+            <QuestionCards
+              firstCard={firstCard}
+              secondCard={secondCard}
+              rootCardPress={rootCardPress}
+              resultDisplay={userAnswer?.name === correctAnswer?.name}
+              answerCardOnPress={answerCardOnPress}
+              answer={correctAnswer}
             />
+            <View style={styles.questionButtons}>
+              <QuestionButtons
+                changeQuestionType={changeQuestionType}
+                reload={reload}
+                stopDrone={stopDrone}
+              />
+            </View>
           </View>
         </View>
-      </View>
 
-      <View style={{ flex: 1 }}>
-        {displayInputCardArray && (
-          <DisplayCardsGrid
-            cardsArray={displayInputCardArray}
-            userAnswerSetter={userAnswerSetter}
-            findNoteFunction={getAudioSrcIdxFromCard}
-          />
-        )}
-      </View>
+        <View style={{ flex: 1, justifyContent: 'center', borderWidth: 1 }}>
+          {displayInputCardArray && (
+            <DisplayCardsGrid
+              cardsArray={displayInputCardArray}
+              userAnswerSetter={userAnswerSetter}
+              findNoteFunction={getAudioSrcIdxFromCard}
+            />
+          )}
+        </View>
 
-      <Text style={styles.answer}>
-        {userAnswer?.name === correctAnswer?.name ? 'CORRECT!' : 'Less correct'}
-      </Text>
+        <Text style={styles.answer}>
+          {userAnswer?.name === correctAnswer?.name
+            ? 'CORRECT!'
+            : 'Less correct'}
+        </Text>
+      </View>
     </>
   )
 }
@@ -205,6 +209,6 @@ const styles = StyleSheet.create({
     color: 'white',
     backgroundColor: 'black',
     textAlign: 'center',
-    flex: 1,
+    flex: 0.25,
   },
 })

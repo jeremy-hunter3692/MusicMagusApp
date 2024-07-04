@@ -29,6 +29,7 @@ const QuestionCards = ({
         />
         <CardButton
           data={secondCard}
+          root={firstCard}
           source={secondCard?.value.imgSrc}
           style={questionCards}
           answer={answer}

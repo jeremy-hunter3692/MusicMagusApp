@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react'
 import PlaySound from './SingleNotePlayer'
 import { Pressable, Image, View, useWindowDimensions } from 'react-native'
-import { getAudioSrcKeys } from './functions/functions.js'
-
+import { getAltOctaveNotes } from './functions/functions'
+import { noteAudioSrc } from './data/NotesAudiosSrc'
 let hasPlayed = false
 
 const CardButton = ({
@@ -14,6 +14,7 @@ const CardButton = ({
   answer,
   findAudioSourceFunction,
   position,
+  root,
 }) => {
   const { height, width, scale, fontScale } = useWindowDimensions()
   const cardWidth = width * 0.1
@@ -21,24 +22,23 @@ const CardButton = ({
   const [playBool, setPlayBool] = useState()
 
   function cardButtonOnPress(inpt) {
-    // let noteSource = findNote(inpt.name, noteAudioSrc)
     if (autoPlay === true) {
-      let answerNote = getAudioSrcKeys(answer)
-      console.log('answer Notes', answerNote, autoPlay)
-      setNote(answerNote)
+      //TO DO -This all feels like a lot maybe do at top level and pass down
+      let answerNote = noteAudioSrc.filter((x) => x.name === answer.name)
+
+      let corrected = getAltOctaveNotes(answerNote[0], root, noteAudioSrc)
+      setNote(corrected)
     }
 
     let res = findAudioSourceFunction ? findAudioSourceFunction(inpt) : ''
     onPress(inpt)
-    console.log('res', res, 'inpt', inpt)
     res ? setNote(res) : ''
-
     note ? setPlayBool((bool) => !bool) : ''
     autoPlay = hasPlayed ? true : false
   }
   useEffect(() => {
     hasPlayed = false
-    console.log('use answer', { autoPlay }, { answer })
+    // console.log('use answer', { autoPlay }, { answer })
     let timeOutId = setTimeout(() => {
       autoPlay && !hasPlayed
         ? cardButtonOnPress(data)

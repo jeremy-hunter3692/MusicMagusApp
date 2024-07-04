@@ -45,23 +45,26 @@ export function findNoteEquivalent(inpt, array) {
   return result[0]
 }
 
-//TO DOO write a test for htis
-export function getAltOctaveNotes(note, root) {
-  console.log({ note })
-  // let result
+//SORT THIS FUCKING TEST OUT TO DO
+export function getAltOctaveNotes(note, root, testArray = noteAudioSrc) {
+  let result
+  //WE ARE PASSING A NOTE HERE INSTEAD OF IDX
+  // console.log({ note })
+  let noteWithIdx = getIdxAndNotes(note, testArray)
+  console.log(noteWithIdx)
   // let altSource //= note.distanceToRoot * (note.up ? -1 : 1)
   // altSource = altSource > 11 ? altSource - 11 : altSource
-  // if (note.name === root.value.name) {
-  //   result = note.audioSrc['2']
-  // } else {
-  //   let cardIdx = getIdxAndNotes(note)
-  //   result =
-  //     cardIdx[1] > root.idx
-  //       ? cardIdx[0].audioSrc['1']
-  //       : cardIdx[0].audioSrc['2']
-  // }
-  return '.ogg'
-}
+  // console.log(testArray[0].audioSrc['1'])
+  if (note.name === root.value.name) {
+    result = noteWithIdx.note.audioSrc['2']
+  } else {
+    result =
+      noteWithIdx.idx > root.idx
+        ? noteWithIdx.note.audioSrc['1']
+        : noteWithIdx.note.audioSrc['2']
+  }
+  return result
+} 
 
 // export function getAnswerKeys(question, interval, keysArray) {
 //   let answerIdx = question.idx - interval.idx
@@ -86,7 +89,11 @@ export function getIdxAndNotes(note, array = noteAudioSrc) {
     }
   })
   let res = getIdxArr.filter((x) => x != undefined)
-  return res[0]
+  let resFixed = {
+    idx: res[0][1],
+    note: res[0][0],
+  }
+  return resFixed
 }
 
 export function getIntervalCardsAsNotes(note, root) {

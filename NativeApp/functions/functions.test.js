@@ -7,6 +7,7 @@ import {
   getAltOctaveNotes,
 } from './functions'
 import { noteNames } from '../data/NoteCards'
+import { noteAudioSrcMock } from '../__mocks__/noteSoundsMock'
 
 test.each([
   [0, 8, 'E'],
@@ -24,12 +25,47 @@ test.each([
   }
 )
 describe('getAltOvtaveNotes(notes, root)', () => {
-  test.todo('returns alt source (8ve) if answer card is the same as the root')
-  test('returns an audio source', () => {
-    const note = getAltOctaveNotes({ name: 'C' }, { value: { name: 'C' } })
-    console.log('nt', note)
+  // test('WONT WORK BECAUSE OF MOCKS-TO DO. returns an audio source', () => {
+  //   const note = getAltOctaveNotes(0, { value: { name: 'C' } })
 
-    expect(note.slice(-4)).toBe('.ogg')
+  //   expect(note.slice(-4)).toBe('.ogg')
+  // })
+
+  test('returns alt source (8ve) if answer card is the same as the root', () => {
+    const note = getAltOctaveNotes(
+      { name: 'C' },
+      { value: { name: 'C' }, idx: 0 },
+      noteAudioSrcMock
+    )
+
+    expect(note).toBe('C2')
+  })
+  test('If note should be above root note, returns alt octave 2', () => {
+    const note = getAltOctaveNotes(
+      { name: 'C' },
+      { value: { name: 'B' }, idx: 11 },
+      noteAudioSrcMock
+    )
+
+    expect(note).toBe('C2')
+  })
+  test('2-If note should be above root note, returns alt octave 2', () => {
+    const note = getAltOctaveNotes(
+      { name: 'F' },
+      { value: { name: 'F#' }, idx: 6 },
+      noteAudioSrcMock
+    )
+
+    expect(note).toBe('F2')
+  })
+  test('3-If note should be above root note, returns alt octave 2', () => {
+    const note = getAltOctaveNotes(
+      { name: 'C' },
+      { value: { name: 'F#' }, idx: 6 },
+      noteAudioSrcMock
+    )
+
+    expect(note).toBe('C2')
   })
 })
 
