@@ -4,19 +4,22 @@ import { keys } from './data/KeyCards.js'
 import { noteAudioSrc } from './data/NotesAudiosSrc.js'
 
 import CardButton from './CardButton.js'
+import { noteNames } from './data/NoteCards.js'
 
-const DisplayCardsGrid = ({ userAnswerSetter, cardsArray, cardOnPress }) => {
+const DisplayCardsGrid = ({
+  userAnswerSetter,
+  cardsArray,
+  findNoteFunction,
+  cardOnPress,
+}) => {
   function setAnswer(inpt) {
+    //input as card with im src
+    // console.log('set inpt', inpt)
     //find the note based off the interval
-    let source = findNote(inpt.name, noteAudioSrc)
-    let res = source ? cardOnPress(source) : cardOnPress(inpt)
-    userAnswerSetter(inpt.name)
-    return res
-  }
-
-  function findNote(inpt, array = keys) {
-    const result = array.filter((x) => x.name === inpt)
-    return result[0]
+    // let source = findNote(inpt.name, noteAudioSrc)
+    // let res = source ? cardOnPress(source) : cardOnPress(inpt)
+    userAnswerSetter(inpt)
+    return null
   }
 
   const firstHalfArray = cardsArray.slice(0, cardsArray.length / 2)
@@ -36,6 +39,7 @@ const DisplayCardsGrid = ({ userAnswerSetter, cardsArray, cardOnPress }) => {
               data={x}
               source={x.imgSrc}
               key={x.name}
+              findAudioSourceFunction={findNoteFunction}
             />
           )
         })}
@@ -48,6 +52,7 @@ const DisplayCardsGrid = ({ userAnswerSetter, cardsArray, cardOnPress }) => {
               data={x}
               source={x.imgSrc}
               key={x.name}
+              findAudioSourceFunction={findNoteFunction}
             />
           )
         })}

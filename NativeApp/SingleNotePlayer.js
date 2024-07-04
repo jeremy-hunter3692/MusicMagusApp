@@ -6,7 +6,7 @@ const PlaySound = ({ inpt, playBool }) => {
   const [note, setNote] = useState(inpt)
   const isPlayingRef = useRef(false)
 
-  console.log('note player', inpt, playBool)
+  // console.log('note player', inpt, playBool)
   useEffect(() => {
     return note
       ? () => {
@@ -20,7 +20,7 @@ const PlaySound = ({ inpt, playBool }) => {
   }, [playBool, inpt])
 
   const playNote = async () => {
-    console.log('play note', note)
+    // console.log('play note', note)
     if (!inpt || isPlayingRef.current) return
 
     isPlayingRef.current = true

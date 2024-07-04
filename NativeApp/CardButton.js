@@ -1,39 +1,50 @@
 import React, { useEffect, useState } from 'react'
 import PlaySound from './SingleNotePlayer'
-import { Pressable, Image, Text, View, useWindowDimensions } from 'react-native'
-
+import { Pressable, Image, View, useWindowDimensions } from 'react-native'
+import { getAltOctaveNotes } from './functions/functions'
+import { noteAudioSrc } from './data/NotesAudiosSrc'
 let hasPlayed = false
+
 const CardButton = ({
   onPress,
   data,
   source,
   autoPlay = false,
   reTrig,
+  answer,
+  findAudioSourceFunction,
   position,
+  root,
 }) => {
   const { height, width, scale, fontScale } = useWindowDimensions()
   const cardWidth = width * 0.1
   const [note, setNote] = useState()
   const [playBool, setPlayBool] = useState()
 
-  autoPlay ? console.log('cbLoad', autoPlay, hasPlayed, reTrig) : ''
-
   function cardButtonOnPress(inpt) {
-    autoPlay ? console.log('cardBUT', data, inpt) : ''
-    let res = onPress(inpt)
-    setNote(res)
+    if (autoPlay === true) {
+      //TO DO -This all feels like a lot maybe do at top level and pass down
+      let answerNote = noteAudioSrc.filter((x) => x.name === answer.name)
+
+      let corrected = getAltOctaveNotes(answerNote[0], root, noteAudioSrc)
+      setNote(corrected)
+    }
+
+    let res = findAudioSourceFunction ? findAudioSourceFunction(inpt) : ''
+    onPress(inpt)
+    res ? setNote(res) : ''
     note ? setPlayBool((bool) => !bool) : ''
     autoPlay = hasPlayed ? true : false
   }
   useEffect(() => {
-    //need clean up timoutId somehow
     hasPlayed = false
-    autoPlay ? console.log('use', hasPlayed) : ''
-    setTimeout(() => {
+    // console.log('use answer', { autoPlay }, { answer })
+    let timeOutId = setTimeout(() => {
       autoPlay && !hasPlayed
         ? cardButtonOnPress(data)
-        : console.log('use Ternary false')
+        : console.log('no onpress')
     }, 1000)
+    return () => clearTimeout(timeOutId)
   }, [reTrig])
 
   return (

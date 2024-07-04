@@ -1,34 +1,106 @@
-import { getCorrectAnswer, getAnswerKeyAndInterval } from './functions'
-// import { noteNames } from '../data/NoteNames'
+import {
+  getCorrectAnswer,
+  getAnswerKeyAndInterval,
+  getNoteCardIdxFromIntervalAndKeyCard,
+  distanceUpInIntervals,
+  intervalOfWhatKey,
+  getAltOctaveNotes,
+} from './functions'
+import { noteNames } from '../data/NoteCards'
+import { noteAudioSrcMock } from '../__mocks__/noteSoundsMock'
 
-// test.each([
-//   [{ idx: 0 }, { idx: 11 }, '7'],
-//   [{ idx: 1 }, { idx: 0 }, '7'],
-//   [{ idx: 11 }, { idx: 0 }, '7'],
-//   [{ idx: 4 }, { idx: 2 }, 'b7'],
-//   [{ idx: 6 }, { idx: 0 }, '#4/b5'],
-//   [{ idx: 0 }, { idx: 6 }, '#4/b5'],
-// ])('finds interval between two notes', (note1, note2, expected) => {
-//   let answer = getCorrectAnswer(note1, note2)
+test.each([
+  [0, 8, 'E'],
+  [8, 1, 'G'],
+  [0, 0, 'C'],
+  [11, 0, 'B'],
+  [11, 8, 'Eb'],
+  [4, 6, 'Bb'],
+])(
+  'finds note x interval away from root notes',
+  (noteCardIdx, intervalCardIdx, expected) => {
+    let answerIdx = intervalOfWhatKey(noteCardIdx, intervalCardIdx)
+    let actualAnswer = noteNames[answerIdx]
+    expect(actualAnswer.name).toBe(expected)
+  }
+)
+describe('getAltOvtaveNotes(notes, root)', () => {
+  // test('WONT WORK BECAUSE OF MOCKS-TO DO. returns an audio source', () => {
+  //   const note = getAltOctaveNotes(0, { value: { name: 'C' } })
 
-//   expect(answer.name).toBe(expected)
-// })
+  //   expect(note.slice(-4)).toBe('.ogg')
+  // })
 
-// test.each([
-//   [{ idx: 8 }, { idx: 4 }, 'C'],
-//   [{ idx: 6 }, { idx: 11 }, 'F'],
-//   [{ idx: 11 }, { idx: 11 }, 'Bb'],
-//   [{ idx: 10 }, { idx: 11 }, 'A'],
-//   [{ idx: 11 }, { idx: 1 }, 'C'],
-// ])('finds note x interval away from root notes', (note1, note2, expected) => {
-//   let answer = getAnswerKeyAndInterval(note1, note2, noteNames)
+  test('returns alt source (8ve) if answer card is the same as the root', () => {
+    const note = getAltOctaveNotes(
+      { name: 'C' },
+      { value: { name: 'C' }, idx: 0 },
+      noteAudioSrcMock
+    )
 
-//   expect(answer.name).toBe(expected)
-// })
+    expect(note).toBe('C2')
+  })
+  test('If note should be above root note, returns alt octave 2', () => {
+    const note = getAltOctaveNotes(
+      { name: 'C' },
+      { value: { name: 'B' }, idx: 11 },
+      noteAudioSrcMock
+    )
 
-test('returns alt source (8ve) if answer card is the same as the root', () => {
-  // const note = noteNames[0].audioSrc
-  // console.log(note, noteNames[0])
+    expect(note).toBe('C2')
+  })
+  test('2-If note should be above root note, returns alt octave 2', () => {
+    const note = getAltOctaveNotes(
+      { name: 'F' },
+      { value: { name: 'F#' }, idx: 6 },
+      noteAudioSrcMock
+    )
 
-  expect(1).toBe(1)
+    expect(note).toBe('F2')
+  })
+  test('3-If note should be above root note, returns alt octave 2', () => {
+    const note = getAltOctaveNotes(
+      { name: 'C' },
+      { value: { name: 'F#' }, idx: 6 },
+      noteAudioSrcMock
+    )
+
+    expect(note).toBe('C2')
+  })
+})
+
+describe('distance between two notes', () => {
+  test.each([
+    [0, 0, 0],
+    [0, 11, 11],
+    [0, 6, 6],
+    [11, 11, 10],
+    [4, 11, 3],
+    [11, 2, 1],
+    [11, 7, 6],
+  ])(
+    'returns idx of note card from keyCard and Interval',
+    (keyCard, intervalCard, expected) => {
+      let answer = getNoteCardIdxFromIntervalAndKeyCard(keyCard, intervalCard)
+
+      expect(answer).toBe(expected)
+    }
+  )
+})
+
+describe('distanceUpInIntervals', () => {
+  test.each([
+    [0, 0, 0],
+    [0, 7, 7],
+    [11, 0, 1],
+    [11, 10, 11],
+    [6, 0, 6],
+  ])(
+    'gets distance or itirating forward through array. I.e  given  what interval is y(note) from x(key)',
+    (rootNoteIDX, secondCardIdx, expected) => {
+      let answer = distanceUpInIntervals(rootNoteIDX, secondCardIdx)
+
+      expect(answer).toBe(expected)
+    }
+  )
 })

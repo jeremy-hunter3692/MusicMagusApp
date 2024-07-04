@@ -2,8 +2,8 @@ import { StatusBar } from 'expo-status-bar'
 import { StyleSheet, Image, Text, View, Pressable } from 'react-native'
 import React, { useState } from 'react'
 import CircleHex from './CircleHex'
-import { intervals as cardsArray } from './data/Intervals'
-import { noteNames } from './data/NoteNames'
+import { intervals as cardsArray } from './data/IntervalCards'
+import { noteNames } from './data/NoteCards'
 
 const size = 100
 
