@@ -79,11 +79,10 @@ const QuestionHolder = () => {
 
   function getAudioSrcIdxFromCardReducer(cardAny) {
     let audioSrcIdx =
-      questionType === 'Interval'
-        ? getAudioSrcNotes(cardAny)
-        : questionType === 'Note'
+      questionType === 'Note'
         ? getAudioSrcInterval(cardAny)
-        : getAudioSrcKeys(cardAny)
+        : findNoteEquivalent(cardAny, noteAudioSrc)
+    audioSrcIdx = getAltOctaveNotes(audioSrcIdx, firstCard)
     return audioSrcIdx
   }
 
@@ -94,20 +93,7 @@ const QuestionHolder = () => {
 
   function getAudioSrcInterval(intervalCard) {
     let audioSrc = getIntervalCardsAsNotes(intervalCard, firstCard)
-    let correctedAudioSrc = getAltOctaveNotes(audioSrc, firstCard)
-    
-    return correctedAudioSrc
-  }
-  function getAudioSrcKeys(cardAny) {
-    let res = noteAudioSrc.filter((x) => x.name === cardAny.name)
-    console.log('gaudio', res[0], res)
-    return res[0]
-  }
-
-  function getAudioSrcNotes(inpt) {
-    let audioSource = findNoteEquivalent(inpt, noteAudioSrc)
-    let fixedAudioSource = getAltOctaveNotes(audioSource, firstCard)
-    return fixedAudioSource
+    return audioSrc
   }
 
   function droneReload() {}
