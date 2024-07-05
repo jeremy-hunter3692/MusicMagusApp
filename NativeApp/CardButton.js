@@ -10,11 +10,9 @@ const CardButton = ({
   data,
   source,
   autoPlay = false,
-  reTrig,
   answer,
   findAudioSourceFunction,
   position,
-  root,
 }) => {
   const { height, width, scale, fontScale } = useWindowDimensions()
   const cardWidth = width * 0.1
@@ -23,13 +21,8 @@ const CardButton = ({
 
   function cardButtonOnPress(inpt) {
     if (autoPlay === true) {
-      console.log('auto')
-      //ANSWEr ISNT BEIGMN PASSED DOWN?
-      //TO DO -This all feels like a lot maybe do at top level and pass down
-      let answerNote = noteAudioSrc.filter((x) => x.name === answer.name)
-      let corrected = getAltOctaveNotes(answerNote[0], root, noteAudioSrc)
-
-      setNote(corrected)
+      let answerNote = onPress(answer)
+      setNote(answerNote)
     }
 
     let res = findAudioSourceFunction ? findAudioSourceFunction(inpt) : ''

@@ -39,9 +39,8 @@ export function intervalOfWhatKey(noteCardIDX, IntervalCardIDX) {
 }
 
 export function findNoteEquivalent(inpt, array) {
-  console.log('find note', inpt, array)
+  // console.log('find note', inpt, array)
   const result = array.filter((x) => x.name === inpt.name)
-  console.log({ result })
   return result[0]
 }
 
@@ -49,7 +48,6 @@ export function findNoteEquivalent(inpt, array) {
 export function getAltOctaveNotes(note, root, testArray = noteAudioSrc) {
   let result
   //WE ARE PASSING A NOTE HERE INSTEAD OF IDX
-  // console.log({ note })
   let noteWithIdx = getIdxAndNotes(note, testArray)
   // let altSource //= note.distanceToRoot * (note.up ? -1 : 1)
   // altSource = altSource > 11 ? altSource - 11 : altSource
@@ -82,12 +80,14 @@ export function returnRandomCard(array, omitRoot = false) {
 }
 
 export function getIdxAndNotes(note, array = noteAudioSrc) {
+
   let getIdxArr = array.map((x, idx) => {
     if (x.name === note.name) {
       return [x, idx]
     }
   })
   let res = getIdxArr.filter((x) => x != undefined)
+
   let resFixed = {
     idx: res[0][1],
     note: res[0][0],
@@ -96,7 +96,7 @@ export function getIdxAndNotes(note, array = noteAudioSrc) {
 }
 
 export function getIntervalCardsAsNotes(note, root) {
-  console.log('get interval cards')
+
   let diff = note.distanceToRoot * (note.up ? -1 : 1)
   let diffAndRootsIdx = root.idx + diff
   let answerIdx =

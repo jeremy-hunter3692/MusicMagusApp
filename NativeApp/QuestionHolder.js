@@ -34,18 +34,16 @@ const QuestionHolder = () => {
 
   //Might not need, props should re load the children correctly...?
   const [dronePlaying, setDronePlaying] = useState(true)
-  // const [reload, setRoload] = useState
-  // console.log('correct', correctAnswer)
-
+  console.log('c ans:', correctAnswer)
   useEffect(() => {
     let arrayTemp = []
-    let firstCardTemp = 0
+    let firstCardTemp = returnRandomCard(keys)
     let secondCardTemp = 0
     let answerIdxTemp = 0
 
     if (questionType === 'Interval') {
       arrayTemp = noteNames
-      firstCardTemp = returnRandomCard(keys)
+      // firstCardTemp = returnRandomCard(keys)
       secondCardTemp = returnRandomCard(intervals, true)
       answerIdxTemp = getNoteCardIdxFromIntervalAndKeyCard(
         firstCardTemp.idx,
@@ -53,28 +51,33 @@ const QuestionHolder = () => {
       )
     } else if (questionType === 'Note') {
       arrayTemp = intervals
-      firstCardTemp = returnRandomCard(keys)
+      // firstCardTemp = returnRandomCard(keys)
       secondCardTemp = returnRandomCard(noteNames, true)
       answerIdxTemp = distanceUpInIntervals(
         firstCardTemp.idx,
         secondCardTemp.idx
       )
-      console.log('IDXS', firstCardTemp.idx, secondCardTemp.idx, answerIdxTemp)
     } else if (questionType === 'Key') {
       arrayTemp = keys
-      firstCardTemp = returnRandomCard(noteNames)
+      firstCardTemp = {
+        value: {
+          ...firstCardTemp.value,
+          imgSrc: noteNames[firstCardTemp.idx].imgSrc,
+        },
+        idx: firstCardTemp.idx,
+      }
+
       secondCardTemp = returnRandomCard(intervals, true)
-      //root note and then target note - ie. start Idx and Target Idx
       answerIdxTemp = intervalOfWhatKey(firstCardTemp.idx, secondCardTemp.idx)
     }
+    //////////
     setDisplayInputCardArray(arrayTemp)
     setFirstCard(firstCardTemp)
     setSecondCard(secondCardTemp)
     setCorrectAnswer(arrayTemp[answerIdxTemp])
   }, [questionType, reloadBool])
 
-  function getAudioSrcIdxFromCard(cardAny) {
-    console.log({ cardAny })
+  function getAudioSrcIdxFromCardReducer(cardAny) {
     let audioSrcIdx =
       questionType === 'Interval'
         ? getAudioSrcNotes(cardAny)
@@ -84,24 +87,28 @@ const QuestionHolder = () => {
     return audioSrcIdx
   }
 
+  function answerCardOnPress() {
+    let answer = getAudioSrcIdxFromCardReducer(correctAnswer)
+    return answer
+  }
+
   function getAudioSrcInterval(intervalCard) {
     let audioSrc = getIntervalCardsAsNotes(intervalCard, firstCard)
     let correctedAudioSrc = getAltOctaveNotes(audioSrc, firstCard)
+    
     return correctedAudioSrc
   }
   function getAudioSrcKeys(cardAny) {
     let res = noteAudioSrc.filter((x) => x.name === cardAny.name)
-    // console.log(res[0].audioSrc['1'], cardAny, 'keys audio src finder')
+    console.log('gaudio', res[0], res)
     return res[0]
   }
 
   function getAudioSrcNotes(inpt) {
     let audioSource = findNoteEquivalent(inpt, noteAudioSrc)
-
     let fixedAudioSource = getAltOctaveNotes(audioSource, firstCard)
     return fixedAudioSource
   }
-
 
   function droneReload() {}
 
@@ -159,7 +166,7 @@ const QuestionHolder = () => {
             <DisplayCardsGrid
               cardsArray={displayInputCardArray}
               userAnswerSetter={userAnswerSetter}
-              findNoteFunction={getAudioSrcIdxFromCard}
+              findNoteFunction={getAudioSrcIdxFromCardReducer}
             />
           )}
         </View>

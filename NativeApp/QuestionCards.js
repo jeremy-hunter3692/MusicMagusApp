@@ -17,7 +17,6 @@ const QuestionCards = ({
   function droneSetter() {
     rootCardPress()
   }
-  console.log({ answer })
   return (
     <>
       <View style={styles.questionCardsCont}>
