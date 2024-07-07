@@ -1,11 +1,7 @@
 import React, { useState } from 'react'
 import QuestionHolder from './QuestionHolder'
 import { StatusBar } from 'expo-status-bar'
-import {
-
-  View,
-  useWindowDimensions,
-} from 'react-native'
+import { View, useWindowDimensions } from 'react-native'
 import { keys, getIntervalNo } from './data/KeyCards'
 
 export default function App() {
@@ -27,8 +23,10 @@ export default function App() {
       <View
         style={{
           flex: 1,
+          borderWidth: 10,
+          borderColor: 'black',
           borderRadius: 10,
-          margin: 10,
+        
           padding: 0,
           backgroundColor: bgColor,
           flexDirection: 'column',
@@ -41,4 +39,4 @@ export default function App() {
   )
 }
 
-const bgColor = '#196f0c'
+const bgColor = '#194f0c'

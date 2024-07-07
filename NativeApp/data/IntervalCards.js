@@ -79,17 +79,3 @@ export const intervals = [
   },
 ]
 
-// export const intervalImgs = [
-//   require('./assets/intervalCards/1.png'),
-//   require('./assets/intervalCards/b2.png'),
-//   require('./assets/intervalCards/2.png'),
-//   require('./assets/intervalCards/b3.png'),
-//   require('./assets/intervalCards/3.png'),
-//   require('./assets/intervalCards/4.png'),
-//   require('./assets/intervalCards/b5.png'),
-//   require('./assets/intervalCards/5.png'),
-//   require('./assets/intervalCards/b6.png'),
-//   require('./assets/intervalCards/6.png'),
-//   require('./assets/intervalCards/b7.png'),
-//   require('./assets/intervalCards/7.png'),
-// ]

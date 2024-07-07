@@ -10,6 +10,7 @@ const DisplayCardsGrid = ({
   userAnswerSetter,
   cardsArray,
   findNoteFunction,
+  stylesBool,
   cardOnPress,
 }) => {
   function setAnswer(inpt) {
@@ -31,7 +32,7 @@ const DisplayCardsGrid = ({
 
   return (
     <>
-      <View style={styles.imgContTop}>
+      <View style={stylesBool ? styles.imgContTopBorder : styles.imgContTop}>
         {firstHalfArray?.map((x) => {
           return (
             <CardButton
@@ -44,7 +45,9 @@ const DisplayCardsGrid = ({
           )
         })}
       </View>
-      <View style={styles.imgContBottom}>
+      <View
+        style={stylesBool ? styles.imgContBottomBorder : styles.imgContBottom}
+      >
         {secondHalfArray?.map((x) => {
           return (
             <CardButton
@@ -65,22 +68,43 @@ const styles = StyleSheet.create({
   imgContTop: {
     flex: 1,
 
-    // backgroundColor: 'blue',
     flexDirection: 'row',
-    marginBottom: 1,
+
+    marginTop: 0,
+    padding: 0,
+    alignItems: 'flex-start',
+    justifyContent: 'center',
+  },
+  imgContTopBorder: {
+    flex: 1,
+    borderColor: 'pink',
+    borderWidth: 2,
+    backgroundColor: 'blue',
+    flexDirection: 'row',
+    marginTop: 0,
+    padding: 0,
+    alignItems: 'flex-start',
+    justifyContent: 'center',
+  },
+  imgContBottom: {
+    flex: 1,
+    flexDirection: 'row',
+    marginBottom: 70,
     marginTop: 0,
     padding: 0,
     alignItems: 'flex-end',
     justifyContent: 'center',
   },
-  imgContBottom: {
+  imgContBottomBorder: {
     flex: 1,
-    // backgroundColor: 'yellow',
+    borderColor: 'red',
+    borderWidth: 2,
+    backgroundColor: 'yellow',
     flexDirection: 'row',
-    marginBottom: 5,
+    marginBottom: 70,
     marginTop: 0,
     padding: 0,
-    alignItems: 'flex-start',
+    alignItems: 'flex-end',
     justifyContent: 'center',
   },
 })

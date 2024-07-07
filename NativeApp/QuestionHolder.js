@@ -19,7 +19,7 @@ import { intervals } from './data/IntervalCards.js'
 import { keys } from './data/KeyCards.js'
 import { noteNames } from './data/NoteCards.js'
 import { noteAudioSrc } from './data/NotesAudiosSrc.js'
-
+const stylesBool = false
 const QuestionHolder = () => {
   //questionType will refer to what the middle card is
   const [questionType, setQuestionType] = useState('Interval')
@@ -127,8 +127,16 @@ const QuestionHolder = () => {
           dronePlaying={dronePlaying}
           reload={droneReload}
         />
-        <View style={styles.qCardsAndButtonsCont}>
-          <View style={styles.questionCardsCont}>
+        <View
+          style={
+            stylesBool ? styles.qCardsButtonBorder : styles.qCardsAndButtonsCont
+          }
+        >
+          <View
+            style={
+              stylesBool ? styles.questionCardsBorder : styles.questionCardsCont
+            }
+          >
             <QuestionCards
               firstCard={firstCard}
               secondCard={secondCard}
@@ -137,7 +145,13 @@ const QuestionHolder = () => {
               answerCardOnPress={answerCardOnPress}
               answer={correctAnswer}
             />
-            <View style={styles.questionButtons}>
+            <View
+              style={
+                stylesBool
+                  ? styles.questionButtonsBorder
+                  : styles.questionButtons
+              }
+            >
               <QuestionButtons
                 changeQuestionType={changeQuestionType}
                 reload={reload}
@@ -147,21 +161,26 @@ const QuestionHolder = () => {
           </View>
         </View>
 
-        <View style={{ flex: 1, justifyContent: 'center', borderWidth: 1 }}>
+        <View
+          style={
+            stylesBool ? styles.displayCardsGridBorder : styles.displayCardsGrid
+          }
+        >
           {displayInputCardArray && (
             <DisplayCardsGrid
+              stylesBool={stylesBool}
               cardsArray={displayInputCardArray}
               userAnswerSetter={userAnswerSetter}
               findNoteFunction={getAudioSrcIdxFromCardReducer}
             />
           )}
-        </View>
 
-        <Text style={styles.answer}>
-          {userAnswer?.name === correctAnswer?.name
-            ? 'CORRECT!'
-            : 'Less correct'}
-        </Text>
+          <Text style={styles.answer}>
+            {userAnswer?.name === correctAnswer?.name
+              ? 'CORRECT!'
+              : 'Less correct'}
+          </Text>
+        </View>
       </View>
     </>
   )
@@ -171,31 +190,67 @@ export default QuestionHolder
 
 const styles = StyleSheet.create({
   qCardsAndButtonsCont: {
-    flex: 1,
+    flex: 0.5,
     flexDirection: 'row',
-    justifyContent: 'center',
-    alignItems: 'flex-start',
+    // justifyContent: 'cen÷ter',
+    alignItems: 'flex-end',
+    margin: 0,
   },
-  questionCardsCont: {
-    flex: 4,
+  qCardsButtonBorder: {
+    flex: 0.5,
+    flexDirection: 'row',
+    // justifyContent: 'c÷nter',
+    alignItems: 'flex-end',
+    margin: 0,
+    //
     borderWidth: 1,
     borderColor: 'red',
-    backgroundColor: 'yellow',
+  },
+  questionCardsCont: {
+    flex: 3,
     flexDirection: 'row',
     justifyContent: 'center',
     marginBottom: 0,
     marginRight: 0,
     padding: 0,
   },
+  questionCardsBorder: {
+    flex: 3,
+    flexDirection: 'row',
+    justifyContent: 'center',
+    marginBottom: 0,
+    marginRight: 0,
+    padding: 0,
+    //
+    borderWidth: 1,
+    borderColor: 'blue',
+  },
   questionButtons: {
     // flex: 1,
     minHeight: 200,
     minWidth: 100,
     flexShrink: 0,
-    borderWidth: 1,
-    // borderColor: 'red',
+
     justifyContent: 'center',
     alignItems: 'center',
+  },
+  questionButtonsBorder: {
+    // flex: 1,
+    minHeight: 200,
+    minWidth: 100,
+    flexShrink: 0,
+    borderWidth: 1,
+    borderColor: 'red',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  displayCardsGrid: { flex: 1, marginTop: 0 },
+
+  displayCardsGridBorder: {
+    flex: 1,
+    marginTop: 0,
+    borderWidth: 1,
+    borderColor: 'white',
   },
   answer: {
     color: 'white',

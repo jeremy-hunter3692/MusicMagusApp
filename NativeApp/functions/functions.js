@@ -39,7 +39,7 @@ export function intervalOfWhatKey(noteCardIDX, IntervalCardIDX) {
 }
 
 export function findNoteEquivalent(inpt, array) {
-  // console.log('find note', inpt, array)
+
   const result = array.filter((x) => x.name === inpt.name)
   return result[0]
 }
@@ -51,7 +51,7 @@ export function getAltOctaveNotes(note, root, testArray = noteAudioSrc) {
   let noteWithIdx = getIdxAndNotes(note, testArray)
   // let altSource //= note.distanceToRoot * (note.up ? -1 : 1)
   // altSource = altSource > 11 ? altSource - 11 : altSource
-  // console.log(testArray[0].audioSrc['1'])
+  
   if (note.name === root.value.name) {
     result = noteWithIdx.note.audioSrc['2']
   } else {
