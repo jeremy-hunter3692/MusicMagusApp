@@ -19,9 +19,10 @@ import { intervals } from './data/IntervalCards.js'
 import { keys } from './data/KeyCards.js'
 import { noteNames } from './data/NoteCards.js'
 import { noteAudioSrc } from './data/NotesAudiosSrc.js'
-const stylesBool = false
+const stylesBool = true //false
 const QuestionHolder = () => {
   //questionType will refer to what the middle card is
+  //TO DO go over all this state and cut down what we need/don't need
   const [questionType, setQuestionType] = useState('Interval')
   const [reloadBool, setReloadBool] = useState(false)
   const [displayInputCardArray, setDisplayInputCardArray] = useState(noteNames)
@@ -31,11 +32,11 @@ const QuestionHolder = () => {
   )
   const [correctAnswer, setCorrectAnswer] = useState()
   const [userAnswer, setUserAnswer] = useState()
-
   //Might not need, props should re load the children correctly...?
   const [dronePlaying, setDronePlaying] = useState(true)
-  console.log('c ans:', correctAnswer)
+  // console.log('c ans:', correctAnswer)
   useEffect(() => {
+    //TO DO dry this up, probs shouldn't be an effect
     let arrayTemp = []
     let firstCardTemp = returnRandomCard(keys)
     let secondCardTemp = 0
@@ -43,7 +44,6 @@ const QuestionHolder = () => {
 
     if (questionType === 'Interval') {
       arrayTemp = noteNames
-      // firstCardTemp = returnRandomCard(keys)
       secondCardTemp = returnRandomCard(intervals, true)
       answerIdxTemp = getNoteCardIdxFromIntervalAndKeyCard(
         firstCardTemp.idx,
@@ -51,7 +51,6 @@ const QuestionHolder = () => {
       )
     } else if (questionType === 'Note') {
       arrayTemp = intervals
-      // firstCardTemp = returnRandomCard(keys)
       secondCardTemp = returnRandomCard(noteNames, true)
       answerIdxTemp = distanceUpInIntervals(
         firstCardTemp.idx,
@@ -95,7 +94,7 @@ const QuestionHolder = () => {
     let audioSrc = getIntervalCardsAsNotes(intervalCard, firstCard)
     return audioSrc
   }
-
+  //TO DO Think this isn't needed?
   function droneReload() {}
 
   function changeQuestionType(inpt) {
@@ -104,15 +103,11 @@ const QuestionHolder = () => {
   }
 
   function rootCardPress() {
-    //to do error with sound not loaded on pressing this
     dronePlaying ? setDronePlaying(false) : setDronePlaying(true)
   }
 
   function reload() {
     setReloadBool((x) => !x)
-  }
-  function stopDrone() {
-    setDronePlaying(false)
   }
 
   function userAnswerSetter(inpt) {
@@ -155,7 +150,8 @@ const QuestionHolder = () => {
               <QuestionButtons
                 changeQuestionType={changeQuestionType}
                 reload={reload}
-                stopDrone={stopDrone}
+                stopDrone={rootCardPress}
+                droneStopButton={dronePlaying}
               />
             </View>
           </View>
@@ -190,36 +186,36 @@ export default QuestionHolder
 
 const styles = StyleSheet.create({
   qCardsAndButtonsCont: {
-    flex: 0.5,
+    // flex: 0.5,
     flexDirection: 'row',
     // justifyContent: 'cen÷ter',
     alignItems: 'flex-end',
     margin: 0,
+    padding: 0,
   },
   qCardsButtonBorder: {
-    flex: 0.5,
+    // flex: 0.5,
     flexDirection: 'row',
     // justifyContent: 'c÷nter',
     alignItems: 'flex-end',
     margin: 0,
+    padding: 0,
     //
     borderWidth: 1,
     borderColor: 'red',
   },
   questionCardsCont: {
-    flex: 3,
+    flex: 1,
     flexDirection: 'row',
     justifyContent: 'center',
-    marginBottom: 0,
-    marginRight: 0,
+    margin: 0,
     padding: 0,
   },
   questionCardsBorder: {
-    flex: 3,
+    flex: 1,
     flexDirection: 'row',
     justifyContent: 'center',
-    marginBottom: 0,
-    marginRight: 0,
+    margin: 0,
     padding: 0,
     //
     borderWidth: 1,
@@ -227,32 +223,37 @@ const styles = StyleSheet.create({
   },
   questionButtons: {
     // flex: 1,
-    minHeight: 200,
+    minHeight: 10,
     minWidth: 100,
-    flexShrink: 0,
-
+    // flexShrink: 0,
+    margin: 0,
     justifyContent: 'center',
     alignItems: 'center',
   },
   questionButtonsBorder: {
     // flex: 1,
-    minHeight: 200,
+    minHeight: 10,
     minWidth: 100,
-    flexShrink: 0,
+    // flexShrink: 0,
+    margin: 0,
     borderWidth: 1,
     borderColor: 'red',
     justifyContent: 'center',
     alignItems: 'center',
   },
-  displayCardsGrid: { flex: 1, marginTop: 0 },
+  displayCardsGrid: { flex: 1, margin: 0 },
 
   displayCardsGridBorder: {
     flex: 1,
-    marginTop: 0,
+    margin: 0,
+    padding: 0,
     borderWidth: 1,
     borderColor: 'white',
   },
   answer: {
+    margin: 0,
+    padding: 0,
+    flex: 0.25,
     color: 'white',
     backgroundColor: 'black',
     textAlign: 'center',

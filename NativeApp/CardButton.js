@@ -33,8 +33,6 @@ const CardButton = ({
   }
   useEffect(() => {
     hasPlayed = false
-    console.log('use')
-    // console.log('use answer', { autoPlay }, { answer })
     let timeOutId = setTimeout(() => {
       autoPlay && !hasPlayed && answer ? cardButtonOnPress(data) : ''
     }, 1000)
@@ -49,7 +47,8 @@ const CardButton = ({
           cardButtonOnPress(data)
         }}
         style={{
-          margin: 0,
+          marginHorizontal: 1,
+          marginVertical: 10,
           width: cardWidth,
           height: cardWidth * 2,
         }}
@@ -58,7 +57,6 @@ const CardButton = ({
           style={{
             flex: 1,
             margin: 0,
-            // borderWidth: 1,
             width: cardWidth,
             height: cardWidth * 2,
           }}

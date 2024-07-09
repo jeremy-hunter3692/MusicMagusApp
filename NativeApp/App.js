@@ -23,10 +23,10 @@ export default function App() {
       <View
         style={{
           flex: 1,
-          borderWidth: 10,
+          borderWidth: 15,
           borderColor: 'black',
           borderRadius: 10,
-        
+          margin:0,
           padding: 0,
           backgroundColor: bgColor,
           flexDirection: 'column',

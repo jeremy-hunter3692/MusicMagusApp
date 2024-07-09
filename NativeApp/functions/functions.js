@@ -1,21 +1,6 @@
 import { intervals } from '../data/IntervalCards'
 import { noteAudioSrc } from '../data/NotesAudiosSrc'
 
-// export function getCorrectAnswer(rootNote, questionValue) {
-//   let distInSemiTones = rootNote.idx - questionValue.idx
-//   let trueDist =
-//     rootNote.idx > questionValue.idx && rootNote.idx != 11
-//       ? 12 - distInSemiTones
-//       : distInSemiTones
-
-//   return intervals[Math.abs(trueDist)]
-// }
-
-//TO DO re name and check these functions can't be dired up
-//test this its' not working for correct interval anys
-// export function getDistBetweenTwoCardIdxs(firstCardIDX, secondCardIDX) {
-//   return Math.abs(firstCardIDX - secondCardIDX)
-// }
 
 export function distanceUpInIntervals(rootNote, targetNote) {
   return (targetNote - rootNote + 12) % 12
@@ -50,8 +35,7 @@ export function getAltOctaveNotes(note, root, testArray = noteAudioSrc) {
   //WE ARE PASSING A NOTE HERE INSTEAD OF IDX
   let noteWithIdx = getIdxAndNotes(note, testArray)
   // let altSource //= note.distanceToRoot * (note.up ? -1 : 1)
-  // altSource = altSource > 11 ? altSource - 11 : altSource
-  
+  // altSource = altSource > 11 ? altSource - 11 : altSourc
   if (note.name === root.value.name) {
     result = noteWithIdx.note.audioSrc['2']
   } else {
@@ -62,13 +46,6 @@ export function getAltOctaveNotes(note, root, testArray = noteAudioSrc) {
   }
   return result
 }
-
-// export function getAnswerKeys(question, interval, keysArray) {
-//   let answerIdx = question.idx - interval.idx
-
-//   answerIdx = answerIdx < 0 ? answerIdx + keysArray.length : answerIdx
-//   return keysArray[answerIdx]
-// }
 
 export function returnRandomCard(array, omitRoot = false) {
   //TODO write a test to check the roots aren't returning in various quesiton catagories

@@ -4,7 +4,6 @@ import CardButton from './CardButton'
 
 const blankCard = require('./assets/blankcard.png')
 
-let answerReTrig = false
 const QuestionCards = ({
   firstCard,
   secondCard,
@@ -62,8 +61,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'flex-end',
-    marginBottom: 0,
-    marginRight: 0,
+    margin: 0,
     padding: 0,
   },
 })

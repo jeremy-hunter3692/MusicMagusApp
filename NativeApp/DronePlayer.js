@@ -24,7 +24,6 @@ let rootOne = null
 let rootTwo = null
 
 const DronePlayer = ({ rootValue, dronePlaying }) => {
-
   useEffect(() => {
     async function loadSoundObjs() {
       rootOne = await playNoteForLooping(rootValue)
@@ -56,7 +55,7 @@ const DronePlayer = ({ rootValue, dronePlaying }) => {
   }
 
   const stopDrone = async () => {
-    if (root) {
+    if (rootOne) {
       await rootOne.stopAsync()
       await rootOne.unloadAsync()
     }

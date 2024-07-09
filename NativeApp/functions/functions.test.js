@@ -5,6 +5,7 @@ import {
   distanceUpInIntervals,
   intervalOfWhatKey,
   getAltOctaveNotes,
+  returnRandomCard,
 } from './functions'
 import { noteNames } from '../data/NoteCards'
 import { noteAudioSrcMock } from '../__mocks__/noteSoundsMock'
@@ -103,4 +104,30 @@ describe('distanceUpInIntervals', () => {
       expect(answer).toBe(expected)
     }
   )
+})
+
+describe('returnRandCard', () => {
+  test('name exists and is a string', () => {
+    let answer = returnRandomCard(noteNames)
+
+    expect(typeof answer.value.name).toBe('string')
+  })
+  test('idx exists and is a number', () => {
+    let answer = returnRandomCard(noteNames)
+    expect(typeof answer.idx).toBe('number')
+  })
+  test('idx is never 0 if omitRoot is true', () => {
+    const iterations = 100
+    const results = []
+    for (let i = 0; i < iterations; i++) {
+      results.push(returnRandomCard(noteNames, true))
+    }
+    
+    const counts = results.reduce((acc, { idx }) => {
+      acc[idx] = (acc[idx] || 0) + 1
+      return acc
+    }, {})
+
+    expect(counts[0]).toBeUndefined()
+  })
 })
