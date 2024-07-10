@@ -26,7 +26,7 @@ export default function App() {
           borderWidth: 15,
           borderColor: 'black',
           borderRadius: 10,
-          margin:0,
+          marginTop: 64,
           padding: 0,
           backgroundColor: bgColor,
           flexDirection: 'column',

@@ -16,7 +16,7 @@ const QuestionButtons = ({ changeQuestionType, reload, stopDrone,droneStopButton
 
   return (
     <>
-      <View style={styles.questionButtons}>
+
         {showDropDown ? (
           <DropDown
             changeQuestionType={changeQuestionAndReset}
@@ -35,30 +35,30 @@ const QuestionButtons = ({ changeQuestionType, reload, stopDrone,droneStopButton
             </Pressable>
           </>
         )}
-      </View>
+
     </>
   )
 }
 export default QuestionButtons
 
 const styles = StyleSheet.create({
-  questionButtons: {
-    backgroundColor: 'red',
-    flexDirection: 'column',
-    justifyContent: 'center',
-    // flex: 1,
-    margin:0,
-    padding:0,
-  },
+  // questionButtons: {
+  //   backgroundColor: 'black',
+  //   flexDirection: 'column',
+  //   justifyContent: 'center',
+  //   flex: 1,
+  //   margin:0,
+  //   padding:0,
+  // },
 
   buttonText: {
     backgroundColor: 'blue',
-    fontSize: 10,
+    // fontSize: 10,
     flex: 1,
     alignItems: 'center',
     color: 'white',
-    margin: 2,
-    padding: 5,
+    // margin: 2,
+    // padding: 5,
     borderWidth: 3,
     borderColor: 'blue',
     borderRadius: 10,

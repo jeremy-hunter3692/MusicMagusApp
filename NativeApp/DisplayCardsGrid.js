@@ -72,7 +72,7 @@ const styles = StyleSheet.create({
 
     marginTop: 0,
     padding: 0,
-    alignItems: 'flex-start',
+    alignItems: 'flex-end',
     justifyContent: 'center',
   },
   imgContTopBorder: {
@@ -83,16 +83,16 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     marginTop: 0,
     padding: 0,
-    alignItems: 'flex-start',
+    alignItems: 'flex-end',
     justifyContent: 'center',
   },
   imgContBottom: {
     flex: 1,
     flexDirection: 'row',
-    marginBottom: 70,
+    // marginBottom: 70,
     marginTop: 0,
     padding: 0,
-    alignItems: 'flex-end',
+    alignItems: 'flex-start',
     justifyContent: 'center',
   },
   imgContBottomBorder: {
@@ -101,10 +101,10 @@ const styles = StyleSheet.create({
     borderWidth: 2,
     backgroundColor: 'yellow',
     flexDirection: 'row',
-    marginBottom: 70,
+    // marginBottom: 70,
     marginTop: 0,
     padding: 0,
-    alignItems: 'flex-end',
+    alignItems: 'flex-start',
     justifyContent: 'center',
   },
 })

@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import PlaySound from './SingleNotePlayer'
 import { Pressable, Image, View, useWindowDimensions } from 'react-native'
-import { getAltOctaveNotes } from './functions/functions'
 import { noteAudioSrc } from './data/NotesAudiosSrc'
 let hasPlayed = true
 
@@ -68,7 +67,7 @@ const CardButton = ({
               margin: 0,
               width: cardWidth,
               height: cardWidth * 2,
-              resizeMode: 'contain',
+              // resizeMode: 'contain',
             }}
             // style={position || { width: 100, height: 150, margin: 5 }}
           />

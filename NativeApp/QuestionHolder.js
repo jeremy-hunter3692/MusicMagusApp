@@ -19,7 +19,7 @@ import { intervals } from './data/IntervalCards.js'
 import { keys } from './data/KeyCards.js'
 import { noteNames } from './data/NoteCards.js'
 import { noteAudioSrc } from './data/NotesAudiosSrc.js'
-const stylesBool = true //false
+const stylesBool = false
 const QuestionHolder = () => {
   //questionType will refer to what the middle card is
   //TO DO go over all this state and cut down what we need/don't need
@@ -116,88 +116,84 @@ const QuestionHolder = () => {
 
   return (
     <>
-      <View>
-        <DronePlayer
-          rootValue={firstCard?.value.audioSrc}
-          dronePlaying={dronePlaying}
-          reload={droneReload}
-        />
+      <DronePlayer
+        rootValue={firstCard?.value.audioSrc}
+        dronePlaying={dronePlaying}
+        reload={droneReload}
+        style={{ flex: 0,height: 0, width: 0, margin: 0, padding: 0, }}
+      />
+      <View
+        style={
+          stylesBool ? styles.qCardsButtonBorder : styles.qCardsAndButtonsCont
+        }
+      >
         <View
           style={
-            stylesBool ? styles.qCardsButtonBorder : styles.qCardsAndButtonsCont
+            stylesBool ? styles.questionCardsBorder : styles.questionCardsCont
           }
         >
+          <QuestionCards
+            firstCard={firstCard}
+            secondCard={secondCard}
+            rootCardPress={rootCardPress}
+            resultDisplay={userAnswer?.name === correctAnswer?.name}
+            answerCardOnPress={answerCardOnPress}
+            answer={correctAnswer}
+          />
           <View
             style={
-              stylesBool ? styles.questionCardsBorder : styles.questionCardsCont
+              stylesBool ? styles.questionButtonsBorder : styles.questionButtons
             }
           >
-            <QuestionCards
-              firstCard={firstCard}
-              secondCard={secondCard}
-              rootCardPress={rootCardPress}
-              resultDisplay={userAnswer?.name === correctAnswer?.name}
-              answerCardOnPress={answerCardOnPress}
-              answer={correctAnswer}
+            <QuestionButtons
+              changeQuestionType={changeQuestionType}
+              reload={reload}
+              stopDrone={rootCardPress}
+              droneStopButton={dronePlaying}
             />
-            <View
-              style={
-                stylesBool
-                  ? styles.questionButtonsBorder
-                  : styles.questionButtons
-              }
-            >
-              <QuestionButtons
-                changeQuestionType={changeQuestionType}
-                reload={reload}
-                stopDrone={rootCardPress}
-                droneStopButton={dronePlaying}
-              />
-            </View>
           </View>
         </View>
-
-        <View
-          style={
-            stylesBool ? styles.displayCardsGridBorder : styles.displayCardsGrid
-          }
-        >
-          {displayInputCardArray && (
-            <DisplayCardsGrid
-              stylesBool={stylesBool}
-              cardsArray={displayInputCardArray}
-              userAnswerSetter={userAnswerSetter}
-              findNoteFunction={getAudioSrcIdxFromCardReducer}
-            />
-          )}
-
-          <Text style={styles.answer}>
-            {userAnswer?.name === correctAnswer?.name
-              ? 'CORRECT!'
-              : 'Less correct'}
-          </Text>
-        </View>
       </View>
+
+      <View
+        style={
+          stylesBool ? styles.displayCardsGridBorder : styles.displayCardsGrid
+        }
+      >
+        {displayInputCardArray && (
+          <DisplayCardsGrid
+            stylesBool={stylesBool}
+            cardsArray={displayInputCardArray}
+            userAnswerSetter={userAnswerSetter}
+            findNoteFunction={getAudioSrcIdxFromCardReducer}
+          />
+        )}
+      </View>
+      <Text style={styles.answer}>
+        {userAnswer?.name === correctAnswer?.name ? 'CORRECT!' : 'Less correct'}
+      </Text>
     </>
   )
 }
 
 export default QuestionHolder
-
+const heightGlobal = 100000000
 const styles = StyleSheet.create({
   qCardsAndButtonsCont: {
-    // flex: 0.5,
+    flex: 1,
+
     flexDirection: 'row',
     // justifyContent: 'cen÷ter',
-    alignItems: 'flex-end',
+    alignItems:'center',//'flex-end',
     margin: 0,
     padding: 0,
   },
   qCardsButtonBorder: {
-    // flex: 0.5,
+    flex: 1,
+
     flexDirection: 'row',
     // justifyContent: 'c÷nter',
-    alignItems: 'flex-end',
+    alignItems: 'center',//'flex-end',
     margin: 0,
     padding: 0,
     //
@@ -206,6 +202,7 @@ const styles = StyleSheet.create({
   },
   questionCardsCont: {
     flex: 1,
+
     flexDirection: 'row',
     justifyContent: 'center',
     margin: 0,
@@ -213,49 +210,53 @@ const styles = StyleSheet.create({
   },
   questionCardsBorder: {
     flex: 1,
+
     flexDirection: 'row',
     justifyContent: 'center',
     margin: 0,
     padding: 0,
     //
-    borderWidth: 1,
+    borderWidth: 10,
     borderColor: 'blue',
   },
   questionButtons: {
-    // flex: 1,
-    minHeight: 10,
-    minWidth: 100,
+    flex: 0.25,
     // flexShrink: 0,
     margin: 0,
+    flexDirection: 'column',
+
     justifyContent: 'center',
-    alignItems: 'center',
   },
   questionButtonsBorder: {
-    // flex: 1,
-    minHeight: 10,
-    minWidth: 100,
+    flex: 0.25,
     // flexShrink: 0,
     margin: 0,
+    flexDirection: 'column',
     borderWidth: 1,
     borderColor: 'red',
     justifyContent: 'center',
-    alignItems: 'center',
   },
-  displayCardsGrid: { flex: 1, margin: 0 },
+
+  displayCardsGrid: {
+    flex: 3,
+    margin: 0,
+  },
 
   displayCardsGridBorder: {
-    flex: 1,
+    flex: 3,
+
     margin: 0,
     padding: 0,
     borderWidth: 1,
     borderColor: 'white',
   },
   answer: {
+    flex: 3,
     margin: 0,
     padding: 0,
     flex: 0.25,
     color: 'white',
-    backgroundColor: 'black',
+    backgroundColor: 'pink',
     textAlign: 'center',
     flex: 0.25,
   },
