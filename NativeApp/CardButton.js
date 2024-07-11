@@ -47,7 +47,7 @@ const CardButton = ({
           cardButtonOnPress(data)
         }}
         style={{
-          marginHorizontal: 0,
+          marginHorizontal: 1,
           marginVertical: 5,
           padding: 0,
           justifyContent: 'center',
@@ -62,13 +62,10 @@ const CardButton = ({
             flex: 1,
             margin: 0,
             padding: 0,
-
             width: '100%',
             height: '100%',
             resizeMode: 'contain',
-            // margin: 0,
-            // width: cardWidth * 1.5,
-            // height: cardWidth * 3,
+  
           }}
           // style={position || { width: 100, height: 150, margin: 5 }}
         />

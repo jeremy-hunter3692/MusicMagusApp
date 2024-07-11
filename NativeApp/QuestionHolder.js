@@ -221,16 +221,16 @@ const styles = StyleSheet.create({
   },
   questionButtons: {
     flex: 0.25,
-    // flexShrink: 0,
-    margin: 0,
+
+    marginHorizontal: 5,
     flexDirection: 'column',
 
     justifyContent: 'center',
   },
   questionButtonsBorder: {
     flex: 0.25,
-    // flexShrink: 0,
-    margin: 0,
+
+    marginHorizontal: 5,
     flexDirection: 'column',
     borderWidth: 1,
     borderColor: 'red',
