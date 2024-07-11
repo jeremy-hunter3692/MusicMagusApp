@@ -11,10 +11,11 @@ const CardButton = ({
   autoPlay = false,
   answer,
   findAudioSourceFunction,
-  position,
+
 }) => {
-  const { height, width, scale, fontScale } = useWindowDimensions()
-  const cardWidth = width * 0.1
+  const { width } = useWindowDimensions()
+  const cardWidth = width * 0.138
+  const cardHeight = cardWidth * 1.5
   const [note, setNote] = useState()
   const [playBool, setPlayBool] = useState()
 
@@ -46,32 +47,31 @@ const CardButton = ({
           cardButtonOnPress(data)
         }}
         style={{
-          marginHorizontal: 1,
-          marginVertical: 10,
+          marginHorizontal: 0,
+          marginVertical: 5,
+          padding: 0,
+          justifyContent: 'center',
+          alignItems: 'center',
           width: cardWidth,
-          height: cardWidth * 2,
+          height: cardHeight, //</>* 3,
         }}
       >
-        <View
+        <Image
+          source={source}
           style={{
             flex: 1,
             margin: 0,
-            width: cardWidth,
-            height: cardWidth * 2,
+            padding: 0,
+
+            width: '100%',
+            height: '100%',
+            resizeMode: 'contain',
+            // margin: 0,
+            // width: cardWidth * 1.5,
+            // height: cardWidth * 3,
           }}
-        >
-          <Image
-            source={source}
-            style={{
-              flex: 1,
-              margin: 0,
-              width: cardWidth,
-              height: cardWidth * 2,
-              // resizeMode: 'contain',
-            }}
-            // style={position || { width: 100, height: 150, margin: 5 }}
-          />
-        </View>
+          // style={position || { width: 100, height: 150, margin: 5 }}
+        />
       </Pressable>
     </>
   )

@@ -120,7 +120,7 @@ const QuestionHolder = () => {
         rootValue={firstCard?.value.audioSrc}
         dronePlaying={dronePlaying}
         reload={droneReload}
-        style={{ flex: 0,height: 0, width: 0, margin: 0, padding: 0, }}
+        style={{ flex: 0, height: 0, width: 0, margin: 0, padding: 0 }}
       />
       <View
         style={
@@ -184,7 +184,7 @@ const styles = StyleSheet.create({
 
     flexDirection: 'row',
     // justifyContent: 'cen÷ter',
-    alignItems:'center',//'flex-end',
+    alignItems: 'center', //'flex-end',
     margin: 0,
     padding: 0,
   },
@@ -193,7 +193,7 @@ const styles = StyleSheet.create({
 
     flexDirection: 'row',
     // justifyContent: 'c÷nter',
-    alignItems: 'center',//'flex-end',
+    alignItems: 'center', //'flex-end',
     margin: 0,
     padding: 0,
     //
@@ -256,7 +256,7 @@ const styles = StyleSheet.create({
     padding: 0,
     flex: 0.25,
     color: 'white',
-    backgroundColor: 'pink',
+    backgroundColor: 'black',
     textAlign: 'center',
     flex: 0.25,
   },
