@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { StyleSheet, View, Text } from 'react-native'
+import { StyleSheet, View, Text, useWindowDimensions } from 'react-native'
 //
 import DronePlayer from './DronePlayer.js'
 import DisplayCardsGrid from './DisplayCardsGrid.js'
@@ -20,6 +20,7 @@ import { keys } from './data/KeyCards.js'
 import { noteNames } from './data/NoteCards.js'
 import { noteAudioSrc } from './data/NotesAudiosSrc.js'
 const stylesBool = false
+
 const QuestionHolder = () => {
   //questionType will refer to what the middle card is
   //TO DO go over all this state and cut down what we need/don't need
@@ -34,6 +35,8 @@ const QuestionHolder = () => {
   const [userAnswer, setUserAnswer] = useState()
   //Might not need, props should re load the children correctly...?
   const [dronePlaying, setDronePlaying] = useState(true)
+  const { width, height } = useWindowDimensions()
+  const cardHeight = width * 0.13 * 1.5
   // console.log('c ans:', correctAnswer)
   useEffect(() => {
     //TO DO dry this up, probs shouldn't be an effect
@@ -122,6 +125,9 @@ const QuestionHolder = () => {
         reload={droneReload}
         style={{ flex: 0, height: 0, width: 0, margin: 0, padding: 0 }}
       />
+      <Text style={styles.answer}>
+        {userAnswer?.name === correctAnswer?.name ? 'CORRECT!' : 'Less correct'}
+      </Text>
       <View
         style={
           stylesBool ? styles.qCardsButtonBorder : styles.qCardsAndButtonsCont
@@ -142,7 +148,9 @@ const QuestionHolder = () => {
           />
           <View
             style={
-              stylesBool ? styles.questionButtonsBorder : styles.questionButtons
+              stylesBool
+                ? { ...styles.questionButtonsBorder, maxHeight: cardHeight }
+                : { ...styles.questionButtons, maxHeight: cardHeight }
             }
           >
             <QuestionButtons
@@ -169,31 +177,24 @@ const QuestionHolder = () => {
           />
         )}
       </View>
-      <Text style={styles.answer}>
-        {userAnswer?.name === correctAnswer?.name ? 'CORRECT!' : 'Less correct'}
-      </Text>
     </>
   )
 }
 
 export default QuestionHolder
-const heightGlobal = 100000000
+
 const styles = StyleSheet.create({
   qCardsAndButtonsCont: {
-    flex: 1,
-
     flexDirection: 'row',
     // justifyContent: 'cen÷ter',
-    alignItems: 'center', //'flex-end',
+    alignItems: 'flex-end',
     margin: 0,
     padding: 0,
   },
   qCardsButtonBorder: {
-    flex: 1,
-
     flexDirection: 'row',
     // justifyContent: 'c÷nter',
-    alignItems: 'center', //'flex-end',
+    alignItems: 'flex-end',
     margin: 0,
     padding: 0,
     //
@@ -213,6 +214,7 @@ const styles = StyleSheet.create({
 
     flexDirection: 'row',
     justifyContent: 'center',
+
     margin: 0,
     padding: 0,
     //
@@ -220,16 +222,12 @@ const styles = StyleSheet.create({
     borderColor: 'blue',
   },
   questionButtons: {
-    flex: 0.25,
-
     marginHorizontal: 5,
     flexDirection: 'column',
 
     justifyContent: 'center',
   },
   questionButtonsBorder: {
-    flex: 0.25,
-
     marginHorizontal: 5,
     flexDirection: 'column',
     borderWidth: 1,
@@ -238,12 +236,12 @@ const styles = StyleSheet.create({
   },
 
   displayCardsGrid: {
-    flex: 3,
+    flex: 2,
     margin: 0,
   },
 
   displayCardsGridBorder: {
-    flex: 3,
+    flex: 2,
 
     margin: 0,
     padding: 0,
@@ -251,13 +249,11 @@ const styles = StyleSheet.create({
     borderColor: 'white',
   },
   answer: {
-    flex: 3,
     margin: 0,
     padding: 0,
     flex: 0.25,
     color: 'white',
     backgroundColor: 'black',
     textAlign: 'center',
-    flex: 0.25,
   },
 })

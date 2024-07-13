@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import PlaySound from './SingleNotePlayer'
 import { Pressable, Image, View, useWindowDimensions } from 'react-native'
-import { noteAudioSrc } from './data/NotesAudiosSrc'
+
 let hasPlayed = true
 
 const CardButton = ({
@@ -11,10 +11,10 @@ const CardButton = ({
   autoPlay = false,
   answer,
   findAudioSourceFunction,
-
 }) => {
-  const { width } = useWindowDimensions()
-  const cardWidth = width * 0.138
+  const { width, height } = useWindowDimensions()
+  const cardRestictValue = height * 0.25
+  const cardWidth = width * 0.13
   const cardHeight = cardWidth * 1.5
   const [note, setNote] = useState()
   const [playBool, setPlayBool] = useState()
@@ -52,8 +52,10 @@ const CardButton = ({
           padding: 0,
           justifyContent: 'center',
           alignItems: 'center',
+          maxHeight: cardRestictValue,
+          maxWidth: cardRestictValue * 0.66,
           width: cardWidth,
-          height: cardHeight, //</>* 3,
+          height: cardHeight,
         }}
       >
         <Image
@@ -64,8 +66,9 @@ const CardButton = ({
             padding: 0,
             width: '100%',
             height: '100%',
+            maxHeight: '100%',
+            flexShrink: 1,
             resizeMode: 'contain',
-  
           }}
           // style={position || { width: 100, height: 150, margin: 5 }}
         />

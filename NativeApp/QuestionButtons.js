@@ -11,7 +11,7 @@ const QuestionButtons = ({
 }) => {
   const [showDropDown, setShowDropDown] = useState(false)
   const { fontScale } = useWindowDimensions()
-  const adjustedFont = fontScale * 10
+  const adjustedFont = fontScale * 4
   function changeQuestionAndReset(inpt) {
     changeQuestionType(inpt)
     setShowDropDown(false)
@@ -23,46 +23,51 @@ const QuestionButtons = ({
 
   return (
     <>
-      {showDropDown ? (
-        <DropDown
-          changeQuestionType={changeQuestionAndReset}
-          dropDownSwap={dropDownSwap}
-        />
-      ) : (
-        <>
-          <Pressable onPress={reload}>
-            <Text style={{ ...styles.buttonText, fontSize: adjustedFont }}>
-              New Question
-            </Text>
-          </Pressable>
-          <Pressable onPress={dropDownSwap}>
-            <Text style={{ ...styles.buttonText, fontSize: adjustedFont }}>
-              Question Type
-            </Text>
-          </Pressable>
-          <Pressable onPress={stopDrone}>
-            <Text style={{ ...styles.buttonText, fontSize: adjustedFont }}>
-              {droneStopButton ? 'Stop Drone' : 'Play Drone'}
-            </Text>
-          </Pressable>
-        </>
-      )}
+      <View style={{ flex: 1, border: 'red', borderWidth: 1 , backgroundColor: 'red'}}>
+        {showDropDown ? (
+          <DropDown
+            changeQuestionType={changeQuestionAndReset}
+            dropDownSwap={dropDownSwap}
+            fontSize={adjustedFont}
+          />
+        ) : (
+          <>
+            <Pressable onPress={reload} style={styles.button}>
+              <Text style={{ ...styles.buttonText, fontSize: adjustedFont }}>
+                New Question
+              </Text>
+            </Pressable>
+            <Pressable onPress={dropDownSwap} style={styles.button}>
+              <Text style={{ ...styles.buttonText, fontSize: adjustedFont }}>
+                Question Type
+              </Text>
+            </Pressable>
+            <Pressable onPress={stopDrone} style={styles.button}>
+              <Text style={{ ...styles.buttonText, fontSize: adjustedFont }}>
+                {droneStopButton ? 'Stop Drone' : 'Play Drone'}
+              </Text>
+            </Pressable>
+          </>
+        )}
+      </View>
     </>
   )
 }
 export default QuestionButtons
 
 const styles = StyleSheet.create({
-  buttonText: {
-    backgroundColor: 'blue',
-
-    flex: 1,
-    alignItems: 'center',
-    color: 'white',
-    // margin: 2,
-    // padding: 5,
-    borderWidth: 3,
+  button: {
+    margin: 5,
+    padding: 5,
+    borderWidth: 1,
     borderColor: 'blue',
     borderRadius: 10,
+    backgroundColor: 'blue',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  buttonText: {
+    color: 'white',
+    textAlign: 'center',
   },
 })

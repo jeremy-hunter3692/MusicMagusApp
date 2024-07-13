@@ -8,8 +8,7 @@ export default function App() {
   const [hexKey, setHexKey] = useState(keys[0])
   const [start, setStart] = useState(false)
 
-  const windowSize = useWindowDimensions()
-  const { height, width, scale, fontScale } = useWindowDimensions()
+  const { width, height } = useWindowDimensions()
 
   function getKey(musicKey) {
     setHexKey(musicKey)
@@ -23,17 +22,18 @@ export default function App() {
       <View
         style={{
           flex: 1,
+          maxHeight: height,
+          maxWidth: width,
           borderWidth: 15,
           borderColor: 'black',
-          borderRadius: 10,
-          marginTop: 64,
+
+          marginTop: 34,
           padding: 0,
           backgroundColor: bgColor,
           flexDirection: 'column',
         }}
       >
-        {/* <Question windowSize={windowSize} /> */}
-        <QuestionHolder windowSize={windowSize} />
+        <QuestionHolder />
       </View>
     </>
   )

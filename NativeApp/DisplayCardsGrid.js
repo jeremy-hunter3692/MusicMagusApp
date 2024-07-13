@@ -66,7 +66,7 @@ const DisplayCardsGrid = ({
 
 const styles = StyleSheet.create({
   imgContTop: {
-    flex: 1,
+    // flex: 1,
 
     flexDirection: 'row',
 
@@ -76,7 +76,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   imgContTopBorder: {
-    flex: 1,
+    // flex: 1,
     borderColor: 'pink',
     borderWidth: 2,
     backgroundColor: 'blue',
@@ -87,7 +87,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   imgContBottom: {
-    flex: 1,
+    // flex: 1,
     flexDirection: 'row',
     // marginBottom: 70,
     marginTop: 0,
@@ -96,7 +96,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   imgContBottomBorder: {
-    flex: 1,
+    // flex: 1,
     borderColor: 'red',
     borderWidth: 2,
     backgroundColor: 'yellow',
