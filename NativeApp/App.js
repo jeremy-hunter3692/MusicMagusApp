@@ -26,7 +26,7 @@ export default function App() {
           maxWidth: width,
           borderWidth: 15,
           borderColor: 'black',
-
+    
           marginTop: 34,
           padding: 0,
           backgroundColor: bgColor,

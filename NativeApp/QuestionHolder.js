@@ -149,8 +149,16 @@ const QuestionHolder = () => {
           <View
             style={
               stylesBool
-                ? { ...styles.questionButtonsBorder, maxHeight: cardHeight }
-                : { ...styles.questionButtons, maxHeight: cardHeight }
+                ? {
+                    ...styles.questionButtonsBorder,
+                    maxHeight: cardHeight,
+                    width: cardHeight * 0.66,
+                  }
+                : {
+                    ...styles.questionButtons,
+                    maxHeight: cardHeight,
+                    width: cardHeight * 0.66,
+                  }
             }
           >
             <QuestionButtons
@@ -226,6 +234,7 @@ const styles = StyleSheet.create({
     flexDirection: 'column',
 
     justifyContent: 'center',
+    overflow: 'hidden',
   },
   questionButtonsBorder: {
     marginHorizontal: 5,
@@ -233,6 +242,7 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: 'red',
     justifyContent: 'center',
+    overflow: 'hidden',
   },
 
   displayCardsGrid: {
