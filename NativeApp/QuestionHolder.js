@@ -230,17 +230,19 @@ const styles = StyleSheet.create({
     borderColor: 'blue',
   },
   questionButtons: {
-    marginHorizontal: 5,
+   flex: 0.25,
     flexDirection: 'column',
+    borderRadius: 15,
+    marginHorizontal: 5,
 
     justifyContent: 'center',
-    overflow: 'hidden',
   },
   questionButtonsBorder: {
-    marginHorizontal: 5,
     flexDirection: 'column',
+    marginHorizontal: 5,
     borderWidth: 1,
-    borderColor: 'red',
+    borderColor: 'black',
+    borderRadius: 15,
     justifyContent: 'center',
     overflow: 'hidden',
   },
@@ -260,6 +262,7 @@ const styles = StyleSheet.create({
   },
   answer: {
     margin: 0,
+    marginBottom: 3,
     padding: 0,
     flex: 0.25,
     color: 'white',

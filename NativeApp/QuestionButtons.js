@@ -4,29 +4,37 @@ import DropDown from './QuestionButtonDropDown'
 import { useWindowDimensions } from 'react-native'
 
 const buttonText = {
-  // flex: 1,
+  flexGrow: 1,
+
   color: 'black',
+  fontWeight: 'bold',
   textAlign: 'center',
+  lineHeight: 20,
 }
 
 const buttonStyle = {
   flex: 1,
-  height: '30%',
-  width: '100%',
-  padding: 5,
+
+  // width: '100%',
+  padding: 10,
   paddingTop: 20,
   paddingBottom: 50,
   borderWidth: 1,
+  // color: 'red',
   borderColor: 'black',
   borderTopLeftRadius: 10,
   borderTopRightRadius: 10,
-  borderBottomLeftRadius: 0,
-  borderBottomRightRadius: 0,
+  borderBottomWidth: 0,
   backgroundColor: 'white', //#003399',
   alignItems: 'center',
-  justifyContent: 'center',
-  position: 'absolute',
-
+  justifyContent: 'flex-start',
+  //
+  shadowColor: 'grey',
+  shadowOffset: { width: 3, height: -1.5 },
+  shadowOpacity: 0.8,
+  shadowRadius: 2,
+  // Android Elevation
+  elevation: 5,
 }
 
 const QuestionButtons = ({
@@ -37,7 +45,8 @@ const QuestionButtons = ({
 }) => {
   const [showDropDown, setShowDropDown] = useState(false)
   const { fontScale } = useWindowDimensions()
-  const adjustedFont = fontScale * 15
+  const adjustedFont = fontScale * 12
+
   function changeQuestionAndReset(inpt) {
     changeQuestionType(inpt)
     setShowDropDown(false)
@@ -49,49 +58,89 @@ const QuestionButtons = ({
 
   return (
     <>
-      <View style={{ flex: 1 }}>
-        {showDropDown ? (
-          <DropDown
-            changeQuestionType={changeQuestionAndReset}
-            dropDownSwap={dropDownSwap}
-            fontSize={adjustedFont}
-            buttonStyle={buttonStyle}
-            buttonText={buttonText}
-          />
-        ) : (
-          <>
-            <Pressable
-              onPress={reload}
-              style={{ ...styles.button, zIndex: 0, top: 0 }}
-            >
+      {!showDropDown ? (
+        <>
+          <View style={{ flex: 1.5, flexDirection: 'row' }}>
+            <Pressable onPress={reload} style={{ ...styles.button }}>
               <Text style={{ ...styles.buttonText, fontSize: adjustedFont }}>
                 New Question
               </Text>
             </Pressable>
-            <Pressable
-              onPress={dropDownSwap}
-              style={{ ...styles.button, zIndex: 1, top: '25%' }}
-            >
+
+            <Pressable onPress={dropDownSwap} style={{ ...styles.button }}>
               <Text style={{ ...styles.buttonText, fontSize: adjustedFont }}>
                 Question Type
               </Text>
             </Pressable>
+          </View>
+
+          <View style={{ flex: 1, flexDirection: 'row' }}>
             <Pressable
               onPress={stopDrone}
               style={{
                 ...styles.button,
-                zIndex: 2,
-                top: '50%',
-                // paddingBottom: 100,
+                marginTop: -10,
               }}
             >
               <Text style={{ ...styles.buttonText, fontSize: adjustedFont }}>
                 {droneStopButton ? 'Stop Drone' : 'Play Drone'}
               </Text>
             </Pressable>
-          </>
-        )}
-      </View>
+            <View
+              style={{
+                ...styles.button,
+                marginTop: -10,
+              }}
+            ></View>
+          </View>
+        </>
+      ) : (
+        <>
+          <View style={{ flex: 1.5, flexDirection: 'row' }}>
+            <Pressable
+              onPress={() => changeQuestionType(1)}
+              style={{ ...styles.button }}
+            >
+              <Text style={{ ...styles.buttonText, fontSize: adjustedFont }}>
+                Interval
+              </Text>
+            </Pressable>
+            <Pressable
+              onPress={dropDownSwap}
+              style={{ ...styles.button, backgroundColor: '#19af59' }}
+            >
+              <Text style={{ ...styles.buttonText, fontSize: adjustedFont }}>
+                Back
+              </Text>
+            </Pressable>
+          </View>
+          <View style={{ flex: 1, flexDirection: 'row' }}>
+            <Pressable
+              onPress={() => changeQuestionType(2)}
+              style={{
+                ...styles.button,
+                marginTop: -10,
+              }}
+            >
+              <Text style={{ ...styles.buttonText, fontSize: adjustedFont }}>
+                Note
+              </Text>
+            </Pressable>
+
+            <Pressable
+              onPress={() => changeQuestionType(3)}
+              style={{
+                ...styles.button,
+                marginTop: -10,
+              }}
+            >
+              <Text style={{ ...styles.buttonText, fontSize: adjustedFont }}>
+                Key
+              </Text>
+            </Pressable>
+          </View>
+        </>
+      )}
     </>
   )
 }

@@ -11,7 +11,7 @@ const DropDown = ({
   const font = fontSize
   return (
     <>
-      <View style={styles.questionButtons}>
+      <View style={styles.questionDropDownButtons}>
         <Pressable
           onPress={dropDownSwap}
           style={{ ...buttonStyle, zIndex: 0, top: 0 }}
@@ -43,7 +43,7 @@ const DropDown = ({
 export default DropDown
 
 const styles = StyleSheet.create({
-  questionButtons: {
+  questionDropDownButtons: {
     flex: 1,
     flexDirection: 'column',
     justifyContent: 'center',

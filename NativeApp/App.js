@@ -26,17 +26,24 @@ export default function App() {
           maxWidth: width,
           borderWidth: 15,
           borderColor: 'black',
-    
-          marginTop: 34,
+          marginTop: 15,
           padding: 0,
           backgroundColor: bgColor,
           flexDirection: 'column',
+          shadowColor: 'black',
+          // shadowOffset: { width: 3, height: 3 },
+          shadowOpacity: 1,
+          shadowRadius: 35,
+          // Android Elevation
+          elevation: 5,
         }}
       >
-        <QuestionHolder />
+        <QuestionHolder
+       
+        />
       </View>
     </>
   )
 }
 
-const bgColor = '#194f0c'
+const bgColor = '#060'
