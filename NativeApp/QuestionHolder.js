@@ -129,14 +129,16 @@ const QuestionHolder = () => {
         {userAnswer?.name === correctAnswer?.name ? 'CORRECT!' : 'Less correct'}
       </Text>
       <View
-        style={
-          stylesBool ? styles.qCardsButtonBorder : styles.qCardsAndButtonsCont
-        }
+        style={[
+          styles.qCardsAndButtonsCont,
+          stylesBool && styles.qCardsButtonBorder,
+        ]}
       >
         <View
-          style={
-            stylesBool ? styles.questionCardsBorder : styles.questionCardsCont
-          }
+          style={[
+            styles.questionCardsCont,
+            stylesBool && styles.questionCardsBorder,
+          ]}
         >
           <QuestionCards
             firstCard={firstCard}
@@ -147,19 +149,19 @@ const QuestionHolder = () => {
             answer={correctAnswer}
           />
           <View
-            style={
-              stylesBool
-                ? {
-                    ...styles.questionButtonsBorder,
-                    maxHeight: cardHeight,
-                    width: cardHeight * 0.66,
-                  }
-                : {
-                    ...styles.questionButtons,
-                    maxHeight: cardHeight,
-                    width: cardHeight * 0.66,
-                  }
-            }
+            style={[
+              {
+                ...styles.questionButtons,
+                maxHeight: cardHeight,
+                width: cardHeight * 0.66,
+              },
+
+              stylesBool && {
+                ...styles.questionButtonsBorder,
+                maxHeight: cardHeight,
+                width: cardHeight * 0.66,
+              },
+            ]}
           >
             <QuestionButtons
               changeQuestionType={changeQuestionType}
@@ -172,9 +174,10 @@ const QuestionHolder = () => {
       </View>
 
       <View
-        style={
-          stylesBool ? styles.displayCardsGridBorder : styles.displayCardsGrid
-        }
+        style={[
+          styles.displayCardsGrid,
+          stylesBool && styles.displayCardsGridBorder,
+        ]}
       >
         {displayInputCardArray && (
           <DisplayCardsGrid
@@ -194,69 +197,46 @@ export default QuestionHolder
 const styles = StyleSheet.create({
   qCardsAndButtonsCont: {
     flexDirection: 'row',
-    // justifyContent: 'cen÷ter',
     alignItems: 'flex-end',
+    justifyContent: 'center',
     margin: 0,
     padding: 0,
   },
   qCardsButtonBorder: {
-    flexDirection: 'row',
-    // justifyContent: 'c÷nter',
-    alignItems: 'flex-end',
-    margin: 0,
-    padding: 0,
-    //
     borderWidth: 1,
     borderColor: 'red',
   },
   questionCardsCont: {
-    flex: 1,
-
+    // flex: 1,
     flexDirection: 'row',
     justifyContent: 'center',
+ 
     margin: 0,
     padding: 0,
   },
   questionCardsBorder: {
-    flex: 1,
-
-    flexDirection: 'row',
-    justifyContent: 'center',
-
-    margin: 0,
-    padding: 0,
-    //
-    borderWidth: 10,
+    borderWidth: 5,
     borderColor: 'blue',
   },
   questionButtons: {
-   flex: 0.25,
+    flex: 0.75,
     flexDirection: 'column',
-    borderRadius: 15,
     marginHorizontal: 5,
-
     justifyContent: 'center',
+    borderRadius: 15,
   },
   questionButtonsBorder: {
-    flexDirection: 'column',
-    marginHorizontal: 5,
-    borderWidth: 1,
-    borderColor: 'black',
-    borderRadius: 15,
-    justifyContent: 'center',
-    overflow: 'hidden',
+    backgroundColor: 'red',
+    borderColor: 'yellow',
   },
 
   displayCardsGrid: {
     flex: 2,
     margin: 0,
+    padding: 0,
   },
 
   displayCardsGridBorder: {
-    flex: 2,
-
-    margin: 0,
-    padding: 0,
     borderWidth: 1,
     borderColor: 'white',
   },

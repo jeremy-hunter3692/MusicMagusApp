@@ -1,41 +1,7 @@
 import React, { useState } from 'react'
 import { StyleSheet, Text, View, Pressable } from 'react-native'
-import DropDown from './QuestionButtonDropDown'
+import QuestionButton from './QuestionButton'
 import { useWindowDimensions } from 'react-native'
-
-const buttonText = {
-  flexGrow: 1,
-
-  color: 'black',
-  fontWeight: 'bold',
-  textAlign: 'center',
-  lineHeight: 20,
-}
-
-const buttonStyle = {
-  flex: 1,
-
-  // width: '100%',
-  padding: 10,
-  paddingTop: 20,
-  paddingBottom: 50,
-  borderWidth: 1,
-  // color: 'red',
-  borderColor: 'black',
-  borderTopLeftRadius: 10,
-  borderTopRightRadius: 10,
-  borderBottomWidth: 0,
-  backgroundColor: 'white', //#003399',
-  alignItems: 'center',
-  justifyContent: 'flex-start',
-  //
-  shadowColor: 'grey',
-  shadowOffset: { width: 3, height: -1.5 },
-  shadowOpacity: 0.8,
-  shadowRadius: 2,
-  // Android Elevation
-  elevation: 5,
-}
 
 const QuestionButtons = ({
   changeQuestionType,
@@ -45,7 +11,7 @@ const QuestionButtons = ({
 }) => {
   const [showDropDown, setShowDropDown] = useState(false)
   const { fontScale } = useWindowDimensions()
-  const adjustedFont = fontScale * 12
+  const adjustedFont =  fontScale * 10
 
   function changeQuestionAndReset(inpt) {
     changeQuestionType(inpt)
@@ -60,32 +26,36 @@ const QuestionButtons = ({
     <>
       {!showDropDown ? (
         <>
-          <View style={{ flex: 1.5, flexDirection: 'row' }}>
-            <Pressable onPress={reload} style={{ ...styles.button }}>
-              <Text style={{ ...styles.buttonText, fontSize: adjustedFont }}>
-                New Question
-              </Text>
-            </Pressable>
+          <View style={styles.rowTop}>
+            <QuestionButton
+              onPress={reload}
+              style={styles.button}
+              textStyle={styles.buttonText}
+              adjustedFont={adjustedFont}
+              text={'New Question'}
+            />
 
-            <Pressable onPress={dropDownSwap} style={{ ...styles.button }}>
-              <Text style={{ ...styles.buttonText, fontSize: adjustedFont }}>
-                Question Type
-              </Text>
-            </Pressable>
+            <QuestionButton
+              onPress={dropDownSwap}
+              style={styles.button}
+              textStyle={styles.buttonText}
+              adjustedFont={adjustedFont}
+              text={'Question Type'}
+            />
           </View>
 
-          <View style={{ flex: 1, flexDirection: 'row' }}>
-            <Pressable
+          <View style={styles.row}>
+            <QuestionButton
               onPress={stopDrone}
               style={{
                 ...styles.button,
                 marginTop: -10,
               }}
-            >
-              <Text style={{ ...styles.buttonText, fontSize: adjustedFont }}>
-                {droneStopButton ? 'Stop Drone' : 'Play Drone'}
-              </Text>
-            </Pressable>
+              textStyle={styles.buttonText}
+              adjustedFont={adjustedFont}
+              text={droneStopButton ? 'Stop Drone' : 'Play Drone'}
+            />
+
             <View
               style={{
                 ...styles.button,
@@ -96,48 +66,43 @@ const QuestionButtons = ({
         </>
       ) : (
         <>
-          <View style={{ flex: 1.5, flexDirection: 'row' }}>
-            <Pressable
-              onPress={() => changeQuestionType(1)}
-              style={{ ...styles.button }}
-            >
-              <Text style={{ ...styles.buttonText, fontSize: adjustedFont }}>
-                Interval
-              </Text>
-            </Pressable>
-            <Pressable
+          <View style={styles.rowTop}>
+            <QuestionButton
+              onPress={() => changeQuestionAndReset(1)}
+              style={styles.button}
+              textStyle={styles.buttonText}
+              adjustedFont={adjustedFont}
+              text={' Interval'}
+            />
+            <QuestionButton
               onPress={dropDownSwap}
               style={{ ...styles.button, backgroundColor: '#19af59' }}
-            >
-              <Text style={{ ...styles.buttonText, fontSize: adjustedFont }}>
-                Back
-              </Text>
-            </Pressable>
+              textStyle={styles.buttonText}
+              adjustedFont={adjustedFont}
+              text={'Back'}
+            />
           </View>
-          <View style={{ flex: 1, flexDirection: 'row' }}>
-            <Pressable
-              onPress={() => changeQuestionType(2)}
+          <View style={styles.row}>
+            <QuestionButton
+              onPress={() => changeQuestionAndReset(2)}
               style={{
                 ...styles.button,
                 marginTop: -10,
               }}
-            >
-              <Text style={{ ...styles.buttonText, fontSize: adjustedFont }}>
-                Note
-              </Text>
-            </Pressable>
-
-            <Pressable
-              onPress={() => changeQuestionType(3)}
+              textStyle={styles.buttonText}
+              adjustedFont={adjustedFont}
+              text={'Note'}
+            />
+            <QuestionButton
+              onPress={() => changeQuestionAndReset(3)}
               style={{
                 ...styles.button,
                 marginTop: -10,
               }}
-            >
-              <Text style={{ ...styles.buttonText, fontSize: adjustedFont }}>
-                Key
-              </Text>
-            </Pressable>
+              textStyle={styles.buttonText}
+              adjustedFont={adjustedFont}
+              text={'Key'}
+            />
           </View>
         </>
       )}
@@ -147,6 +112,41 @@ const QuestionButtons = ({
 export default QuestionButtons
 
 const styles = StyleSheet.create({
-  button: buttonStyle,
-  buttonText: buttonText,
+  rowTop: {
+    flex: 1.75,
+    flexDirection: 'row',
+  },
+  row: {
+    flex: 1,
+    flexDirection: 'row',
+  },
+  button: {
+    flex: 1,
+    padding: 5,
+  
+    borderWidth: 1,
+ 
+    borderColor: 'black',
+    borderTopLeftRadius: 10,
+    borderTopRightRadius: 10,
+    borderBottomWidth: 0,
+    backgroundColor: 'white', //#003399',
+   
+    //
+    shadowColor: 'grey',
+    shadowOffset: { width: 3, height: -1.5 },
+    shadowOpacity: 0.8,
+    shadowRadius: 2,
+    // Android Elevation
+    elevation: 5,
+  },
+  buttonText: {
+
+    flexWrap: 'wrap',
+    color: 'black',
+    fontWeight: 'bold',
+    textAlign: 'center',
+    lineHeight: 20,
+    alignSelf: 'flex-start',
+  },
 })
