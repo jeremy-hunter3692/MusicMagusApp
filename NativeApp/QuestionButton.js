@@ -1,5 +1,5 @@
 import React from 'react'
-import { StyleSheet, Text, View, Pressable } from 'react-native'
+import { Text, Pressable } from 'react-native'
 
 const QuestionButton = ({ onPress, style, textStyle, adjustedFont, text }) => {
   return (

@@ -37,6 +37,7 @@ const QuestionHolder = () => {
   const [dronePlaying, setDronePlaying] = useState(true)
   const { width, height } = useWindowDimensions()
   const cardHeight = width * 0.13 * 1.5
+  const cardWidth = width * 0.13
   // console.log('c ans:', correctAnswer)
   useEffect(() => {
     //TO DO dry this up, probs shouldn't be an effect
@@ -153,13 +154,12 @@ const QuestionHolder = () => {
               {
                 ...styles.questionButtons,
                 maxHeight: cardHeight,
-                width: cardHeight * 0.66,
+                // height: cardHeight,
+                width: cardWidth,
               },
 
               stylesBool && {
                 ...styles.questionButtonsBorder,
-                maxHeight: cardHeight,
-                width: cardHeight * 0.66,
               },
             ]}
           >
@@ -203,25 +203,26 @@ const styles = StyleSheet.create({
     padding: 0,
   },
   qCardsButtonBorder: {
-    borderWidth: 1,
+    borderWidth: 3,
     borderColor: 'red',
   },
   questionCardsCont: {
-    // flex: 1,
     flexDirection: 'row',
     justifyContent: 'center',
- 
     margin: 0,
     padding: 0,
   },
   questionCardsBorder: {
-    borderWidth: 5,
+    borderWidth: 3,
     borderColor: 'blue',
   },
   questionButtons: {
-    flex: 0.75,
+    // flex: 0.75,
+
+    paddingVertical: 5,
+    paddingHorizontal: 0,
     flexDirection: 'column',
-    marginHorizontal: 5,
+    // marginHorizontal: 5,
     justifyContent: 'center',
     borderRadius: 15,
   },

@@ -11,7 +11,7 @@ const QuestionButtons = ({
 }) => {
   const [showDropDown, setShowDropDown] = useState(false)
   const { fontScale } = useWindowDimensions()
-  const adjustedFont =  fontScale * 10
+  const adjustedFont = fontScale * 13
 
   function changeQuestionAndReset(inpt) {
     changeQuestionType(inpt)
@@ -32,7 +32,7 @@ const QuestionButtons = ({
               style={styles.button}
               textStyle={styles.buttonText}
               adjustedFont={adjustedFont}
-              text={'New Question'}
+              text={`New Question`}
             />
 
             <QuestionButton
@@ -40,7 +40,7 @@ const QuestionButtons = ({
               style={styles.button}
               textStyle={styles.buttonText}
               adjustedFont={adjustedFont}
-              text={'Question Type'}
+              text={`Question Type`}
             />
           </View>
 
@@ -53,7 +53,7 @@ const QuestionButtons = ({
               }}
               textStyle={styles.buttonText}
               adjustedFont={adjustedFont}
-              text={droneStopButton ? 'Stop Drone' : 'Play Drone'}
+              text={droneStopButton ? `Stop Drone` : `Play Drone`}
             />
 
             <View
@@ -72,7 +72,7 @@ const QuestionButtons = ({
               style={styles.button}
               textStyle={styles.buttonText}
               adjustedFont={adjustedFont}
-              text={' Interval'}
+              text={'Interval'}
             />
             <QuestionButton
               onPress={dropDownSwap}
@@ -113,7 +113,8 @@ export default QuestionButtons
 
 const styles = StyleSheet.create({
   rowTop: {
-    flex: 1.75,
+    flex: 1.5,
+
     flexDirection: 'row',
   },
   row: {
@@ -121,17 +122,17 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
   },
   button: {
-    flex: 1,
-    padding: 5,
-  
+    // flex: 1,
+    padding: 3,
+
     borderWidth: 1,
- 
+    width: '60%',
     borderColor: 'black',
     borderTopLeftRadius: 10,
     borderTopRightRadius: 10,
     borderBottomWidth: 0,
     backgroundColor: 'white', //#003399',
-   
+
     //
     shadowColor: 'grey',
     shadowOffset: { width: 3, height: -1.5 },
@@ -141,12 +142,13 @@ const styles = StyleSheet.create({
     elevation: 5,
   },
   buttonText: {
-
+    padding: 10,
+    margin: 0,
     flexWrap: 'wrap',
     color: 'black',
     fontWeight: 'bold',
-    textAlign: 'center',
-    lineHeight: 20,
+    textAlign: 'left',
+    // lineHeight: 20,
     alignSelf: 'flex-start',
   },
 })
