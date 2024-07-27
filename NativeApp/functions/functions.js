@@ -1,7 +1,6 @@
 import { intervals } from '../data/IntervalCards'
 import { noteAudioSrc } from '../data/NotesAudiosSrc'
 
-
 export function distanceUpInIntervals(rootNote, targetNote) {
   return (targetNote - rootNote + 12) % 12
 }
@@ -24,8 +23,9 @@ export function intervalOfWhatKey(noteCardIDX, IntervalCardIDX) {
 }
 
 export function findNoteEquivalent(inpt, array) {
-
+  console.log({ inpt, array })
   const result = array.filter((x) => x.name === inpt.name)
+  console.log(result)
   return result[0]
 }
 
@@ -57,7 +57,6 @@ export function returnRandomCard(array, omitRoot = false) {
 }
 
 export function getIdxAndNotes(note, array = noteAudioSrc) {
-
   let getIdxArr = array.map((x, idx) => {
     if (x.name === note.name) {
       return [x, idx]
@@ -73,7 +72,6 @@ export function getIdxAndNotes(note, array = noteAudioSrc) {
 }
 
 export function getIntervalCardsAsNotes(note, root) {
-
   let diff = note.distanceToRoot * (note.up ? -1 : 1)
   let diffAndRootsIdx = root.idx + diff
   let answerIdx =

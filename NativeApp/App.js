@@ -17,6 +17,8 @@ export default function App() {
   function appLevel(inpt) {
     console.log('TODO-App level', inpt)
   }
+
+  const bgColor = 'purple' //'#060'
   return (
     <>
       <SafeAreaView
@@ -43,5 +45,3 @@ export default function App() {
     </>
   )
 }
-
-const bgColor = '#060'

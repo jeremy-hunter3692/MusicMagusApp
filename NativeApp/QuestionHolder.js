@@ -5,6 +5,7 @@ import DronePlayer from './DronePlayer.js'
 import DisplayCardsGrid from './DisplayCardsGrid.js'
 import QuestionButtons from './QuestionButtons.js'
 import QuestionCards from './QuestionCards.js'
+import { SynthDrones, DoubleBassDrones } from './data/DroneAudioSources.js'
 //
 import {
   distanceUpInIntervals,
@@ -28,6 +29,7 @@ const QuestionHolder = () => {
   const [reloadBool, setReloadBool] = useState(false)
   const [displayInputCardArray, setDisplayInputCardArray] = useState(noteNames)
   const [firstCard, setFirstCard] = useState(() => returnRandomCard(keys))
+  const [droneAudioSrc, setDroneAudioSrc] = useState(null)
   const [secondCard, setSecondCard] = useState(() =>
     returnRandomCard(intervals, true)
   )
@@ -74,6 +76,7 @@ const QuestionHolder = () => {
       answerIdxTemp = intervalOfWhatKey(firstCardTemp.idx, secondCardTemp.idx)
     }
     //////////
+    selectDroneAudio(firstCardTemp.value, SynthDrones)
     setDisplayInputCardArray(arrayTemp)
     setFirstCard(firstCardTemp)
     setSecondCard(secondCardTemp)
@@ -118,10 +121,15 @@ const QuestionHolder = () => {
     setUserAnswer(inpt)
   }
 
+  function selectDroneAudio(card, array) {
+    let selected = findNoteEquivalent(card, array)
+    console.log('drone audio', { selected })
+    setDroneAudioSrc(selected.audioSrc)
+  }
   return (
     <>
       <DronePlayer
-        rootValue={firstCard?.value.audioSrc}
+        rootValue={droneAudioSrc} //{firstCard?.value.audioSrc} //
         dronePlaying={dronePlaying}
         reload={droneReload}
         style={{ flex: 0, height: 0, width: 0, margin: 0, padding: 0 }}
@@ -155,7 +163,7 @@ const QuestionHolder = () => {
                 ...styles.questionButtons,
                 maxHeight: cardHeight,
                 // height: cardHeight,
-                width: cardWidth,
+                width: cardWidth / 1.5,
               },
 
               stylesBool && {
@@ -219,10 +227,11 @@ const styles = StyleSheet.create({
   questionButtons: {
     // flex: 0.75,
 
-    paddingVertical: 5,
+    backgroundColor: 'white',
+    // paddingVertical: 5,
     paddingHorizontal: 0,
     flexDirection: 'column',
-    // marginHorizontal: 5,
+    margin: 5,
     justifyContent: 'center',
     borderRadius: 15,
   },
@@ -247,7 +256,7 @@ const styles = StyleSheet.create({
     padding: 0,
     flex: 0.25,
     color: 'white',
-    backgroundColor: 'black',
+    backgroundColor: '#19af59',
     textAlign: 'center',
   },
 })

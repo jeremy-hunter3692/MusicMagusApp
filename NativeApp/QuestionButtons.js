@@ -34,7 +34,6 @@ const QuestionButtons = ({
               adjustedFont={adjustedFont}
               text={`New Question`}
             />
-
             <QuestionButton
               onPress={dropDownSwap}
               style={styles.button}
@@ -42,38 +41,29 @@ const QuestionButtons = ({
               adjustedFont={adjustedFont}
               text={`Question Type`}
             />
-          </View>
 
-          <View style={styles.row}>
             <QuestionButton
               onPress={stopDrone}
               style={{
                 ...styles.button,
-                marginTop: -10,
+                // marginTop: -10,
               }}
               textStyle={styles.buttonText}
               adjustedFont={adjustedFont}
               text={droneStopButton ? `Stop Drone` : `Play Drone`}
             />
 
-            <View
+            {/* <View
               style={{
                 ...styles.button,
                 marginTop: -10,
               }}
-            ></View>
+            ></View> */}
           </View>
         </>
       ) : (
         <>
           <View style={styles.rowTop}>
-            <QuestionButton
-              onPress={() => changeQuestionAndReset(1)}
-              style={styles.button}
-              textStyle={styles.buttonText}
-              adjustedFont={adjustedFont}
-              text={'Interval'}
-            />
             <QuestionButton
               onPress={dropDownSwap}
               style={{ ...styles.button, backgroundColor: '#19af59' }}
@@ -81,13 +71,20 @@ const QuestionButtons = ({
               adjustedFont={adjustedFont}
               text={'Back'}
             />
-          </View>
-          <View style={styles.row}>
+
+            <QuestionButton
+              onPress={() => changeQuestionAndReset(1)}
+              style={styles.button}
+              textStyle={styles.buttonText}
+              adjustedFont={adjustedFont}
+              text={'Interval'}
+            />
+
             <QuestionButton
               onPress={() => changeQuestionAndReset(2)}
               style={{
                 ...styles.button,
-                marginTop: -10,
+                // marginTop: -10,
               }}
               textStyle={styles.buttonText}
               adjustedFont={adjustedFont}
@@ -97,7 +94,7 @@ const QuestionButtons = ({
               onPress={() => changeQuestionAndReset(3)}
               style={{
                 ...styles.button,
-                marginTop: -10,
+                // marginTop: -10,
               }}
               textStyle={styles.buttonText}
               adjustedFont={adjustedFont}
@@ -113,20 +110,19 @@ export default QuestionButtons
 
 const styles = StyleSheet.create({
   rowTop: {
-    flex: 1.5,
-
-    flexDirection: 'row',
+    flex: 1,
+    flexDirection: 'column',
   },
   row: {
     flex: 1,
     flexDirection: 'row',
   },
   button: {
-    // flex: 1,
+    flex: 1,
     padding: 3,
 
     borderWidth: 1,
-    width: '60%',
+    width: '100%',
     borderColor: 'black',
     borderTopLeftRadius: 10,
     borderTopRightRadius: 10,
