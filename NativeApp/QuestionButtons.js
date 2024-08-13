@@ -8,8 +8,10 @@ const QuestionButtons = ({
   reload,
   stopDrone,
   droneStopButton,
+  selectDroneAudio,
 }) => {
   const [showDropDown, setShowDropDown] = useState(false)
+
   const { fontScale } = useWindowDimensions()
   const adjustedFont = fontScale * 13
 
@@ -52,7 +54,15 @@ const QuestionButtons = ({
               adjustedFont={adjustedFont}
               text={droneStopButton ? `Stop Drone` : `Play Drone`}
             />
-
+            <QuestionButton
+              onPress={selectDroneAudio}
+              style={{
+                ...styles.button,
+              }}
+              textStyle={styles.buttonText}
+              adjustedFont={adjustedFont}
+              text={'Drone Sound'}
+            />
             {/* <View
               style={{
                 ...styles.button,

@@ -21,7 +21,7 @@ import { keys } from './data/KeyCards.js'
 import { noteNames } from './data/NoteCards.js'
 import { noteAudioSrc } from './data/NotesAudiosSrc.js'
 const stylesBool = false
-
+let droneType = true
 const QuestionHolder = () => {
   //questionType will refer to what the middle card is
   //TO DO go over all this state and cut down what we need/don't need
@@ -30,6 +30,7 @@ const QuestionHolder = () => {
   const [displayInputCardArray, setDisplayInputCardArray] = useState(noteNames)
   const [firstCard, setFirstCard] = useState(() => returnRandomCard(keys))
   const [droneAudioSrc, setDroneAudioSrc] = useState(null)
+
   const [secondCard, setSecondCard] = useState(() =>
     returnRandomCard(intervals, true)
   )
@@ -37,9 +38,13 @@ const QuestionHolder = () => {
   const [userAnswer, setUserAnswer] = useState()
   //Might not need, props should re load the children correctly...?
   const [dronePlaying, setDronePlaying] = useState(true)
+  ///
   const { width, height } = useWindowDimensions()
   const cardHeight = width * 0.13 * 1.5
   const cardWidth = width * 0.13
+
+  console.log('state TOP', droneAudioSrc)
+
   // console.log('c ans:', correctAnswer)
   useEffect(() => {
     //TO DO dry this up, probs shouldn't be an effect
@@ -76,7 +81,7 @@ const QuestionHolder = () => {
       answerIdxTemp = intervalOfWhatKey(firstCardTemp.idx, secondCardTemp.idx)
     }
     //////////
-    selectDroneAudio(firstCardTemp.value, SynthDrones)
+    getAndSetDroneAudioSource(firstCardTemp.value)
     setDisplayInputCardArray(arrayTemp)
     setFirstCard(firstCardTemp)
     setSecondCard(secondCardTemp)
@@ -121,15 +126,21 @@ const QuestionHolder = () => {
     setUserAnswer(inpt)
   }
 
-  function selectDroneAudio(card, array) {
-    let selected = findNoteEquivalent(card, array)
-    console.log('drone audio', { selected })
-    setDroneAudioSrc(selected.audioSrc)
+  function selectDroneAudio() {
+    droneType = !droneType
+    getAndSetDroneAudioSource(firstCard.value)
   }
+
+  function getAndSetDroneAudioSource(card) {
+    let droneAudioType = droneType ? DoubleBassDrones : SynthDrones
+    let source = findNoteEquivalent(card, droneAudioType)
+    setDroneAudioSrc(source)
+  }
+
   return (
     <>
       <DronePlayer
-        rootValue={droneAudioSrc} //{firstCard?.value.audioSrc} //
+        rootValue={droneAudioSrc?.audioSrc}
         dronePlaying={dronePlaying}
         reload={droneReload}
         style={{ flex: 0, height: 0, width: 0, margin: 0, padding: 0 }}
@@ -176,6 +187,7 @@ const QuestionHolder = () => {
               reload={reload}
               stopDrone={rootCardPress}
               droneStopButton={dronePlaying}
+              selectDroneAudio={selectDroneAudio}
             />
           </View>
         </View>

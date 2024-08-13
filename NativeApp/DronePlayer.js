@@ -34,7 +34,7 @@ const DronePlayer = ({ rootValue, dronePlaying }) => {
       await loadSoundObjs()
       startDrone()
     }
-    dronePlaying ? startUp() : stopDrone
+    dronePlaying ? startUp() : stopDrone()
 
     return () => {
       stopDrone()

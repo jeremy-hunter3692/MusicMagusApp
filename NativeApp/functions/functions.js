@@ -23,13 +23,11 @@ export function intervalOfWhatKey(noteCardIDX, IntervalCardIDX) {
 }
 
 export function findNoteEquivalent(inpt, array) {
-  console.log({ inpt, array })
   const result = array.filter((x) => x.name === inpt.name)
-  console.log(result)
   return result[0]
 }
 
-//SORT THIS FUCKING TEST OUT TO DO
+//SORT THIS 132FUCKING TEST OUT TO DO
 export function getAltOctaveNotes(note, root, testArray = noteAudioSrc) {
   let result
   //WE ARE PASSING A NOTE HERE INSTEAD OF IDX

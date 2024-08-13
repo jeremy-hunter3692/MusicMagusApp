@@ -58,6 +58,7 @@ export const DoubleBassDrones = [
     name: 'B',
     audioSrc: require('../assets/BassDrones/DoubleBassDrones/B.mp3'),
   },
+  {name: 'DOUBLE'}
 ]
 
 export const SynthDrones = [
@@ -120,4 +121,5 @@ export const SynthDrones = [
     name: 'B',
     audioSrc: require('../assets/BassDrones/SynthDrones/B.mp3'),
   },
+  {name: 'SYNTHH'}
 ]
