@@ -5,7 +5,8 @@ import DronePlayer from './DronePlayer.js'
 import DisplayCardsGrid from './DisplayCardsGrid.js'
 import QuestionButtons from './QuestionButtons.js'
 import QuestionCards from './QuestionCards.js'
-import { SynthDrones, DoubleBassDrones } from './data/DroneAudioSources.js'
+
+import { SynthDrones, DoubleBassDrones } from '../data/DroneAudioSources.js'
 //
 import {
   distanceUpInIntervals,
@@ -15,11 +16,11 @@ import {
   intervalOfWhatKey,
   getAltOctaveNotes,
   findNoteEquivalent,
-} from './functions/functions'
-import { intervals } from './data/IntervalCards.js'
-import { keys } from './data/KeyCards.js'
-import { noteNames } from './data/NoteCards.js'
-import { noteAudioSrc } from './data/NotesAudiosSrc.js'
+} from '../functions/functions.js'
+import { intervals } from '../data/IntervalCards.js'
+import { keys } from '../data/KeyCards.js'
+import { noteNames } from '../data/NoteCards.js'
+import { noteAudioSrc } from '../data/NotesAudiosSrc.js'
 const stylesBool = false
 let droneType = true
 const QuestionHolder = () => {

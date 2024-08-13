@@ -13,8 +13,8 @@ const QuestionButtons = ({
   const [showDropDown, setShowDropDown] = useState(false)
 
   const { fontScale } = useWindowDimensions()
-  const adjustedFont = fontScale * 13
-
+  const adjustedFont = fontScale
+  console.log(adjustedFont)
   function changeQuestionAndReset(inpt) {
     changeQuestionType(inpt)
     setShowDropDown(false)
@@ -76,8 +76,8 @@ const QuestionButtons = ({
           <View style={styles.rowTop}>
             <QuestionButton
               onPress={dropDownSwap}
-              style={{ ...styles.button, backgroundColor: '#19af59' }}
-              textStyle={styles.buttonText}
+              style={{ ...styles.button }} //    backgroundColor: }}
+              textStyle={{ ...styles.buttonText, color: '#19af59'}}
               adjustedFont={adjustedFont}
               text={'Back'}
             />
@@ -121,6 +121,7 @@ export default QuestionButtons
 const styles = StyleSheet.create({
   rowTop: {
     flex: 1,
+
     flexDirection: 'column',
   },
   row: {
@@ -131,9 +132,9 @@ const styles = StyleSheet.create({
     flex: 1,
     padding: 3,
 
-    borderWidth: 1,
     width: '100%',
-    borderColor: 'black',
+    borderWidth: 1,
+    borderColor: 'white',
     borderTopLeftRadius: 10,
     borderTopRightRadius: 10,
     borderBottomWidth: 0,
@@ -141,20 +142,21 @@ const styles = StyleSheet.create({
 
     //
     shadowColor: 'grey',
-    shadowOffset: { width: 3, height: -1.5 },
-    shadowOpacity: 0.8,
-    shadowRadius: 2,
+    shadowOffset: { width: 2, height: -1.5 },
+    shadowOpacity: 0.9,
+    shadowRadius: 4,
     // Android Elevation
     elevation: 5,
   },
   buttonText: {
+    flex: 1,
     padding: 10,
     margin: 0,
     flexWrap: 'wrap',
     color: 'black',
-    fontWeight: 'bold',
+    fontWeight: 20,
     textAlign: 'left',
-    // lineHeight: 20,
+
     alignSelf: 'flex-start',
   },
 })

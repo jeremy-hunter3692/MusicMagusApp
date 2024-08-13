@@ -5,7 +5,7 @@ const QuestionButton = ({ onPress, style, textStyle, adjustedFont, text }) => {
   return (
     <>
       <Pressable onPress={onPress} style={style}>
-        <Text style={{ ...textStyle, fontSize: adjustedFont }}>{text}</Text>
+        <Text style={{ ...textStyle,  flex: 1 }}>{text}</Text>
       </Pressable>
     </>
   )

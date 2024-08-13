@@ -1,4 +1,4 @@
-import { intervals } from '../data/IntervalCards'
+
 import { noteAudioSrc } from '../data/NotesAudiosSrc'
 
 export function distanceUpInIntervals(rootNote, targetNote) {

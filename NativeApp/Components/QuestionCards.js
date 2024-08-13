@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react'
 import { StyleSheet, View } from 'react-native'
 import CardButton from './CardButton'
 
-const blankCard = require('./assets/blankcard.png')
+const blankCard = require('../assets/blankcard.png')
 
 const QuestionCards = ({
   firstCard,

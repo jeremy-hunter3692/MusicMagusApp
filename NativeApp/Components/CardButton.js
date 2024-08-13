@@ -60,6 +60,7 @@ const CardButton = ({
       >
         <Image
           source={source}
+          testID={`image`}
           style={{
             flex: 1,
             margin: 0,

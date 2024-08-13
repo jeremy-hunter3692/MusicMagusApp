@@ -1,10 +1,10 @@
 import { StatusBar } from 'expo-status-bar'
 import { StyleSheet, Text, View, Image, TouchableOpacity } from 'react-native'
-import { keys } from './data/KeyCards.js'
-import { noteAudioSrc } from './data/NotesAudiosSrc.js'
+import { keys } from '../data/KeyCards.js'
+import { noteAudioSrc } from '../data/NotesAudiosSrc.js'
 
 import CardButton from './CardButton.js'
-import { noteNames } from './data/NoteCards.js'
+import { noteNames } from '../data/NoteCards.js'
 
 const DisplayCardsGrid = ({
   userAnswerSetter,
@@ -33,13 +33,14 @@ const DisplayCardsGrid = ({
   return (
     <>
       <View style={stylesBool ? styles.imgContTopBorder : styles.imgContTop}>
-        {firstHalfArray?.map((x) => {
+        {firstHalfArray?.map((x, index) => {
           return (
             <CardButton
               onPress={setAnswer}
               data={x}
               source={x.imgSrc}
               key={x.name}
+     
               findAudioSourceFunction={findNoteFunction}
             />
           )
@@ -48,13 +49,14 @@ const DisplayCardsGrid = ({
       <View
         style={stylesBool ? styles.imgContBottomBorder : styles.imgContBottom}
       >
-        {secondHalfArray?.map((x) => {
+        {secondHalfArray?.map((x, index) => {
           return (
             <CardButton
               onPress={setAnswer}
               data={x}
               source={x.imgSrc}
               key={x.name}
+
               findAudioSourceFunction={findNoteFunction}
             />
           )

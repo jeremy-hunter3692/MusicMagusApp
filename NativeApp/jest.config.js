@@ -4,5 +4,6 @@ module.exports = {
   testEnvironment: 'node',
   moduleNameMapper: {
     '\\.(ogg|mp3|wav)$': '<rootDir>/__mocks__/noteSoundsMock.js',
+    '\\.(jpg|jpeg|png|gif|svg)$': '<rootDir>/__mocks__/keyCardImagesMock.js',
   },
 }

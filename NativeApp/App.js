@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import QuestionHolder from './QuestionHolder'
+import QuestionHolder from './Components/QuestionHolder'
 import { StatusBar } from 'expo-status-bar'
 import { View, useWindowDimensions, SafeAreaView } from 'react-native'
 import { keys, getIntervalNo } from './data/KeyCards'
