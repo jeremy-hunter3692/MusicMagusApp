@@ -1,7 +1,8 @@
 import React from 'react'
 import { render, fireEvent } from '@testing-library/react-native'
 import DisplayCardsGrid from '../DisplayCardsGrid'
-
+import QuestionCards from '../QuestionCards'
+import CardButton from '../CardButton'
 const cardImagesMock = [
   {
     name: 'C',
@@ -78,7 +79,7 @@ const cardImagesMock = [
 ]
 
 describe('DisplayCardsGrid', () => {
-  it('renders correctly', () => {
+  it('renders all display images', () => {
     const mockUserAnswerSetter = jest.fn()
     const mockFindNoteFunction = jest.fn()
     const { getAllByTestId } = render(
@@ -89,9 +90,39 @@ describe('DisplayCardsGrid', () => {
         findNoteFunction={mockFindNoteFunction}
       />
     )
-    const images =getAllByTestId(/image/)
-    expect(images.length).toBe(12
-      
+    const images = getAllByTestId(/image/)
+    expect(images.length).toBe(12)
+  })
+})
+
+describe('Question Cards', () => {
+  it('renders three card images', () => {
+    const mockFirstCard = { value: { imageSrc: 1 } }
+    const mockSecondCard = { value: { imageSrc: 2 } }
+    const mockResultDisplay = true
+    const mockAnswerCardOnPress = jest.fn()
+    const mockRootCardOnPress = jest.fn()
+    const { getAllByTestId } = render(
+      <QuestionCards
+        firstCard={mockFirstCard}
+        secondCard={mockSecondCard}
+        rootCardPress={mockRootCardOnPress}
+        resultDisplay={mockResultDisplay}
+        answerCardOnPress={mockAnswerCardOnPress}
+        answer={mockResultDisplay}
+      />
     )
+    const images = getAllByTestId(/image/)
+    expect(images.length).toBe(3)
+  })
+})
+describe('Card Button', () => {
+  it('renders one image', () => {
+    const mockAnswer = cardImagesMock[0]
+    const { getAllByTestId } = render(
+      <CardButton data={mockAnswer?.name} source={mockAnswer?.imgSrc} />
+    )
+    const images = getAllByTestId(/image/)
+    expect(images.length).toBe(1)
   })
 })

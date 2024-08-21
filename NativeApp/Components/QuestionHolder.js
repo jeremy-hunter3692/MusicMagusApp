@@ -41,10 +41,11 @@ const QuestionHolder = () => {
   const [dronePlaying, setDronePlaying] = useState(true)
   ///
   const { width, height } = useWindowDimensions()
-  const cardHeight = width * 0.13 * 1.5
-  const cardWidth = width * 0.13
 
-  console.log('state TOP', droneAudioSrc)
+  const cardWidth = width * 0.09
+  const cardHeight = cardWidth * 1.5
+
+
 
   // console.log('c ans:', correctAnswer)
   useEffect(() => {
@@ -168,14 +169,16 @@ const QuestionHolder = () => {
             resultDisplay={userAnswer?.name === correctAnswer?.name}
             answerCardOnPress={answerCardOnPress}
             answer={correctAnswer}
+            cardSize={{ cardWidth: cardWidth, cardHeight: cardHeight }}
           />
           <View
             style={[
               {
                 ...styles.questionButtons,
+                border: 'red',
+                borderWidth: 10,
                 maxHeight: cardHeight,
-                // height: cardHeight,
-                width: cardWidth / 1.5,
+                width: cardWidth,
               },
 
               stylesBool && {
@@ -202,6 +205,7 @@ const QuestionHolder = () => {
       >
         {displayInputCardArray && (
           <DisplayCardsGrid
+            cardSize={{ cardWidth: cardWidth, cardHeight: cardHeight }}
             stylesBool={stylesBool}
             cardsArray={displayInputCardArray}
             userAnswerSetter={userAnswerSetter}
@@ -239,9 +243,10 @@ const styles = StyleSheet.create({
   },
   questionButtons: {
     // flex: 0.75,
-
     backgroundColor: 'white',
     // paddingVertical: 5,
+    // borderColor: 'green',
+    // borderRadius: 10,
     paddingHorizontal: 0,
     flexDirection: 'column',
     margin: 5,

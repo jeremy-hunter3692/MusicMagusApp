@@ -11,13 +11,13 @@ const CardButton = ({
   autoPlay = false,
   answer,
   findAudioSourceFunction,
+  cardSize,
 }) => {
-  const { width, height } = useWindowDimensions()
-  const cardRestictValue = height * 0.25
-  const cardWidth = width * 0.13
-  const cardHeight = cardWidth * 1.5
   const [note, setNote] = useState()
   const [playBool, setPlayBool] = useState()
+
+  const { cardWidth, cardHeight } = cardSize || {}
+  console.log('but', cardSize, cardWidth, cardHeight)
 
   function cardButtonOnPress(inpt) {
     if (autoPlay === true) {
@@ -52,10 +52,10 @@ const CardButton = ({
           padding: 0,
           justifyContent: 'center',
           alignItems: 'center',
-          maxHeight: cardRestictValue,
-          maxWidth: cardRestictValue * 0.66,
-          width: cardWidth,
+          maxHeight: cardHeight,
+          maxWidth: cardWidth,
           height: cardHeight,
+          width: cardWidth,
         }}
       >
         <Image

@@ -7,19 +7,21 @@ const QuestionButtons = ({
   changeQuestionType,
   reload,
   stopDrone,
+
   droneStopButton,
   selectDroneAudio,
 }) => {
   const [showDropDown, setShowDropDown] = useState(false)
 
   const { fontScale } = useWindowDimensions()
-  const adjustedFont = fontScale
-  console.log(adjustedFont)
+  const adjustedFont = fontScale * 1
+
   function changeQuestionAndReset(inpt) {
     changeQuestionType(inpt)
     setShowDropDown(false)
     reload()
   }
+
   function dropDownSwap() {
     setShowDropDown(!showDropDown)
   }
@@ -46,19 +48,14 @@ const QuestionButtons = ({
 
             <QuestionButton
               onPress={stopDrone}
-              style={{
-                ...styles.button,
-                // marginTop: -10,
-              }}
+              style={styles.button}
               textStyle={styles.buttonText}
               adjustedFont={adjustedFont}
               text={droneStopButton ? `Stop Drone` : `Play Drone`}
             />
             <QuestionButton
               onPress={selectDroneAudio}
-              style={{
-                ...styles.button,
-              }}
+              style={styles.button}
               textStyle={styles.buttonText}
               adjustedFont={adjustedFont}
               text={'Drone Sound'}
@@ -77,7 +74,11 @@ const QuestionButtons = ({
             <QuestionButton
               onPress={dropDownSwap}
               style={{ ...styles.button }} //    backgroundColor: }}
-              textStyle={{ ...styles.buttonText, color: '#19af59'}}
+              textStyle={{
+                ...styles.buttonText,
+                color: 'purple',
+                fontWeight: 200,
+              }} //'#19af59' }}
               adjustedFont={adjustedFont}
               text={'Back'}
             />
@@ -92,20 +93,14 @@ const QuestionButtons = ({
 
             <QuestionButton
               onPress={() => changeQuestionAndReset(2)}
-              style={{
-                ...styles.button,
-                // marginTop: -10,
-              }}
+              style={styles.button}
               textStyle={styles.buttonText}
               adjustedFont={adjustedFont}
               text={'Note'}
             />
             <QuestionButton
               onPress={() => changeQuestionAndReset(3)}
-              style={{
-                ...styles.button,
-                // marginTop: -10,
-              }}
+              style={styles.button}
               textStyle={styles.buttonText}
               adjustedFont={adjustedFont}
               text={'Key'}
@@ -121,7 +116,6 @@ export default QuestionButtons
 const styles = StyleSheet.create({
   rowTop: {
     flex: 1,
-
     flexDirection: 'column',
   },
   row: {
@@ -131,7 +125,6 @@ const styles = StyleSheet.create({
   button: {
     flex: 1,
     padding: 3,
-
     width: '100%',
     borderWidth: 1,
     borderColor: 'white',
@@ -139,7 +132,6 @@ const styles = StyleSheet.create({
     borderTopRightRadius: 10,
     borderBottomWidth: 0,
     backgroundColor: 'white', //#003399',
-
     //
     shadowColor: 'grey',
     shadowOffset: { width: 2, height: -1.5 },
@@ -149,14 +141,13 @@ const styles = StyleSheet.create({
     elevation: 5,
   },
   buttonText: {
-    flex: 1,
+    // flex: 1,
     padding: 10,
     margin: 0,
     flexWrap: 'wrap',
     color: 'black',
-    fontWeight: 20,
+    fontWeight: 100,
     textAlign: 'left',
-
     alignSelf: 'flex-start',
   },
 })

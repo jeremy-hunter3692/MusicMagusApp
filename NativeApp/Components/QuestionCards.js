@@ -10,22 +10,27 @@ const QuestionCards = ({
   findNoteFunction,
   resultDisplay,
   answer,
+  cardSize,
   rootCardPress,
   answerCardOnPress,
 }) => {
   function droneSetter() {
     rootCardPress()
   }
+  console.log({ cardSize })
+
   return (
     <>
       <View style={styles.questionCardsCont}>
         <CardButton
+          cardSize={cardSize}
           data={firstCard}
           source={firstCard.value.imgSrc}
           style={questionCards}
           onPress={droneSetter}
         />
         <CardButton
+          cardSize={cardSize}
           data={secondCard}
           root={firstCard}
           source={secondCard?.value.imgSrc}
@@ -37,12 +42,17 @@ const QuestionCards = ({
         />
         {resultDisplay ? (
           <CardButton
+            cardSize={cardSize}
             data={answer?.name}
             source={answer?.imgSrc}
             style={questionCards}
           />
         ) : (
-          <CardButton source={blankCard} style={questionCards} />
+          <CardButton
+            cardSize={cardSize}
+            source={blankCard}
+            style={questionCards}
+          />
         )}
       </View>
     </>

@@ -12,6 +12,7 @@ const DisplayCardsGrid = ({
   findNoteFunction,
   stylesBool,
   cardOnPress,
+  cardSize,
 }) => {
   function setAnswer(inpt) {
     //input as card with im src
@@ -36,11 +37,11 @@ const DisplayCardsGrid = ({
         {firstHalfArray?.map((x, index) => {
           return (
             <CardButton
+              cardSize={cardSize}
               onPress={setAnswer}
               data={x}
               source={x.imgSrc}
               key={x.name}
-     
               findAudioSourceFunction={findNoteFunction}
             />
           )
@@ -52,11 +53,11 @@ const DisplayCardsGrid = ({
         {secondHalfArray?.map((x, index) => {
           return (
             <CardButton
+              cardSize={cardSize}
               onPress={setAnswer}
               data={x}
               source={x.imgSrc}
               key={x.name}
-
               findAudioSourceFunction={findNoteFunction}
             />
           )
