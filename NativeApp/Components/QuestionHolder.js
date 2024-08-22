@@ -5,6 +5,7 @@ import DronePlayer from './DronePlayer.js'
 import DisplayCardsGrid from './DisplayCardsGrid.js'
 import QuestionButtons from './QuestionButtons.js'
 import QuestionCards from './QuestionCards.js'
+import ButtonsDroneOptions from './ButtonsDroneOptions.js'
 
 import { SynthDrones, DoubleBassDrones } from '../data/DroneAudioSources.js'
 //
@@ -21,6 +22,7 @@ import { intervals } from '../data/IntervalCards.js'
 import { keys } from '../data/KeyCards.js'
 import { noteNames } from '../data/NoteCards.js'
 import { noteAudioSrc } from '../data/NotesAudiosSrc.js'
+import ButtonsDroneOptions from './ButtonsDroneOptions.js'
 const stylesBool = false
 let droneType = true
 const QuestionHolder = () => {
@@ -42,7 +44,7 @@ const QuestionHolder = () => {
   ///
   const { width, height } = useWindowDimensions()
 
-  const cardWidth = width > height? width * 0.1 : width * 0.14
+  const cardWidth = width > height ? width * 0.1 : width * 0.14
   const cardHeight = cardWidth * 1.5
 
   // console.log('c ans:', correctAnswer)
@@ -190,6 +192,27 @@ const QuestionHolder = () => {
               selectDroneAudio={selectDroneAudio}
             />
           </View>
+          {showDroneOptions && (
+            <View
+              style={[
+                {
+                  ...styles.questionButtons,
+                  maxHeight: cardHeight,
+                  maxWidth: cardWidth,
+                },
+
+                stylesBool && {
+                  ...styles.questionButtonsBorder,
+                },
+              ]}
+            >
+              <ButtonsDroneOptions
+                stopDrone={rootCardPress}
+                droneStopButton={dronePlaying}
+                selectDroneAudio={selectDroneAudio}
+              />
+            </View>
+          )}
         </View>
       </View>
 
