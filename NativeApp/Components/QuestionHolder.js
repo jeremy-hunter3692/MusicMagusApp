@@ -42,10 +42,8 @@ const QuestionHolder = () => {
   ///
   const { width, height } = useWindowDimensions()
 
-  const cardWidth = width * 0.09
+  const cardWidth = width > height? width * 0.1 : width * 0.14
   const cardHeight = cardWidth * 1.5
-
-
 
   // console.log('c ans:', correctAnswer)
   useEffect(() => {
@@ -175,10 +173,8 @@ const QuestionHolder = () => {
             style={[
               {
                 ...styles.questionButtons,
-                border: 'red',
-                borderWidth: 10,
                 maxHeight: cardHeight,
-                width: cardWidth,
+                maxWidth: cardWidth,
               },
 
               stylesBool && {
@@ -242,11 +238,8 @@ const styles = StyleSheet.create({
     borderColor: 'blue',
   },
   questionButtons: {
-    // flex: 0.75,
+    flex: 1,
     backgroundColor: 'white',
-    // paddingVertical: 5,
-    // borderColor: 'green',
-    // borderRadius: 10,
     paddingHorizontal: 0,
     flexDirection: 'column',
     margin: 5,

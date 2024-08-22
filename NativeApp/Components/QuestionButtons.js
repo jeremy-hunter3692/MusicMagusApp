@@ -30,7 +30,7 @@ const QuestionButtons = ({
     <>
       {!showDropDown ? (
         <>
-          <View style={styles.rowTop}>
+        
             <QuestionButton
               onPress={reload}
               style={styles.button}
@@ -60,17 +60,11 @@ const QuestionButtons = ({
               adjustedFont={adjustedFont}
               text={'Drone Sound'}
             />
-            {/* <View
-              style={{
-                ...styles.button,
-                marginTop: -10,
-              }}
-            ></View> */}
-          </View>
+
         </>
       ) : (
         <>
-          <View style={styles.rowTop}>
+
             <QuestionButton
               onPress={dropDownSwap}
               style={{ ...styles.button }} //    backgroundColor: }}
@@ -105,7 +99,7 @@ const QuestionButtons = ({
               adjustedFont={adjustedFont}
               text={'Key'}
             />
-          </View>
+
         </>
       )}
     </>
@@ -114,18 +108,10 @@ const QuestionButtons = ({
 export default QuestionButtons
 
 const styles = StyleSheet.create({
-  rowTop: {
-    flex: 1,
-    flexDirection: 'column',
-  },
-  row: {
-    flex: 1,
-    flexDirection: 'row',
-  },
   button: {
     flex: 1,
     padding: 3,
-    width: '100%',
+    // width: '100%',
     borderWidth: 1,
     borderColor: 'white',
     borderTopLeftRadius: 10,

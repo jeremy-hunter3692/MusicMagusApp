@@ -17,7 +17,6 @@ const QuestionCards = ({
   function droneSetter() {
     rootCardPress()
   }
-  console.log({ cardSize })
 
   return (
     <>
@@ -62,8 +61,8 @@ const QuestionCards = ({
 export default QuestionCards
 
 const questionCards = {
-  height: 100,
-  width: 100,
+  // height: 100,
+  // width: 100,
 }
 
 const styles = StyleSheet.create({

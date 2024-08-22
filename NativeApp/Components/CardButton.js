@@ -17,7 +17,6 @@ const CardButton = ({
   const [playBool, setPlayBool] = useState()
 
   const { cardWidth, cardHeight } = cardSize || {}
-  console.log('but', cardSize, cardWidth, cardHeight)
 
   function cardButtonOnPress(inpt) {
     if (autoPlay === true) {
