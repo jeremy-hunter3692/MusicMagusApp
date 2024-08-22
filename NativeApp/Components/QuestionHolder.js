@@ -6,6 +6,7 @@ import DisplayCardsGrid from './DisplayCardsGrid.js'
 import QuestionButtons from './QuestionButtons.js'
 import QuestionCards from './QuestionCards.js'
 import ButtonsDroneOptions from './ButtonsDroneOptions.js'
+import ButtonsQuestionOptions from './ButtonsQuestionOptions.js'
 
 import { SynthDrones, DoubleBassDrones } from '../data/DroneAudioSources.js'
 //
@@ -22,9 +23,10 @@ import { intervals } from '../data/IntervalCards.js'
 import { keys } from '../data/KeyCards.js'
 import { noteNames } from '../data/NoteCards.js'
 import { noteAudioSrc } from '../data/NotesAudiosSrc.js'
-import ButtonsDroneOptions from './ButtonsDroneOptions.js'
+
 const stylesBool = false
 let droneType = true
+
 const QuestionHolder = () => {
   //questionType will refer to what the middle card is
   //TO DO go over all this state and cut down what we need/don't need
@@ -41,6 +43,8 @@ const QuestionHolder = () => {
   const [userAnswer, setUserAnswer] = useState()
   //Might not need, props should re load the children correctly...?
   const [dronePlaying, setDronePlaying] = useState(true)
+  const [showQuestionOptions, setShowQuestionoptions] = useState(false)
+  const [showDroneOptions, setShowDroneOptions] = useState(false)
   ///
   const { width, height } = useWindowDimensions()
 
@@ -128,6 +132,14 @@ const QuestionHolder = () => {
     setUserAnswer(inpt)
   }
 
+  //button functions
+  function showQuestionTypes() {
+    setShowQuestionoptions((x) => (x = !x))
+  }
+  function showDroneSwap() {
+    setShowDroneOptions((x) => (x = !x))
+  }
+
   function selectDroneAudio() {
     droneType = !droneType
     getAndSetDroneAudioSource(firstCard.value)
@@ -171,25 +183,19 @@ const QuestionHolder = () => {
             answer={correctAnswer}
             cardSize={{ cardWidth: cardWidth, cardHeight: cardHeight }}
           />
+
           <View
             style={[
               {
                 ...styles.questionButtons,
-                maxHeight: cardHeight,
-                maxWidth: cardWidth,
-              },
-
-              stylesBool && {
-                ...styles.questionButtonsBorder,
+                height: cardHeight,
+                width: cardWidth,
               },
             ]}
           >
             <QuestionButtons
-              changeQuestionType={changeQuestionType}
-              reload={reload}
-              stopDrone={rootCardPress}
-              droneStopButton={dronePlaying}
-              selectDroneAudio={selectDroneAudio}
+              showQuestionTypes={showQuestionTypes}
+              showDroneOptions={showDroneSwap}
             />
           </View>
           {showDroneOptions && (
@@ -197,12 +203,8 @@ const QuestionHolder = () => {
               style={[
                 {
                   ...styles.questionButtons,
-                  maxHeight: cardHeight,
-                  maxWidth: cardWidth,
-                },
-
-                stylesBool && {
-                  ...styles.questionButtonsBorder,
+                  height: cardHeight,
+                  width: cardWidth,
                 },
               ]}
             >
@@ -211,6 +213,19 @@ const QuestionHolder = () => {
                 droneStopButton={dronePlaying}
                 selectDroneAudio={selectDroneAudio}
               />
+            </View>
+          )}
+          {showQuestionOptions && (
+            <View
+              style={[
+                {
+                  ...styles.questionButtons,
+                  height: cardHeight,
+                  width: cardWidth,
+                },
+              ]}
+            >
+              <ButtonsQuestionOptions changeQuestionType={changeQuestionType} />
             </View>
           )}
         </View>

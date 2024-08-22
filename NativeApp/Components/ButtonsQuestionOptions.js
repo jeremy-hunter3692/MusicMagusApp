@@ -3,18 +3,7 @@ import { StyleSheet, Text, View, Pressable } from 'react-native'
 import QuestionButton from './QuestionButton'
 import { useWindowDimensions } from 'react-native'
 
-const QuestionButtons = ({
-  changeQuestionType,
-  reload,
-  showQuestionTypes,
-  showDroneOptions,
-  stopDrone,
-
-  droneStopButton,
-  selectDroneAudio,
-}) => {
-  const [showDropDown, setShowDropDown] = useState(false)
-
+const ButtonsQuestionOptions = ({ changeQuestionType, reload }) => {
   const { fontScale } = useWindowDimensions()
   const adjustedFont = fontScale * 1
 
@@ -24,31 +13,34 @@ const QuestionButtons = ({
     reload()
   }
 
-  function dropDownSwap() {
-    setShowDropDown(!showDropDown)
-  }
-
   return (
     <>
       <QuestionButton
-        onPress={showQuestionTypes}
+        onPress={() => changeQuestionAndReset(1)}
         style={styles.button}
         textStyle={styles.buttonText}
         adjustedFont={adjustedFont}
-        text={'Type'}
+        text={'Interval'}
+      />
+
+      <QuestionButton
+        onPress={() => changeQuestionAndReset(2)}
+        style={styles.button}
+        textStyle={styles.buttonText}
+        adjustedFont={adjustedFont}
+        text={'Note'}
       />
       <QuestionButton
-        onPress={showDroneOptions}
+        onPress={() => changeQuestionAndReset(3)}
         style={styles.button}
         textStyle={styles.buttonText}
         adjustedFont={adjustedFont}
-        text={'Drone'}
+        text={'Key'}
       />
     </>
   )
-
 }
-export default QuestionButtons
+export default ButtonsQuestionOptions
 
 const styles = StyleSheet.create({
   button: {
