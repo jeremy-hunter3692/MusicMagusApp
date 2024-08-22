@@ -9,74 +9,41 @@ const QuestionButtons = ({
   showQuestionTypes,
   showDroneOptions,
   stopDrone,
-
+  buttonTextStyle,
+  buttonStyle,
   droneStopButton,
   selectDroneAudio,
 }) => {
-  const [showDropDown, setShowDropDown] = useState(false)
-
   const { fontScale } = useWindowDimensions()
   const adjustedFont = fontScale * 1
 
-  function changeQuestionAndReset(inpt) {
-    changeQuestionType(inpt)
-    setShowDropDown(false)
-    reload()
-  }
 
-  function dropDownSwap() {
-    setShowDropDown(!showDropDown)
-  }
 
   return (
     <>
       <QuestionButton
+        onPress={reload}
+        style={buttonStyle}
+        textStyle={buttonTextStyle}
+        adjustedFont={adjustedFont}
+        text={'New'}
+      />
+      <QuestionButton
         onPress={showQuestionTypes}
-        style={styles.button}
-        textStyle={styles.buttonText}
+        style={buttonStyle}
+        textStyle={buttonTextStyle}
         adjustedFont={adjustedFont}
         text={'Type'}
       />
       <QuestionButton
         onPress={showDroneOptions}
-        style={styles.button}
-        textStyle={styles.buttonText}
+        style={buttonStyle}
+        textStyle={buttonTextStyle}
         adjustedFont={adjustedFont}
         text={'Drone'}
       />
     </>
   )
-
 }
 export default QuestionButtons
 
-const styles = StyleSheet.create({
-  button: {
-    flex: 1,
-    padding: 3,
-    // width: '100%',
-    borderWidth: 1,
-    borderColor: 'white',
-    borderTopLeftRadius: 10,
-    borderTopRightRadius: 10,
-    borderBottomWidth: 0,
-    backgroundColor: 'white', //#003399',
-    //
-    shadowColor: 'grey',
-    shadowOffset: { width: 2, height: -1.5 },
-    shadowOpacity: 0.9,
-    shadowRadius: 4,
-    // Android Elevation
-    elevation: 5,
-  },
-  buttonText: {
-    // flex: 1,
-    padding: 10,
-    margin: 0,
-    flexWrap: 'wrap',
-    color: 'black',
-    fontWeight: 100,
-    textAlign: 'left',
-    alignSelf: 'flex-start',
-  },
-})

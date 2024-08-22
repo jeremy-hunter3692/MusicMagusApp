@@ -43,7 +43,7 @@ const QuestionHolder = () => {
   const [userAnswer, setUserAnswer] = useState()
   //Might not need, props should re load the children correctly...?
   const [dronePlaying, setDronePlaying] = useState(true)
-  const [showQuestionOptions, setShowQuestionoptions] = useState(false)
+  const [showQuestionOptions, setShowQuestionOptions] = useState(false)
   const [showDroneOptions, setShowDroneOptions] = useState(false)
   ///
   const { width, height } = useWindowDimensions()
@@ -132,11 +132,13 @@ const QuestionHolder = () => {
     setUserAnswer(inpt)
   }
 
-  //button functions
+  //Question Button functions
   function showQuestionTypes() {
-    setShowQuestionoptions((x) => (x = !x))
+    showDroneOptions ? setShowDroneOptions(false) : ''
+    setShowQuestionOptions((x) => (x = !x))
   }
   function showDroneSwap() {
+    showQuestionOptions ? setShowQuestionOptions(false) : ''
     setShowDroneOptions((x) => (x = !x))
   }
 
@@ -194,10 +196,14 @@ const QuestionHolder = () => {
             ]}
           >
             <QuestionButtons
+              buttonStyle={styles.button}
+              buttonTextStyle={styles.buttonText}
+              reload={reload}
               showQuestionTypes={showQuestionTypes}
               showDroneOptions={showDroneSwap}
             />
           </View>
+
           {showDroneOptions && (
             <View
               style={[
@@ -209,6 +215,8 @@ const QuestionHolder = () => {
               ]}
             >
               <ButtonsDroneOptions
+                buttonStyle={styles.button}
+                buttonTextStyle={styles.buttonText}
                 stopDrone={rootCardPress}
                 droneStopButton={dronePlaying}
                 selectDroneAudio={selectDroneAudio}
@@ -225,8 +233,24 @@ const QuestionHolder = () => {
                 },
               ]}
             >
-              <ButtonsQuestionOptions changeQuestionType={changeQuestionType} />
+              <ButtonsQuestionOptions
+               reload={reload}
+                buttonStyle={styles.button}
+                buttonTextStyle={styles.buttonText}
+                changeQuestionType={changeQuestionType}
+              />
             </View>
+          )}
+          {!showDroneOptions && !showQuestionOptions && (
+            <View
+              style={[
+                {
+                  ...styles.questionButtonsPlaceHolder,
+                  height: cardHeight,
+                  width: cardWidth,
+                },
+              ]}
+            ></View>
           )}
         </View>
       </View>
@@ -288,7 +312,14 @@ const styles = StyleSheet.create({
     backgroundColor: 'red',
     borderColor: 'yellow',
   },
-
+  questionButtonsPlaceHolder: {
+    flex: 1,
+    backgroundColor: 'purple',
+    paddingHorizontal: 0,
+    flexDirection: 'column',
+    margin: 5,
+    justifyContent: 'center',
+  },
   displayCardsGrid: {
     flex: 2,
     margin: 0,
@@ -307,5 +338,33 @@ const styles = StyleSheet.create({
     color: 'white',
     backgroundColor: '#19af59',
     textAlign: 'center',
+  },
+  button: {
+    flex: 1,
+    padding: 3,
+    // width: '100%',
+    borderWidth: 1,
+    borderColor: 'white',
+    borderTopLeftRadius: 10,
+    borderTopRightRadius: 10,
+    borderBottomWidth: 0,
+    backgroundColor: 'white', //#003399',
+    //
+    shadowColor: 'grey',
+    shadowOffset: { width: 2, height: -1.5 },
+    shadowOpacity: 0.7,
+    shadowRadius: 4,
+    // Android Elevation
+    elevation: 5,
+  },
+  buttonText: {
+    flex: 1,
+    padding: 2,
+    margin: 1,
+    flexWrap: 'wrap',
+    color: 'purple',
+    fontWeight: 100,
+    textAlign: 'left',
+    alignSelf: 'flex-start',
   },
 })
