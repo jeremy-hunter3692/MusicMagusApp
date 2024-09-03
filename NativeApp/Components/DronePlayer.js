@@ -26,7 +26,7 @@ let rootOne = null
 let rootTwo = null
 
 const DronePlayer = ({ rootValue, dronePlaying }) => {
-  console.log(dronePlaying, '-drone playing')
+  // console.log(dronePlaying, '-drone playing')
   useEffect(() => {
     async function loadSoundObjs() {
       rootOne = await playNoteForLooping(rootValue)
@@ -41,7 +41,7 @@ const DronePlayer = ({ rootValue, dronePlaying }) => {
     dronePlaying ? startUp() : stopDrone()
 
     return () => {
-      console.log('use return')
+      // console.log('use return')
       stopDrone()
     }
   }, [dronePlaying, rootValue])
@@ -98,7 +98,7 @@ const fade = (sound, fromVolume, toVolume) => {
       if (currVolume !== end) {
         start < end ? currVolume++ : currVolume--
         count++
-        console.log(currVolume, 'count:', count)
+        // console.log(currVolume, 'count:', count)
         await sound.setVolumeAsync(currVolume / 10)
         fadeTimeout = setTimeout(loop, fadeDuration / 10)
       } else {
@@ -108,7 +108,7 @@ const fade = (sound, fromVolume, toVolume) => {
         if (currVolume === 0) {
           // await sound.stopAsync()
         }
-        console.log('Done fading')
+        // console.log('Done fading')
         resolve(true)
       }
     }

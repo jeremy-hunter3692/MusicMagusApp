@@ -25,6 +25,8 @@ import { noteNames } from '../data/NoteCards.js'
 import { noteAudioSrc } from '../data/NotesAudiosSrc.js'
 
 const stylesBool = false
+const newAnswerDelay = 2000
+let attemptCount = 0
 let droneType = true
 
 const QuestionHolder = () => {
@@ -41,11 +43,13 @@ const QuestionHolder = () => {
   )
   const [correctAnswer, setCorrectAnswer] = useState()
   const [userAnswer, setUserAnswer] = useState()
+  const [userScore, setUserScore] = useState(0)
   //Might not need, props should re load the children correctly...?
   const [dronePlaying, setDronePlaying] = useState(true)
   const [showQuestionOptions, setShowQuestionOptions] = useState(false)
   const [showDroneOptions, setShowDroneOptions] = useState(false)
   ///
+
   const { width, height } = useWindowDimensions()
 
   const cardWidth = width > height ? width * 0.1 : width * 0.14
@@ -92,7 +96,7 @@ const QuestionHolder = () => {
     setFirstCard(firstCardTemp)
     setSecondCard(secondCardTemp)
     setCorrectAnswer(arrayTemp[answerIdxTemp])
-  }, [questionType, reloadBool])
+  }, [reloadBool])
 
   function getAudioSrcIdxFromCardReducer(cardAny) {
     let audioSrcIdx =
@@ -120,7 +124,8 @@ const QuestionHolder = () => {
     setQuestionType(type)
   }
 
-  function rootCardPress() {
+  function questionCardPress() {
+    //old drone swithc
     dronePlaying ? setDronePlaying(false) : setDronePlaying(true)
   }
 
@@ -130,6 +135,21 @@ const QuestionHolder = () => {
 
   function userAnswerSetter(inpt) {
     setUserAnswer(inpt)
+    
+    if (attemptCount >= 12) {
+      attemptCount = 0
+      setUserScore(0)
+    } else {
+      attemptCount = attemptCount + 1
+    }
+
+    console.log({ attemptCount })
+    if (correctAnswer?.name == inpt.name) {
+      setUserScore((x) => x + 1)
+      setTimeout(() => {
+        setReloadBool((x) => (x = !x))
+      }, newAnswerDelay)
+    }
   }
 
   //Question Button functions
@@ -162,7 +182,10 @@ const QuestionHolder = () => {
         style={{ flex: 0, height: 0, width: 0, margin: 0, padding: 0 }}
       />
       <Text style={styles.answer}>
-        {userAnswer?.name === correctAnswer?.name ? 'CORRECT!' : 'Less correct'}
+        {userAnswer?.name === correctAnswer?.name
+          ? 'CORRECT! '
+          : 'Less correct '}
+        {'|| Score: ' + userScore + '/12'}
       </Text>
       <View
         style={[
@@ -179,14 +202,14 @@ const QuestionHolder = () => {
           <QuestionCards
             firstCard={firstCard}
             secondCard={secondCard}
-            rootCardPress={rootCardPress}
+            rootCardPress={questionCardPress}
             resultDisplay={userAnswer?.name === correctAnswer?.name}
             answerCardOnPress={answerCardOnPress}
             answer={correctAnswer}
             cardSize={{ cardWidth: cardWidth, cardHeight: cardHeight }}
           />
 
-          <View
+          {/* <View
             style={[
               {
                 ...styles.questionButtons,
@@ -202,7 +225,7 @@ const QuestionHolder = () => {
               showQuestionTypes={showQuestionTypes}
               showDroneOptions={showDroneSwap}
             />
-          </View>
+          </View> */}
 
           {showDroneOptions && (
             <View
@@ -336,7 +359,7 @@ const styles = StyleSheet.create({
   },
   answer: {
     margin: 0,
-    fontWeight: 500,
+    fontWeight: 'bold',
     flex: 0.25,
     color: 'white',
     backgroundColor: '#19af59',
