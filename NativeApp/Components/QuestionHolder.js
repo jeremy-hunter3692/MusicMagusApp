@@ -1,5 +1,11 @@
 import React, { useState, useEffect } from 'react'
-import { StyleSheet, View, Text, useWindowDimensions } from 'react-native'
+import {
+  StyleSheet,
+  View,
+  Text,
+  useWindowDimensions,
+  Pressable,
+} from 'react-native'
 //
 import DronePlayer from './DronePlayer.js'
 import DisplayCardsGrid from './DisplayCardsGrid.js'
@@ -7,7 +13,7 @@ import QuestionButtons from './QuestionButtons.js'
 import QuestionCards from './QuestionCards.js'
 import ButtonsDroneOptions from './ButtonsDroneOptions.js'
 import ButtonsQuestionOptions from './ButtonsQuestionOptions.js'
-
+import OptionsPage from './OptionsPage.js'
 import { SynthDrones, DoubleBassDrones } from '../data/DroneAudioSources.js'
 //
 import {
@@ -48,6 +54,7 @@ const QuestionHolder = () => {
   const [dronePlaying, setDronePlaying] = useState(true)
   const [showQuestionOptions, setShowQuestionOptions] = useState(false)
   const [showDroneOptions, setShowDroneOptions] = useState(false)
+  const [displayOptions, setDisplayOptions] = useState(false)
   ///
 
   const { width, height } = useWindowDimensions()
@@ -96,7 +103,7 @@ const QuestionHolder = () => {
     setFirstCard(firstCardTemp)
     setSecondCard(secondCardTemp)
     setCorrectAnswer(arrayTemp[answerIdxTemp])
-  }, [reloadBool])
+  }, [questionType, reloadBool])
 
   function getAudioSrcIdxFromCardReducer(cardAny) {
     let audioSrcIdx =
@@ -125,8 +132,11 @@ const QuestionHolder = () => {
   }
 
   function questionCardPress() {
+    questionType === 'Note'
+      ? setQuestionType('Interval')
+      : setQuestionType('Note')
+
     //old drone swithc
-    dronePlaying ? setDronePlaying(false) : setDronePlaying(true)
   }
 
   function reload() {
@@ -135,10 +145,13 @@ const QuestionHolder = () => {
 
   function userAnswerSetter(inpt) {
     setUserAnswer(inpt)
-    
+
     if (attemptCount >= 12) {
       attemptCount = 0
-      setUserScore(0)
+      setUserScore('!!!!!!!!!!1RESTARTING!!!!!!!!!!!!')
+      setTimeout(() => {
+        setUserScore(0)
+      }, 3000)
     } else {
       attemptCount = attemptCount + 1
     }
@@ -175,41 +188,55 @@ const QuestionHolder = () => {
 
   return (
     <>
-      <DronePlayer
-        rootValue={droneAudioSrc?.audioSrc}
-        dronePlaying={dronePlaying}
-        reload={droneReload}
-        style={{ flex: 0, height: 0, width: 0, margin: 0, padding: 0 }}
-      />
-      <Text style={styles.answer}>
-        {userAnswer?.name === correctAnswer?.name
-          ? 'CORRECT! '
-          : 'Less correct '}
-        {'|| Score: ' + userScore + '/12'}
-      </Text>
-      <View
-        style={[
-          styles.qCardsAndButtonsCont,
-          stylesBool && styles.qCardsButtonBorder,
-        ]}
-      >
-        <View
-          style={[
-            styles.questionCardsCont,
-            stylesBool && styles.questionCardsBorder,
-          ]}
-        >
-          <QuestionCards
-            firstCard={firstCard}
-            secondCard={secondCard}
-            rootCardPress={questionCardPress}
-            resultDisplay={userAnswer?.name === correctAnswer?.name}
-            answerCardOnPress={answerCardOnPress}
-            answer={correctAnswer}
-            cardSize={{ cardWidth: cardWidth, cardHeight: cardHeight }}
+      <Pressable onPress={() => setDisplayOptions((x) => !x)}>
+        <Text>options</Text>
+      </Pressable>
+      {displayOptions ? (
+        <>
+          <OptionsPage
+            selectDroneAudio={selectDroneAudio}
+            droneOnOff={
+              dronePlaying ? setDronePlaying(false) : setDronePlaying(true)
+            }
           />
+        </>
+      ) : (
+        <>
+          <DronePlayer
+            rootValue={droneAudioSrc?.audioSrc}
+            dronePlaying={dronePlaying}
+            reload={droneReload}
+            style={{ flex: 0, height: 0, width: 0, margin: 0, padding: 0 }}
+          />
+          <Text style={styles.answer}>
+            {userAnswer?.name === correctAnswer?.name
+              ? 'CORRECT! '
+              : 'Less correct '}
+            {'|| Score: ' + userScore + '/12'}
+          </Text>
+          <View
+            style={[
+              styles.qCardsAndButtonsCont,
+              stylesBool && styles.qCardsButtonBorder,
+            ]}
+          >
+            <View
+              style={[
+                styles.questionCardsCont,
+                stylesBool && styles.questionCardsBorder,
+              ]}
+            >
+              <QuestionCards
+                firstCard={firstCard}
+                secondCard={secondCard}
+                rootCardPress={questionCardPress}
+                resultDisplay={userAnswer?.name === correctAnswer?.name}
+                answerCardOnPress={answerCardOnPress}
+                answer={correctAnswer}
+                cardSize={{ cardWidth: cardWidth, cardHeight: cardHeight }}
+              />
 
-          {/* <View
+              {/* <View
             style={[
               {
                 ...styles.questionButtons,
@@ -227,73 +254,75 @@ const QuestionHolder = () => {
             />
           </View> */}
 
-          {showDroneOptions && (
-            <View
-              style={[
-                {
-                  ...styles.questionButtons,
-                  height: cardHeight,
-                  width: cardWidth,
-                },
-              ]}
-            >
-              <ButtonsDroneOptions
-                buttonStyle={styles.button}
-                buttonTextStyle={styles.buttonText}
-                stopDrone={rootCardPress}
-                droneStopButton={dronePlaying}
-                selectDroneAudio={selectDroneAudio}
-              />
+              {showDroneOptions && (
+                <View
+                  style={[
+                    {
+                      ...styles.questionButtons,
+                      height: cardHeight,
+                      width: cardWidth,
+                    },
+                  ]}
+                >
+                  <ButtonsDroneOptions
+                    buttonStyle={styles.button}
+                    buttonTextStyle={styles.buttonText}
+                    stopDrone={rootCardPress}
+                    droneStopButton={dronePlaying}
+                    selectDroneAudio={selectDroneAudio}
+                  />
+                </View>
+              )}
+              {showQuestionOptions && (
+                <View
+                  style={[
+                    {
+                      ...styles.questionButtons,
+                      height: cardHeight,
+                      width: cardWidth,
+                    },
+                  ]}
+                >
+                  <ButtonsQuestionOptions
+                    reload={reload}
+                    buttonStyle={styles.button}
+                    buttonTextStyle={styles.buttonText}
+                    changeQuestionType={changeQuestionType}
+                  />
+                </View>
+              )}
+              {!showDroneOptions && !showQuestionOptions && (
+                <View
+                  style={[
+                    {
+                      ...styles.questionButtonsPlaceHolder,
+                      height: cardHeight,
+                      width: cardWidth,
+                    },
+                  ]}
+                ></View>
+              )}
             </View>
-          )}
-          {showQuestionOptions && (
-            <View
-              style={[
-                {
-                  ...styles.questionButtons,
-                  height: cardHeight,
-                  width: cardWidth,
-                },
-              ]}
-            >
-              <ButtonsQuestionOptions
-                reload={reload}
-                buttonStyle={styles.button}
-                buttonTextStyle={styles.buttonText}
-                changeQuestionType={changeQuestionType}
-              />
-            </View>
-          )}
-          {!showDroneOptions && !showQuestionOptions && (
-            <View
-              style={[
-                {
-                  ...styles.questionButtonsPlaceHolder,
-                  height: cardHeight,
-                  width: cardWidth,
-                },
-              ]}
-            ></View>
-          )}
-        </View>
-      </View>
+          </View>
 
-      <View
-        style={[
-          styles.displayCardsGrid,
-          stylesBool && styles.displayCardsGridBorder,
-        ]}
-      >
-        {displayInputCardArray && (
-          <DisplayCardsGrid
-            cardSize={{ cardWidth: cardWidth, cardHeight: cardHeight }}
-            stylesBool={stylesBool}
-            cardsArray={displayInputCardArray}
-            userAnswerSetter={userAnswerSetter}
-            findNoteFunction={getAudioSrcIdxFromCardReducer}
-          />
-        )}
-      </View>
+          <View
+            style={[
+              styles.displayCardsGrid,
+              stylesBool && styles.displayCardsGridBorder,
+            ]}
+          >
+            {displayInputCardArray && (
+              <DisplayCardsGrid
+                cardSize={{ cardWidth: cardWidth, cardHeight: cardHeight }}
+                stylesBool={stylesBool}
+                cardsArray={displayInputCardArray}
+                userAnswerSetter={userAnswerSetter}
+                findNoteFunction={getAudioSrcIdxFromCardReducer}
+              />
+            )}
+          </View>
+        </>
+      )}
     </>
   )
 }
