@@ -12,7 +12,9 @@ const playNoteForLooping = async (note) => {
       volume: bassDroneVolume,
       isLooping: true,
     }
-    const { sound } = await Audio.Sound.createAsync(source, initalStatus)
+    const { sound } = source
+      ? await Audio.Sound.createAsync(source, initalStatus)
+      : ''
     // console.log('pre 4loop resturn', sound)
     return sound
   } catch (error) {
@@ -24,6 +26,7 @@ let rootOne = null
 let rootTwo = null
 
 const DronePlayer = ({ rootValue, dronePlaying }) => {
+  console.log(dronePlaying, '-drone playing')
   useEffect(() => {
     async function loadSoundObjs() {
       rootOne = await playNoteForLooping(rootValue)
@@ -34,9 +37,11 @@ const DronePlayer = ({ rootValue, dronePlaying }) => {
       await loadSoundObjs()
       startDrone()
     }
+
     dronePlaying ? startUp() : stopDrone()
 
     return () => {
+      console.log('use return')
       stopDrone()
     }
   }, [dronePlaying, rootValue])
@@ -56,10 +61,14 @@ const DronePlayer = ({ rootValue, dronePlaying }) => {
 
   const stopDrone = async () => {
     if (rootOne) {
+      // await fade(rootOne, bassDroneVolume, 0)
+      // await rootOne.pauseAsync()
       await rootOne.stopAsync()
       await rootOne.unloadAsync()
     }
     if (rootTwo) {
+      // await fade(rootTwo, bassDroneVolume, 0)
+      // await rootTwo.pauseAsync()
       await rootTwo.stopAsync()
       await rootTwo.unloadAsync()
     }
@@ -69,4 +78,42 @@ const DronePlayer = ({ rootValue, dronePlaying }) => {
   return null
 }
 
+const fade = (sound, fromVolume, toVolume) => {
+  const fadeDuration = 150
+  return new Promise((resolve, reject) => {
+    console.log({ fromVolume })
+    let isFading = true
+    let fadeTimeout = null
+
+    if (fadeTimeout) {
+      clearTimeout(fadeTimeout)
+    }
+
+    const start = Math.floor(fromVolume * 10)
+    const end = toVolume * 10
+    let currVolume = start
+
+    const loop = async () => {
+      let count = 0
+      if (currVolume !== end) {
+        start < end ? currVolume++ : currVolume--
+        count++
+        console.log(currVolume, 'count:', count)
+        await sound.setVolumeAsync(currVolume / 10)
+        fadeTimeout = setTimeout(loop, fadeDuration / 10)
+      } else {
+        clearTimeout(fadeTimeout)
+        fadeTimeout = null
+        isFading = false
+        if (currVolume === 0) {
+          // await sound.stopAsync()
+        }
+        console.log('Done fading')
+        resolve(true)
+      }
+    }
+
+    fadeTimeout = setTimeout(loop, 10)
+  })
+}
 export default DronePlayer

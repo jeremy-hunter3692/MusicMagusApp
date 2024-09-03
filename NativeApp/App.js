@@ -24,9 +24,10 @@ export default function App() {
       <SafeAreaView
         style={{
           flex: 1,
+          padding: 0,
           maxHeight: height,
           maxWidth: width,
-          borderWidth: 15,
+          borderWidth: 1,
           borderColor: 'black',
           // marginTop: 15,
           padding: 0,

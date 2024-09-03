@@ -14,7 +14,6 @@ const ButtonsQuestionOptions = ({
 
   function changeQuestionAndReset(inpt) {
     changeQuestionType(inpt)
-
     reload()
   }
 

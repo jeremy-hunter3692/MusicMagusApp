@@ -234,7 +234,7 @@ const QuestionHolder = () => {
               ]}
             >
               <ButtonsQuestionOptions
-               reload={reload}
+                reload={reload}
                 buttonStyle={styles.button}
                 buttonTextStyle={styles.buttonText}
                 changeQuestionType={changeQuestionType}
@@ -307,6 +307,10 @@ const styles = StyleSheet.create({
     margin: 5,
     justifyContent: 'center',
     borderRadius: 15,
+    shadowColor: 'grey',
+    shadowOffset: { width: 2, height: 2 },
+    shadowOpacity: 0.9,
+    shadowRadius: 2,
   },
   questionButtonsBorder: {
     backgroundColor: 'red',
@@ -332,11 +336,12 @@ const styles = StyleSheet.create({
   },
   answer: {
     margin: 0,
-    marginBottom: 3,
-    padding: 0,
+    fontWeight: 500,
     flex: 0.25,
     color: 'white',
     backgroundColor: '#19af59',
+    justifyContent: 'center',
+    alignItems: 'center',
     textAlign: 'center',
   },
   button: {
@@ -352,7 +357,7 @@ const styles = StyleSheet.create({
     //
     shadowColor: 'grey',
     shadowOffset: { width: 2, height: -1.5 },
-    shadowOpacity: 0.7,
+    shadowOpacity: 0.9,
     shadowRadius: 4,
     // Android Elevation
     elevation: 5,
@@ -363,8 +368,9 @@ const styles = StyleSheet.create({
     margin: 1,
     flexWrap: 'wrap',
     color: 'purple',
-    fontWeight: 100,
-    textAlign: 'left',
+
+    // fontWeight: 150,
+    textAlign: 'center',
     alignSelf: 'flex-start',
   },
 })
