@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import PlaySound from './SingleNotePlayer'
-import { Pressable, Image, View, useWindowDimensions } from 'react-native'
+import { Pressable, Image, Text, View, useWindowDimensions } from 'react-native'
+
 
 let hasPlayed = true
 
@@ -12,25 +13,17 @@ const CardButton = ({
   answer,
   findAudioSourceFunction,
   cardSize,
+  annotated,
+  setAnnotatedCard,
 }) => {
   const [note, setNote] = useState()
   const [playBool, setPlayBool] = useState()
-
   const { cardWidth, cardHeight } = cardSize || {}
 
-  function cardButtonOnPress(inpt) {
-    if (autoPlay === true) {
-      let answerNote = onPress(answer)
-      setNote(answerNote)
-    }
-
-    let res = findAudioSourceFunction ? findAudioSourceFunction(inpt) : ''
-    onPress(inpt)
-    res ? setNote(res) : ''
-    note ? setPlayBool((bool) => !bool) : ''
-    hasPlayed = true
-  }
   useEffect(() => {
+    if (annotated) {
+      return
+    }
     hasPlayed = false
     let timeOutId = setTimeout(() => {
       autoPlay && !hasPlayed && answer ? cardButtonOnPress(data) : ''
@@ -38,9 +31,27 @@ const CardButton = ({
     return () => clearTimeout(timeOutId)
   }, [answer])
 
+  function cardButtonOnPress(inpt) {
+    if (annotated) {
+      setAnnotatedCard(data)
+    } else {
+      if (autoPlay === true) {
+        let answerNote = onPress(answer)
+        setNote(answerNote)
+      }
+
+      let res = findAudioSourceFunction ? findAudioSourceFunction(inpt) : ''
+      onPress(inpt)
+      res ? setNote(res) : ''
+      note ? setPlayBool((bool) => !bool) : ''
+      hasPlayed = true
+    }
+  }
+
   return (
     <>
       <PlaySound inpt={note} playBool={playBool} />
+
       <Pressable
         onPress={() => {
           cardButtonOnPress(data)
@@ -70,7 +81,7 @@ const CardButton = ({
             flexShrink: 1,
             resizeMode: 'contain',
           }}
-          // style={position || { width: 100, height: 150, margin: 5 }}
+          
         />
       </Pressable>
     </>

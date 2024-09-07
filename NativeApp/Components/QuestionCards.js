@@ -13,6 +13,8 @@ const QuestionCards = ({
   cardSize,
   rootCardPress,
   answerCardOnPress,
+  setAnnotatedCard,
+  annotated,
 }) => {
   function droneSetter() {
     rootCardPress()
@@ -27,6 +29,8 @@ const QuestionCards = ({
           source={firstCard.value.imgSrc}
           style={questionCards}
           onPress={droneSetter}
+          annotated={annotated}
+          setAnnotatedCard={setAnnotatedCard}
         />
         <CardButton
           cardSize={cardSize}
@@ -37,6 +41,8 @@ const QuestionCards = ({
           answer={answer}
           onPress={answerCardOnPress}
           findAudioSourceFunction={findNoteFunction}
+          annotated={annotated}
+          setAnnotatedCard={setAnnotatedCard}
           autoPlay={true}
         />
         {resultDisplay ? (
@@ -45,6 +51,8 @@ const QuestionCards = ({
             data={answer?.name}
             source={answer?.imgSrc}
             style={questionCards}
+            annotated={annotated}
+            setAnnotatedCard={setAnnotatedCard}
           />
         ) : (
           <CardButton

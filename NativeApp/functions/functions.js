@@ -1,5 +1,5 @@
-
 import { noteAudioSrc } from '../data/NotesAudiosSrc'
+import { keys } from '../data/KeyCards'
 
 export function distanceUpInIntervals(rootNote, targetNote) {
   return (targetNote - rootNote + 12) % 12
@@ -79,4 +79,55 @@ export function getIntervalCardsAsNotes(note, root) {
       ? diffAndRootsIdx + 12
       : diffAndRootsIdx
   return noteAudioSrc[answerIdx]
+}
+
+export function getAccidentalNames(keyCard) {
+  let tempAnswer = []
+  let intervals = keyCard?.intervals
+  let idx = keys.findIndex((x) => x.name === keyCard.name)
+  let count = 0
+  intervals.forEach((x) => {
+    if (x === true) {
+      let answerNdx = idx + count
+      answerNdx = answerNdx > 11 ? answerNdx - 12 : answerNdx
+      tempAnswer.push(keys[answerNdx].name)
+    }
+    count = count === 4 ? count + 1 : count + 2
+  })
+  // Mapping over everthing here is probably ineffcient? doubtful it will inpact much though
+
+  let answer = tempAnswer.map((x) => (x === 'Cb' ? 'B' : x))
+
+  return answer
+}
+
+export function replaceFlatsForSharps(rootName, noteNameArr) {
+  let updatedNames
+  if (
+    rootName === 'D' ||
+    rootName === 'E' ||
+    rootName === 'G' ||
+    rootName === 'A' ||
+    rootName === 'B'
+  ) {
+    updatedNames = noteNameArr.map((x) => {
+      switch (x) {
+        case 'Gb':
+          return 'F#'
+        case 'Db':
+          return 'C#'
+        case 'Eb':
+          return 'D#'
+        case 'Ab':
+          return 'G#'
+        case 'Bb':
+          return 'A#'
+        default:
+          return x
+      }
+    })
+    return updatedNames
+  } else {
+    return noteNameArr // Return original array if no replacements
+  }
 }

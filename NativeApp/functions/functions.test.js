@@ -6,8 +6,11 @@ import {
   intervalOfWhatKey,
   getAltOctaveNotes,
   returnRandomCard,
+  getAccidentalNames,
+  replaceFlatsForSharps,
 } from './functions'
 import { noteNames } from '../data/NoteCards'
+import { keys } from '../data/KeyCards'
 import { noteAudioSrcMock } from '../__mocks__/noteSoundsMock'
 
 test.each([
@@ -122,12 +125,45 @@ describe('returnRandCard', () => {
     for (let i = 0; i < iterations; i++) {
       results.push(returnRandomCard(noteNames, true))
     }
-    
+
     const counts = results.reduce((acc, { idx }) => {
       acc[idx] = (acc[idx] || 0) + 1
       return acc
     }, {})
 
     expect(counts[0]).toBeUndefined()
+  })
+})
+
+describe('getAccidentalNames', () => {
+  test.skip.each([
+    [keys[0], []],
+    [keys[1], ['Db', 'Eb', 'F#', 'Ab', 'Bb']],
+    [keys[2], ['F#', 'C#']],
+    [keys[5], ['Bb']],
+    [keys[6], ['F#', 'Ab', 'Bb', 'B', 'Db', 'Eb']],
+    [keys[7], ['F#']],
+  ])('getsCorrectAccidentalNamesFromGivenKey', (keyCard, expected) => {
+    let answer = getAccidentalNames(keyCard)
+
+    expect(answer).toEqual(expected)
+    expect(answer).not.toContain('Cb')
+  })
+})
+
+describe('replaceFlatsForSharps', () => {
+  const flatNotes = ['Ab', 'Bb', 'Cb', 'Db', 'Eb', 'Gb']
+  test.each([
+    ['D', keys[2]],
+    ['E', keys[4]],
+    ['G', keys[7]],
+    ['A', keys[9]],
+    ['B', keys[11]],
+  ])('replaces flats for sharps if key is D, E, A or B', (keyName, array) => {
+    let accidentalsArray = getAccidentalNames(array)
+    let answer = replaceFlatsForSharps(keyName, accidentalsArray)
+    flatNotes.forEach((note) => {
+      expect(answer).not.toContain(note)
+    })
   })
 })

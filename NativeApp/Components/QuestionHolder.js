@@ -14,6 +14,7 @@ import QuestionCards from './QuestionCards.js'
 import ButtonsDroneOptions from './ButtonsDroneOptions.js'
 import ButtonsQuestionOptions from './ButtonsQuestionOptions.js'
 import OptionsPage from './OptionsPage.js'
+import AnnotatedCards from './AnnotatedCards.js'
 import { SynthDrones, DoubleBassDrones } from '../data/DroneAudioSources.js'
 //
 import {
@@ -29,9 +30,11 @@ import { intervals } from '../data/IntervalCards.js'
 import { keys } from '../data/KeyCards.js'
 import { noteNames } from '../data/NoteCards.js'
 import { noteAudioSrc } from '../data/NotesAudiosSrc.js'
+import CardButton from './CardButton.js'
 
 const stylesBool = false
 const newAnswerDelay = 2000
+// let annotatedCardDisplay = false
 let attemptCount = 0
 let droneType = true
 
@@ -55,6 +58,8 @@ const QuestionHolder = () => {
   const [showQuestionOptions, setShowQuestionOptions] = useState(false)
   const [showDroneOptions, setShowDroneOptions] = useState(false)
   const [displayOptions, setDisplayOptions] = useState(false)
+  const [annotatedCard, setAnnotatedCard] = useState()
+  const [annotatedCardDisplay, setAnnotatedCardDisplay] = useState(false)
   ///
 
   const { width, height } = useWindowDimensions()
@@ -105,6 +110,11 @@ const QuestionHolder = () => {
     setCorrectAnswer(arrayTemp[answerIdxTemp])
   }, [questionType, reloadBool])
 
+  function setterAnnotated(inpt) {
+    console.log('annotated:', inpt)
+    setAnnotatedCard(inpt)
+  }
+
   function getAudioSrcIdxFromCardReducer(cardAny) {
     let audioSrcIdx =
       questionType === 'Note'
@@ -127,6 +137,7 @@ const QuestionHolder = () => {
   function droneReload() {}
 
   function changeQuestionType(inpt) {
+    console.log('change top', inpt)
     let type = inpt === 1 ? 'Interval' : inpt === 2 ? 'Note' : 'Key'
     setQuestionType(type)
   }
@@ -186,20 +197,28 @@ const QuestionHolder = () => {
     setDroneAudioSrc(source)
   }
 
+  function droneOnOff() {
+    dronePlaying ? setDronePlaying(false) : setDronePlaying(true)
+  }
   return (
     <>
-      <Pressable onPress={() => setDisplayOptions((x) => !x)}>
-        <Text>options</Text>
+      <Pressable onPress={() => setAnnotatedCardDisplay((x) => !x)}>
+        <View
+          style={{
+            backgroundColor: 'white',
+            width: 30,
+            height: 30,
+            borderRadius: 30,
+            alignSelf: 'flex-end',
+            justifyContent: 'center',
+            alignItems: 'center',
+          }}
+        >
+          <Text style={{ color: 'purple' }}>?</Text>
+        </View>
       </Pressable>
-      {displayOptions ? (
-        <>
-          <OptionsPage
-            selectDroneAudio={selectDroneAudio}
-            droneOnOff={
-              dronePlaying ? setDronePlaying(false) : setDronePlaying(true)
-            }
-          />
-        </>
+      {annotatedCard ? (
+        <AnnotatedCards data={annotatedCard} />
       ) : (
         <>
           <DronePlayer
@@ -208,90 +227,186 @@ const QuestionHolder = () => {
             reload={droneReload}
             style={{ flex: 0, height: 0, width: 0, margin: 0, padding: 0 }}
           />
-          <Text style={styles.answer}>
-            {userAnswer?.name === correctAnswer?.name
-              ? 'CORRECT! '
-              : 'Less correct '}
-            {'|| Score: ' + userScore + '/12'}
-          </Text>
-          <View
-            style={[
-              styles.qCardsAndButtonsCont,
-              stylesBool && styles.qCardsButtonBorder,
-            ]}
-          >
-            <View
-              style={[
-                styles.questionCardsCont,
-                stylesBool && styles.questionCardsBorder,
-              ]}
-            >
-              <QuestionCards
-                firstCard={firstCard}
-                secondCard={secondCard}
-                rootCardPress={questionCardPress}
-                resultDisplay={userAnswer?.name === correctAnswer?.name}
-                answerCardOnPress={answerCardOnPress}
-                answer={correctAnswer}
-                cardSize={{ cardWidth: cardWidth, cardHeight: cardHeight }}
+          <Pressable onPress={() => setDisplayOptions((x) => !x)}>
+            <Text style={{ color: 'white' }}>
+              {displayOptions ? 'Back' : 'Options'}
+            </Text>
+          </Pressable>
+          {displayOptions ? (
+            <>
+              <OptionsPage
+                selectDroneAudio={selectDroneAudio}
+                droneOnOff={droneOnOff}
+                changeQuestionType={changeQuestionType}
               />
+            </>
+          ) : (
+            <>
+              <Text style={styles.answer}>
+                {userAnswer?.name === correctAnswer?.name
+                  ? 'CORRECT! '
+                  : 'Less correct '}
+                {'|| Score: ' + userScore + '/12'}
+              </Text>
+              <View
+                style={[
+                  styles.qCardsAndButtonsCont,
+                  stylesBool && styles.qCardsButtonBorder,
+                ]}
+              >
+                <View
+                  style={[
+                    styles.questionCardsCont,
+                    stylesBool && styles.questionCardsBorder,
+                  ]}
+                >
+                  <QuestionCards
+                    firstCard={firstCard}
+                    secondCard={secondCard}
+                    rootCardPress={questionCardPress}
+                    resultDisplay={userAnswer?.name === correctAnswer?.name}
+                    answerCardOnPress={answerCardOnPress}
+                    answer={correctAnswer}
+                    cardSize={{ cardWidth: cardWidth, cardHeight: cardHeight }}
+                    annotated={annotatedCardDisplay}
+                    setAnnotatedCard={setterAnnotated}
+                  />
 
-              {/* <View
-            style={[
-              {
-                ...styles.questionButtons,
-                height: cardHeight,
-                width: cardWidth,
-              },
-            ]}
-          >
-            <QuestionButtons
+                  <View
+                    style={[
+                      {
+                        ...styles.questionButtons,
+                        height: cardHeight,
+                        width: cardWidth,
+                      },
+                    ]}
+                  >
+                    <View
+                      style={[{ ...styles.button, backgroundColor: 'purple' }]}
+                    >
+                      <View
+                        style={{
+                          backgroundColor: 'yellow',
+                          borderRadius: 10,
+                          width: 50,
+                          height: 50,
+                        }}
+                      ></View>
+                    </View>
+                    <View
+                      style={[{ ...styles.button, backgroundColor: 'purple' }]}
+                    >
+                      <View
+                        style={{
+                          width: 50,
+                          height: 50,
+                          borderRadius: 50,
+                          backgroundColor: 'green',
+                        }}
+                      ></View>
+                    </View>
+                    <View
+                      style={[{ ...styles.button, backgroundColor: 'purple' }]}
+                    >
+                      <View
+                        style={{
+                          width: 0,
+                          height: 0,
+                          // position: 'absolute',
+                          top: -30,
+                          borderTopWidth: 50,
+                          borderRightWidth: 50,
+                          borderRightColor: 'transparent',
+                          borderTopColor: 'transparent',
+                          borderBottomWidth: 50, // Hypotenuse of the triangle
+                          borderBottomColor: 'black',
+                          
+                        }}
+                      ></View>
+                    </View>
+
+                    {/*   CARD BUTTONS AS IMAGES
+                    
+                    <CardButton
+                      source={keys[0].imgSrc}
+                      data={1}
+                      onPress={changeQuestionType}
+                      cardSize={{
+                        cardWidth: cardWidth * 0.75,
+                        cardHeight: cardHeight * 0.75,
+                      }}
+                    />
+                    <View style={{ position: 'absolute', left: +50, top: +40 }}>
+                      <CardButton
+                        source={intervals[0].imgSrc}
+                        data={2}
+                        onPress={changeQuestionType}
+                        cardSize={{
+                          cardWidth: cardWidth * 0.75,
+                          cardHeight: cardHeight * 0.75,
+                        }}
+                      />
+                    </View>
+                    <View
+                      style={{ position: 'absolute', left: +100, top: +80 }}
+                    >
+                      <CardButton
+                        source={noteNames[0].imgSrc}
+                        data={3}
+                        onPress={changeQuestionType}
+                        cardSize={{
+                          cardWidth: cardWidth * 0.75,
+                          cardHeight: cardHeight * 0.75,
+                        }}
+                      /> 
+                    </View>
+                    {/* <QuestionButtons
               buttonStyle={styles.button}
               buttonTextStyle={styles.buttonText}
               reload={reload}
               showQuestionTypes={showQuestionTypes}
               showDroneOptions={showDroneSwap}
-            />
-          </View> */}
+            /> */}
+                  </View>
 
-              {showDroneOptions && (
-                <View
-                  style={[
-                    {
-                      ...styles.questionButtons,
-                      height: cardHeight,
-                      width: cardWidth,
-                    },
-                  ]}
-                >
-                  <ButtonsDroneOptions
-                    buttonStyle={styles.button}
-                    buttonTextStyle={styles.buttonText}
-                    stopDrone={rootCardPress}
-                    droneStopButton={dronePlaying}
-                    selectDroneAudio={selectDroneAudio}
-                  />
-                </View>
-              )}
-              {showQuestionOptions && (
-                <View
-                  style={[
-                    {
-                      ...styles.questionButtons,
-                      height: cardHeight,
-                      width: cardWidth,
-                    },
-                  ]}
-                >
-                  <ButtonsQuestionOptions
-                    reload={reload}
-                    buttonStyle={styles.button}
-                    buttonTextStyle={styles.buttonText}
-                    changeQuestionType={changeQuestionType}
-                  />
-                </View>
-              )}
-              {!showDroneOptions && !showQuestionOptions && (
+                  {showDroneOptions && (
+                    <View
+                      style={[
+                        {
+                          ...styles.questionButtons,
+                          height: cardHeight,
+                          width: cardWidth,
+                        },
+                      ]}
+                    >
+                      <ButtonsDroneOptions
+                        buttonStyle={styles.button}
+                        buttonTextStyle={styles.buttonText}
+                        stopDrone={rootCardPress}
+                        droneStopButton={dronePlaying}
+                        selectDroneAudio={selectDroneAudio}
+                      />
+                    </View>
+                  )}
+                  {showQuestionOptions && (
+                    <View
+                      style={[
+                        {
+                          ...styles.questionButtons,
+                          height: cardHeight,
+                          width: cardWidth,
+                        },
+                      ]}
+                    >
+                      <ButtonsQuestionOptions
+                        reload={reload}
+                        buttonStyle={styles.button}
+                        buttonTextStyle={styles.buttonText}
+                        changeQuestionType={changeQuestionType}
+                      />
+                    </View>
+                  )}
+                  {/* {!showDroneOptions && !showQuestionOptions && (
                 <View
                   style={[
                     {
@@ -301,26 +416,28 @@ const QuestionHolder = () => {
                     },
                   ]}
                 ></View>
-              )}
-            </View>
-          </View>
+              )} */}
+                </View>
+              </View>
 
-          <View
-            style={[
-              styles.displayCardsGrid,
-              stylesBool && styles.displayCardsGridBorder,
-            ]}
-          >
-            {displayInputCardArray && (
-              <DisplayCardsGrid
-                cardSize={{ cardWidth: cardWidth, cardHeight: cardHeight }}
-                stylesBool={stylesBool}
-                cardsArray={displayInputCardArray}
-                userAnswerSetter={userAnswerSetter}
-                findNoteFunction={getAudioSrcIdxFromCardReducer}
-              />
-            )}
-          </View>
+              <View
+                style={[
+                  styles.displayCardsGrid,
+                  stylesBool && styles.displayCardsGridBorder,
+                ]}
+              >
+                {displayInputCardArray && (
+                  <DisplayCardsGrid
+                    cardSize={{ cardWidth: cardWidth, cardHeight: cardHeight }}
+                    stylesBool={stylesBool}
+                    cardsArray={displayInputCardArray}
+                    userAnswerSetter={userAnswerSetter}
+                    findNoteFunction={getAudioSrcIdxFromCardReducer}
+                  />
+                )}
+              </View>
+            </>
+          )}
         </>
       )}
     </>
@@ -353,16 +470,16 @@ const styles = StyleSheet.create({
   },
   questionButtons: {
     flex: 1,
-    backgroundColor: 'white',
-    paddingHorizontal: 0,
-    flexDirection: 'column',
-    margin: 5,
-    justifyContent: 'center',
-    borderRadius: 15,
-    shadowColor: 'grey',
-    shadowOffset: { width: 2, height: 2 },
-    shadowOpacity: 0.9,
-    shadowRadius: 2,
+    // backgroundColor: 'white',
+    // paddingHorizontal: 0,
+    // flexDirection: 'column',
+    // margin: 5,
+    // justifyContent: 'center',
+    // borderRadius: 15,
+    // shadowColor: 'grey',
+    // shadowOffset: { width: 2, height: 2 },
+    // shadowOpacity: 0.9,
+    // shadowRadius: 2,
   },
   questionButtonsBorder: {
     backgroundColor: 'red',
@@ -398,19 +515,29 @@ const styles = StyleSheet.create({
   },
   button: {
     flex: 1,
+
+    // position: 'absolute',
+    // width: 120,
+    // height: 225,
+    margin: 4,
     padding: 3,
-    // width: '100%',
-    borderWidth: 1,
-    borderColor: 'white',
-    borderTopLeftRadius: 10,
-    borderTopRightRadius: 10,
-    borderBottomWidth: 0,
-    backgroundColor: 'white', //#003399',
+    //for icon cards
+    justifyContent: 'center',
+    alignItems: 'center',
+    borderRadius: 10,
     //
-    shadowColor: 'grey',
-    shadowOffset: { width: 2, height: -1.5 },
-    shadowOpacity: 0.9,
-    shadowRadius: 4,
+    width: '100%',
+    // borderWidth: 1,
+    // borderColor: 'white',
+    // borderTopLeftRadius: 10,
+    // borderTopRightRadius: 10,
+    // borderBottomWidth: 0,
+    // backgroundColor: 'white', //#003399',
+    //
+    // shadowColor: 'black',
+    // shadowOffset: { width: 2, height: 1.5 },
+    // shadowOpacity: 1,
+    // shadowRadius: 5,
     // Android Elevation
     elevation: 5,
   },
