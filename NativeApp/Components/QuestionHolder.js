@@ -25,6 +25,7 @@ import {
   intervalOfWhatKey,
   getAltOctaveNotes,
   findNoteEquivalent,
+  cardReducer,
 } from '../functions/functions.js'
 import { intervals } from '../data/IntervalCards.js'
 import { keys } from '../data/KeyCards.js'
@@ -38,13 +39,14 @@ let attemptCount = 0
 let droneType = true
 
 const QuestionHolder = ({
+  questionType,
   setAnnotatedCard,
   annotatedCard,
   annotatedCardDisplay,
 }) => {
+  console.log('qtype', questionType)
   //questionType will refer to what the middle card is
   //TO DO go over all this state and cut down what we need/don't need
-  const [questionType, setQuestionType] = useState('Interval')
   const [reloadBool, setReloadBool] = useState(false)
   const [displayInputCardArray, setDisplayInputCardArray] = useState(noteNames)
   const [firstCard, setFirstCard] = useState(() => returnRandomCard(keys))
@@ -72,17 +74,17 @@ const QuestionHolder = ({
   useEffect(() => {
     //TO DO dry this up, probs shouldn't be an effect
     let arrayTemp = []
-    let firstCardTemp = returnRandomCard(keys)
+    let firstCardTemp //= returnRandomCard(keys)
     let secondCardTemp = 0
     let answerIdxTemp = 0
+    let droneSrc
 
     if (questionType === 'Interval') {
-      arrayTemp = noteNames
-      secondCardTemp = returnRandomCard(intervals, true)
-      answerIdxTemp = getNoteCardIdxFromIntervalAndKeyCard(
-        firstCardTemp.idx,
-        secondCardTemp.idx
-      )
+      const { firstCard, secondCard, array, answer } = cardReducer('Key')
+      arrayTemp = array
+      firstCardTemp = firstCard
+      secondCardTemp = secondCard
+      answerIdxTemp = answer
     } else if (questionType === 'Note') {
       arrayTemp = intervals
       secondCardTemp = returnRandomCard(noteNames, true)
@@ -139,12 +141,6 @@ const QuestionHolder = ({
   }
   //TO DO Think this isn't needed?
   function droneReload() {}
-
-  function changeQuestionType(inpt) {
-    console.log('change top', inpt)
-    let type = inpt === 1 ? 'Interval' : inpt === 2 ? 'Note' : 'Key'
-    setQuestionType(type)
-  }
 
   function questionCardPress() {
     questionType === 'Note'

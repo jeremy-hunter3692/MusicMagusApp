@@ -1,5 +1,7 @@
 import { noteAudioSrc } from '../data/NotesAudiosSrc'
 import { keys } from '../data/KeyCards'
+import { noteNames } from '../data/NoteCards'
+import { intervals } from '../data/IntervalCards'
 
 export function distanceUpInIntervals(rootNote, targetNote) {
   return (targetNote - rootNote + 12) % 12
@@ -132,4 +134,53 @@ export function replaceFlatsForSharps(rootName, noteNameArr) {
   }
 }
 
-export function cardTypesReducer ={ }
+const KEY = 'Key'
+const NOTE = 'Note'
+const INTERVAL = 'Interval'
+
+///psuedp
+// State is and object that has:
+//First Card(named anyways), SecondCard, Answer, DisplayARray, Drone Audio source
+//A/B Format will bet KEY, INTERVAL with a bool for changing display at the front end
+export const cardReducer = (questionType) => {
+  let firstCard
+  let secondCard
+  switch (questionType) {
+    case KEY:
+      firstCard = returnRandomCard(keys)
+      secondCard = returnRandomCard(intervals, true)
+      return {
+        firstCard: firstCard,
+        secondCard: secondCard,
+        array: noteNames,
+        answer: getNoteCardIdxFromIntervalAndKeyCard(
+          firstCard.idx,
+          secondCard.idx
+        ),
+      }
+    case NOTE:
+      firstCard = returnRandomCard(noteNames, true)
+      secondCard = returnRandomCard(keys, true)
+      return {
+        firstCard: firstCard,
+        secondCard: secondCard,
+        array: intervals,
+        answer: getNoteCardIdxFromIntervalAndKeyCard(
+          firstCard.idx,
+          secondCard.idx
+        ),
+      }
+    case INTERVAL:
+      firstCard = returnRandomCard(intervals, true)
+      secondCard = returnRandomCard(intervals, true)
+      return {
+        firstCard: firstCard,
+        secondCard: secondCard,
+        array: keys,
+        answer: getNoteCardIdxFromIntervalAndKeyCard(
+          firstCard.idx,
+          secondCard.idx
+        ),
+      }
+  }
+}

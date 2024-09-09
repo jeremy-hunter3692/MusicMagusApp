@@ -12,10 +12,12 @@ import {
   SafeAreaView,
 } from 'react-native'
 import { keys, getIntervalNo } from './data/KeyCards'
+import QuestionIconButtons from './Components/QuestionIconButtons.js'
 
 export default function App() {
   const [hexKey, setHexKey] = useState(keys[0])
   const [annotatedCard, setAnnotatedCard] = useState()
+  const [questionType, setQuestionType] = useState('Interval')
   const [annotatedCardDisplay, setAnnotatedCardDisplay] = useState(false)
 
   const [start, setStart] = useState(false)
@@ -29,6 +31,11 @@ export default function App() {
   function appLevel(inpt) {
     console.log('TODO-App level', inpt)
   }
+  function changeQuestionType(inpt) {
+    console.log('change top', inpt)
+    let type = inpt === 1 ? 'Interval' : inpt === 2 ? 'Note' : 'Key'
+    setQuestionType(type)
+  }
 
   const bgColor = 'purple' //'#060'
   return (
@@ -39,7 +46,6 @@ export default function App() {
           padding: 0,
           maxHeight: height,
           maxWidth: width,
-
           // marginTop: 15,
           padding: 0,
           backgroundColor: bgColor,
@@ -65,44 +71,7 @@ export default function App() {
             textAlign: 'center',
           }}
         >
-          <View style={styles.button}>
-            <View
-              style={{
-                backgroundColor: 'yellow',
-                borderRadius: 10,
-                width: 50,
-                height: 50,
-                borderColor: 'green',
-              }}
-            ></View>
-          </View>
-          <View style={styles.button}>
-            <View
-              style={{
-                width: 50,
-                height: 50,
-                borderRadius: 50,
-                borderColor: 'green',
-                backgroundColor: 'green',
-              }}
-            ></View>
-          </View>
-          <View style={styles.button}>
-            <View
-              style={{
-                width: 0,
-                height: 0,
-                // position: 'absolute',
-                top: -25,
-                borderTopWidth: 50,
-                borderRightWidth: 50,
-                borderRightColor: 'transparent',
-                borderTopColor: 'transparent',
-                borderBottomWidth: 50, // Hypotenuse of the triangle
-                // borderBottomColor: 'black',
-              }}
-            ></View>
-          </View>
+          <QuestionIconButtons changeQuestionType={changeQuestionType} />
           <Pressable onPress={() => setAnnotatedCardDisplay((x) => !x)}>
             <View
               style={{
@@ -131,6 +100,7 @@ export default function App() {
           </>
         ) : (
           <QuestionHolder
+            questionType={questionType}
             setAnnotatedCard={setAnnotatedCard}
             annotatedCard={annotatedCard}
           />
