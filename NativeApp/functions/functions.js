@@ -131,3 +131,5 @@ export function replaceFlatsForSharps(rootName, noteNameArr) {
     return noteNameArr // Return original array if no replacements
   }
 }
+
+export function cardTypesReducer ={ }
