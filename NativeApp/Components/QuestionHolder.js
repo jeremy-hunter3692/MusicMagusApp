@@ -79,42 +79,19 @@ const QuestionHolder = ({
     let answerIdxTemp = 0
     let droneSrc
 
-    if (questionType === 'Interval') {
-      const { firstCard, secondCard, array, answer } = cardReducer('Key')
-      arrayTemp = array
-      firstCardTemp = firstCard
-      secondCardTemp = secondCard
-      answerIdxTemp = answer
-    } else if (questionType === 'Note') {
-      arrayTemp = intervals
-      secondCardTemp = returnRandomCard(noteNames, true)
-      answerIdxTemp = distanceUpInIntervals(
-        firstCardTemp.idx,
-        secondCardTemp.idx
-      )
-    } else if (questionType === 'Key') {
-      arrayTemp = keys
-      firstCardTemp = {
-        value: {
-          ...firstCardTemp.value,
-          imgSrc: noteNames[firstCardTemp.idx].imgSrc,
-        },
-        idx: firstCardTemp.idx,
-      }
-
-      secondCardTemp = returnRandomCard(intervals, true)
-      answerIdxTemp = intervalOfWhatKey(firstCardTemp.idx, secondCardTemp.idx)
-    }
+    let answerObj = cardReducer(questionType)
+    const { firstCard, secondCard, array, answer } = answerObj
     //////////
-    getAndSetDroneAudioSource(firstCardTemp.value)
-    setDisplayInputCardArray(arrayTemp)
-    setFirstCard(firstCardTemp)
-    setSecondCard(secondCardTemp)
-    setCorrectAnswer(arrayTemp[answerIdxTemp])
+    console.log('use', answerObj)
+    getAndSetDroneAudioSource(firstCard.value)
+    setDisplayInputCardArray(array)
+    setFirstCard(firstCard)
+    setSecondCard(secondCard)
+    setCorrectAnswer(array[answer])
   }, [questionType, reloadBool])
 
   function questionAB(bool) {
-    console.log('qAB', bool)
+    // console.log('qAB', bool)
   }
   function setterAnnotated(inpt) {
     console.log('annotated:', inpt)

@@ -17,7 +17,7 @@ import QuestionIconButtons from './Components/QuestionIconButtons.js'
 export default function App() {
   const [hexKey, setHexKey] = useState(keys[0])
   const [annotatedCard, setAnnotatedCard] = useState()
-  const [questionType, setQuestionType] = useState('Interval')
+  const [questionType, setQuestionType] = useState('Key')
   const [annotatedCardDisplay, setAnnotatedCardDisplay] = useState(false)
 
   const [start, setStart] = useState(false)
@@ -33,7 +33,7 @@ export default function App() {
   }
   function changeQuestionType(inpt) {
     console.log('change top', inpt)
-    let type = inpt === 1 ? 'Interval' : inpt === 2 ? 'Note' : 'Key'
+    let type = inpt === 1 ? 'Key' : inpt === 2 ? 'Interval' : 'Note'
     setQuestionType(type)
   }
 

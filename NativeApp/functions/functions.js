@@ -138,11 +138,12 @@ const KEY = 'Key'
 const NOTE = 'Note'
 const INTERVAL = 'Interval'
 
-///psuedp
+///psued0
 // State is and object that has:
 //First Card(named anyways), SecondCard, Answer, DisplayARray, Drone Audio source
 //A/B Format will bet KEY, INTERVAL with a bool for changing display at the front end
 export const cardReducer = (questionType) => {
+  console.log(' in reducer:', questionType)
   let firstCard
   let secondCard
   switch (questionType) {
@@ -158,6 +159,15 @@ export const cardReducer = (questionType) => {
           secondCard.idx
         ),
       }
+    case INTERVAL:
+      firstCard = returnRandomCard(intervals, true)
+      secondCard = returnRandomCard(noteNames, true)
+      return {
+        firstCard: firstCard,
+        secondCard: secondCard,
+        array: keys,
+        answer: intervalOfWhatKey(secondCard.idx, firstCard.idx),
+      }
     case NOTE:
       firstCard = returnRandomCard(noteNames, true)
       secondCard = returnRandomCard(keys, true)
@@ -165,22 +175,34 @@ export const cardReducer = (questionType) => {
         firstCard: firstCard,
         secondCard: secondCard,
         array: intervals,
-        answer: getNoteCardIdxFromIntervalAndKeyCard(
-          firstCard.idx,
-          secondCard.idx
-        ),
-      }
-    case INTERVAL:
-      firstCard = returnRandomCard(intervals, true)
-      secondCard = returnRandomCard(intervals, true)
-      return {
-        firstCard: firstCard,
-        secondCard: secondCard,
-        array: keys,
-        answer: getNoteCardIdxFromIntervalAndKeyCard(
-          firstCard.idx,
-          secondCard.idx
-        ),
+        answer: distanceUpInIntervals(secondCard.idx, firstCard.idx),
       }
   }
 }
+
+// if (questionType === 'Interval') {
+//   const { firstCard, secondCard, array, answer } = cardReducer('Key')
+//   arrayTemp = array
+//   firstCardTemp = firstCard
+//   secondCardTemp = secondCard
+//   answerIdxTemp = answer
+// } else if (questionType === 'Note') {
+//   arrayTemp = intervals
+//   secondCardTemp = returnRandomCard(noteNames, true)
+//   answerIdxTemp = distanceUpInIntervals(
+//     firstCardTemp.idx,
+//     secondCardTemp.idx
+//   )
+// } else if (questionType === 'Key') {
+//   arrayTemp = keys
+//   firstCardTemp = {
+//     value: {
+//       ...firstCardTemp.value,
+//       imgSrc: noteNames[firstCardTemp.idx].imgSrc,
+//     },
+//     idx: firstCardTemp.idx,
+//   }
+
+//   secondCardTemp = returnRandomCard(intervals, true)
+//   answerIdxTemp = intervalOfWhatKey(firstCardTemp.idx, secondCardTemp.idx)
+// }
