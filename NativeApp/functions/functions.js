@@ -163,21 +163,27 @@ export const cardReducer = (questionType, abBool) => {
       }
     case INTERVAL:
       firstCard = returnRandomCard(intervals, true)
-      secondCard = returnRandomCard(noteNames, true)
+      secondCard = returnRandomCard(abBool ? noteNames : keys, true)
+      answerIdx = abBool
+        ? intervalOfWhatKey(secondCard.idx, firstCard.idx)
+        : getNoteCardIdxFromIntervalAndKeyCard(secondCard.idx, firstCard.idx)
       return {
         firstCard: firstCard,
         secondCard: secondCard,
-        array: keys,
-        answer: intervalOfWhatKey(secondCard.idx, firstCard.idx),
+        array: abBool ? keys : noteNames,
+        answer: answerIdx,
       }
     case NOTE:
       firstCard = returnRandomCard(noteNames, true)
-      secondCard = returnRandomCard(keys, true)
+      secondCard = returnRandomCard(abBool ? keys : intervals, true)
+      answerIdx = abBool
+        ? distanceUpInIntervals(secondCard.idx, firstCard.idx)
+        : intervalOfWhatKey(firstCard.idx, secondCard.idx)
       return {
         firstCard: firstCard,
         secondCard: secondCard,
-        array: intervals,
-        answer: distanceUpInIntervals(secondCard.idx, firstCard.idx),
+        array: abBool ? intervals : keys,
+        answer: answerIdx,
       }
   }
 }
