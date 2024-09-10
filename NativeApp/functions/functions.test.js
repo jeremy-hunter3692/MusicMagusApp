@@ -8,6 +8,7 @@ import {
   returnRandomCard,
   getAccidentalNames,
   replaceFlatsForSharps,
+  cardReducer,
 } from './functions'
 import { noteNames } from '../data/NoteCards'
 import { keys } from '../data/KeyCards'
@@ -165,5 +166,13 @@ describe('replaceFlatsForSharps', () => {
     flatNotes.forEach((note) => {
       expect(answer).not.toContain(note)
     })
+  })
+})
+
+describe('question card reducer', () => {
+  test('returns obj with img SRc', () => {
+    let answerObj = cardReducer('Key')
+    expect(answerObj.firstCard.value.imgSrc).toBe(1)
+    expect(answerObj.secondCard.value.imgSrc).toBe(1)
   })
 })

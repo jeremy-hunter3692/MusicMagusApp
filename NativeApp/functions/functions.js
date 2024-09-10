@@ -142,22 +142,24 @@ const INTERVAL = 'Interval'
 // State is and object that has:
 //First Card(named anyways), SecondCard, Answer, DisplayARray, Drone Audio source
 //A/B Format will bet KEY, INTERVAL with a bool for changing display at the front end
-export const cardReducer = (questionType) => {
-  console.log(' in reducer:', questionType)
+export const cardReducer = (questionType, abBool) => {
+  console.log(' in reducer:', questionType.abBool)
   let firstCard
   let secondCard
+  let answerIdx
   switch (questionType) {
     case KEY:
       firstCard = returnRandomCard(keys)
-      secondCard = returnRandomCard(intervals, true)
+      secondCard = returnRandomCard(abBool ? intervals : noteNames, true)
+      console.log(secondCard)
+      answerIdx = abBool
+        ? getNoteCardIdxFromIntervalAndKeyCard(firstCard.idx, secondCard.idx)
+        : distanceUpInIntervals(firstCard.idx, secondCard.idx)
       return {
         firstCard: firstCard,
         secondCard: secondCard,
-        array: noteNames,
-        answer: getNoteCardIdxFromIntervalAndKeyCard(
-          firstCard.idx,
-          secondCard.idx
-        ),
+        array: abBool ? noteNames : intervals,
+        answer: answerIdx,
       }
     case INTERVAL:
       firstCard = returnRandomCard(intervals, true)

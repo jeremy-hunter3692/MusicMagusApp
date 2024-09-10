@@ -31,6 +31,7 @@ import { intervals } from '../data/IntervalCards.js'
 import { keys } from '../data/KeyCards.js'
 import { noteNames } from '../data/NoteCards.js'
 import { noteAudioSrc } from '../data/NotesAudiosSrc.js'
+import { FlatList } from 'react-native-gesture-handler'
 
 const stylesBool = false
 const newAnswerDelay = 2000
@@ -48,13 +49,11 @@ const QuestionHolder = ({
   //questionType will refer to what the middle card is
   //TO DO go over all this state and cut down what we need/don't need
   const [reloadBool, setReloadBool] = useState(false)
-  const [displayInputCardArray, setDisplayInputCardArray] = useState(noteNames)
-  const [firstCard, setFirstCard] = useState(() => returnRandomCard(keys))
+  const [displayInputCardArray, setDisplayInputCardArray] = useState()
+  const [firstCard, setFirstCard] = useState()
   const [droneAudioSrc, setDroneAudioSrc] = useState(null)
-
-  const [secondCard, setSecondCard] = useState(() =>
-    returnRandomCard(intervals, true)
-  )
+  const [abBool, setabBool] = useState(true)
+  const [secondCard, setSecondCard] = useState()
   const [correctAnswer, setCorrectAnswer] = useState()
   const [userAnswer, setUserAnswer] = useState()
   const [userScore, setUserScore] = useState(0)
@@ -73,25 +72,20 @@ const QuestionHolder = ({
   // console.log('c ans:', correctAnswer)
   useEffect(() => {
     //TO DO dry this up, probs shouldn't be an effect
-    let arrayTemp = []
-    let firstCardTemp //= returnRandomCard(keys)
-    let secondCardTemp = 0
-    let answerIdxTemp = 0
     let droneSrc
-
-    let answerObj = cardReducer(questionType)
+    let answerObj = cardReducer(questionType, abBool)
     const { firstCard, secondCard, array, answer } = answerObj
     //////////
-    console.log('use', answerObj)
     getAndSetDroneAudioSource(firstCard.value)
     setDisplayInputCardArray(array)
     setFirstCard(firstCard)
     setSecondCard(secondCard)
     setCorrectAnswer(array[answer])
-  }, [questionType, reloadBool])
+  }, [questionType, reloadBool, abBool])
 
   function questionAB(bool) {
-    // console.log('qAB', bool)
+    setabBool(bool)
+    // setReloadBool((x) => (x = !x))
   }
   function setterAnnotated(inpt) {
     console.log('annotated:', inpt)
@@ -103,7 +97,7 @@ const QuestionHolder = ({
       questionType === 'Note'
         ? getAudioSrcInterval(cardAny)
         : findNoteEquivalent(cardAny, noteAudioSrc)
-    audioSrcIdx = getAltOctaveNotes(audioSrcIdx, firstCard)
+    // audioSrcIdx = getAltOctaveNotes(audioSrcIdx, firstCard)
     return audioSrcIdx
   }
 
@@ -192,6 +186,7 @@ const QuestionHolder = ({
           : 'Less correct '}
         {'|| Score: ' + userScore + '/12'}
       </Text>
+        
       <View
         style={[
           styles.qCardsAndButtonsCont,
@@ -205,17 +200,19 @@ const QuestionHolder = ({
           ]}
         >
           <PickShape questionAB={questionAB} />
-          <QuestionCards
-            firstCard={firstCard}
-            secondCard={secondCard}
-            rootCardPress={questionCardPress}
-            resultDisplay={userAnswer?.name === correctAnswer?.name}
-            answerCardOnPress={answerCardOnPress}
-            answer={correctAnswer}
-            cardSize={{ cardWidth: cardWidth, cardHeight: cardHeight }}
-            annotated={annotatedCardDisplay}
-            setAnnotatedCard={setterAnnotated}
-          />
+          {firstCard?.value && (
+            <QuestionCards
+              firstCard={firstCard}
+              secondCard={secondCard}
+              rootCardPress={questionCardPress}
+              resultDisplay={userAnswer?.name === correctAnswer?.name}
+              answerCardOnPress={answerCardOnPress}
+              answer={correctAnswer}
+              cardSize={{ cardWidth: cardWidth, cardHeight: cardHeight }}
+              annotated={annotatedCardDisplay}
+              setAnnotatedCard={setterAnnotated}
+            />
+          )}
 
           <View
             style={[
@@ -225,50 +222,7 @@ const QuestionHolder = ({
                 width: cardWidth,
               },
             ]}
-          >
-            {/*   CARD BUTTONS AS IMAGES
-                    
-                    <CardButton
-                      source={keys[0].imgSrc}
-                      data={1}
-                      onPress={changeQuestionType}
-                      cardSize={{
-                        cardWidth: cardWidth * 0.75,
-                        cardHeight: cardHeight * 0.75,
-                      }}
-                    />
-                    <View style={{ position: 'absolute', left: +50, top: +40 }}>
-                      <CardButton
-                        source={intervals[0].imgSrc}
-                        data={2}
-                        onPress={changeQuestionType}
-                        cardSize={{
-                          cardWidth: cardWidth * 0.75,
-                          cardHeight: cardHeight * 0.75,
-                        }}
-                      />
-                    </View>
-                    <View
-                      style={{ position: 'absolute', left: +100, top: +80 }}
-                    >
-                      <CardButton
-                        source={noteNames[0].imgSrc}
-                        data={3}
-                        onPress={changeQuestionType}
-                        cardSize={{
-                          cardWidth: cardWidth * 0.75,
-                          cardHeight: cardHeight * 0.75,
-                        }}
-                      /> 
-                    </View>
-                    {/* <QuestionButtons
-              buttonStyle={styles.button}
-              buttonTextStyle={styles.buttonText}
-              reload={reload}
-              showQuestionTypes={showQuestionTypes}
-              showDroneOptions={showDroneSwap}
-            /> */}
-          </View>
+          ></View>
 
           {showDroneOptions && (
             <View
