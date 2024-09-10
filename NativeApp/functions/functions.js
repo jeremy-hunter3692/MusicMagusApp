@@ -143,7 +143,7 @@ const INTERVAL = 'Interval'
 //First Card(named anyways), SecondCard, Answer, DisplayARray, Drone Audio source
 //A/B Format will bet KEY, INTERVAL with a bool for changing display at the front end
 export const cardReducer = (questionType, abBool) => {
-  console.log(' in reducer:', questionType.abBool)
+  // console.log(' in reducer:', questionType,abBool)
   let firstCard
   let secondCard
   let answerIdx

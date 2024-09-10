@@ -175,4 +175,58 @@ describe('question card reducer', () => {
     expect(answerObj.firstCard.value.imgSrc).toBe(1)
     expect(answerObj.secondCard.value.imgSrc).toBe(1)
   })
+  test('gets correct array card type for key and true', () => {
+    let answerObj = cardReducer('Key', true)
+    expect(answerObj.array[0].name).toBe('C')
+    expect(answerObj.array[0].intervals).toBe(undefined)
+    expect(answerObj.array[0].up).toBe(undefined)
+    expect(answerObj.array[0].distanceToRoot).toBe(undefined)
+    expect(answerObj.array[0].intervals).toBe(undefined)
+  })
+
+  test('gets correct array card type for key and false', () => {
+    let answerObj = cardReducer('Key', false)
+    expect(answerObj.array[0].name).toBe('1')
+    expect(answerObj.array[0].intervals).toBe(undefined)
+    expect(answerObj.array[0].up).toBe(false)
+    expect(answerObj.array[0].distanceToRoot).toBe(0)
+    expect(answerObj.array[0].intervals).toBe(undefined)
+  })
+
+  test('gets correct array card type for interval and true', () => {
+    let answerObj = cardReducer('Interval', true)
+    console.log(answerObj)
+    expect(answerObj.array[0].name).toBe('C')
+    expect(answerObj.array[0].up).toBe(undefined)
+    expect(answerObj.array[0].distanceToRoot).toBe(undefined)
+    answerObj.array[0].intervals.forEach((interval, index) => {
+      expect(interval).toBe(false)
+    })
+  })
+  test('gets correct array card type for interval and false', () => {
+    let answerObj = cardReducer('Interval', false)
+    expect(answerObj.array[0].name).toBe('C')
+    expect(answerObj.array[0].intervals).toBe(undefined)
+    expect(answerObj.array[0].up).toBe(undefined)
+    expect(answerObj.array[0].distanceToRoot).toBe(undefined)
+    expect(answerObj.array[0].intervals).toBe(undefined)
+  })
+
+  test('gets correct array card type for note and true', () => {
+    let answerObj = cardReducer('Note', true)
+    expect(answerObj.array[0].name).toBe('1')
+    expect(answerObj.array[0].intervals).toBe(undefined)
+    expect(answerObj.array[0].up).toBe(false)
+    expect(answerObj.array[0].distanceToRoot).toBe(0)
+    expect(answerObj.array[0].intervals).toBe(undefined)
+  })
+  test('gets correct array card type for note and false', () => {
+    let answerObj = cardReducer('Note', false)
+    expect(answerObj.array[0].name).toBe('C')
+    expect(answerObj.array[0].up).toBe(undefined)
+    expect(answerObj.array[0].distanceToRoot).toBe(undefined)
+    answerObj.array[0].intervals.forEach((interval, index) => {
+      expect(interval).toBe(false)
+    })
+  })
 })
