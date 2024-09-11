@@ -84,6 +84,7 @@ const QuestionHolder = ({
   }, [questionType, reloadBool, abBool])
 
   function questionAB(bool) {
+    //TO DO clear timeout/question change here
     setabBool(bool)
     // setReloadBool((x) => (x = !x))
   }

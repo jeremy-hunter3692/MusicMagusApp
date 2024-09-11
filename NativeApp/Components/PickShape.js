@@ -6,7 +6,6 @@ const PickShape = ({ questionAB }) => {
 
   questionAB(aMode)
 
-  console.log({ aMode })
   return (
     <>
       <View style={styles.container}>
@@ -35,6 +34,7 @@ const styles = StyleSheet.create({
     borderRightWidth: 50,
     borderTopWidth: 100,
     borderStyle: 'solid',
+    borderRadius: 30,
     backgroundColor: 'transparent',
     borderLeftColor: 'transparent',
     borderRightColor: 'transparent',

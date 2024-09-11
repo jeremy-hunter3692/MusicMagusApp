@@ -3,15 +3,20 @@ import { StyleSheet, Text, View, Pressable } from 'react-native'
 import QuestionButton from './QuestionButton'
 import { useWindowDimensions } from 'react-native'
 
-const QuestionIconButtons = ({
-  changeQuestionType,
+const QuestionIconButtons = ({ changeQuestionType, bgColor }) => {
+  const [underLine, setUnderline] = useState(1)
 
-  bgColor,
-}) => {
+  console.log(underLine, underLine === 1)
+
+  function selectQType(inpt) {
+    setUnderline(inpt)
+    changeQuestionType(inpt)
+  }
+
   return (
     <>
-      <View style={{ backgroundColor: bgColor }}>
-        <Pressable onPress={() => changeQuestionType(1)}>
+      <View>
+        <Pressable onPress={() => selectQType(1)}>
           <View
             style={{
               backgroundColor: 'yellow',
@@ -20,10 +25,16 @@ const QuestionIconButtons = ({
               height: 50,
             }}
           ></View>
+          <View
+            style={[
+              styles.underCombo,
+              underLine === 1 ? styles.underLine : null,
+            ]}
+          ></View>
         </Pressable>
       </View>
-      <View style={{ backgroundColor: bgColor }}>
-        <Pressable onPress={() => changeQuestionType(2)}>
+      <View>
+        <Pressable onPress={() => selectQType(2)}>
           <View
             style={{
               width: 50,
@@ -32,10 +43,18 @@ const QuestionIconButtons = ({
               backgroundColor: 'green',
             }}
           ></View>
+          <View
+            style={[
+              styles.underCombo,
+              underLine === 2 ? styles.underLine : null,
+            ]}
+          ></View>
         </Pressable>
       </View>
-      <View style={{ backgroundColor: bgColor }}>
-        <Pressable onPress={() => changeQuestionType(3)}>
+      <View
+        style={[styles.underCombo, underLine === 3 ? styles.underLine : null]}
+      >
+        <Pressable onPress={() => selectQType(3)}>
           <View
             style={{
               width: 0,
@@ -57,4 +76,11 @@ const QuestionIconButtons = ({
   )
 }
 
+const styles = StyleSheet.create({
+  underLine: {
+    borderBottomColor: 'black',
+    borderWidth: 2,
+  },
+  underCombo: {},
+})
 export default QuestionIconButtons
