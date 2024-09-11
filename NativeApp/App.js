@@ -18,6 +18,7 @@ export default function App() {
   const [hexKey, setHexKey] = useState(keys[0])
   const [annotatedCard, setAnnotatedCard] = useState()
   const [questionType, setQuestionType] = useState('Key')
+  const [showOptions, setShowOptions] = useState(false)
   const [annotatedCardDisplay, setAnnotatedCardDisplay] = useState(false)
 
   const [start, setStart] = useState(false)
@@ -44,7 +45,7 @@ export default function App() {
         style={{
           flex: 1,
           padding: 0,
-          maxHeight: height,
+          maxHeight: '%100',
           maxWidth: width,
           // marginTop: 15,
           padding: 0,
@@ -71,7 +72,16 @@ export default function App() {
             textAlign: 'center',
           }}
         >
+                 {annotatedCardDisplay && <Text>Change Question Type Here---</Text>}
           <QuestionIconButtons changeQuestionType={changeQuestionType} />
+   
+
+          <Pressable onPress={() => setShowOptions((x) => (x = !x))}>
+            <Text style={styles.optionText}>
+              {' '}
+              {showOptions ? 'Back' : 'Options'}{' '}
+            </Text>
+          </Pressable>
           <Pressable onPress={() => setAnnotatedCardDisplay((x) => !x)}>
             <View
               style={{
@@ -89,21 +99,22 @@ export default function App() {
           </Pressable>
         </View>
 
-        {annotatedCard ? (
-          <>
-            <AnnotatedCards data={annotatedCard} />
-            <Pressable onPress={() => setDisplayOptions((x) => !x)}>
-              <Text style={{ color: 'white' }}>
-                {displayOptions ? 'Back' : 'Options'}
-              </Text>
-            </Pressable>
-          </>
+        {showOptions ? (
+          <OptionsPage height={height} />
         ) : (
-          <QuestionHolder
-            questionType={questionType}
-            setAnnotatedCard={setAnnotatedCard}
-            annotatedCard={annotatedCard}
-          />
+          <>
+            {annotatedCard ? (
+              <>
+                <AnnotatedCards data={annotatedCard} />
+              </>
+            ) : (
+              <QuestionHolder
+                questionType={questionType}
+                setAnnotatedCard={setAnnotatedCard}
+                annotatedCard={annotatedCard}
+              />
+            )}
+          </>
         )}
       </SafeAreaView>
     </>
@@ -119,6 +130,10 @@ export default function App() {
 //     />
 //   </>
 const styles = StyleSheet.create({
+  optionText: {
+   
+    color: 'purple',
+  },
   button: {
     //for icon cards
     justifyContent: 'center',

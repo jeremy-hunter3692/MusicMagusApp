@@ -9,6 +9,7 @@ function fillCricleBool(inpt, key) {
     <View key={key} style={styles.circleOutline}></View>
   )
 }
+
 const bgcolor = 'white'
 
 const HexKey = ({ musicKey }) => {
@@ -33,6 +34,8 @@ const HexKey = ({ musicKey }) => {
     </>
   )
 }
+
+
 
 const styles = StyleSheet.create({
   hexContainer: {

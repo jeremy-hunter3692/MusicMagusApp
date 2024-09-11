@@ -2,10 +2,17 @@ import { StatusBar } from 'expo-status-bar'
 import { Pressable, StyleSheet, Text, View } from 'react-native'
 import { useState } from 'react'
 let option = 0
-const OptionsPage = ({ selectDroneAudio, droneOnOff, changeQuestionType }) => {
+const OptionsPage = ({
+  height,
+  selectDroneAudio,
+  droneOnOff,
+  changeQuestionType,
+}) => {
   const [droneOnButton, setDroneOnButton] = useState(true)
   const [droneSound, setDroneSound] = useState(true)
   // console.log({ droneSound })
+  const boxHeight = height * 0.1
+  
   function droneSwitch() {
     setDroneOnButton((x) => !x)
     droneOnOff()
@@ -21,16 +28,16 @@ const OptionsPage = ({ selectDroneAudio, droneOnOff, changeQuestionType }) => {
     console.log(option)
     changeQuestionType(option)
   }
+
   return (
     <>
-      <Text>OPTIONS:</Text>
-      <View style={styles.options}>
+      <View style={{ ...styles.options, height: boxHeight }}>
         <Pressable onPress={droneSoundChange}>
           <Text>Change Drone</Text>
           <Text> {droneSound ? 'Double Bass' : 'Synth'} </Text>
         </Pressable>
       </View>
-      <View style={styles.options}>
+      <View style={{ ...styles.options, height: boxHeight }}>
         <Pressable onPress={droneSwitch}>
           <Text>Drone Off/On</Text>
         </Pressable>
@@ -44,7 +51,7 @@ const OptionsPage = ({ selectDroneAudio, droneOnOff, changeQuestionType }) => {
           </View>
         )}
       </View>
-      <View style={styles.options}>
+      <View style={{ ...styles.options, height: boxHeight }}>
         <Pressable onPress={changeQuestion}>
           <Text>Change Question</Text>
         </Pressable>
@@ -57,14 +64,13 @@ export default OptionsPage
 const circleSize = 50
 const styles = StyleSheet.create({
   options: {
-    flex: 1,
     backgroundColor: 'white',
-    borderColor: 'black',
-    borderWidth: 5,
+    borderColor: 'grey',
+    borderWidth: 1,
     alignItems: 'center',
     flexDirection: 'row',
     padding: 1,
-    margine: 1,
+    margin: 1,
     shadowColor: 'white',
     shadowOffset: { width: 2, height: 4 },
     shadowOpacity: 0.9,

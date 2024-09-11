@@ -10,6 +10,7 @@ import {
 import DronePlayer from './DronePlayer.js'
 import DisplayCardsGrid from './DisplayCardsGrid.js'
 import QuestionButtons from './QuestionButtons.js'
+import Circle from './Circle.js'
 import CardButton from './CardButton.js'
 import QuestionCards from './QuestionCards.js'
 import ButtonsDroneOptions from './ButtonsDroneOptions.js'
@@ -57,6 +58,8 @@ const QuestionHolder = ({
   const [correctAnswer, setCorrectAnswer] = useState()
   const [userAnswer, setUserAnswer] = useState()
   const [userScore, setUserScore] = useState(0)
+  const setScoreSircleInit = Array(12).fill(false)
+  const [scoreCircles, setScoreSircle] = useState(setScoreSircleInit)
   //Might not need, props should re load the children correctly...?
   const [dronePlaying, setDronePlaying] = useState(true)
   const [showQuestionOptions, setShowQuestionOptions] = useState(false)
@@ -131,7 +134,9 @@ const QuestionHolder = ({
 
     if (attemptCount >= 12) {
       attemptCount = 0
+      setScoreSircle(setScoreSircleInit)
       setUserScore('!!!!!!!!!!1RESTARTING!!!!!!!!!!!!')
+      let newBlankArray = setScoreSircle()
       setTimeout(() => {
         setUserScore(0)
       }, 3000)
@@ -141,7 +146,11 @@ const QuestionHolder = ({
 
     console.log({ attemptCount })
     if (correctAnswer?.name == inpt.name) {
+      scoreCircles.shift()
+      scoreCircles.push(true)
+
       setUserScore((x) => x + 1)
+
       setTimeout(() => {
         setReloadBool((x) => (x = !x))
       }, newAnswerDelay)
@@ -172,6 +181,7 @@ const QuestionHolder = ({
   function droneOnOff() {
     dronePlaying ? setDronePlaying(false) : setDronePlaying(true)
   }
+
   return (
     <>
       <DronePlayer
@@ -182,12 +192,16 @@ const QuestionHolder = ({
       />
 
       <Text style={styles.answer}>
+        {scoreCircles.map((x) => (
+          <Circle fillBool={x} scoreCircleRadius={10} />
+        ))}
+
         {userAnswer?.name === correctAnswer?.name
           ? 'CORRECT! '
           : 'Less correct '}
         {'|| Score: ' + userScore + '/12'}
       </Text>
-        
+
       <View
         style={[
           styles.qCardsAndButtonsCont,
