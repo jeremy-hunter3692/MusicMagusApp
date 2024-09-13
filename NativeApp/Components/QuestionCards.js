@@ -45,7 +45,9 @@ const QuestionCards = ({
           setAnnotatedCard={setAnnotatedCard}
           autoPlay={true}
         />
-        {resultDisplay ? (
+
+        {/* {resultDisplay ? ( */}
+        <Animated.View style={[styles.card, frontAnimatedStyle]}>
           <CardButton
             cardSize={cardSize}
             data={answer?.name}
@@ -53,14 +55,19 @@ const QuestionCards = ({
             style={questionCards}
             annotated={annotated}
             setAnnotatedCard={setAnnotatedCard}
-          />
-        ) : (
+          />{' '}
+        </Animated.View>
+        {/* ) : ( */}
+        <Animated.View
+          style={[styles.card, styles.cardBack, backAnimatedStyle]}
+        >
           <CardButton
             cardSize={cardSize}
             source={blankCard}
             style={questionCards}
           />
-        )}
+          {/* )} */}{' '}
+        </Animated.View>
       </View>
     </>
   )
