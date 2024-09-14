@@ -46,7 +46,6 @@ const QuestionHolder = ({
   annotatedCard,
   annotatedCardDisplay,
 }) => {
-  console.log('qtype', questionType)
   //questionType will refer to what the middle card is
   //TO DO go over all this state and cut down what we need/don't need
   const [reloadBool, setReloadBool] = useState(false)
@@ -64,8 +63,8 @@ const QuestionHolder = ({
   const [dronePlaying, setDronePlaying] = useState(true)
   const [showQuestionOptions, setShowQuestionOptions] = useState(false)
   const [showDroneOptions, setShowDroneOptions] = useState(false)
-  const [displayOptions, setDisplayOptions] = useState(false)
   ///
+  console.log(scoreCircles)
 
   const { width, height } = useWindowDimensions()
 
@@ -89,7 +88,6 @@ const QuestionHolder = ({
   function questionAB(bool) {
     //TO DO clear timeout/question change here
     setabBool(bool)
-    // setReloadBool((x) => (x = !x))
   }
   function setterAnnotated(inpt) {
     console.log('annotated:', inpt)
@@ -146,11 +144,9 @@ const QuestionHolder = ({
 
     console.log({ attemptCount })
     if (correctAnswer?.name == inpt.name) {
-      scoreCircles.shift()
-      scoreCircles.push(true)
-
+      scoreCircles.pop()
+      scoreCircles.unshift(true)
       setUserScore((x) => x + 1)
-
       setTimeout(() => {
         setReloadBool((x) => (x = !x))
       }, newAnswerDelay)
@@ -192,14 +188,19 @@ const QuestionHolder = ({
       />
 
       <Text style={styles.answer}>
-        {scoreCircles.map((x) => (
-          <Circle fillBool={x} scoreCircleRadius={10} />
-        ))}
+        {scoreCircles.map((x, idx) => {
+          let questionNo = idx === attemptCount ? true : false
+          // console.log({ questionNo })
+          return (
+            <Circle
+              fillBool={x}
+              scoreCircleRadius={10}
+              underLine={questionNo}
+            />
+          )
+        })}
 
-        {userAnswer?.name === correctAnswer?.name
-          ? 'CORRECT! '
-          : 'Less correct '}
-        {'|| Score: ' + userScore + '/12'}
+        {/* {'|| Score: ' + userScore + '/12'} */}
       </Text>
 
       <View

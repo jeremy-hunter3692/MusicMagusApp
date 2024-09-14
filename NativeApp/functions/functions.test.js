@@ -195,7 +195,6 @@ describe('question card reducer', () => {
 
   test('gets correct array card type for interval and true', () => {
     let answerObj = cardReducer('Interval', true)
-    console.log(answerObj)
     expect(answerObj.array[0].name).toBe('C')
     expect(answerObj.array[0].up).toBe(undefined)
     expect(answerObj.array[0].distanceToRoot).toBe(undefined)

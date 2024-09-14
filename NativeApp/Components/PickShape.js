@@ -1,31 +1,94 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { View, Text, StyleSheet, Pressable } from 'react-native'
+import Animated, {
+  useSharedValue,
+  useAnimatedStyle,
+  withTiming,
+  interpolate,
+  Extrapolate,
+} from 'react-native-reanimated'
 
 const PickShape = ({ questionAB }) => {
-  const [aMode, setAMode] = useState(true)
+  const [abBool, setabBool] = useState(true)
 
-  questionAB(aMode)
+  function toggleBool() {
+    const newAbBool = !abBool
+    setabBool(newAbBool)
+    questionAB(newAbBool)
+  }
+
+  useEffect(() => {
+    handleFlip() // Flip the card to 180 degrees
+  }, [abBool])
+
+  const flipAnimation = useSharedValue(0)
+
+  // Front side animation style
+  const frontAnimatedStyle = useAnimatedStyle(() => {
+    const rotateY = interpolate(
+      flipAnimation.value,
+      [0, 180],
+      [0, 180],
+      Extrapolate.CLAMP
+    )
+    return {
+      transform: [{ rotateY: `${rotateY}deg` }],
+      opacity: flipAnimation.value < 90 ? 1 : 0,
+    }
+  })
+
+  // Back side animation style
+  const backAnimatedStyle = useAnimatedStyle(() => {
+    const rotateY = interpolate(
+      flipAnimation.value,
+      [0, 180],
+      [180, 360],
+      Extrapolate.CLAMP
+    )
+    return {
+      transform: [{ rotateY: `${rotateY}deg` }],
+      opacity: flipAnimation.value > 90 ? 1 : 0,
+    }
+  })
+
+  // Function to handle the flip
+  const handleFlip = () => {
+    const animationSpeed = 200
+    if (abBool) {
+      flipAnimation.value = withTiming(0, { duration: animationSpeed })
+    } else {
+      flipAnimation.value = withTiming(180, { duration: animationSpeed })
+    }
+  }
 
   return (
-    <>
-      <View style={styles.container}>
-        <Pressable onPress={() => setAMode((x) => (x = !x))}>
-          <View style={styles.triangle}>
-            <Text style={{ top: -55, color: 'white' }}>
-              {aMode ? 'A' : 'B'}
-            </Text>
-          </View>
+    <View style={styles.container}>
+      {/* Front side */}
+      <Animated.View style={[styles.triangle, frontAnimatedStyle]}>
+        <Pressable onPress={toggleBool}>
+          <Text style={styles.textFront}>{'A'}</Text>
         </Pressable>
-      </View>
-    </>
+      </Animated.View>
+
+      {/* Back side */}
+      <Animated.View
+        style={[styles.triangle, styles.backCard, backAnimatedStyle]}
+      >
+        <Pressable onPress={toggleBool}>
+          <Text style={styles.textBack}>{'B'}</Text>
+        </Pressable>
+      </Animated.View>
+    </View>
   )
 }
 
 const styles = StyleSheet.create({
   container: {
-    alignItems: 'center',
-    justifyContent: 'center',
     padding: 10,
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginHorizontal: 50,
+
   },
   triangle: {
     width: 0,
@@ -41,7 +104,22 @@ const styles = StyleSheet.create({
     borderTopColor: 'blue',
     alignItems: 'center',
     justifyContent: 'center',
-    // transform: [{ rotate: '180deg' }],
+    position: 'absolute', // Ensures overlap of both sides
+  },
+  textFront: {
+    color: 'white',
+    // position: 'absolute', // Ensures text is centered within the triangle
+    top: -55,
+  },
+  textBack: {
+    color: 'blue',
+    // position: 'absolute', // Ensures text is centered within the triangle
+    top: -55,
+  },
+  backCard: {
+    // Additional styling for back card if needed
+    backfaceVisibility: 'hidden',
+    borderTopColor: 'white',
   },
 })
 

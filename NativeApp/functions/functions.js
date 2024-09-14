@@ -151,7 +151,7 @@ export const cardReducer = (questionType, abBool) => {
     case KEY:
       firstCard = returnRandomCard(keys)
       secondCard = returnRandomCard(abBool ? intervals : noteNames, true)
-      console.log(secondCard)
+
       answerIdx = abBool
         ? getNoteCardIdxFromIntervalAndKeyCard(firstCard.idx, secondCard.idx)
         : distanceUpInIntervals(firstCard.idx, secondCard.idx)

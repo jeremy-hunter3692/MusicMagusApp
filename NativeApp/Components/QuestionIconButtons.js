@@ -6,8 +6,6 @@ import { useWindowDimensions } from 'react-native'
 const QuestionIconButtons = ({ changeQuestionType, bgColor }) => {
   const [underLine, setUnderline] = useState(1)
 
-  console.log(underLine, underLine === 1)
-
   function selectQType(inpt) {
     setUnderline(inpt)
     changeQuestionType(inpt)

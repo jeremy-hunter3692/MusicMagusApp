@@ -72,9 +72,8 @@ export default function App() {
             textAlign: 'center',
           }}
         >
-                 {annotatedCardDisplay && <Text>Change Question Type Here---</Text>}
+          {annotatedCardDisplay && <Text>Change Question Type Here---</Text>}
           <QuestionIconButtons changeQuestionType={changeQuestionType} />
-   
 
           <Pressable onPress={() => setShowOptions((x) => (x = !x))}>
             <Text style={styles.optionText}>
@@ -131,7 +130,6 @@ export default function App() {
 //   </>
 const styles = StyleSheet.create({
   optionText: {
-   
     color: 'purple',
   },
   button: {

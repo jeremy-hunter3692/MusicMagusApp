@@ -12,7 +12,7 @@ const OptionsPage = ({
   const [droneSound, setDroneSound] = useState(true)
   // console.log({ droneSound })
   const boxHeight = height * 0.1
-  
+
   function droneSwitch() {
     setDroneOnButton((x) => !x)
     droneOnOff()
@@ -20,6 +20,10 @@ const OptionsPage = ({
   function droneSoundChange() {
     setDroneSound((x) => !x)
     selectDroneAudio()
+  }
+
+  function changeTheme(){
+    
   }
 
   function changeQuestion() {
@@ -33,13 +37,15 @@ const OptionsPage = ({
     <>
       <View style={{ ...styles.options, height: boxHeight }}>
         <Pressable onPress={droneSoundChange}>
-          <Text>Change Drone</Text>
-          <Text> {droneSound ? 'Double Bass' : 'Synth'} </Text>
+          <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+            <Text style={styles.headerText}>Drone Sound:</Text>
+            <Text> {droneSound ? 'Double Bass' : 'Synth'} </Text>
+          </View>
         </Pressable>
       </View>
       <View style={{ ...styles.options, height: boxHeight }}>
         <Pressable onPress={droneSwitch}>
-          <Text>Drone Off/On</Text>
+          <Text style={styles.headerText}>Drone On/Off:</Text>
         </Pressable>
         {droneOnButton ? (
           <View style={styles.droneOn}>
@@ -52,8 +58,8 @@ const OptionsPage = ({
         )}
       </View>
       <View style={{ ...styles.options, height: boxHeight }}>
-        <Pressable onPress={changeQuestion}>
-          <Text>Change Question</Text>
+        <Pressable onPress={changeTheme}>
+          <Text style={styles.headerText}>Change Theme</Text>
         </Pressable>
       </View>
     </>
@@ -63,6 +69,9 @@ const OptionsPage = ({
 export default OptionsPage
 const circleSize = 50
 const styles = StyleSheet.create({
+  headerText: {
+    fontWeight: 'bold',
+  },
   options: {
     backgroundColor: 'white',
     borderColor: 'grey',

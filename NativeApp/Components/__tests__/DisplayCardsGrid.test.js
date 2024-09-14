@@ -96,7 +96,7 @@ describe('DisplayCardsGrid', () => {
 })
 
 describe('Question Cards', () => {
-  it('renders three card images', () => {
+  it('renders four card images(one is hidden)', () => {
     const mockFirstCard = { value: { imageSrc: 1 } }
     const mockSecondCard = { value: { imageSrc: 2 } }
     const mockResultDisplay = true
@@ -113,7 +113,7 @@ describe('Question Cards', () => {
       />
     )
     const images = getAllByTestId(/image/)
-    expect(images.length).toBe(3)
+    expect(images.length).toBe(4)
   })
 })
 describe('Card Button', () => {
