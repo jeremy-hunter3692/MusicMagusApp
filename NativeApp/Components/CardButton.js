@@ -1,10 +1,14 @@
 import React, { useEffect, useState } from 'react'
 import PlaySound from './SingleNotePlayer'
 import { Pressable, Image, Text, View, useWindowDimensions } from 'react-native'
-
+import Animated, {
+  useSharedValue,
+  useAnimatedStyle,
+  withSpring,
+} from 'react-native-reanimated'
 
 let hasPlayed = true
-
+const initCardSizeValue = 0.9
 const CardButton = ({
   onPress,
   data,
@@ -15,15 +19,24 @@ const CardButton = ({
   cardSize,
   annotated,
   setAnnotatedCard,
+  animationDelay,
 }) => {
   const [note, setNote] = useState()
   const [playBool, setPlayBool] = useState()
+  const dealAnimationSpeed = 50
+  const initDealDelay = 30
+  const scale = useSharedValue(initCardSizeValue)
   const { cardWidth, cardHeight } = cardSize || {}
 
   useEffect(() => {
     if (annotated) {
       return
     }
+
+    setTimeout(() => {
+      dealAnimationTrigger(animationDelay)
+    }, initDealDelay)
+
     hasPlayed = false
     let timeOutId = setTimeout(() => {
       autoPlay && !hasPlayed && answer ? cardButtonOnPress(data) : ''
@@ -31,31 +44,57 @@ const CardButton = ({
     return () => clearTimeout(timeOutId)
   }, [answer])
 
+  function dealAnimationTrigger(cardDelayOrder) {
+    setTimeout(() => {
+      handlePressOut()
+    }, cardDelayOrder * dealAnimationSpeed)
+  }
+
   function cardButtonOnPress(inpt) {
     if (annotated) {
       setAnnotatedCard(data)
     } else {
-      if (autoPlay === true) {
-        let answerNote = onPress(answer)
-        setNote(answerNote)
-      }
-
-      let res = findAudioSourceFunction ? findAudioSourceFunction(inpt) : ''
-      onPress(inpt)
-      res ? setNote(res) : ''
-      note ? setPlayBool((bool) => !bool) : ''
-      hasPlayed = true
+      //check this for fixing sound first
+      autoPlay === true ? setNote(onPress(answer)) : handlePressIn()
     }
+
+    let res = findAudioSourceFunction ? findAudioSourceFunction(inpt) : ''
+    onPress(inpt)
+    res ? setNote(res) : ''
+    note ? setPlayBool((bool) => !bool) : ''
+    hasPlayed = true
+  }
+
+  const animatedStyle = useAnimatedStyle(() => {
+    return {
+      transform: [{ scale: scale.value }],
+    }
+  })
+
+  const handlePressIn = () => {
+    scale.value = withSpring(initCardSizeValue, {
+      damping: 8,
+      stiffness: 200,
+    })
+  }
+
+  // Function to handle button release (scale back to normal with spring effect)
+  const handlePressOut = (card) => {
+    scale.value = withSpring(1, {
+      damping: 50,
+      stiffness: 1000,
+    })
   }
 
   return (
     <>
-      <PlaySound inpt={note} playBool={playBool} />
+      {/* <PlaySound inpt={note} playBool={playBool} /> */}
 
       <Pressable
-        onPress={() => {
+        onPressIn={() => {
           cardButtonOnPress(data)
         }}
+        onPressOut={handlePressOut}
         style={{
           marginHorizontal: 1,
           marginVertical: 5,
@@ -68,21 +107,24 @@ const CardButton = ({
           width: cardWidth,
         }}
       >
-        <Image
-          source={source}
-          testID={`image`}
-          style={{
-            flex: 1,
-            margin: 0,
-            padding: 0,
-            width: '100%',
-            height: '100%',
-            maxHeight: '100%',
-            flexShrink: 1,
-            resizeMode: 'contain',
-          }}
-          
-        />
+        <Animated.View
+          style={[{ width: '100%', height: '100%' }, animatedStyle]}
+        >
+          <Image
+            source={source}
+            testID={`image`}
+            style={{
+              flex: 1,
+              margin: 0,
+              padding: 0,
+              width: '100%',
+              height: '100%',
+              maxHeight: '100%',
+              flexShrink: 1,
+              resizeMode: 'contain',
+            }}
+          />
+        </Animated.View>
       </Pressable>
     </>
   )

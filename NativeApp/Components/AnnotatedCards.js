@@ -38,7 +38,6 @@ const AnnotatedCards = ({
     <>
       <View style={{ padding: 40, width: '100%', height: '100%' }}>
         <Text style={{ zIndex: 5, color: 'white', fontSize: fontSize }}>
-          {' '}
           Key: {data?.value.name}
         </Text>
         <Image

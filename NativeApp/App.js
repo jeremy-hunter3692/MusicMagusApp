@@ -21,14 +21,11 @@ export default function App() {
   const [showOptions, setShowOptions] = useState(false)
   const [annotatedCardDisplay, setAnnotatedCardDisplay] = useState(false)
 
-  const [start, setStart] = useState(false)
-
   const { width, height } = useWindowDimensions()
 
   function getKey(musicKey) {
     setHexKey(musicKey)
   }
-
   function appLevel(inpt) {
     console.log('TODO-App level', inpt)
   }
@@ -38,7 +35,14 @@ export default function App() {
     setQuestionType(type)
   }
 
-  const bgColor = 'purple' //'#060'
+  function handleAnnotatedClick() {
+    annotatedCard ? setAnnotatedCard(null) : ''
+    setAnnotatedCardDisplay((x) => !x)
+  }
+
+  const bgColor = 'purple' //'#19af59'
+  const secondaryColor = '#19af59'
+
   return (
     <>
       <SafeAreaView
@@ -66,22 +70,32 @@ export default function App() {
             flex: 0.25,
             color: 'white',
             flexDirection: 'row',
-            backgroundColor: '#19af59',
+            backgroundColor: secondaryColor,
             justifyContent: 'flex-end',
             alignItems: 'center',
             textAlign: 'center',
           }}
         >
-          {annotatedCardDisplay && <Text>Change Question Type Here---</Text>}
-          <QuestionIconButtons changeQuestionType={changeQuestionType} />
+          {annotatedCardDisplay && !annotatedCard && (
+            <Text>Change Question Type Here---</Text>
+          )}
 
-          <Pressable onPress={() => setShowOptions((x) => (x = !x))}>
-            <Text style={styles.optionText}>
-              {' '}
-              {showOptions ? 'Back' : 'Options'}{' '}
-            </Text>
-          </Pressable>
-          <Pressable onPress={() => setAnnotatedCardDisplay((x) => !x)}>
+          {!annotatedCard ? (
+            <>
+              <QuestionIconButtons
+                changeQuestionType={changeQuestionType}
+                annotated={annotatedCardDisplay}
+              />
+              <Pressable onPress={() => setShowOptions((x) => (x = !x))}>
+                <Text style={styles.optionText}>
+                  {showOptions ? 'Back' : 'Options'}
+                </Text>
+              </Pressable>
+            </>
+          ) : (
+            ''
+          )}
+          <Pressable onPress={handleAnnotatedClick}>
             <View
               style={{
                 backgroundColor: 'white',
@@ -93,7 +107,7 @@ export default function App() {
                 alignItems: 'center',
               }}
             >
-              <Text style={{ color: 'purple' }}>?</Text>
+              <Text style={{ color: bgColor }}>?</Text>
             </View>
           </Pressable>
         </View>
@@ -103,14 +117,16 @@ export default function App() {
         ) : (
           <>
             {annotatedCard ? (
-              <>
-                <AnnotatedCards data={annotatedCard} />
-              </>
+              <View style={styles.annotated}>
+                {/* <AnnotatedCards data={annotatedCard} /> */}
+              </View>
             ) : (
               <QuestionHolder
+                bgColor={bgColor}
+                secondaryColor={secondaryColor}
                 questionType={questionType}
                 setAnnotatedCard={setAnnotatedCard}
-                annotatedCard={annotatedCard}
+                annotated={annotatedCardDisplay}
               />
             )}
           </>
@@ -150,5 +166,9 @@ const styles = StyleSheet.create({
     // shadowRadius: 5,
     // Android Elevation
     elevation: 5,
+  },
+  annotated: {
+    width: '90%',
+    height: '90%',
   },
 })

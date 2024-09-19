@@ -11,7 +11,6 @@ import DronePlayer from './DronePlayer.js'
 import DisplayCardsGrid from './DisplayCardsGrid.js'
 import QuestionButtons from './QuestionButtons.js'
 import Circle from './Circle.js'
-import CardButton from './CardButton.js'
 import QuestionCards from './QuestionCards.js'
 import ButtonsDroneOptions from './ButtonsDroneOptions.js'
 import ButtonsQuestionOptions from './ButtonsQuestionOptions.js'
@@ -19,18 +18,11 @@ import PickShape from './PickShape.js'
 import { SynthDrones, DoubleBassDrones } from '../data/DroneAudioSources.js'
 //
 import {
-  distanceUpInIntervals,
-  returnRandomCard,
   getIntervalCardsAsNotes,
-  getNoteCardIdxFromIntervalAndKeyCard,
-  intervalOfWhatKey,
-  getAltOctaveNotes,
   findNoteEquivalent,
   cardReducer,
 } from '../functions/functions.js'
-import { intervals } from '../data/IntervalCards.js'
-import { keys } from '../data/KeyCards.js'
-import { noteNames } from '../data/NoteCards.js'
+
 import { noteAudioSrc } from '../data/NotesAudiosSrc.js'
 import { FlatList } from 'react-native-gesture-handler'
 
@@ -41,10 +33,12 @@ let attemptCount = 0
 let droneType = true
 
 const QuestionHolder = ({
+  bgColor,
+  secondaryColor,
   questionType,
   setAnnotatedCard,
   annotatedCard,
-  annotatedCardDisplay,
+  annotated,
 }) => {
   //questionType will refer to what the middle card is
   //TO DO go over all this state and cut down what we need/don't need
@@ -64,7 +58,6 @@ const QuestionHolder = ({
   const [showQuestionOptions, setShowQuestionOptions] = useState(false)
   const [showDroneOptions, setShowDroneOptions] = useState(false)
   ///
-  console.log(scoreCircles)
 
   const { width, height } = useWindowDimensions()
 
@@ -88,10 +81,6 @@ const QuestionHolder = ({
   function questionAB(bool) {
     //TO DO clear timeout/question change here
     setabBool(bool)
-  }
-  function setterAnnotated(inpt) {
-    console.log('annotated:', inpt)
-    setAnnotatedCard(inpt)
   }
 
   function getAudioSrcIdxFromCardReducer(cardAny) {
@@ -142,7 +131,6 @@ const QuestionHolder = ({
       attemptCount = attemptCount + 1
     }
 
-    console.log({ attemptCount })
     if (correctAnswer?.name == inpt.name) {
       scoreCircles.pop()
       scoreCircles.unshift(true)
@@ -154,14 +142,14 @@ const QuestionHolder = ({
   }
 
   //Question Button functions
-  function showQuestionTypes() {
-    showDroneOptions ? setShowDroneOptions(false) : ''
-    setShowQuestionOptions((x) => (x = !x))
-  }
-  function showDroneSwap() {
-    showQuestionOptions ? setShowQuestionOptions(false) : ''
-    setShowDroneOptions((x) => (x = !x))
-  }
+  // function showQuestionTypes() {
+  //   showDroneOptions ? setShowDroneOptions(false) : ''
+  //   setShowQuestionOptions((x) => (x = !x))
+  // }
+  // function showDroneSwap() {
+  //   showQuestionOptions ? setShowQuestionOptions(false) : ''
+  //   setShowDroneOptions((x) => (x = !x))
+  // }
 
   function selectDroneAudio() {
     droneType = !droneType
@@ -200,7 +188,7 @@ const QuestionHolder = ({
           )
         })}
 
-        {/* {'|| Score: ' + userScore + '/12'} */}
+        {'|| Score: ' + userScore + '/12'}
       </Text>
 
       <View
@@ -218,6 +206,8 @@ const QuestionHolder = ({
           <PickShape questionAB={questionAB} />
           {firstCard?.value && (
             <QuestionCards
+              bgColor={bgColor}
+              secondaryColor={secondaryColor}
               firstCard={firstCard}
               secondCard={secondCard}
               rootCardPress={questionCardPress}
@@ -225,8 +215,8 @@ const QuestionHolder = ({
               answerCardOnPress={answerCardOnPress}
               answer={correctAnswer}
               cardSize={{ cardWidth: cardWidth, cardHeight: cardHeight }}
-              annotated={annotatedCardDisplay}
-              setAnnotatedCard={setterAnnotated}
+              annotated={annotated}
+              setAnnotatedCard={setAnnotatedCard}
             />
           )}
 
@@ -277,17 +267,6 @@ const QuestionHolder = ({
               />
             </View>
           )}
-          {/* {!showDroneOptions && !showQuestionOptions && (
-                <View
-                  style={[
-                    {
-                      ...styles.questionButtonsPlaceHolder,
-                      height: cardHeight,
-                      width: cardWidth,
-                    },
-                  ]}
-                ></View>
-              )} */}
         </View>
       </View>
 

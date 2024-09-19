@@ -1,15 +1,19 @@
 import React, { useState } from 'react'
-import { StyleSheet, Text, View, Pressable } from 'react-native'
+import { StyleSheet, Text, View, Pressable, Image } from 'react-native'
 import QuestionButton from './QuestionButton'
 import { useWindowDimensions } from 'react-native'
 
-const QuestionIconButtons = ({ changeQuestionType, bgColor }) => {
+const QuestionIconButtons = ({ changeQuestionType, annotated, bgColor }) => {
   const [underLine, setUnderline] = useState(1)
 
   function selectQType(inpt) {
     setUnderline(inpt)
     changeQuestionType(inpt)
   }
+
+  const keyIcon = require('../assets/KeyIcon.png')
+  const noteIcon = require('../assets/NoteIcon.png')
+  const intervalIcon = require('../assets/IntervalIcon.png')
 
   return (
     <>
@@ -23,12 +27,14 @@ const QuestionIconButtons = ({ changeQuestionType, bgColor }) => {
               height: 50,
             }}
           ></View>
+
           <View
             style={[
               styles.underCombo,
-              underLine === 1 ? styles.underLine : null,
+              !annotated && underLine === 1 ? styles.underLine : null,
             ]}
           ></View>
+          {annotated && <Text>Key</Text>}
         </Pressable>
       </View>
       <View>
@@ -44,14 +50,13 @@ const QuestionIconButtons = ({ changeQuestionType, bgColor }) => {
           <View
             style={[
               styles.underCombo,
-              underLine === 2 ? styles.underLine : null,
+              !annotated & (underLine === 2) ? styles.underLine : null,
             ]}
           ></View>
+          {annotated && <Text>Interval</Text>}
         </Pressable>
       </View>
-      <View
-        style={[styles.underCombo, underLine === 3 ? styles.underLine : null]}
-      >
+      <View>
         <Pressable onPress={() => selectQType(3)}>
           <View
             style={{
@@ -68,6 +73,14 @@ const QuestionIconButtons = ({ changeQuestionType, bgColor }) => {
               borderBottomColor: 'black',
             }}
           ></View>
+          <View
+            style={[
+              styles.underCombo,
+              !annotated & (underLine === 3) ? styles.underLine : null,
+              { top: 9 },
+            ]}
+          ></View>
+          {annotated && <Text>Note</Text>}
         </Pressable>
       </View>
     </>
@@ -82,3 +95,61 @@ const styles = StyleSheet.create({
   underCombo: {},
 })
 export default QuestionIconButtons
+
+//icons as images
+{
+  /* <View
+        style={{
+          flexDirection: 'row',
+          justifyContent: 'flex-start',
+          alignItems: 'center',
+          width: 30,
+          height: 30,
+          marginRight: 90,
+          // backgroundColor: 'black',
+        }}
+      >
+        <Image
+          source={keyIcon}
+          testID={`image`}
+          style={{
+            // flex: 1,
+            margin: 0,
+            padding: 0,
+            width: '100%',
+            height: '100%',
+            maxHeight: '100%',
+            marginRight: 10,
+            resizeMode: 'contain',
+          }}
+        />
+        <Image
+          source={intervalIcon}
+          testID={`image`}
+          style={{
+            // flex: 1,
+            margin: 0,
+            padding: 0,
+            width: '110%',
+            height: '110%',
+            maxHeight: '110%',
+            // marginRight: 10,
+            resizeMode: 'contain',
+          }}
+        />
+        <Image
+          source={noteIcon}
+          testID={`image`}
+          style={{
+            // flex: 1,
+            margin: 0,
+            padding: 0,
+            width: '200%',
+            height: '200%',
+            maxHeight: '200%',
+            // marginRight: 10,
+            resizeMode: 'contain',
+          }}
+        />
+      </View> */
+}

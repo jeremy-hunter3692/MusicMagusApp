@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { StyleSheet, View } from 'react-native'
+import { StyleSheet, View, Text } from 'react-native'
 import CardButton from './CardButton'
 import Animated, {
   useSharedValue,
@@ -12,6 +12,8 @@ import Animated, {
 const blankCard = require('../assets/blankcard.png')
 
 const QuestionCards = ({
+  bgColor,
+  secondaryColor,
   firstCard,
   secondCard,
   findNoteFunction,
@@ -70,6 +72,8 @@ const QuestionCards = ({
     }
   })
 
+  function returnCorrectAnnotatedText(cardValue, abBool) {}
+
   // Function to handle the flip
   const handleFlip = (toValue) => {
     const animationSpeed = 500
@@ -77,31 +81,84 @@ const QuestionCards = ({
     flipAnimation.value = withTiming(toValue, { duration: animationSpeed })
   }
   //
+  const styles = StyleSheet.create({
+    questionCardsCont: {
+      flexDirection: 'row',
+      justifyContent: 'center',
+      alignItems: 'flex-end',
+      margin: 0,
+      padding: 0,
+    },
+    flipingCardsCont: {
+      justifyContent: 'center',
+      alignItems: 'center',
+      position: 'relative',
+    },
+    blankCard: {
+      zIndex: 2,
+      width: '100%',
+      height: '100%',
+    },
+    backCard: {
+      zIndex: 1,
+      position: 'absolute',
+
+      width: '100%',
+      height: '100%',
+      backfaceVisibility: 'hidden',
+
+      // Add any specific styles for the back card if needed
+    },
+    forAnnotation: {
+      flexDirection: 'column',
+      justifyContent: 'flex-start',
+    },
+    annotatedText: {
+      color: secondaryColor,
+    },
+  })
 
   return (
     <>
       <View style={styles.questionCardsCont}>
-        <CardButton
-          cardSize={cardSize}
-          data={firstCard}
-          source={firstCard.value.imgSrc}
-          onPress={droneSetter}
-          annotated={annotated}
-          setAnnotatedCard={setAnnotatedCard}
-        />
-        <CardButton
-          cardSize={cardSize}
-          data={secondCard}
-          root={firstCard}
-          source={secondCard?.value.imgSrc}
-          answer={answer}
-          onPress={answerCardOnPress}
-          findAudioSourceFunction={findNoteFunction}
-          annotated={annotated}
-          setAnnotatedCard={setAnnotatedCard}
-          autoPlay={true}
-        />
+        <View style={styles.forAnnotation}>
+          <CardButton
+            cardSize={cardSize}
+            data={firstCard}
+            source={firstCard.value.imgSrc}
+            onPress={droneSetter}
+            annotated={annotated}
+            setAnnotatedCard={setAnnotatedCard}
+          />
 
+          {annotated && (
+            <>
+              {' '}
+              <Text style={styles.annotatedText}>Question Card</Text>
+              <Text style={styles.annotatedText}>I.E In this key</Text>
+            </>
+          )}
+        </View>
+        <View style={styles.forAnnotation}>
+          <CardButton
+            cardSize={cardSize}
+            data={secondCard}
+            root={firstCard}
+            source={secondCard?.value.imgSrc}
+            answer={answer}
+            onPress={answerCardOnPress}
+            findAudioSourceFunction={findNoteFunction}
+            annotated={annotated}
+            setAnnotatedCard={setAnnotatedCard}
+            autoPlay={true}
+          />
+          {annotated && (
+            <>
+              <Text style={styles.annotatedText}>Second Question card</Text>
+              <Text style={styles.annotatedText}>what is this {bgColor}</Text>
+            </>
+          )}
+        </View>
         <View style={styles.flipingCardsCont}>
           <Animated.View
             style={[styles.blankCard, styles.backCard, backAnimatedStyle]}
@@ -112,12 +169,18 @@ const QuestionCards = ({
               source={answer?.imgSrc}
               annotated={annotated}
               setAnnotatedCard={setAnnotatedCard}
-            />{' '}
+            />
           </Animated.View>
 
           <Animated.View style={[styles.card, frontAnimatedStyle]}>
             <CardButton cardSize={cardSize} source={blankCard} />
           </Animated.View>
+          {annotated && (
+            <>
+              <Text style={styles.annotatedText}>Answer Card</Text>
+              <Text style={styles.annotatedText}>To be revealed</Text>
+            </>
+          )}
         </View>
       </View>
     </>
@@ -125,33 +188,3 @@ const QuestionCards = ({
 }
 
 export default QuestionCards
-
-const styles = StyleSheet.create({
-  questionCardsCont: {
-    flexDirection: 'row',
-    justifyContent: 'center',
-    alignItems: 'flex-end',
-    margin: 0,
-    padding: 0,
-  },
-  flipingCardsCont: {
-    justifyContent: 'center',
-    alignItems: 'center',
-    position: 'relative',
-  },
-  blankCard: {
-    zIndex: 2,
-    width: '100%',
-    height: '100%',
-  },
-  backCard: {
-    zIndex: 1,
-    position: 'absolute',
-
-    width: '100%',
-    height: '100%',
-    backfaceVisibility: 'hidden',
-
-    // Add any specific styles for the back card if needed
-  },
-})

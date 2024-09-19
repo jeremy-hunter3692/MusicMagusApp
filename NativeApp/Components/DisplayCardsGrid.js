@@ -43,6 +43,7 @@ const DisplayCardsGrid = ({
               source={x.imgSrc}
               key={x.name}
               findAudioSourceFunction={findNoteFunction}
+              animationDelay={index}
             />
           )
         })}
@@ -59,6 +60,7 @@ const DisplayCardsGrid = ({
               source={x.imgSrc}
               key={x.name}
               findAudioSourceFunction={findNoteFunction}
+              animationDelay={index+1.2}
             />
           )
         })}
