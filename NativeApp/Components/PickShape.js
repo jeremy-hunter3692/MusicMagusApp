@@ -63,32 +63,32 @@ const PickShape = ({ questionAB }) => {
 
   return (
     <View style={styles.container}>
-      {/* Front side */}
-      <Animated.View style={[styles.triangle, frontAnimatedStyle]}>
-        <Pressable onPress={toggleBool}>
+      <Pressable onPress={toggleBool}>
+        {/* Front side */}
+        <Animated.View style={[styles.triangle, frontAnimatedStyle]}>
           <Text style={styles.textFront}>{'A'}</Text>
-        </Pressable>
-      </Animated.View>
-
+        </Animated.View>
+      </Pressable>
       {/* Back side */}
-      <Animated.View
-        style={[styles.triangle, styles.backCard, backAnimatedStyle]}
-      >
-        <Pressable onPress={toggleBool}>
+      <Pressable onPress={toggleBool}>
+        <Animated.View
+          style={[styles.triangle, styles.backCard, backAnimatedStyle]}
+        >
           <Text style={styles.textBack}>{'B'}</Text>
-        </Pressable>
-      </Animated.View>
+        </Animated.View>
+      </Pressable>
     </View>
   )
 }
 
 const styles = StyleSheet.create({
   container: {
+    top: -50,
     padding: 10,
     justifyContent: 'center',
     alignItems: 'center',
-    marginHorizontal: 50,
-
+    marginHorizontal: 110,
+    
   },
   triangle: {
     width: 0,

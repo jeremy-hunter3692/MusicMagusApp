@@ -23,6 +23,7 @@ const DisplayCardsGrid = ({
     userAnswerSetter(inpt)
     return null
   }
+  const dealAnimationDelay = 5
 
   const firstHalfArray = cardsArray.slice(0, cardsArray.length / 2)
 
@@ -60,7 +61,7 @@ const DisplayCardsGrid = ({
               source={x.imgSrc}
               key={x.name}
               findAudioSourceFunction={findNoteFunction}
-              animationDelay={index+1.2}
+              animationDelay={index+dealAnimationDelay}
             />
           )
         })}

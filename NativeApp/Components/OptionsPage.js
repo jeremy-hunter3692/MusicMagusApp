@@ -7,6 +7,7 @@ const OptionsPage = ({
   selectDroneAudio,
   droneOnOff,
   changeQuestionType,
+  changeTheme
 }) => {
   const [droneOnButton, setDroneOnButton] = useState(true)
   const [droneSound, setDroneSound] = useState(true)
@@ -22,9 +23,6 @@ const OptionsPage = ({
     selectDroneAudio()
   }
 
-  function changeTheme(){
-    
-  }
 
   function changeQuestion() {
     console.log('changes press', option)

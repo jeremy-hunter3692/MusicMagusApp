@@ -8,7 +8,7 @@ import Animated, {
 } from 'react-native-reanimated'
 
 let hasPlayed = true
-const initCardSizeValue = 0.9
+const initCardSizeValue = 0
 const CardButton = ({
   onPress,
   data,
@@ -23,7 +23,7 @@ const CardButton = ({
 }) => {
   const [note, setNote] = useState()
   const [playBool, setPlayBool] = useState()
-  const dealAnimationSpeed = 50
+  const dealAnimationSpeed = 20
   const initDealDelay = 30
   const scale = useSharedValue(initCardSizeValue)
   const { cardWidth, cardHeight } = cardSize || {}
@@ -42,7 +42,7 @@ const CardButton = ({
       autoPlay && !hasPlayed && answer ? cardButtonOnPress(data) : ''
     }, 1000)
     return () => clearTimeout(timeOutId)
-  }, [answer])
+  }, [answer, source])
 
   function dealAnimationTrigger(cardDelayOrder) {
     setTimeout(() => {
@@ -73,16 +73,16 @@ const CardButton = ({
 
   const handlePressIn = () => {
     scale.value = withSpring(initCardSizeValue, {
-      damping: 8,
-      stiffness: 200,
+      damping: 20,
+      stiffness: 1000,
     })
   }
 
   // Function to handle button release (scale back to normal with spring effect)
   const handlePressOut = (card) => {
     scale.value = withSpring(1, {
-      damping: 50,
-      stiffness: 1000,
+      damping: 200,
+      stiffness: 5000,
     })
   }
 

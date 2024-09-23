@@ -14,8 +14,12 @@ import {
 import { keys, getIntervalNo } from './data/KeyCards'
 import QuestionIconButtons from './Components/QuestionIconButtons.js'
 
+const themeInit = { bgColor: 'purple', secondaryColor: '#19af59' }
+const secondaryTheme = { bgColor: 'white', secondaryColor: 'blue' }
+let themeBool = true
 export default function App() {
   const [hexKey, setHexKey] = useState(keys[0])
+  const [theme, setTheme] = useState(themeInit)
   const [annotatedCard, setAnnotatedCard] = useState()
   const [questionType, setQuestionType] = useState('Key')
   const [showOptions, setShowOptions] = useState(false)
@@ -40,8 +44,11 @@ export default function App() {
     setAnnotatedCardDisplay((x) => !x)
   }
 
-  const bgColor = 'purple' //'#19af59'
-  const secondaryColor = '#19af59'
+  function changeTheme() {
+    console.log(themeBool, 'change')
+    themeBool === true ? setTheme(secondaryTheme) : setTheme(themeInit)
+    themeBool = !themeBool
+  }
 
   return (
     <>
@@ -53,7 +60,7 @@ export default function App() {
           maxWidth: width,
           // marginTop: 15,
           padding: 0,
-          backgroundColor: bgColor,
+          backgroundColor: theme.bgColor,
           flexDirection: 'column',
           shadowColor: 'black',
           // shadowOffset: { width: 3, height: 3 },
@@ -70,7 +77,7 @@ export default function App() {
             flex: 0.25,
             color: 'white',
             flexDirection: 'row',
-            backgroundColor: secondaryColor,
+            backgroundColor: theme.secondaryColor,
             justifyContent: 'flex-end',
             alignItems: 'center',
             textAlign: 'center',
@@ -107,13 +114,13 @@ export default function App() {
                 alignItems: 'center',
               }}
             >
-              <Text style={{ color: bgColor }}>?</Text>
+              <Text style={{ color: theme.bgColor }}>?</Text>
             </View>
           </Pressable>
         </View>
 
         {showOptions ? (
-          <OptionsPage height={height} />
+          <OptionsPage height={height} changeTheme={changeTheme} />
         ) : (
           <>
             {annotatedCard ? (
@@ -122,8 +129,8 @@ export default function App() {
               </View>
             ) : (
               <QuestionHolder
-                bgColor={bgColor}
-                secondaryColor={secondaryColor}
+                bgColor={theme.bgColor}
+                secondaryColor={theme.secondaryColor}
                 questionType={questionType}
                 setAnnotatedCard={setAnnotatedCard}
                 annotated={annotatedCardDisplay}

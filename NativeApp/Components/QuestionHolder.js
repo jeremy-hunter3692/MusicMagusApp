@@ -175,7 +175,7 @@ const QuestionHolder = ({
         style={{ flex: 0, height: 0, width: 0, margin: 0, padding: 0 }}
       />
 
-      <Text style={styles.answer}>
+      <Text style={[styles.answer, { backgroundColor: secondaryColor }]}>
         {scoreCircles.map((x, idx) => {
           let questionNo = idx === attemptCount ? true : false
           // console.log({ questionNo })
