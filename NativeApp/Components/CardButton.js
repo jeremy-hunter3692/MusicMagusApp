@@ -9,10 +9,12 @@ import Animated, {
 
 let hasPlayed = true
 const initCardSizeValue = 0
+
 const CardButton = ({
   onPress,
   data,
   source,
+  altSourceForReload,
   autoPlay = false,
   answer,
   findAudioSourceFunction,
@@ -27,6 +29,7 @@ const CardButton = ({
   const initDealDelay = 30
   const scale = useSharedValue(initCardSizeValue)
   const { cardWidth, cardHeight } = cardSize || {}
+  //so blank card still re animates on 're deal'
 
   useEffect(() => {
     if (annotated) {
@@ -42,7 +45,7 @@ const CardButton = ({
       autoPlay && !hasPlayed && answer ? cardButtonOnPress(data) : ''
     }, 1000)
     return () => clearTimeout(timeOutId)
-  }, [answer, source])
+  }, [answer, source, altSourceForReload])
 
   function dealAnimationTrigger(cardDelayOrder) {
     setTimeout(() => {

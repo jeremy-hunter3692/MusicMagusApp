@@ -8,9 +8,7 @@ import Animated, {
   interpolate,
   Extrapolate,
 } from 'react-native-reanimated'
-
 const blankCard = require('../assets/blankcard.png')
-
 const QuestionCards = ({
   bgColor,
   secondaryColor,
@@ -178,6 +176,7 @@ const QuestionCards = ({
             <CardButton
               cardSize={cardSize}
               source={blankCard}
+              altSourceForReload={answer?.imgSrc}
               animationDelay={3}
             />
           </Animated.View>

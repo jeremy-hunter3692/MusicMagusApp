@@ -32,6 +32,7 @@ const newAnswerDelay = 2000
 let attemptCount = 0
 let droneType = true
 
+
 const QuestionHolder = ({
   bgColor,
   secondaryColor,

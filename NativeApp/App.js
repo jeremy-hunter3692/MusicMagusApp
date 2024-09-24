@@ -67,7 +67,7 @@ export default function App() {
         style={{
           flex: 1,
           padding: 0,
-          maxHeight: '%100',
+          maxHeight: '100%',
           maxWidth: width,
           // marginTop: 15,
           padding: 0,
