@@ -151,6 +151,7 @@ const QuestionCards = ({
             annotated={annotated}
             setAnnotatedCard={setAnnotatedCard}
             autoPlay={true}
+            animationDelay={2}
           />
           {annotated && (
             <>
@@ -169,11 +170,16 @@ const QuestionCards = ({
               source={answer?.imgSrc}
               annotated={annotated}
               setAnnotatedCard={setAnnotatedCard}
+              animationDelay={3}
             />
           </Animated.View>
 
           <Animated.View style={[styles.card, frontAnimatedStyle]}>
-            <CardButton cardSize={cardSize} source={blankCard} />
+            <CardButton
+              cardSize={cardSize}
+              source={blankCard}
+              animationDelay={3}
+            />
           </Animated.View>
           {annotated && (
             <>

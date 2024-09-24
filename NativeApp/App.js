@@ -24,6 +24,7 @@ export default function App() {
   const [questionType, setQuestionType] = useState('Key')
   const [showOptions, setShowOptions] = useState(false)
   const [annotatedCardDisplay, setAnnotatedCardDisplay] = useState(false)
+  const [isRandom, setIsRandom] = useState(false)
 
   const { width, height } = useWindowDimensions()
 
@@ -35,7 +36,14 @@ export default function App() {
   }
   function changeQuestionType(inpt) {
     console.log('change top', inpt)
-    let type = inpt === 1 ? 'Key' : inpt === 2 ? 'Interval' : 'Note'
+    let type =
+      inpt === 1
+        ? 'Key'
+        : inpt === 2
+        ? 'Interval'
+        : inpt === 3
+        ? 'Note'
+        : 'Random'
     setQuestionType(type)
   }
 
@@ -50,6 +58,9 @@ export default function App() {
     themeBool = !themeBool
   }
 
+  function randomQuestionsSetter() {
+    setIsRandom((x) => (x = !x))
+  }
   return (
     <>
       <SafeAreaView
@@ -89,10 +100,14 @@ export default function App() {
 
           {!annotatedCard ? (
             <>
-              <QuestionIconButtons
-                changeQuestionType={changeQuestionType}
-                annotated={annotatedCardDisplay}
-              />
+              {!isRandom ? (
+                <QuestionIconButtons
+                  changeQuestionType={changeQuestionType}
+                  annotated={annotatedCardDisplay}
+                />
+              ) : (
+                <Text>Randomised Questions</Text>
+              )}
               <Pressable onPress={() => setShowOptions((x) => (x = !x))}>
                 <Text style={styles.optionText}>
                   {showOptions ? 'Back' : 'Options'}
@@ -120,7 +135,11 @@ export default function App() {
         </View>
 
         {showOptions ? (
-          <OptionsPage height={height} changeTheme={changeTheme} />
+          <OptionsPage
+            height={height}
+            changeTheme={changeTheme}
+            randomQuestionsSetter={randomQuestionsSetter}
+          />
         ) : (
           <>
             {annotatedCard ? (
@@ -134,6 +153,7 @@ export default function App() {
                 questionType={questionType}
                 setAnnotatedCard={setAnnotatedCard}
                 annotated={annotatedCardDisplay}
+                isRandom={isRandom}
               />
             )}
           </>

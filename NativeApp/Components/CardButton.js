@@ -32,7 +32,7 @@ const CardButton = ({
     if (annotated) {
       return
     }
-
+    scale.value = withSpring(initCardSizeValue)
     setTimeout(() => {
       dealAnimationTrigger(animationDelay)
     }, initDealDelay)

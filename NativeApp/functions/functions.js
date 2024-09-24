@@ -137,6 +137,7 @@ export function replaceFlatsForSharps(rootName, noteNameArr) {
 const KEY = 'Key'
 const NOTE = 'Note'
 const INTERVAL = 'Interval'
+const RANDOM = 'Random'
 
 ///psued0
 // State is and object that has:
@@ -185,6 +186,11 @@ export const cardReducer = (questionType, abBool) => {
         array: abBool ? intervals : keys,
         answer: answerIdx,
       }
+    case RANDOM:
+      console.log('random in swithc')
+      return
+    default:
+      console.log(`broken switch.`)
   }
 }
 

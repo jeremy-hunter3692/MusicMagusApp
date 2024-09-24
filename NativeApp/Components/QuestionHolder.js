@@ -39,9 +39,12 @@ const QuestionHolder = ({
   setAnnotatedCard,
   annotatedCard,
   annotated,
+  isRandom,
 }) => {
   //questionType will refer to what the middle card is
   //TO DO go over all this state and cut down what we need/don't need
+  //TO DO -card randomiser logic
+  //BLank card animate deal on new question load - something to do with scale/sharedvalue and the flipping animation
   const [reloadBool, setReloadBool] = useState(false)
   const [displayInputCardArray, setDisplayInputCardArray] = useState()
   const [firstCard, setFirstCard] = useState()
@@ -69,6 +72,10 @@ const QuestionHolder = ({
     //TO DO dry this up, probs shouldn't be an effect
     let droneSrc
     let answerObj = cardReducer(questionType, abBool)
+
+    if (isRandom) {
+      answerObj = randomiseQuestion()
+    }
     const { firstCard, secondCard, array, answer } = answerObj
     //////////
     getAndSetDroneAudioSource(firstCard.value)
@@ -76,13 +83,21 @@ const QuestionHolder = ({
     setFirstCard(firstCard)
     setSecondCard(secondCard)
     setCorrectAnswer(array[answer])
-  }, [questionType, reloadBool, abBool])
+  }, [questionType, reloadBool, abBool, isRandom])
 
   function questionAB(bool) {
     //TO DO clear timeout/question change here
     setabBool(bool)
   }
 
+  function randomiseQuestion() {
+    let questionType = Math.floor(Math.random() * (3 - 1 + 1)) + 1
+    questionType =
+      questionType === 1 ? 'Key' : questionType === 1 ? 'Key' : 'Interval'
+    let bool = Math.random() > 0.5 ? true : false
+    console.log(bool, questionType)
+    return cardReducer(questionType, abBool)
+  }
   function getAudioSrcIdxFromCardReducer(cardAny) {
     let audioSrcIdx =
       questionType === 'Note'
@@ -119,11 +134,11 @@ const QuestionHolder = ({
   function userAnswerSetter(inpt) {
     setUserAnswer(inpt)
 
-    if (attemptCount >= 12) {
+    if (attemptCount > 10) {
       attemptCount = 0
       setScoreSircle(setScoreSircleInit)
       setUserScore('!!!!!!!!!!1RESTARTING!!!!!!!!!!!!')
-      let newBlankArray = setScoreSircle()
+      // let newBlankArray = setScoreSircle()
       setTimeout(() => {
         setUserScore(0)
       }, 3000)
@@ -203,7 +218,7 @@ const QuestionHolder = ({
             stylesBool && styles.questionCardsBorder,
           ]}
         >
-          <PickShape questionAB={questionAB} />
+          {!isRandom && <PickShape questionAB={questionAB} />}
           {firstCard?.value && (
             <QuestionCards
               bgColor={bgColor}
