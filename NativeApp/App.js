@@ -15,7 +15,7 @@ import { keys, getIntervalNo } from './data/KeyCards'
 import QuestionIconButtons from './Components/QuestionIconButtons.js'
 
 const themeInit = { bgColor: 'purple', secondaryColor: '#19af59' }
-const secondaryTheme = { bgColor: 'white', secondaryColor: 'blue' }
+const secondaryTheme = { bgColor: 'black', secondaryColor: 'purple' }
 let themeBool = true
 export default function App() {
   const [hexKey, setHexKey] = useState(keys[0])
@@ -35,7 +35,6 @@ export default function App() {
     console.log('TODO-App level', inpt)
   }
   function changeQuestionType(inpt) {
-    console.log('change top', inpt)
     let type =
       inpt === 1
         ? 'Key'
@@ -53,7 +52,6 @@ export default function App() {
   }
 
   function changeTheme() {
-    console.log(themeBool, 'change')
     themeBool === true ? setTheme(secondaryTheme) : setTheme(themeInit)
     themeBool = !themeBool
   }
@@ -129,7 +127,9 @@ export default function App() {
                 alignItems: 'center',
               }}
             >
-              <Text style={{ color: theme.bgColor }}>?</Text>
+              <Text style={{ color: theme.bgColor }}>
+                {annotatedCard ? '<' : '?'}
+              </Text>
             </View>
           </Pressable>
         </View>
@@ -144,7 +144,7 @@ export default function App() {
           <>
             {annotatedCard ? (
               <View style={styles.annotated}>
-                {/* <AnnotatedCards data={annotatedCard} /> */}
+                <AnnotatedCards data={annotatedCard} />
               </View>
             ) : (
               <QuestionHolder
@@ -174,13 +174,14 @@ export default function App() {
 const styles = StyleSheet.create({
   optionText: {
     color: 'purple',
+    margin: 5,
   },
   button: {
     //for icon cards
     justifyContent: 'center',
     alignItems: 'center',
     backgroundColor: '#19af59', //#003399
-    margin: 4,
+
     // borderWidth: 1,
     // borderColor: 'white',
     // borderTopLeftRadius: 10,
@@ -195,7 +196,9 @@ const styles = StyleSheet.create({
     elevation: 5,
   },
   annotated: {
-    width: '90%',
+    justifyContent: 'center',
+    alignItems: 'center',
+    // width: '90%',
     height: '90%',
   },
 })
