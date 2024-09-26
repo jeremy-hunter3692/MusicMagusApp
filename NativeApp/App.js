@@ -117,18 +117,21 @@ export default function App() {
           )}
           <Pressable onPress={handleAnnotatedClick}>
             <View
-              style={{
-                backgroundColor: 'white',
-                width: 30,
-                height: 30,
-                borderRadius: 30,
-                alignSelf: 'flex-end',
-                justifyContent: 'center',
-                alignItems: 'center',
-              }}
+              style={[
+                {},
+                !annotatedCard && {
+                  backgroundColor: 'white',
+                  width: 30,
+                  height: 30,
+                  borderRadius: 30,
+                  alignSelf: 'flex-end',
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                },
+              ]}
             >
               <Text style={{ color: theme.bgColor }}>
-                {annotatedCard ? '<' : '?'}
+                {annotatedCard ? 'Back' : '?'}
               </Text>
             </View>
           </Pressable>

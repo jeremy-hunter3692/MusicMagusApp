@@ -167,6 +167,18 @@ describe('replaceFlatsForSharps', () => {
       expect(answer).not.toContain(note)
     })
   })
+  test.each([
+    ['Eb', keys[3]],
+    ['Gb', keys[6]],
+    ['Db', keys[1]],
+  ])(
+    'replaces F# with Gb in the appropriate keys - Gb Db',
+    (keyName, array) => {
+      let accidentalsArray = getAccidentalNames(array)
+      let answer = replaceFlatsForSharps(keyName, accidentalsArray)
+      expect(answer).not.toContain('F#')
+    }
+  )
 })
 
 describe('question card reducer', () => {

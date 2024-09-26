@@ -97,7 +97,6 @@ export function getAccidentalNames(keyCard) {
     count = count === 4 ? count + 1 : count + 2
   })
   // Mapping over everthing here is probably ineffcient? doubtful it will inpact much though
-
   let answer = tempAnswer.map((x) => (x === 'Cb' ? 'B' : x))
 
   return answer
@@ -114,8 +113,8 @@ export function replaceFlatsForSharps(rootName, noteNameArr) {
   ) {
     updatedNames = noteNameArr.map((x) => {
       switch (x) {
-        case 'Gb':
-          return 'F#'
+        // case 'Gb':
+        //   return 'F#'
         case 'Db':
           return 'C#'
         case 'Eb':
@@ -129,6 +128,12 @@ export function replaceFlatsForSharps(rootName, noteNameArr) {
       }
     })
     return updatedNames
+  } else if (rootName === 'Db' || rootName === 'Gb') {
+    updatedNames = noteNameArr.map((x) => {
+      let updated = x === 'F#' ? 'Gb' : x
+      return updated
+    })
+    return updatedNames
   } else {
     return noteNameArr // Return original array if no replacements
   }
@@ -137,7 +142,6 @@ export function replaceFlatsForSharps(rootName, noteNameArr) {
 const KEY = 'Key'
 const NOTE = 'Note'
 const INTERVAL = 'Interval'
-const RANDOM = 'Random'
 
 ///psued0
 // State is and object that has:
@@ -186,9 +190,6 @@ export const cardReducer = (questionType, abBool) => {
         array: abBool ? intervals : keys,
         answer: answerIdx,
       }
-    case RANDOM:
-      console.log('random in swithc')
-      return
     default:
       console.log(`broken switch.`)
   }

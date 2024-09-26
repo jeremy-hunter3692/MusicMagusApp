@@ -7,7 +7,11 @@ import {
 } from '../functions/functions.js'
 
 const AnnotatedCards = ({ data }) => {
-  const fontSize = 40
+  const fontSize = 25
+  let bottomRText
+  let bottomLText
+  let topRtext
+  let topLText
 
   let noOfAccidentals = data?.value.intervals.reduce(
     (count, value) => count + (value === true ? 1 : 0),
@@ -22,6 +26,13 @@ const AnnotatedCards = ({ data }) => {
     getAccidentals
   )
 
+  topLText = `Key: ${data?.value.name} Month refers to blah blah blah blah blah blah`
+  bottomLText = `Relative Minor: ${relativeMinor} Minor`
+  bottomRText = `Accidentals: ${
+    noOfAccidentals + ':' + ' ' + sanitisedAccidentalsNames
+  }`
+  topRtext = ''
+
   const styles = StyleSheet.create({
     container: {
       flexDirection: 'row',
@@ -32,6 +43,7 @@ const AnnotatedCards = ({ data }) => {
       fontSize: fontSize,
       borderColor: 'black',
       borderWidth: 1,
+      maring: 2,
     },
     column: {
       flex: 1, // Each column takes equal space
@@ -54,15 +66,12 @@ const AnnotatedCards = ({ data }) => {
     <View style={styles.container}>
       {/* First column with text */}
       <View style={styles.column}>
+        <Text style={styles.textMain}>{topLText}</Text>
         <Text style={styles.textMain}>
-          Key: {data?.value.name} Month refers to blah blah blah blah blah blah
-        </Text>
-        <Text style={styles.textMain}>
-          Relative Minor: {relativeMinor} Minor
+       { bottomLText}  
         </Text>
       </View>
 
-      {/* Second column with image */}
       <View style={styles.imageColumn}>
         <Image
           source={data?.value.imgSrc}
@@ -71,12 +80,9 @@ const AnnotatedCards = ({ data }) => {
         />
       </View>
 
-      {/* Third column with text */}
       <View style={styles.column}>
-        <Text></Text>
-        <Text style={styles.textMain}>
-          Accidentals: {noOfAccidentals + ':' + ' ' + sanitisedAccidentalsNames}
-        </Text>
+        <Text>{topRtext}</Text>
+        <Text style={styles.textMain}>{bottomRText}</Text>
       </View>
     </View>
   )
