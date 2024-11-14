@@ -27,7 +27,7 @@ export default function App() {
   const [isRandom, setIsRandom] = useState(false)
 
   const { width, height } = useWindowDimensions()
-
+  // console.log({ annotatedCard })
   function getKey(musicKey) {
     setHexKey(musicKey)
   }
@@ -201,7 +201,8 @@ const styles = StyleSheet.create({
   annotated: {
     justifyContent: 'center',
     alignItems: 'center',
-    // width: '90%',
-    height: '90%',
+
+    height: '100%',
+    width: '100%',
   },
 })

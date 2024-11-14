@@ -1,119 +1,115 @@
-import React, { useState, useEffect } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import { Audio } from 'expo-av'
-const fadeOutSpeed = 1000
-const globalvolume = 0.6
-const bassDroneVolume = 0.4
-//TOO DOO CLEAN UP CONSOLE LOGS
-const playNoteForLooping = async (note) => {
-  // console.log('4PLAYLOOP')
-  const source = note
-  try {
-    const initalStatus = {
-      volume: bassDroneVolume,
-      isLooping: true,
-    }
-    const { sound } = source
-      ? await Audio.Sound.createAsync(source, initalStatus)
-      : ''
-    // console.log('pre 4loop resturn', sound)
-    return sound
-  } catch (error) {
-    console.log('Error loding sound:', error)
-  }
-}
-let timeoutId = null
-let rootOne = null
-let rootTwo = null
+import { Pressable, Text } from 'react-native'
+import { DoubleBassDrones } from '../data/DroneAudioSources'
+let soundObj = null
+let fadeTimeout = null
 
-const DronePlayer = ({ rootValue, dronePlaying }) => {
-  // console.log(dronePlaying, '-drone playing')
-  useEffect(() => {
-    async function loadSoundObjs() {
-      rootOne = await playNoteForLooping(rootValue)
-      rootTwo = await playNoteForLooping(rootValue)
-    }
-
-    async function startUp() {
-      await loadSoundObjs()
-      startDrone()
-    }
-
-    dronePlaying ? startUp() : stopDrone()
-
-    return () => {
-      // console.log('use return')
-      stopDrone()
-    }
-  }, [dronePlaying, rootValue])
-
-  const startDrone = async () => {
-    if (rootOne) {
-      // console.log('if root sound 1')
-      await rootOne.playAsync()
-    }
-    if (rootTwo) {
-      timeoutId = setTimeout(async () => {
-        await rootTwo.playAsync()
-        // console.log('in timeout')
-      }, 3000)
-    }
-  }
-
-  const stopDrone = async () => {
-    if (rootOne) {
-      // await fade(rootOne, bassDroneVolume, 0)
-      // await rootOne.pauseAsync()
-      await rootOne.stopAsync()
-      await rootOne.unloadAsync()
-    }
-    if (rootTwo) {
-      // await fade(rootTwo, bassDroneVolume, 0)
-      // await rootTwo.pauseAsync()
-      await rootTwo.stopAsync()
-      await rootTwo.unloadAsync()
-    }
-    clearTimeout(timeoutId)
-  }
-
-  return null
-}
-
-const fade = (sound, fromVolume, toVolume) => {
-  const fadeDuration = 150
-  return new Promise((resolve, reject) => {
-    console.log({ fromVolume })
-    let isFading = true
-    let fadeTimeout = null
+//look up graphs for fading logic
+//
+const fade = (initVolume, toVolume, duration = 10) =>
+  new Promise((resolve, reject) => {
+    if (initVolume === toVolume) return resolve()
 
     if (fadeTimeout) {
       clearTimeout(fadeTimeout)
     }
 
-    const start = Math.floor(fromVolume * 10)
-    const end = toVolume * 10
+    const steps = 100 // Number of steps for the fade transition
+    const stepDuration = duration / steps
+    const start = Math.floor(initVolume * 10)
+    const end = Math.floor(toVolume * 10)
+    const volumeStep = (end - start) / steps
     let currVolume = start
 
     const loop = async () => {
-      let count = 0
-      if (currVolume !== end) {
-        start < end ? currVolume++ : currVolume--
-        count++
-        // console.log(currVolume, 'count:', count)
-        await sound.setVolumeAsync(currVolume / 10)
-        fadeTimeout = setTimeout(loop, fadeDuration / 10)
+      if (Math.round(currVolume) !== end || Math.round(currVolume) < 0.1 ) {
+  
+        currVolume += volumeStep
+        let volumeStatus = currVolume / 10
+        console.log(volumeStatus)
+        await soundObj.setVolumeAsync(volumeStatus)
+
+        fadeTimeout = setTimeout(loop, stepDuration)
       } else {
+        console.log('else')
+        await soundObj.setVolumeAsync(toVolume)
         clearTimeout(fadeTimeout)
         fadeTimeout = null
-        isFading = false
-        if (currVolume === 0) {
-          // await sound.stopAsync()
-        }
-        // console.log('Done fading')
-        resolve(true)
+        resolve()
       }
     }
 
-    fadeTimeout = setTimeout(loop, 10)
+    fadeTimeout = setTimeout(loop, stepDuration)
   })
+
+async function getCurrentVolume(soundObj) {
+  try {
+    const status = await soundObj.getStatusAsync()
+    return status.volume // Returns a value between 0.0 and 1.0
+  } catch (error) {
+    console.error('Error getting volume:', error)
+    return null
+  }
 }
+
+// // Usage:
+// const setVolume = (volume) => {
+//   console.log("Setting volume to:", volume)
+//   // Actual volume-setting logic here
+// }
+// const fade = createFader(0.5, setVolume) // 0.5 is the initial volume
+
+// fade(1).then(() => console.log("Fade complete"))
+
+const DronePlayer = ({ rootValueProp, dronePlaying }) => {
+  const rootValue = DoubleBassDrones[1].audioSrc // rootValueProp
+  console.log(rootValue)
+  // const [currentDrone, setCurrentDrone] = useState()
+
+  const loadAndPlayDrone = async () => {
+    if (rootValue) {
+      soundObj = await loadSound(rootValue)
+      await soundObj.playAsync()
+    }
+  }
+
+  const loadSound = async (rootValue) => {
+    let returnSoundObj
+    try {
+      const initialStatus = {
+        volume: 1,
+        isLooping: true,
+      }
+      const { sound } = await Audio.Sound.createAsync(rootValue, initialStatus)
+      returnSoundObj = sound
+      // setCurrentDrone(sound)
+      console.log('set current drone', rootValue, soundObj)
+    } catch (error) {
+      console.log('Error loading sound:', error)
+    }
+    return returnSoundObj
+  }
+
+  const stopDrone = async () => {
+    let currentVol = await getCurrentVolume(soundObj)
+    console.log({ currentVol })
+    await fade(currentVol, 0)
+    // await soundObj.pauseAsync()
+    await soundObj.stopAsync()
+    // await currentDrone.unloadAsync()
+  }
+
+  return (
+    <>
+      <Pressable onPress={() => loadAndPlayDrone()}>
+        <Text>Start</Text>
+      </Pressable>
+      <Pressable onPress={() => stopDrone()}>
+        <Text>Stop</Text>
+      </Pressable>
+    </>
+  )
+}
+
 export default DronePlayer

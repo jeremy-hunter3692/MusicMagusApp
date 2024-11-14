@@ -1,49 +1,45 @@
 import React from 'react'
 import { Image, Text, View, StyleSheet } from 'react-native'
+import { getDataForAnnotated } from '../functions/functions.js'
 import { keys } from '../data/KeyCards.js'
-import {
-  getAccidentalNames,
-  replaceFlatsForSharps,
-} from '../functions/functions.js'
 
 const AnnotatedCards = ({ data }) => {
   const fontSize = 25
-  let bottomRText
-  let bottomLText
-  let topRtext
-  let topLText
+  const { bottomRText, bottomLText, topRtext, topLText } =
+    getDataForAnnotated(data)
+  //TO DO refactor all functions to be in functions
+  //make something to find right data for three different cards types
+  // let noOfAccidentals = data?.value.intervals.reduce(
+  //   (count, value) => count + (value === true ? 1 : 0),
+  //   0
+  // )
+  // let relativeMinor = keys[data.idx - 3]?.name
+  // relativeMinor = replaceFlatsForSharps('B', [relativeMinor])
 
-  let noOfAccidentals = data?.value.intervals.reduce(
-    (count, value) => count + (value === true ? 1 : 0),
-    0
-  )
-  let relativeMinor = keys[data.idx - 3]?.name
-  relativeMinor = replaceFlatsForSharps('B', [relativeMinor])
-
-  let getAccidentals = getAccidentalNames(data.value)
-  let sanitisedAccidentalsNames = replaceFlatsForSharps(
-    data.value.name,
-    getAccidentals
-  )
-
-  topLText = `Key: ${data?.value.name} Month refers to blah blah blah blah blah blah`
-  bottomLText = `Relative Minor: ${relativeMinor} Minor`
-  bottomRText = `Accidentals: ${
-    noOfAccidentals + ':' + ' ' + sanitisedAccidentalsNames
-  }`
-  topRtext = ''
+  // let getAccidentals = getAccidentalNames(data.value)
+  // let sanitisedAccidentalsNames = replaceFlatsForSharps(
+  //   data.value.name,
+  //   getAccidentals
+  // )
 
   const styles = StyleSheet.create({
     container: {
+      padding: 20,
       flexDirection: 'row',
       height: '100%',
+      width: '100%',
+      // borderColor: 'white',
+      // borderWidth: 3,
     },
     textMain: {
-      color: 'white',
+      color: 'purple',
+      backgroundColor: 'white',
+      borderRadius: 20,
       fontSize: fontSize,
       borderColor: 'black',
       borderWidth: 1,
-      maring: 2,
+      margin: 2,
+      padding: 3,
     },
     column: {
       flex: 1, // Each column takes equal space
@@ -67,9 +63,7 @@ const AnnotatedCards = ({ data }) => {
       {/* First column with text */}
       <View style={styles.column}>
         <Text style={styles.textMain}>{topLText}</Text>
-        <Text style={styles.textMain}>
-       { bottomLText}  
-        </Text>
+        <Text style={styles.textMain}>{bottomLText}</Text>
       </View>
 
       <View style={styles.imageColumn}>

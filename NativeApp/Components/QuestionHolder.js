@@ -32,7 +32,6 @@ const newAnswerDelay = 2000
 let attemptCount = 0
 let droneType = true
 
-
 const QuestionHolder = ({
   bgColor,
   secondaryColor,
@@ -118,15 +117,14 @@ const QuestionHolder = ({
     return audioSrc
   }
   //TO DO Think this isn't needed?
-  function droneReload() {}
+  // function droneReload() {}
+  // function questionCardPress() {
+  //   questionType === 'Note'
+  //     ? setQuestionType('Interval')
+  //     : setQuestionType('Note')
 
-  function questionCardPress() {
-    questionType === 'Note'
-      ? setQuestionType('Interval')
-      : setQuestionType('Note')
-
-    //old drone swithc
-  }
+  //   //old drone swithc
+  // }
 
   function reload() {
     setReloadBool((x) => !x)
@@ -184,12 +182,12 @@ const QuestionHolder = ({
 
   return (
     <>
-      <DronePlayer
+      {/* <DronePlayer
         rootValue={droneAudioSrc?.audioSrc}
         dronePlaying={dronePlaying}
         reload={droneReload}
         style={{ flex: 0, height: 0, width: 0, margin: 0, padding: 0 }}
-      />
+      /> */}
 
       <Text style={[styles.answer, { backgroundColor: secondaryColor }]}>
         {scoreCircles.map((x, idx) => {
@@ -199,12 +197,13 @@ const QuestionHolder = ({
             <Circle
               fillBool={x}
               scoreCircleRadius={10}
+              key={idx}
               underLine={questionNo}
             />
           )
         })}
 
-        {'|| Score: ' + userScore + '/12'}
+        {/* {'|| Score: ' + userScore + '/12'} */}
       </Text>
 
       <View

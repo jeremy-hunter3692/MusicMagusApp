@@ -128,7 +128,7 @@ export function replaceFlatsForSharps(rootName, noteNameArr) {
       }
     })
     return updatedNames
-  } else if (rootName === 'Db' || rootName === 'Gb') {
+  } else if (rootName === 'Db' || rootName === 'F#' || rootName === 'Gb') {
     updatedNames = noteNameArr.map((x) => {
       let updated = x === 'F#' ? 'Gb' : x
       return updated
@@ -143,10 +143,7 @@ const KEY = 'Key'
 const NOTE = 'Note'
 const INTERVAL = 'Interval'
 
-///psued0
-// State is and object that has:
-//First Card(named anyways), SecondCard, Answer, DisplayARray, Drone Audio source
-//A/B Format will bet KEY, INTERVAL with a bool for changing display at the front end
+
 export const cardReducer = (questionType, abBool) => {
   // console.log(' in reducer:', questionType,abBool)
   let firstCard
@@ -195,6 +192,66 @@ export const cardReducer = (questionType, abBool) => {
   }
 }
 
+function getNoOfAccidentals(inpt) {
+  return inpt.value.intervals.reduce(
+    (count, value) => count + (value === true ? 1 : 0),
+    0
+  )
+}
+
+// function getRelativeMinor() {
+//   let minor = keys[data.idx - 3]?.name
+//   return replaceFlatsForSharps(minor, [minor])
+// }
+
+export function getDataForAnnotated(inpt) {
+  if (
+    typeof inpt.value?.distanceToRoot === 'number' &&
+    typeof inpt.value?.up != 'undefined'
+  ) {
+    return {
+      topLText: 'Interval: ' + inpt.value.name,
+      topRText: '',
+      bottomLText: '',
+      bottomRText: 'Distance to nearest root: ' + inpt.value.distanceToRoot,
+    }
+  } else if (
+    typeof inpt.value.intervals === 'undefined' &&
+    typeof inpt.value.distanceToRoot === 'undefined'
+  ) {
+    return {
+      topLText: inpt.value.name,
+      topRText: '',
+      bottomLText: '',
+      bottomRText: '',
+    }
+  } else if (inpt.value.intervals && inpt.value.audioSrc) {
+    let relMinorIdx = inpt.idx - 3 < 0 ? inpt.idx - 3 + 12 : inpt.idx - 3
+    let santisedAccidentals = replaceFlatsForSharps(
+      inpt.value.name,
+      getAccidentalNames(inpt.value)
+    )
+    return {
+      topLText: 'Key: ' + inpt.value.name,
+      topRText: '',
+      bottomLText: 'Relative Minor:' + keys[relMinorIdx]?.name,
+      bottomRText:
+        'Accidentals :' + getNoOfAccidentals(inpt) + '|' + santisedAccidentals,
+    }
+  } else {
+    console.log('broke')
+    return 'brken'
+  }
+
+  // let correctData = {
+  //   topLText: 'Key:',
+  //   topRText: '',
+  //   bottomLText: 'Relative Minor:',
+  //   bottomRText: 'Accidentals :',
+  // }
+
+  // return correctData
+}
 // if (questionType === 'Interval') {
 //   const { firstCard, secondCard, array, answer } = cardReducer('Key')
 //   arrayTemp = array
