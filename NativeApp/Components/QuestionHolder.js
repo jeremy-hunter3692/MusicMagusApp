@@ -9,7 +9,6 @@ import {
 //
 import DronePlayer from './DronePlayer.js'
 import DisplayCardsGrid from './DisplayCardsGrid.js'
-import QuestionButtons from './QuestionButtons.js'
 import Circle from './Circle.js'
 import QuestionCards from './QuestionCards.js'
 import ButtonsDroneOptions from './ButtonsDroneOptions.js'
@@ -24,7 +23,6 @@ import {
 } from '../functions/functions.js'
 
 import { noteAudioSrc } from '../data/NotesAudiosSrc.js'
-import { FlatList } from 'react-native-gesture-handler'
 
 const stylesBool = false
 const newAnswerDelay = 2000
@@ -58,26 +56,20 @@ const QuestionHolder = ({
   const [scoreCircles, setScoreSircle] = useState(setScoreSircleInit)
   //Might not need, props should re load the children correctly...?
   const [dronePlaying, setDronePlaying] = useState(true)
-  const [showQuestionOptions, setShowQuestionOptions] = useState(false)
-  const [showDroneOptions, setShowDroneOptions] = useState(false)
   ///
 
   const { width, height } = useWindowDimensions()
-
   const cardWidth = width > height ? width * 0.1 : width * 0.14
   const cardHeight = cardWidth * 1.5
 
-  // console.log('c ans:', correctAnswer)
   useEffect(() => {
-    //TO DO dry this up, probs shouldn't be an effect
-    let droneSrc
+    //let droneSrc
     let answerObj = cardReducer(questionType, abBool)
-
     if (isRandom) {
       answerObj = randomiseQuestion()
     }
     const { firstCard, secondCard, array, answer } = answerObj
-    //////////
+
     getAndSetDroneAudioSource(firstCard.value)
     setDisplayInputCardArray(array)
     setFirstCard(firstCard)
@@ -89,15 +81,14 @@ const QuestionHolder = ({
     //TO DO clear timeout/question change here
     setabBool(bool)
   }
-
+  //TO DO CHECK THIS
   function randomiseQuestion() {
-    let questionType = Math.floor(Math.random() * (3 - 1 + 1)) + 1
+    let questionType = Math.floor(Math.random() * 3) + 1
     questionType =
       questionType === 1 ? 'Key' : questionType === 1 ? 'Key' : 'Interval'
-    let bool = Math.random() > 0.5 ? true : false
-    console.log(bool, questionType)
     return cardReducer(questionType, abBool)
   }
+
   function getAudioSrcIdxFromCardReducer(cardAny) {
     let audioSrcIdx =
       questionType === 'Note'
@@ -118,13 +109,12 @@ const QuestionHolder = ({
   }
   //TO DO Think this isn't needed?
   // function droneReload() {}
-  // function questionCardPress() {
-  //   questionType === 'Note'
-  //     ? setQuestionType('Interval')
-  //     : setQuestionType('Note')
-
-  //   //old drone swithc
-  // }
+  function questionCardPress() {
+    // questionType === 'Note'
+    //   ? setQuestionType('Interval')
+    //   : setQuestionType('Note')
+    //old drone swithc
+  }
 
   function reload() {
     setReloadBool((x) => !x)
@@ -132,7 +122,6 @@ const QuestionHolder = ({
 
   function userAnswerSetter(inpt) {
     setUserAnswer(inpt)
-
     if (attemptCount > 10) {
       attemptCount = 0
       setScoreSircle(setScoreSircleInit)
@@ -144,7 +133,6 @@ const QuestionHolder = ({
     } else {
       attemptCount = attemptCount + 1
     }
-
     if (correctAnswer?.name == inpt.name) {
       scoreCircles.pop()
       scoreCircles.unshift(true)
@@ -154,16 +142,6 @@ const QuestionHolder = ({
       }, newAnswerDelay)
     }
   }
-
-  //Question Button functions
-  // function showQuestionTypes() {
-  //   showDroneOptions ? setShowDroneOptions(false) : ''
-  //   setShowQuestionOptions((x) => (x = !x))
-  // }
-  // function showDroneSwap() {
-  //   showQuestionOptions ? setShowQuestionOptions(false) : ''
-  //   setShowDroneOptions((x) => (x = !x))
-  // }
 
   function selectDroneAudio() {
     droneType = !droneType
@@ -176,9 +154,9 @@ const QuestionHolder = ({
     setDroneAudioSrc(source)
   }
 
-  function droneOnOff() {
-    dronePlaying ? setDronePlaying(false) : setDronePlaying(true)
-  }
+  // function droneOnOff() {
+  //   dronePlaying ? setDronePlaying(false) : setDronePlaying(true)
+  // }
 
   return (
     <>
@@ -192,7 +170,6 @@ const QuestionHolder = ({
       <Text style={[styles.answer, { backgroundColor: secondaryColor }]}>
         {scoreCircles.map((x, idx) => {
           let questionNo = idx === attemptCount ? true : false
-          // console.log({ questionNo })
           return (
             <Circle
               fillBool={x}
@@ -218,7 +195,7 @@ const QuestionHolder = ({
             stylesBool && styles.questionCardsBorder,
           ]}
         >
-          {!isRandom && <PickShape questionAB={questionAB} />}
+          {/* {!isRandom && <PickShape questionAB={questionAB} />} */}
           {firstCard?.value && (
             <QuestionCards
               bgColor={bgColor}
@@ -244,44 +221,6 @@ const QuestionHolder = ({
               },
             ]}
           ></View>
-
-          {showDroneOptions && (
-            <View
-              style={[
-                {
-                  ...styles.questionButtons,
-                  height: cardHeight,
-                  width: cardWidth,
-                },
-              ]}
-            >
-              <ButtonsDroneOptions
-                buttonStyle={styles.button}
-                buttonTextStyle={styles.buttonText}
-                stopDrone={rootCardPress}
-                droneStopButton={dronePlaying}
-                selectDroneAudio={selectDroneAudio}
-              />
-            </View>
-          )}
-          {showQuestionOptions && (
-            <View
-              style={[
-                {
-                  ...styles.questionButtons,
-                  height: cardHeight,
-                  width: cardWidth,
-                },
-              ]}
-            >
-              <ButtonsQuestionOptions
-                reload={reload}
-                buttonStyle={styles.button}
-                buttonTextStyle={styles.buttonText}
-                changeQuestionType={changeQuestionType}
-              />
-            </View>
-          )}
         </View>
       </View>
 
@@ -298,6 +237,7 @@ const QuestionHolder = ({
             cardsArray={displayInputCardArray}
             userAnswerSetter={userAnswerSetter}
             findNoteFunction={getAudioSrcIdxFromCardReducer}
+            reDeal={firstCard}
           />
         )}
       </View>
@@ -320,7 +260,7 @@ const styles = StyleSheet.create({
   },
   qCardsAndButtonsCont: {
     flexDirection: 'row',
-    alignItems: 'flex-end',
+    // alignItems: 'flex-end',
     justifyContent: 'center',
     margin: 0,
     padding: 0,

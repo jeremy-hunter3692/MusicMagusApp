@@ -1,6 +1,13 @@
 import React, { useEffect, useState } from 'react'
 import PlaySound from './SingleNotePlayer'
-import { Pressable, Image, Text, View, useWindowDimensions } from 'react-native'
+import {
+  Pressable,
+  Image,
+  Text,
+  View,
+  StyleSheet,
+  useWindowDimensions,
+} from 'react-native'
 import Animated, {
   useSharedValue,
   useAnimatedStyle,
@@ -14,7 +21,7 @@ const CardButton = ({
   onPress,
   data,
   source,
-  altSourceForReload,
+  reDeal,
   autoPlay = false,
   answer,
   findAudioSourceFunction,
@@ -22,6 +29,7 @@ const CardButton = ({
   annotated,
   setAnnotatedCard,
   animationDelay,
+  animated = true,
 }) => {
   const [note, setNote] = useState()
   const [playBool, setPlayBool] = useState()
@@ -36,6 +44,7 @@ const CardButton = ({
       return
     }
     scale.value = withSpring(initCardSizeValue)
+
     setTimeout(() => {
       dealAnimationTrigger(animationDelay)
     }, initDealDelay)
@@ -45,7 +54,7 @@ const CardButton = ({
       autoPlay && !hasPlayed && answer ? cardButtonOnPress(data) : ''
     }, 1000)
     return () => clearTimeout(timeOutId)
-  }, [answer, source, altSourceForReload])
+  }, [answer, source, reDeal])
 
   function dealAnimationTrigger(cardDelayOrder) {
     setTimeout(() => {
@@ -92,45 +101,55 @@ const CardButton = ({
   return (
     <>
       {/* <PlaySound inpt={note} playBool={playBool} /> */}
-
       <Pressable
         onPressIn={() => {
           cardButtonOnPress(data)
         }}
         onPressOut={handlePressOut}
-        style={{
-          marginHorizontal: 1,
-          marginVertical: 5,
-          padding: 0,
-          justifyContent: 'center',
-          alignItems: 'center',
-          maxHeight: cardHeight,
-          maxWidth: cardWidth,
-          height: cardHeight,
-          width: cardWidth,
-        }}
+        style={[
+          styles.pressable,
+          {
+            maxHeight: cardHeight,
+            maxWidth: cardWidth,
+            height: cardHeight,
+            width: cardWidth,
+          },
+        ]}
       >
-        <Animated.View
-          style={[{ width: '100%', height: '100%' }, animatedStyle]}
-        >
-          <Image
-            source={source}
-            testID={`image`}
-            style={{
-              flex: 1,
-              margin: 0,
-              padding: 0,
-              width: '100%',
-              height: '100%',
-              maxHeight: '100%',
-              flexShrink: 1,
-              resizeMode: 'contain',
-            }}
-          />
-        </Animated.View>
+        {animated ? (
+          <Animated.View
+            style={[{ width: '100%', height: '100%' }, animatedStyle]}
+          >
+            <Image source={source} testID={`image`} style={styles.image} />
+          </Animated.View>
+        ) : (
+          <View style={[{ width: '100%', height: '100%' }, animatedStyle]}>
+            <Image source={source} testID={`image`} style={styles.image} />
+          </View>
+        )}
       </Pressable>
     </>
   )
 }
+
+const styles = StyleSheet.create({
+  image: {
+    flex: 1,
+    margin: 0,
+    padding: 0,
+    width: '100%',
+    height: '100%',
+    maxHeight: '100%',
+    flexShrink: 1,
+    resizeMode: 'contain',
+  },
+  pressable: {
+    marginHorizontal: 1,
+    marginVertical: 5,
+    padding: 0,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+})
 
 export default CardButton

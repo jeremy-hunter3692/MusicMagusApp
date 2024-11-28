@@ -13,6 +13,7 @@ const DisplayCardsGrid = ({
   stylesBool,
   cardOnPress,
   cardSize,
+  reDeal,
 }) => {
   function setAnswer(inpt) {
     //input as card with im src
@@ -31,7 +32,7 @@ const DisplayCardsGrid = ({
     cardsArray.length / 2,
     cardsArray.length
   )
-
+  console.log('display', reDeal)
   return (
     <>
       <View style={stylesBool ? styles.imgContTopBorder : styles.imgContTop}>
@@ -45,6 +46,7 @@ const DisplayCardsGrid = ({
               key={x.name}
               findAudioSourceFunction={findNoteFunction}
               animationDelay={index}
+              reDeal={reDeal}
             />
           )
         })}
@@ -61,7 +63,8 @@ const DisplayCardsGrid = ({
               source={x.imgSrc}
               key={x.name}
               findAudioSourceFunction={findNoteFunction}
-              animationDelay={index+dealAnimationDelay}
+              animationDelay={index + dealAnimationDelay}
+              reDeal={reDeal}
             />
           )
         })}
