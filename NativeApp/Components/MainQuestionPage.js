@@ -11,8 +11,6 @@ import DronePlayer from './DronePlayer.js'
 import DisplayCardsGrid from './DisplayCardsGrid.js'
 import Circle from './Circle.js'
 import QuestionCards from './QuestionCards.js'
-import ButtonsDroneOptions from './ButtonsDroneOptions.js'
-import ButtonsQuestionOptions from './ButtonsQuestionOptions.js'
 import PickShape from './PickShape.js'
 import { SynthDrones, DoubleBassDrones } from '../data/DroneAudioSources.js'
 //
@@ -26,11 +24,10 @@ import { noteAudioSrc } from '../data/NotesAudiosSrc.js'
 
 const stylesBool = false
 const newAnswerDelay = 2000
-// let annotatedCardDisplay = false
 let attemptCount = 0
 let droneType = true
 
-const QuestionHolder = ({
+const MainQuestionPage = ({
   bgColor,
   secondaryColor,
   questionType,
@@ -38,17 +35,17 @@ const QuestionHolder = ({
   annotatedCard,
   annotated,
   isRandom,
+  isAnimated,
 }) => {
   //questionType will refer to what the middle card is
   //TO DO go over all this state and cut down what we need/don't need
-  //TO DO -card randomiser logic
-  //BLank card animate deal on new question load - something to do with scale/sharedvalue and the flipping animation
-  const [reloadBool, setReloadBool] = useState(false)
-  const [displayInputCardArray, setDisplayInputCardArray] = useState()
+
   const [firstCard, setFirstCard] = useState()
+  const [secondCard, setSecondCard] = useState()
+  const [displayInputCardArray, setDisplayInputCardArray] = useState()
   const [droneAudioSrc, setDroneAudioSrc] = useState(null)
   const [abBool, setabBool] = useState(true)
-  const [secondCard, setSecondCard] = useState()
+  const [reloadBool, setReloadBool] = useState(false)
   const [correctAnswer, setCorrectAnswer] = useState()
   const [userAnswer, setUserAnswer] = useState()
   const [userScore, setUserScore] = useState(0)
@@ -57,8 +54,8 @@ const QuestionHolder = ({
   //Might not need, props should re load the children correctly...?
   const [dronePlaying, setDronePlaying] = useState(true)
   ///
-
   const { width, height } = useWindowDimensions()
+
   const cardWidth = width > height ? width * 0.1 : width * 0.14
   const cardHeight = cardWidth * 1.5
 
@@ -108,17 +105,16 @@ const QuestionHolder = ({
     return audioSrc
   }
   //TO DO Think this isn't needed?
-  // function droneReload() {}
+  function droneReload() {
+    console.log('make this funciton/check if I actually need it')
+  }
   function questionCardPress() {
-    // questionType === 'Note'
-    //   ? setQuestionType('Interval')
-    //   : setQuestionType('Note')
-    //old drone swithc
+    console.log('make this funciton/check if I actually need it')
   }
 
-  function reload() {
-    setReloadBool((x) => !x)
-  }
+  // function reload() {
+  //   setReloadBool((x) => !x)
+  // }
 
   function userAnswerSetter(inpt) {
     setUserAnswer(inpt)
@@ -160,13 +156,6 @@ const QuestionHolder = ({
 
   return (
     <>
-      {/* <DronePlayer
-        rootValue={droneAudioSrc?.audioSrc}
-        dronePlaying={dronePlaying}
-        reload={droneReload}
-        style={{ flex: 0, height: 0, width: 0, margin: 0, padding: 0 }}
-      /> */}
-
       <Text style={[styles.answer, { backgroundColor: secondaryColor }]}>
         {scoreCircles.map((x, idx) => {
           let questionNo = idx === attemptCount ? true : false
@@ -182,7 +171,12 @@ const QuestionHolder = ({
 
         {/* {'|| Score: ' + userScore + '/12'} */}
       </Text>
-
+      <DronePlayer
+        rootValue={droneAudioSrc?.audioSrc}
+        dronePlaying={dronePlaying}
+        reload={droneReload}
+        style={{ flex: 0, height: 0, width: 0, margin: 0, padding: 0 }}
+      />
       <View
         style={[
           styles.qCardsAndButtonsCont,
@@ -209,6 +203,7 @@ const QuestionHolder = ({
               cardSize={{ cardWidth: cardWidth, cardHeight: cardHeight }}
               annotated={annotated}
               setAnnotatedCard={setAnnotatedCard}
+              animated={isAnimated}
             />
           )}
 
@@ -238,6 +233,7 @@ const QuestionHolder = ({
             userAnswerSetter={userAnswerSetter}
             findNoteFunction={getAudioSrcIdxFromCardReducer}
             reDeal={firstCard}
+            isAnimated={isAnimated}
           />
         )}
       </View>
@@ -245,7 +241,7 @@ const QuestionHolder = ({
   )
 }
 
-export default QuestionHolder
+export default MainQuestionPage
 
 const styles = StyleSheet.create({
   answer: {
@@ -296,14 +292,7 @@ const styles = StyleSheet.create({
     backgroundColor: 'red',
     borderColor: 'yellow',
   },
-  questionButtonsPlaceHolder: {
-    flex: 1,
-    backgroundColor: 'purple',
-    paddingHorizontal: 0,
-    flexDirection: 'column',
-    margin: 5,
-    justifyContent: 'center',
-  },
+
   displayCardsGrid: {
     flex: 2,
     margin: 0,
@@ -313,45 +302,5 @@ const styles = StyleSheet.create({
   displayCardsGridBorder: {
     borderWidth: 1,
     borderColor: 'white',
-  },
-
-  button: {
-    flex: 1,
-
-    // position: 'absolute',
-    // width: 120,
-    // height: 225,
-    margin: 4,
-    padding: 3,
-    //for icon cards
-    justifyContent: 'center',
-    alignItems: 'center',
-    borderRadius: 10,
-    //
-    width: '100%',
-    // borderWidth: 1,
-    // borderColor: 'white',
-    // borderTopLeftRadius: 10,
-    // borderTopRightRadius: 10,
-    // borderBottomWidth: 0,
-    // backgroundColor: 'white', //#003399',
-    //
-    // shadowColor: 'black',
-    // shadowOffset: { width: 2, height: 1.5 },
-    // shadowOpacity: 1,
-    // shadowRadius: 5,
-    // Android Elevation
-    elevation: 5,
-  },
-  buttonText: {
-    flex: 1,
-    padding: 2,
-    margin: 1,
-    flexWrap: 'wrap',
-    color: 'purple',
-
-    // fontWeight: 150,
-    textAlign: 'center',
-    alignSelf: 'flex-start',
   },
 })

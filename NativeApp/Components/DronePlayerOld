@@ -114,6 +114,42 @@ const DronePlayer = ({ rootValue, dronePlaying }) => {
 
 export default DronePlayer
 
+
+// const fade = (initVolume, toVolume, duration = 10) =>
+//   new Promise((resolve, reject) => {
+//     if (initVolume === toVolume) return resolve()
+
+//     if (fadeTimeout) {
+//       clearTimeout(fadeTimeout)
+//     }
+
+//     const steps = 100 // Number of steps for the fade transition
+//     const stepDuration = duration / steps
+//     const start = Math.floor(initVolume * 10)
+//     const end = Math.floor(toVolume * 10)
+//     const volumeStep = (end - start) / steps
+//     let currVolume = start
+
+//     const loop = async () => {
+//       if (Math.round(currVolume) !== end || Math.round(currVolume) < 0.1) {
+//         currVolume += volumeStep
+//         let volumeStatus = currVolume / 10
+//         // console.log(volumeStatus)
+//         await soundObj.setVolumeAsync(volumeStatus)
+
+//         fadeTimeout = setTimeout(loop, stepDuration)
+//       } else {
+//         await soundObj.setVolumeAsync(toVolume)
+//         clearTimeout(fadeTimeout)
+//         fadeTimeout = null
+//         resolve()
+//       }
+//     }
+
+//     fadeTimeout = setTimeout(loop, stepDuration)
+//   })
+
+
 // import React, { useState, useEffect } from 'react'
 // import { Audio } from 'expo-av'
 // const fadeOutSpeed = 1000

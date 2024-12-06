@@ -22,11 +22,12 @@ const QuestionCards = ({
   answerCardOnPress,
   setAnnotatedCard,
   annotated,
+  isAnimated,
 }) => {
   const newQuestionTimeDelay = 1500
 
   useEffect(() => {
-    if (resultDisplay) {
+    if (resultDisplay && isAnimated) {
       handleFlip(180) // Flip the card to 180 degrees
       setTimeout(() => {
         handleFlip(0) // Flip the card back to 0 degrees after 1 second
@@ -127,6 +128,7 @@ const QuestionCards = ({
             onPress={droneSetter}
             annotated={annotated}
             setAnnotatedCard={setAnnotatedCard}
+            animated={isAnimated}
           />
 
           {annotated && (
@@ -150,6 +152,7 @@ const QuestionCards = ({
             setAnnotatedCard={setAnnotatedCard}
             autoPlay={true}
             animationDelay={2}
+            animated={isAnimated}
           />
           {annotated && (
             <>
@@ -158,28 +161,60 @@ const QuestionCards = ({
             </>
           )}
         </View>
-        <View style={styles.flipingCardsCont}>
-          <Animated.View
-            style={[styles.blankCard, styles.backCard, backAnimatedStyle]}
-          >
-            <CardButton
-              cardSize={cardSize}
-              data={answer?.name}
-              source={answer?.imgSrc}
-              annotated={annotated}
-              setAnnotatedCard={setAnnotatedCard}
-              animationDelay={3}
-            />
-          </Animated.View>
 
-          <Animated.View style={[styles.card, frontAnimatedStyle]}>
-            <CardButton
-              cardSize={cardSize}
-              source={blankCard}
-              altSourceForReload={answer?.imgSrc}
-              animationDelay={3}
-            />
-          </Animated.View>
+        <View style={styles.flipingCardsCont}>
+          {isAnimated ? (
+            <>
+              <Animated.View
+                style={[styles.blankCard, styles.backCard, backAnimatedStyle]}
+              >
+                <CardButton
+                  cardSize={cardSize}
+                  data={answer?.name}
+                  source={answer?.imgSrc}
+                  annotated={annotated}
+                  setAnnotatedCard={setAnnotatedCard}
+                  animationDelay={3}
+                  animated={isAnimated}
+                />
+              </Animated.View>
+
+              <Animated.View style={[styles.card, frontAnimatedStyle]}>
+                <CardButton
+                  cardSize={cardSize}
+                  source={blankCard}
+                  altSourceForReload={answer?.imgSrc}
+                  animationDelay={3}
+                  animated={isAnimated}
+                />
+              </Animated.View>
+            </>
+          ) : (
+            <>
+              
+              {resultDisplay ? (
+                <View style={styles.card}>
+                  <CardButton
+                    cardSize={cardSize}
+                    data={answer?.name}
+                    source={answer?.imgSrc}
+                    annotated={annotated}
+                    setAnnotatedCard={setAnnotatedCard}
+            
+                  />
+                </View>
+              ) : (
+                <View style={styles.card}>
+                  <CardButton
+                    cardSize={cardSize}
+                    source={blankCard}
+                    altSourceForReload={answer?.imgSrc}
+                  />
+                </View>
+              )}
+            </>
+          )}
+
           {annotated && (
             <>
               <Text style={styles.annotatedText}>Answer Card</Text>

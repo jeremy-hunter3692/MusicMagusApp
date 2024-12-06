@@ -1,9 +1,9 @@
 import React from 'react'
-import { Image, Text, View, StyleSheet } from 'react-native'
+import { Image, Text, View, StyleSheet, Pressable } from 'react-native'
 import { getDataForAnnotated } from '../functions/functions.js'
 import { keys } from '../data/KeyCards.js'
 
-const AnnotatedCards = ({ data }) => {
+const AnnotatedCards = ({ data, setAnnotated }) => {
   const fontSize = 25
   const { bottomRText, bottomLText, topRtext, topLText } =
     getDataForAnnotated(data)
@@ -39,7 +39,7 @@ const AnnotatedCards = ({ data }) => {
       borderColor: 'black',
       borderWidth: 1,
       margin: 2,
-      padding: 3,
+      padding: 5,
     },
     column: {
       flex: 1, // Each column takes equal space
@@ -75,7 +75,12 @@ const AnnotatedCards = ({ data }) => {
       </View>
 
       <View style={styles.column}>
-        <Text>{topRtext}</Text>
+        <Pressable onPress={() => setAnnotated()}>
+          <Text style={styles.textMain}>
+            Back
+            {topRtext}
+          </Text>
+        </Pressable>
         <Text style={styles.textMain}>{bottomRText}</Text>
       </View>
     </View>

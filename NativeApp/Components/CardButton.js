@@ -29,7 +29,7 @@ const CardButton = ({
   annotated,
   setAnnotatedCard,
   animationDelay,
-  animated = true,
+  animated,
 }) => {
   const [note, setNote] = useState()
   const [playBool, setPlayBool] = useState()
@@ -37,7 +37,6 @@ const CardButton = ({
   const initDealDelay = 30
   const scale = useSharedValue(initCardSizeValue)
   const { cardWidth, cardHeight } = cardSize || {}
-  //so blank card still re animates on 're deal'
 
   useEffect(() => {
     if (annotated) {
@@ -116,17 +115,17 @@ const CardButton = ({
           },
         ]}
       >
-        {animated ? (
-          <Animated.View
-            style={[{ width: '100%', height: '100%' }, animatedStyle]}
-          >
-            <Image source={source} testID={`image`} style={styles.image} />
-          </Animated.View>
-        ) : (
+        {/* This is causing an issue with the shared use value  {animated ? ( */}
+        <Animated.View
+          style={[{ width: '100%', height: '100%' }, animatedStyle]}
+        >
+          <Image source={source} testID={`image`} style={styles.image} />
+        </Animated.View>
+        {/* ) : (
           <View style={[{ width: '100%', height: '100%' }, animatedStyle]}>
             <Image source={source} testID={`image`} style={styles.image} />
           </View>
-        )}
+        )} */}
       </Pressable>
     </>
   )

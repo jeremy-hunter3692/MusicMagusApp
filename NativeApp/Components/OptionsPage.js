@@ -9,10 +9,16 @@ const OptionsPage = ({
   changeQuestionType,
   changeTheme,
   randomQuestionsSetter,
+  isAnimated,
+  setAnimations,
 }) => {
   const [droneOnButton, setDroneOnButton] = useState(true)
   const [droneSound, setDroneSound] = useState(true)
   const [isRandomQuestion, setRandomQuestions] = useState(false)
+
+  function setAnimated() {
+    setAnimations()
+  }
 
   function setRandom() {
     setRandomQuestions((x) => (x = !x))
@@ -30,12 +36,12 @@ const OptionsPage = ({
     selectDroneAudio()
   }
 
-  function changeQuestion() {
-    console.log('changes press', option)
-    option = option >= 3 ? 0 : option + 1
-    console.log(option)
-    changeQuestionType(option)
-  }
+  // function changeQuestion() {
+  //   console.log('changes press', option)
+  //   option = option >= 3 ? 0 : option + 1
+  //   console.log(option)
+  //   changeQuestionType(option)
+  // }
 
   return (
     <>
@@ -72,6 +78,12 @@ const OptionsPage = ({
           <Text style={styles.headerText}>
             {isRandomQuestion ? 'on' : 'off'}
           </Text>
+        </Pressable>
+      </View>
+      <View style={{ ...styles.options, height: boxHeight }}>
+        <Pressable onPress={setAnimated}>
+          <Text style={styles.headerText}>Animations?: </Text>
+          <Text style={styles.headerText}>{isAnimated ? 'on' : 'off'}</Text>
         </Pressable>
       </View>
     </>

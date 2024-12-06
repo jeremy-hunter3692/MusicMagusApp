@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import QuestionHolder from './Components/QuestionHolder'
+import MainQuestionPage from './Components/MainQuestionPage'
 import AnnotatedCards from './Components/AnnotatedCards'
 import OptionsPage from './Components/OptionsPage.js'
 import { StatusBar } from 'expo-status-bar'
@@ -24,16 +24,18 @@ export default function App() {
   const [questionType, setQuestionType] = useState('Key')
   const [showOptions, setShowOptions] = useState(false)
   const [annotatedCardDisplay, setAnnotatedCardDisplay] = useState(false)
+  const [animationsOn, setAnimationsOn] = useState(true)
   const [isRandom, setIsRandom] = useState(false)
 
   const { width, height } = useWindowDimensions()
-  // console.log({ annotatedCard })
+
   function getKey(musicKey) {
     setHexKey(musicKey)
   }
   function appLevel(inpt) {
     console.log('TODO-App level', inpt)
   }
+
   function changeQuestionType(inpt) {
     let type =
       inpt === 1
@@ -56,6 +58,9 @@ export default function App() {
     themeBool = !themeBool
   }
 
+  function setAnimations() {
+    setAnimationsOn((x) => (x = !x))
+  }
   function randomQuestionsSetter() {
     setIsRandom((x) => (x = !x))
   }
@@ -142,21 +147,27 @@ export default function App() {
             height={height}
             changeTheme={changeTheme}
             randomQuestionsSetter={randomQuestionsSetter}
+            setAnimations={setAnimations}
+            isAnimated={animationsOn}
           />
         ) : (
           <>
             {annotatedCard ? (
               <View style={styles.annotated}>
-                <AnnotatedCards data={annotatedCard} />
+                <AnnotatedCards
+                  data={annotatedCard}
+                  setAnnotated={handleAnnotatedClick}
+                />
               </View>
             ) : (
-              <QuestionHolder
+              <MainQuestionPage
                 bgColor={theme.bgColor}
                 secondaryColor={theme.secondaryColor}
                 questionType={questionType}
                 setAnnotatedCard={setAnnotatedCard}
                 annotated={annotatedCardDisplay}
                 isRandom={isRandom}
+                isAnimated={animationsOn}
               />
             )}
           </>

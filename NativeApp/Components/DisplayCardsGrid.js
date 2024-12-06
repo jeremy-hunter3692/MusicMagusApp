@@ -14,6 +14,7 @@ const DisplayCardsGrid = ({
   cardOnPress,
   cardSize,
   reDeal,
+  isAnimated,
 }) => {
   function setAnswer(inpt) {
     //input as card with im src
@@ -47,6 +48,7 @@ const DisplayCardsGrid = ({
               findAudioSourceFunction={findNoteFunction}
               animationDelay={index}
               reDeal={reDeal}
+              animated={isAnimated}
             />
           )
         })}
@@ -65,6 +67,7 @@ const DisplayCardsGrid = ({
               findAudioSourceFunction={findNoteFunction}
               animationDelay={index + dealAnimationDelay}
               reDeal={reDeal}
+              animated={isAnimated}
             />
           )
         })}
