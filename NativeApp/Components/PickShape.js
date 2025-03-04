@@ -8,9 +8,9 @@ import Animated, {
   Extrapolate,
 } from 'react-native-reanimated'
 
-const PickShape = ({ questionAB }) => {
+const PickShape = ({ questionAB, width }) => {
   const [abBool, setabBool] = useState(true)
-
+  const pickWidth = width * 0.04
   function toggleBool() {
     const newAbBool = !abBool
     setabBool(newAbBool)
@@ -62,17 +62,44 @@ const PickShape = ({ questionAB }) => {
   }
 
   return (
-    <View style={styles.container}>
+    <View
+      style={[
+        styles.container,
+        {
+          top: -width * 0.01,
+          padding: width * 0.01,
+          marginHorizontal: width * 0.1,
+        },
+      ]}
+    >
       <Pressable onPress={toggleBool}>
-        {/* Front side */}
-        <Animated.View style={[styles.triangle, frontAnimatedStyle]}>
+        <Animated.View
+          style={[
+            styles.triangle,
+            {
+              borderLeftWidth: pickWidth,
+              borderRightWidth: pickWidth,
+              borderTopWidth: pickWidth * 1.4,
+            },
+            frontAnimatedStyle,
+          ]}
+        >
           <Text style={styles.textFront}>{'A'}</Text>
         </Animated.View>
       </Pressable>
-      {/* Back side */}
+
       <Pressable onPress={toggleBool}>
         <Animated.View
-          style={[styles.triangle, styles.backCard, backAnimatedStyle]}
+          style={[
+            styles.triangle,
+            {
+              borderLeftWidth: pickWidth,
+              borderRightWidth: pickWidth,
+              borderTopWidth: pickWidth * 1.4,
+            },
+            styles.backCard,
+            backAnimatedStyle,
+          ]}
         >
           <Text style={styles.textBack}>{'B'}</Text>
         </Animated.View>
@@ -83,19 +110,13 @@ const PickShape = ({ questionAB }) => {
 
 const styles = StyleSheet.create({
   container: {
-    top: -50,
-    padding: 10,
     justifyContent: 'center',
     alignItems: 'center',
-    marginHorizontal: 110,
-    
   },
   triangle: {
     width: 0,
     height: 0,
-    borderLeftWidth: 60,
-    borderRightWidth: 60,
-    borderTopWidth: 100,
+
     borderStyle: 'solid',
     borderRadius: 90,
     backgroundColor: 'transparent',
@@ -104,7 +125,7 @@ const styles = StyleSheet.create({
     borderTopColor: 'blue',
     alignItems: 'center',
     justifyContent: 'center',
-    position: 'absolute', // Ensures overlap of both sides
+    // position: 'absolute', // Ensures overlap of both sides
   },
   textFront: {
     color: 'white',

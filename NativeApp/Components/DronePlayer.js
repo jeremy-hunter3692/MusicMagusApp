@@ -12,22 +12,25 @@ const fade = (initVolume, toVolume, duration) =>
     if (initVolume === toVolume) return resolve()
 
     if (fadeTimeout) {
-      clearTimeout(fadeTimeout)
+      clearTimeout(fadeTimeout) // Clear any existing timeout
     }
 
-    const steps = 100 // Increase number of steps for smoother transition
-    const stepDuration = duration / steps
+    const steps = 500 // Increase steps for smoother transitions
+    const stepDuration = duration / steps // Step duration in ms
     const volumeStep = (toVolume - initVolume) / steps
 
     let currVolume = initVolume
 
     const loop = async () => {
-      currVolume = Math.max(0, Math.min(1, currVolume + volumeStep)) // Clamp between 0 and 1
+      // Adjust volume and clamp between 0 and 1
+      currVolume = Math.max(0, Math.min(1, currVolume + volumeStep))
+      console.log(currVolume)
       await soundObj.setVolumeAsync(currVolume)
-      // Check if the volume is close enough to the target
+
+      // Check if volume is close to the target
       if (Math.abs(currVolume - toVolume) < 0.01) {
-        await soundObj.setVolumeAsync(toVolume) // Ensure final target volume is set
-        clearTimeout(fadeTimeout)
+        await soundObj.setVolumeAsync(toVolume) // Ensure exact target volume
+        clearTimeout(fadeTimeout) // Clear the timeout once done
         fadeTimeout = null
         resolve()
       } else {
@@ -37,6 +40,12 @@ const fade = (initVolume, toVolume, duration) =>
 
     fadeTimeout = setTimeout(loop, stepDuration)
   })
+const quickFade = async () => {
+  await soundObj.setVolumeAsync(0.5)
+  await soundObj.setVolumeAsync(0.3)
+  await soundObj.setVolumeAsync(0.1)
+  await soundObj.setVolumeAsync(0)
+}
 
 async function getCurrentVolume(soundObj) {
   try {
@@ -78,19 +87,20 @@ const DronePlayer = ({ rootValueProp, dronePlaying }) => {
 
   const stopDrone = async () => {
     let currentVol = await getCurrentVolume(soundObj)
-    await fade(currentVol, 0, 1)
+    await quickFade()
+    // await fade(currentVol, 0, 10)
     // await soundObj.pauseAsync()
     await soundObj.stopAsync()
-    await currentDrone.unloadAsync()
+    await soundObj.unloadAsync()
   }
 
   return (
     <>
       <Pressable onPress={() => loadAndPlayDrone()}>
-        <Text>Start</Text>
+        {/* /<Text>Start</Text> */}
       </Pressable>
       <Pressable onPress={() => stopDrone()}>
-        <Text>Stop</Text>
+        {/* <Text>Stop</Text> */}
       </Pressable>
     </>
   )

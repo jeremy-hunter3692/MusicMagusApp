@@ -18,6 +18,7 @@ const QuestionIconButtons = ({ changeQuestionType, annotated, bgColor }) => {
   return (
     <>
       <View>
+        {annotated && <Text>Key</Text>}
         <Pressable onPress={() => selectQType(1)}>
           <View
             style={{
@@ -34,10 +35,10 @@ const QuestionIconButtons = ({ changeQuestionType, annotated, bgColor }) => {
               !annotated && underLine === 1 ? styles.underLine : null,
             ]}
           ></View>
-          {annotated && <Text>Key</Text>}
         </Pressable>
       </View>
       <View>
+        {annotated && <Text>Interval</Text>}
         <Pressable onPress={() => selectQType(2)}>
           <View
             style={{
@@ -47,16 +48,17 @@ const QuestionIconButtons = ({ changeQuestionType, annotated, bgColor }) => {
               backgroundColor: 'green',
             }}
           ></View>
+
           <View
             style={[
               styles.underCombo,
               !annotated & (underLine === 2) ? styles.underLine : null,
             ]}
           ></View>
-          {annotated && <Text>Interval</Text>}
         </Pressable>
       </View>
       <View>
+        {annotated && <Text>Note</Text>}
         <Pressable onPress={() => selectQType(3)}>
           <View
             style={{
@@ -80,7 +82,6 @@ const QuestionIconButtons = ({ changeQuestionType, annotated, bgColor }) => {
               { top: 9 },
             ]}
           ></View>
-          {annotated && <Text>Note</Text>}
         </Pressable>
       </View>
     </>

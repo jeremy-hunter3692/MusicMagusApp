@@ -10,6 +10,7 @@ import {
   replaceFlatsForSharps,
   cardReducer,
   getDataForAnnotated,
+  returnScoreText,
 } from './functions'
 import { noteNames } from '../data/NoteCards'
 import { keys } from '../data/KeyCards'
@@ -318,4 +319,28 @@ describe('annotated card reducer', () => {
     expect(answer.bottomRText).toBe('')
     expect(answer.topRText).toBe('')
   })
+})
+
+describe('return associated text for give score', () => {
+  const scoreTexts = [
+    { score: 12, text: 'Perfect!' },
+    { score: 10, text: 'Excellent!' },
+    { score: 7, text: 'Commendable' },
+    { score: 6, text: 'Keep Practising!' },
+    { score: 0, text: "Rome wasn't built in a day" },
+   
+    { score: 11, text: 'Excellent!' },
+    { score: 9, text: 'Commendable' },
+    { score: 5, text: 'Keep Practising!' },
+    { score: 4, text: "Rome wasn't built in a day" },
+  ]
+
+  test.each(scoreTexts)(
+    'returns correct text for score %i',
+    ({ score, text }) => {
+      const result = returnScoreText(score)
+
+      expect(result).toBe(text)
+    }
+  )
 })

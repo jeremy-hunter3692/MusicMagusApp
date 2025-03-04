@@ -98,7 +98,7 @@ export default function App() {
           }}
         >
           {annotatedCardDisplay && !annotatedCard && (
-            <Text>Change Question Type Here---</Text>
+            <Text>{`Change Question Type Here---> `}</Text>
           )}
 
           {!annotatedCard ? (

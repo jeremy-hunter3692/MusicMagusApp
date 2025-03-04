@@ -18,6 +18,7 @@ import {
   getIntervalCardsAsNotes,
   findNoteEquivalent,
   cardReducer,
+  returnScoreText,
 } from '../functions/functions.js'
 
 import { noteAudioSrc } from '../data/NotesAudiosSrc.js'
@@ -117,12 +118,20 @@ const MainQuestionPage = ({
   // }
 
   function userAnswerSetter(inpt) {
+    //check if it's finished  -> work out and display score ->display approrpate text
+    //record attemp count
+    //assign appropriate score/1/2 point somewhere
+    //count said score/point
+
+    //show new round button?
     setUserAnswer(inpt)
     if (attemptCount > 10) {
       attemptCount = 0
       setScoreSircle(setScoreSircleInit)
-      setUserScore('!!!!!!!!!!1RESTARTING!!!!!!!!!!!!')
+      returnScoreText(userScore)
+      setUserScore(`${userScore} /12`)
       // let newBlankArray = setScoreSircle()
+
       setTimeout(() => {
         setUserScore(0)
       }, 3000)
@@ -169,7 +178,7 @@ const MainQuestionPage = ({
           )
         })}
 
-        {/* {'|| Score: ' + userScore + '/12'} */}
+        {'placeholder ' + userScore+'/12 ' + returnScoreText(userScore)}
       </Text>
       <DronePlayer
         rootValue={droneAudioSrc?.audioSrc}
@@ -189,7 +198,7 @@ const MainQuestionPage = ({
             stylesBool && styles.questionCardsBorder,
           ]}
         >
-          {/* {!isRandom && <PickShape questionAB={questionAB} />} */}
+          {!isRandom && <PickShape questionAB={questionAB} width={width} />}
           {firstCard?.value && (
             <QuestionCards
               bgColor={bgColor}
@@ -272,6 +281,8 @@ const styles = StyleSheet.create({
     padding: 0,
   },
   questionCardsBorder: {
+    flexDirection: 'row',
+    justifyContent: 'center',
     borderWidth: 3,
     borderColor: 'blue',
   },

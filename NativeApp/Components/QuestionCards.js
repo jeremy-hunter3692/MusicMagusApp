@@ -133,7 +133,6 @@ const QuestionCards = ({
 
           {annotated && (
             <>
-              {' '}
               <Text style={styles.annotatedText}>Question Card</Text>
               <Text style={styles.annotatedText}>I.E In this key</Text>
             </>
@@ -191,7 +190,6 @@ const QuestionCards = ({
             </>
           ) : (
             <>
-              
               {resultDisplay ? (
                 <View style={styles.card}>
                   <CardButton
@@ -200,7 +198,6 @@ const QuestionCards = ({
                     source={answer?.imgSrc}
                     annotated={annotated}
                     setAnnotatedCard={setAnnotatedCard}
-            
                   />
                 </View>
               ) : (

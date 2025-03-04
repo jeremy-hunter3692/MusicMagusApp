@@ -143,7 +143,6 @@ const KEY = 'Key'
 const NOTE = 'Note'
 const INTERVAL = 'Interval'
 
-
 export const cardReducer = (questionType, abBool) => {
   // console.log(' in reducer:', questionType,abBool)
   let firstCard
@@ -203,6 +202,18 @@ function getNoOfAccidentals(inpt) {
 //   let minor = keys[data.idx - 3]?.name
 //   return replaceFlatsForSharps(minor, [minor])
 // }
+
+export function returnScoreText(score) {
+  return score === 12
+    ? `Perfect!`
+    : score > 9
+    ? 'Excellent!'
+    : score > 6
+    ? 'Commendable'
+    : score > 4
+    ? 'Keep Practising!'
+    : `Rome wasn't built in a day`
+}
 
 export function getDataForAnnotated(inpt) {
   if (
@@ -278,3 +289,5 @@ export function getDataForAnnotated(inpt) {
 //   secondCardTemp = returnRandomCard(intervals, true)
 //   answerIdxTemp = intervalOfWhatKey(firstCardTemp.idx, secondCardTemp.idx)
 // }
+
+
