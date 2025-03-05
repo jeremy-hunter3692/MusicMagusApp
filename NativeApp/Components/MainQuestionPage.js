@@ -27,6 +27,7 @@ const stylesBool = false
 const newAnswerDelay = 2000
 let attemptCount = 0
 let droneType = true
+let userScore = 0
 
 const MainQuestionPage = ({
   bgColor,
@@ -49,8 +50,8 @@ const MainQuestionPage = ({
   const [reloadBool, setReloadBool] = useState(false)
   const [correctAnswer, setCorrectAnswer] = useState()
   const [userAnswer, setUserAnswer] = useState()
-  const [userScore, setUserScore] = useState(0)
-  const setScoreSircleInit = Array(12).fill(false)
+  const [userScoreDisplay, setScoreDisplay] = useState('')
+  const setScoreSircleInit = Array(12).fill(null)
   const [scoreCircles, setScoreSircle] = useState(setScoreSircleInit)
   //Might not need, props should re load the children correctly...?
   const [dronePlaying, setDronePlaying] = useState(true)
@@ -113,9 +114,17 @@ const MainQuestionPage = ({
     console.log('make this funciton/check if I actually need it')
   }
 
-  // function reload() {
-  //   setReloadBool((x) => !x)
-  // }
+  function reload() {
+    setReloadBool((x) => !x)
+  }
+
+  function gameOver() {
+    userScore = 0
+    attemptCount = 0
+    setScoreSircle(setScoreSircleInit)
+    setScoreDisplay('')
+    reload()
+  }
 
   function userAnswerSetter(inpt) {
     //check if it's finished  -> work out and display score ->display approrpate text
@@ -126,24 +135,19 @@ const MainQuestionPage = ({
     //show new round button?
     setUserAnswer(inpt)
     if (attemptCount > 10) {
-      attemptCount = 0
-      setScoreSircle(setScoreSircleInit)
+      setScoreDisplay(`${userScore}/12 ` + returnScoreText(userScore))
       returnScoreText(userScore)
-      setUserScore(`${userScore} /12`)
-      // let newBlankArray = setScoreSircle()
-
-      setTimeout(() => {
-        setUserScore(0)
-      }, 3000)
     } else {
       attemptCount = attemptCount + 1
     }
-    if (correctAnswer?.name == inpt.name) {
+    if (correctAnswer?.name == inpt.name && attemptCount < 10) {
+      console.log('correct.Array:', scoreCircles)
       scoreCircles.pop()
-      scoreCircles.unshift(true)
-      setUserScore((x) => x + 1)
+      scoreCircles.unshift(false)
+
+      userScore++
       setTimeout(() => {
-        setReloadBool((x) => (x = !x))
+        reload()
       }, newAnswerDelay)
     }
   }
@@ -177,8 +181,6 @@ const MainQuestionPage = ({
             />
           )
         })}
-
-        {'placeholder ' + userScore+'/12 ' + returnScoreText(userScore)}
       </Text>
       <DronePlayer
         rootValue={droneAudioSrc?.audioSrc}
@@ -213,6 +215,8 @@ const MainQuestionPage = ({
               annotated={annotated}
               setAnnotatedCard={setAnnotatedCard}
               animated={isAnimated}
+              score={userScoreDisplay}
+              newRound={gameOver}
             />
           )}
 
@@ -288,16 +292,6 @@ const styles = StyleSheet.create({
   },
   questionButtons: {
     flex: 1,
-    // backgroundColor: 'white',
-    // paddingHorizontal: 0,
-    // flexDirection: 'column',
-    // margin: 5,
-    // justifyContent: 'center',
-    // borderRadius: 15,
-    // shadowColor: 'grey',
-    // shadowOffset: { width: 2, height: 2 },
-    // shadowOpacity: 0.9,
-    // shadowRadius: 2,
   },
   questionButtonsBorder: {
     backgroundColor: 'red',

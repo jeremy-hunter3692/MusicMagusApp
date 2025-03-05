@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { StyleSheet, View, Text } from 'react-native'
+import { StyleSheet, View, Text, Pressable } from 'react-native'
 import CardButton from './CardButton'
 import Animated, {
   useSharedValue,
@@ -23,6 +23,8 @@ const QuestionCards = ({
   setAnnotatedCard,
   annotated,
   isAnimated,
+  score,
+  newRound,
 }) => {
   const newQuestionTimeDelay = 1500
 
@@ -70,7 +72,7 @@ const QuestionCards = ({
       opacity: flipAnimation.value > 90 ? 1 : 0,
     }
   })
-
+  console.log({ score })
   function returnCorrectAnnotatedText(cardValue, abBool) {}
 
   // Function to handle the flip
@@ -217,6 +219,17 @@ const QuestionCards = ({
               <Text style={styles.annotatedText}>Answer Card</Text>
               <Text style={styles.annotatedText}>To be revealed</Text>
             </>
+          )}
+        </View>
+        <View>
+          {' '}
+          <Text>{score}</Text>
+          {score ? (
+            <Pressable onPress={newRound}>
+              <Text>New Round?</Text>
+            </Pressable>
+          ) : (
+            ''
           )}
         </View>
       </View>
