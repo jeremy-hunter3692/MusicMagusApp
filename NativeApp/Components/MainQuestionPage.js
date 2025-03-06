@@ -24,7 +24,7 @@ import {
 import { noteAudioSrc } from '../data/NotesAudiosSrc.js'
 
 const stylesBool = false
-const newAnswerDelay = 2000
+const newAnswerDelay = 1000
 let questionNumber = 0
 let attemptCount = false
 let droneType = true
@@ -76,6 +76,8 @@ const MainQuestionPage = ({
     setFirstCard(firstCard)
     setSecondCard(secondCard)
     setCorrectAnswer(array[answer])
+
+    setScoreDisplay(attemptCount + '||' + questionNumber)
   }, [questionType, reloadBool, abBool, isRandom])
 
   function questionAB(bool) {
@@ -125,19 +127,27 @@ const MainQuestionPage = ({
     attemptCount = false
     questionNumber = 0
     setScoreSircle(setScoreSircleInit)
-    setScoreDisplay('')
-    reload()
+    // setScoreDisplay('')
   }
 
   function firstAttmpetCorrect() {
     userScore++
     // scoreCircles.pop()
     // scoreCircles.unshift(true)
-    scoreCircles[questionNumber] = true
+    setScoreSircle((prevArry) => {
+      const updatedArr = [...prevArry]
+      updatedArr[questionNumber - 1] = true
+      return updatedArr
+    })
     reloadTimeOut()
   }
+
   function secondAttemptCorrect() {
-    scoreCircles[questionNumber] = false
+    setScoreSircle((prevArry) => {
+      const updatedArr = [...prevArry]
+      updatedArr[questionNumber - 1] = false
+      return updatedArr
+    })
     reloadTimeOut()
   }
 
@@ -154,23 +164,15 @@ const MainQuestionPage = ({
       return
     } else {
       setUserAnswer(inpt)
+
       if (questionNumber > 10) {
-        setScoreDisplay(`${userScore}/12 ` + returnScoreText(userScore))
-        returnScoreText(userScore)
+        console.log('if')
+        setScoreDisplay(`${userScore}/12 ||` + returnScoreText(userScore))
         isReloading = true
-        setTimeout(() => {
-          gameOver()
-          isReloading = false
-        }, newAnswerDelay)
         return
       }
-
       if (correctAnswer?.name == inpt.name) {
-        if (!attemptCount) {
-          firstAttmpetCorrect()
-        } else {
-          secondAttemptCorrect()
-        }
+        !attemptCount ? firstAttmpetCorrect() : secondAttemptCorrect()
         attemptCount = false
         questionNumber++
       } else {
@@ -183,7 +185,7 @@ const MainQuestionPage = ({
         }
       }
 
-      setScoreDisplay(attemptCount + '' + questionNumber)
+      setScoreDisplay(attemptCount + '||' + questionNumber)
     }
   }
 
