@@ -25,9 +25,13 @@ import { noteAudioSrc } from '../data/NotesAudiosSrc.js'
 
 const stylesBool = false
 const newAnswerDelay = 2000
-let attemptCount = 0
+let questionNumber = 0
+let attemptCount = false
 let droneType = true
 let userScore = 0
+let isReloading = false
+//questionType will refer to what the middle card is
+//TO DO go over all this state and cut down what we need/don't need
 
 const MainQuestionPage = ({
   bgColor,
@@ -39,15 +43,13 @@ const MainQuestionPage = ({
   isRandom,
   isAnimated,
 }) => {
-  //questionType will refer to what the middle card is
-  //TO DO go over all this state and cut down what we need/don't need
-
   const [firstCard, setFirstCard] = useState()
   const [secondCard, setSecondCard] = useState()
   const [displayInputCardArray, setDisplayInputCardArray] = useState()
   const [droneAudioSrc, setDroneAudioSrc] = useState(null)
   const [abBool, setabBool] = useState(true)
   const [reloadBool, setReloadBool] = useState(false)
+
   const [correctAnswer, setCorrectAnswer] = useState()
   const [userAnswer, setUserAnswer] = useState()
   const [userScoreDisplay, setScoreDisplay] = useState('')
@@ -120,35 +122,68 @@ const MainQuestionPage = ({
 
   function gameOver() {
     userScore = 0
-    attemptCount = 0
+    attemptCount = false
+    questionNumber = 0
     setScoreSircle(setScoreSircleInit)
     setScoreDisplay('')
     reload()
   }
 
+  function firstAttmpetCorrect() {
+    userScore++
+    // scoreCircles.pop()
+    // scoreCircles.unshift(true)
+    scoreCircles[questionNumber] = true
+    reloadTimeOut()
+  }
+  function secondAttemptCorrect() {
+    scoreCircles[questionNumber] = false
+    reloadTimeOut()
+  }
+
+  function reloadTimeOut() {
+    isReloading = true
+    setTimeout(() => {
+      reload()
+      isReloading = false
+    }, newAnswerDelay)
+  }
+
   function userAnswerSetter(inpt) {
-    //check if it's finished  -> work out and display score ->display approrpate text
-    //record attemp count
-    //assign appropriate score/1/2 point somewhere
-    //count said score/point
-
-    //show new round button?
-    setUserAnswer(inpt)
-    if (attemptCount > 10) {
-      setScoreDisplay(`${userScore}/12 ` + returnScoreText(userScore))
-      returnScoreText(userScore)
+    if (isReloading) {
+      return
     } else {
-      attemptCount = attemptCount + 1
-    }
-    if (correctAnswer?.name == inpt.name && attemptCount < 10) {
-      console.log('correct.Array:', scoreCircles)
-      scoreCircles.pop()
-      scoreCircles.unshift(false)
+      setUserAnswer(inpt)
+      if (questionNumber > 10) {
+        setScoreDisplay(`${userScore}/12 ` + returnScoreText(userScore))
+        returnScoreText(userScore)
+        isReloading = true
+        setTimeout(() => {
+          gameOver()
+          isReloading = false
+        }, newAnswerDelay)
+        return
+      }
 
-      userScore++
-      setTimeout(() => {
-        reload()
-      }, newAnswerDelay)
+      if (correctAnswer?.name == inpt.name) {
+        if (!attemptCount) {
+          firstAttmpetCorrect()
+        } else {
+          secondAttemptCorrect()
+        }
+        attemptCount = false
+        questionNumber++
+      } else {
+        if (attemptCount) {
+          questionNumber++
+          attemptCount = false
+          reloadTimeOut()
+        } else {
+          attemptCount = true
+        }
+      }
+
+      setScoreDisplay(attemptCount + '' + questionNumber)
     }
   }
 
@@ -171,7 +206,7 @@ const MainQuestionPage = ({
     <>
       <Text style={[styles.answer, { backgroundColor: secondaryColor }]}>
         {scoreCircles.map((x, idx) => {
-          let questionNo = idx === attemptCount ? true : false
+          let questionNo = idx === questionNumber ? true : false
           return (
             <Circle
               fillBool={x}

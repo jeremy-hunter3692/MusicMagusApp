@@ -33,7 +33,7 @@ const DisplayCardsGrid = ({
     cardsArray.length / 2,
     cardsArray.length
   )
-  console.log('display', reDeal)
+  // console.log('display', reDeal)
   return (
     <>
       <View style={stylesBool ? styles.imgContTopBorder : styles.imgContTop}>

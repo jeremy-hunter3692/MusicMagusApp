@@ -9,6 +9,7 @@ import Animated, {
   Extrapolate,
 } from 'react-native-reanimated'
 const blankCard = require('../assets/blankcard.png')
+
 const QuestionCards = ({
   bgColor,
   secondaryColor,
@@ -72,7 +73,7 @@ const QuestionCards = ({
       opacity: flipAnimation.value > 90 ? 1 : 0,
     }
   })
-  console.log({ score })
+
   function returnCorrectAnnotatedText(cardValue, abBool) {}
 
   // Function to handle the flip
@@ -222,15 +223,14 @@ const QuestionCards = ({
           )}
         </View>
         <View>
-          {' '}
           <Text>{score}</Text>
           {score ? (
             <Pressable onPress={newRound}>
-              <Text>New Round?</Text>
+              <View>
+                <Text>New Round?</Text>
+              </View>
             </Pressable>
-          ) : (
-            ''
-          )}
+          ) : null}
         </View>
       </View>
     </>
