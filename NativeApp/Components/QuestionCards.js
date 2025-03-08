@@ -8,6 +8,7 @@ import Animated, {
   interpolate,
   Extrapolate,
 } from 'react-native-reanimated'
+import { color } from 'canvas-sketch-util'
 const blankCard = require('../assets/blankcard.png')
 
 const QuestionCards = ({
@@ -222,12 +223,37 @@ const QuestionCards = ({
             </>
           )}
         </View>
-        <View>
-          <Text>{score}</Text>
+        <View
+          style={{
+            //TODOreplace this hardcoded margin
+            margin: 2,
+
+            justifyContent: 'center',
+            alignSelf: 'center',
+            color: 'white',
+          }}
+        >
+          <Text
+            style={{
+              justifyContent: 'center',
+              alignSelf: 'center',
+              color: 'white',
+            }}
+          >
+            {score}
+          </Text>
           {score ? (
             <Pressable onPress={newRound}>
               <View>
-                <Text>New Round?</Text>
+                <Text
+                  style={{
+                    justifyContent: 'center',
+                    alignSelf: 'center',
+                    color: 'white',
+                  }}
+                >
+                  New Round?
+                </Text>
               </View>
             </Pressable>
           ) : null}

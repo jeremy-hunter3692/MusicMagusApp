@@ -70,7 +70,7 @@ const MainQuestionPage = ({
       answerObj = randomiseQuestion()
     }
     const { firstCard, secondCard, array, answer } = answerObj
-
+    setUserAnswer(null)
     getAndSetDroneAudioSource(firstCard.value)
     setDisplayInputCardArray(array)
     setFirstCard(firstCard)
@@ -126,11 +126,13 @@ const MainQuestionPage = ({
     userScore = 0
     attemptCount = false
     questionNumber = 0
+    reload()
     setScoreSircle(setScoreSircleInit)
     // setScoreDisplay('')
   }
 
   function firstAttmpetCorrect() {
+    console.log('first')
     userScore++
     // scoreCircles.pop()
     // scoreCircles.unshift(true)
@@ -143,6 +145,7 @@ const MainQuestionPage = ({
   }
 
   function secondAttemptCorrect() {
+    console.log('second')
     setScoreSircle((prevArry) => {
       const updatedArr = [...prevArry]
       updatedArr[questionNumber - 1] = false
@@ -155,6 +158,7 @@ const MainQuestionPage = ({
     isReloading = true
     setTimeout(() => {
       reload()
+
       isReloading = false
     }, newAnswerDelay)
   }
@@ -164,11 +168,15 @@ const MainQuestionPage = ({
       return
     } else {
       setUserAnswer(inpt)
-
       if (questionNumber > 10) {
-        console.log('if')
+        console.log('if finished')
+        setScoreSircle((prevArry) => {
+          const updatedArr = [...prevArry]
+          updatedArr[questionNumber ] = true
+          return updatedArr
+        })
         setScoreDisplay(`${userScore}/12 ||` + returnScoreText(userScore))
-        isReloading = true
+     
         return
       }
       if (correctAnswer?.name == inpt.name) {
@@ -177,10 +185,11 @@ const MainQuestionPage = ({
         questionNumber++
       } else {
         if (attemptCount) {
-          questionNumber++
           attemptCount = false
-          reloadTimeOut()
+          questionNumber >= 11 ? '' : reloadTimeOut()
+          questionNumber++
         } else {
+          console.log('else last')
           attemptCount = true
         }
       }
