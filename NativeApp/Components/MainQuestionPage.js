@@ -25,7 +25,7 @@ import { noteAudioSrc } from '../data/NotesAudiosSrc.js'
 
 const stylesBool = false
 const newAnswerDelay = 1000
-let questionNumber = 0
+let questionNumber = 10
 let attemptCount = false
 let droneType = true
 let userScore = 0
@@ -141,7 +141,7 @@ const MainQuestionPage = ({
       updatedArr[questionNumber - 1] = true
       return updatedArr
     })
-    reloadTimeOut()
+    questionNumber < 11 ? reloadTimeOut() : console.log('over 11')
   }
 
   function secondAttemptCorrect() {
@@ -151,34 +151,24 @@ const MainQuestionPage = ({
       updatedArr[questionNumber - 1] = false
       return updatedArr
     })
-    reloadTimeOut()
+    questionNumber < 11 ? reloadTimeOut() : console.log('over 11')
   }
 
   function reloadTimeOut() {
     isReloading = true
     setTimeout(() => {
       reload()
-
       isReloading = false
     }, newAnswerDelay)
   }
 
   function userAnswerSetter(inpt) {
+    // setScoreDisplay(attemptCount + '||' + questionNumber)
     if (isReloading) {
       return
     } else {
       setUserAnswer(inpt)
-      if (questionNumber > 10) {
-        console.log('if finished')
-        setScoreSircle((prevArry) => {
-          const updatedArr = [...prevArry]
-          updatedArr[questionNumber ] = true
-          return updatedArr
-        })
-        setScoreDisplay(`${userScore}/12 ||` + returnScoreText(userScore))
-     
-        return
-      }
+
       if (correctAnswer?.name == inpt.name) {
         !attemptCount ? firstAttmpetCorrect() : secondAttemptCorrect()
         attemptCount = false
@@ -186,15 +176,14 @@ const MainQuestionPage = ({
       } else {
         if (attemptCount) {
           attemptCount = false
-          questionNumber >= 11 ? '' : reloadTimeOut()
           questionNumber++
         } else {
-          console.log('else last')
           attemptCount = true
         }
       }
-
-      setScoreDisplay(attemptCount + '||' + questionNumber)
+      if (questionNumber > 11) {
+        setScoreDisplay(`${userScore}/12 ||` + returnScoreText(userScore))
+      }
     }
   }
 
