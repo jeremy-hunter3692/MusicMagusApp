@@ -25,7 +25,7 @@ import { noteAudioSrc } from '../data/NotesAudiosSrc.js'
 
 const stylesBool = false
 const newAnswerDelay = 1000
-let questionNumber = 10
+let questionNumber = 0
 let attemptCount = false
 let droneType = true
 let userScore = 0

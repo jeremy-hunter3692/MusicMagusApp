@@ -119,6 +119,30 @@ const QuestionCards = ({
     annotatedText: {
       color: secondaryColor,
     },
+    textContainer: {
+      backgroundColor: 'white',
+      //TODOreplace this hardcoded margin
+      borderColor: 'white',
+      borderRadius: 10,
+      borderWidth: 1,
+      margin: 2,
+      height: cardSize.cardHeight,
+      width: cardSize.cardWidth,
+      justifyContent: 'center',
+      alignSelf: 'center',
+      color: 'black',
+    },
+    buttonText: {
+      justifyContent: 'center',
+      top: 'auto',
+      color: 'black',
+    },
+    scoreText: {
+      maxWidth: cardSize.cardWidth,
+      justifyContent: 'center',
+      alignSelf: 'center',
+      color: 'black',
+    },
   })
 
   return (
@@ -223,38 +247,12 @@ const QuestionCards = ({
             </>
           )}
         </View>
-        <View
-          style={{
-            //TODOreplace this hardcoded margin
-            margin: 2,
-
-            justifyContent: 'center',
-            alignSelf: 'center',
-            color: 'white',
-          }}
-        >
-          <Text
-            style={{
-              justifyContent: 'center',
-              alignSelf: 'center',
-              color: 'white',
-            }}
-          >
-            {score}
-          </Text>
+        <View style={styles.textContainer}>
+          <Text style={styles.scoreText}>{score}</Text>
+          <Text> </Text>
           {score ? (
             <Pressable onPress={newRound}>
-              <View>
-                <Text
-                  style={{
-                    justifyContent: 'center',
-                    alignSelf: 'center',
-                    color: 'white',
-                  }}
-                >
-                  New Round?
-                </Text>
-              </View>
+              <Text style={styles.buttonText}>New Round?</Text>
             </Pressable>
           ) : null}
         </View>
