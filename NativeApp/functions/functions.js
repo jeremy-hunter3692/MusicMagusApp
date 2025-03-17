@@ -187,7 +187,7 @@ export const cardReducer = (questionType, abBool) => {
         answer: answerIdx,
       }
     default:
-      console.log(`broken switch.`)
+      console.log(`broken switch in card reducer`)
   }
 }
 
@@ -202,6 +202,45 @@ function getNoOfAccidentals(inpt) {
 //   let minor = keys[data.idx - 3]?.name
 //   return replaceFlatsForSharps(minor, [minor])
 // }
+
+export function correctAnswer(inpt, attemptCount, question) {}
+
+export function returnAnswerType(inpt, correctAnswer, attemptCount) {
+  // console.log('return', inpt)
+  let attempt
+  let incrementQuestionNo
+  let shouldReload
+  let whichCircle = null
+  if (correctAnswer?.name == inpt.name) {
+    whichCircle = !attemptCount
+    attempt = false
+    incrementQuestionNo = true
+    shouldReload = true
+  } else {
+    if (attemptCount) {
+      console.log('if in else')
+      incrementQuestionNo = true
+      attempt = false
+      shouldReload = true
+      whichCircle = null
+    } else {
+      console.log('else/wrong')
+      incrementQuestionNo = false
+      shouldReload = false
+      whichCircle = null
+      attempt = true
+    }
+  }
+
+  return {
+    attempt: attempt,
+    incrementQuestionNo: incrementQuestionNo,
+    shouldReload: shouldReload,
+    whichCircle: whichCircle,
+  }
+}
+
+//needTo  setUserAnswer(inpt)
 
 export function returnScoreText(score) {
   return score === 12
@@ -289,5 +328,3 @@ export function getDataForAnnotated(inpt) {
 //   secondCardTemp = returnRandomCard(intervals, true)
 //   answerIdxTemp = intervalOfWhatKey(firstCardTemp.idx, secondCardTemp.idx)
 // }
-
-

@@ -4,6 +4,7 @@ import {
   View,
   Text,
   useWindowDimensions,
+  Image,
   Pressable,
 } from 'react-native'
 //
@@ -18,18 +19,20 @@ import {
   getIntervalCardsAsNotes,
   findNoteEquivalent,
   cardReducer,
-  returnScoreText,
+  returnAnswerType,
 } from '../functions/functions.js'
 
 import { noteAudioSrc } from '../data/NotesAudiosSrc.js'
 
 const stylesBool = false
 const newAnswerDelay = 1000
-let questionNumber = 0
-let attemptCount = false
+const pickImage = require('../assets/pickImage.png')
+let questionNumber = 10
+let secondAttmept = false
 let droneType = true
-let userScore = 0
+let userScore = 10
 let isReloading = false
+
 //questionType will refer to what the middle card is
 //TO DO go over all this state and cut down what we need/don't need
 
@@ -42,6 +45,7 @@ const MainQuestionPage = ({
   annotated,
   isRandom,
   isAnimated,
+  test,
 }) => {
   const [firstCard, setFirstCard] = useState()
   const [secondCard, setSecondCard] = useState()
@@ -52,7 +56,7 @@ const MainQuestionPage = ({
 
   const [correctAnswer, setCorrectAnswer] = useState()
   const [userAnswer, setUserAnswer] = useState()
-  const [userScoreDisplay, setScoreDisplay] = useState('')
+  const [userScoreDisplay, setScoreDisplay] = useState(0)
   const setScoreSircleInit = Array(12).fill(null)
   const [scoreCircles, setScoreSircle] = useState(setScoreSircleInit)
   //Might not need, props should re load the children correctly...?
@@ -63,21 +67,21 @@ const MainQuestionPage = ({
   const cardWidth = width > height ? width * 0.1 : width * 0.14
   const cardHeight = cardWidth * 1.5
 
+  const testUseTemp = test
   useEffect(() => {
     //let droneSrc
     let answerObj = cardReducer(questionType, abBool)
+    console.log(answerObj)
     if (isRandom) {
       answerObj = randomiseQuestion()
     }
     const { firstCard, secondCard, array, answer } = answerObj
     setUserAnswer(null)
-    getAndSetDroneAudioSource(firstCard.value)
+    // getAndSetDroneAudioSource(firstCard.value)
     setDisplayInputCardArray(array)
     setFirstCard(firstCard)
     setSecondCard(secondCard)
     setCorrectAnswer(array[answer])
-
-    setScoreDisplay(attemptCount + '||' + questionNumber)
   }, [questionType, reloadBool, abBool, isRandom])
 
   function questionAB(bool) {
@@ -124,34 +128,12 @@ const MainQuestionPage = ({
 
   function gameOver() {
     userScore = 0
-    attemptCount = false
+    secondAttmept = false
     questionNumber = 0
     reload()
     setScoreSircle(setScoreSircleInit)
+    setScoreDisplay(0)
     // setScoreDisplay('')
-  }
-
-  function firstAttmpetCorrect() {
-    console.log('first')
-    userScore++
-    // scoreCircles.pop()
-    // scoreCircles.unshift(true)
-    setScoreSircle((prevArry) => {
-      const updatedArr = [...prevArry]
-      updatedArr[questionNumber - 1] = true
-      return updatedArr
-    })
-    questionNumber < 11 ? reloadTimeOut() : console.log('over 11')
-  }
-
-  function secondAttemptCorrect() {
-    console.log('second')
-    setScoreSircle((prevArry) => {
-      const updatedArr = [...prevArry]
-      updatedArr[questionNumber - 1] = false
-      return updatedArr
-    })
-    questionNumber < 11 ? reloadTimeOut() : console.log('over 11')
   }
 
   function reloadTimeOut() {
@@ -162,41 +144,100 @@ const MainQuestionPage = ({
     }, newAnswerDelay)
   }
 
+  // function firstAttmpetCorrect() {
+  //   console.log('first')
+  //   setScoreSircle((prevArry) => {
+  //     const updatedArr = [...prevArry]
+  //     updatedArr[questionNumber - 1] = true
+  //     return updatedArr
+  //   })
+  //   userScore++
+  //   questionNumber++
+  //   questionNumber < 11 ? reloadTimeOut() : console.log('over 11')
+  // }
+
+  // function secondAttemptCorrect() {
+  //   console.log('second')
+  //   setScoreSircle((prevArry) => {
+  //     const updatedArr = [...prevArry]
+  //     updatedArr[questionNumber - 1] = false
+  //     return updatedArr
+  //   })
+  //   questionNumber < 11 ? reloadTimeOut() : console.log('over 11')
+  // }
+  // function userAnswerSetter(inpt) {
+  //   // console.log('user', { inpt })
+  //   if (isReloading) {
+  //     return
+  //   } else {
+  //     if (!secondAttmept) {
+  //       if (correctAnswer?.name == inpt.name) {
+  //         setScoreSircle((prevArry) => {
+  //           const updatedArr = [...prevArry]
+  //           updatedArr[questionNumber] = true
+  //           return updatedArr
+  //         })
+  //         userScore++
+  //         questionNumber++
+  //         reloadTimeOut()
+  //       } else {
+  //         secondAttmept = true
+  //       }
+  //     } else {
+  //       if (correctAnswer?.name == inpt.name) {
+  //         setScoreSircle((prevArry) => {
+  //           const updatedArr = [...prevArry]
+  //           updatedArr[questionNumber] = false
+  //           return updatedArr
+  //         })
+  //         questionNumber++
+  //         reloadTimeOut()
+  //       } else {
+  //         secondAttmept = true
+  //         questionNumber++
+  //         reloadTimeOut()
+  //       }
+  //       if (questionNumber > 11) {
+  //         setScoreDisplay(`${userScore}/12 ||` + returnScoreText(userScore))
+  //         isReloading = true
+  //       }
+  //     }
+  //   }
+  // }
   function userAnswerSetter(inpt) {
-    // setScoreDisplay(attemptCount + '||' + questionNumber)
     if (isReloading) {
       return
     } else {
-      setUserAnswer(inpt)
+      const { attempt, incrementQuestionNo, shouldReload, whichCircle } =
+        returnAnswerType(inpt, correctAnswer, secondAttmept)
+      secondAttmept = attempt
 
-      if (correctAnswer?.name == inpt.name) {
-        !attemptCount ? firstAttmpetCorrect() : secondAttemptCorrect()
-        attemptCount = false
-        questionNumber++
-      } else {
-        if (attemptCount) {
-          attemptCount = false
-          questionNumber++
-        } else {
-          attemptCount = true
-        }
-      }
+      setScoreSircle((prevArry) => {
+        const updatedArr = [...prevArry]
+        updatedArr[questionNumber] = whichCircle
+        return updatedArr
+      })
+      incrementQuestionNo ? questionNumber++ : ''
+      shouldReload && questionNumber < 12 ? reloadTimeOut() : ''
+      whichCircle ? userScore++ : ''
+
       if (questionNumber > 11) {
-        setScoreDisplay(`${userScore}/12 ||` + returnScoreText(userScore))
+        setScoreDisplay(userScore)
+        isReloading = true
       }
     }
   }
 
-  function selectDroneAudio() {
-    droneType = !droneType
-    getAndSetDroneAudioSource(firstCard.value)
-  }
+  // *******THIS WAS TEMP TAKEN OUT FOR TESTS function selectDroneAudio() {
+  //   droneType = !droneType
+  //   getAndSetDroneAudioSource(firstCard.value)
+  // }
 
-  function getAndSetDroneAudioSource(card) {
-    let droneAudioType = droneType ? DoubleBassDrones : SynthDrones
-    let source = findNoteEquivalent(card, droneAudioType)
-    setDroneAudioSrc(source)
-  }
+  // function getAndSetDroneAudioSource(card) {
+  //   let droneAudioType = droneType ? DoubleBassDrones : SynthDrones
+  //   let source = findNoteEquivalent(card, droneAudioType)
+  //   setDroneAudioSrc(source)
+  // }
 
   // function droneOnOff() {
   //   dronePlaying ? setDronePlaying(false) : setDronePlaying(true)
@@ -204,7 +245,10 @@ const MainQuestionPage = ({
 
   return (
     <>
-      <Text style={[styles.answer, { backgroundColor: secondaryColor }]}>
+      <Text
+        testID="scoreTempTest"
+        style={[styles.answer, { backgroundColor: secondaryColor }]}
+      >
         {scoreCircles.map((x, idx) => {
           let questionNo = idx === questionNumber ? true : false
           return (
@@ -216,6 +260,7 @@ const MainQuestionPage = ({
             />
           )
         })}
+        {'::' + userScoreDisplay}
       </Text>
       <DronePlayer
         rootValue={droneAudioSrc?.audioSrc}
@@ -235,7 +280,24 @@ const MainQuestionPage = ({
             stylesBool && styles.questionCardsBorder,
           ]}
         >
-          {!isRandom && <PickShape questionAB={questionAB} width={width} />}
+          {/* {<View style={{ width: cardWidth, height: cardHeight }}></View>} */}
+          {/* {!isRandom && <PickShape questionAB={questionAB} width={width} />} */}
+
+          <View style={{ width: cardWidth, height: cardHeight }}>
+            {!isRandom ? (
+              <Image
+                style={{
+                  width: cardWidth,
+                  height: cardHeight,
+                  resizeMode: 'contain',
+                }}
+                source={pickImage}
+              ></Image>
+            ) : (
+              ' '
+            )}
+          </View>
+
           {firstCard?.value && (
             <QuestionCards
               bgColor={bgColor}
@@ -279,7 +341,7 @@ const MainQuestionPage = ({
             stylesBool={stylesBool}
             cardsArray={displayInputCardArray}
             userAnswerSetter={userAnswerSetter}
-            findNoteFunction={getAudioSrcIdxFromCardReducer}
+            // findNoteFunction={getAudioSrcIdxFromCardReducer}
             reDeal={firstCard}
             isAnimated={isAnimated}
           />

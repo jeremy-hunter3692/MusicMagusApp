@@ -37,7 +37,7 @@ const CardButton = ({
   const initDealDelay = 30
   const scale = useSharedValue(initCardSizeValue)
   const { cardWidth, cardHeight } = cardSize || {}
-
+  // console.log('Data passed to  componeent:', data)
   useEffect(() => {
     if (annotated) {
       return
@@ -62,11 +62,12 @@ const CardButton = ({
   }
 
   function cardButtonOnPress(inpt) {
+    console.log({ inpt })
     if (annotated) {
       setAnnotatedCard(data)
     } else {
       //check this for fixing sound first
-      autoPlay === true ? setNote(onPress(answer)) : handlePressIn()
+      // autoPlay === true ? setNote(onPress(answer)) : handlePressIn()
     }
 
     let res = findAudioSourceFunction ? findAudioSourceFunction(inpt) : ''
@@ -101,7 +102,9 @@ const CardButton = ({
     <>
       {/* <PlaySound inpt={note} playBool={playBool} /> */}
       <Pressable
+        testID={data?.name}
         onPressIn={() => {
+          console.log({ data })
           cardButtonOnPress(data)
         }}
         onPressOut={handlePressOut}

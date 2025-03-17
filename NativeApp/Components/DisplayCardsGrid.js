@@ -49,6 +49,7 @@ const DisplayCardsGrid = ({
               animationDelay={index}
               reDeal={reDeal}
               animated={isAnimated}
+             
             />
           )
         })}

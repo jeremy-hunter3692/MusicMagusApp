@@ -11,9 +11,9 @@ const QuestionIconButtons = ({ changeQuestionType, annotated, bgColor }) => {
     changeQuestionType(inpt)
   }
 
-  const keyIcon = require('../assets/KeyIcon.png')
-  const noteIcon = require('../assets/NoteIcon.png')
-  const intervalIcon = require('../assets/IntervalIcon.png')
+  // const keyIcon = require('../assets/KeyIcon.png')
+  // const noteIcon = require('../assets/NoteIcon.png')
+  // const intervalIcon = require('../assets/IntervalIcon.png')
 
   return (
     <>

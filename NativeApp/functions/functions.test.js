@@ -11,6 +11,7 @@ import {
   cardReducer,
   getDataForAnnotated,
   returnScoreText,
+  returnAnswerType,
 } from './functions'
 import { noteNames } from '../data/NoteCards'
 import { keys } from '../data/KeyCards'
@@ -123,6 +124,8 @@ describe('returnRandCard', () => {
     let answer = returnRandomCard(noteNames)
     expect(typeof answer.idx).toBe('number')
   })
+
+  //look this up
   test('idx is never 0 if omitRoot is true', () => {
     const iterations = 100
     const results = []
@@ -136,6 +139,49 @@ describe('returnRandCard', () => {
     }, {})
 
     expect(counts[0]).toBeUndefined()
+  })
+})
+
+describe('returnAnswerType', () => {
+  test('returns correctly if first guess is correct', () => {
+    const result = returnAnswerType({ name: 'Bb' }, { name: 'Bb' }, false)
+    const answer = {
+      attempt: false,
+      incrementQuestionNo: true,
+      shouldReload: true,
+      whichCircle: true,
+    }
+    expect(answer).toEqual(result)
+  })
+  test('returns correctly if first guess is incorrect', () => {
+    const result = returnAnswerType({ name: 'Bb' }, { name: 'A' }, false)
+    const answer = {
+      attempt: true,
+      incrementQuestionNo: false,
+      shouldReload: false,
+      whichCircle: null,
+    }
+    expect(answer).toEqual(result)
+  })
+  test('returns correctly if second guess is correct', () => {
+    const result = returnAnswerType({ name: 'Bb' }, { name: 'Bb' }, true)
+    const answer = {
+      attempt: false,
+      incrementQuestionNo: true,
+      shouldReload: true,
+      whichCircle: false,
+    }
+    expect(answer).toEqual(result)
+  })
+  test('returns correctly if second guess is inCorrect', () => {
+    const result = returnAnswerType({ name: 'Bb' }, { name: 'A' }, true)
+    const answer = {
+      attempt: false,
+      incrementQuestionNo: true,
+      shouldReload: true,
+      whichCircle: null,
+    }
+    expect(answer).toEqual(result)
   })
 })
 
@@ -328,7 +374,7 @@ describe('return associated text for give score', () => {
     { score: 7, text: 'Commendable' },
     { score: 6, text: 'Keep Practising!' },
     { score: 0, text: "Rome wasn't built in a day" },
-   
+
     { score: 11, text: 'Excellent!' },
     { score: 9, text: 'Commendable' },
     { score: 5, text: 'Keep Practising!' },

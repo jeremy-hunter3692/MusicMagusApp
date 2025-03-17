@@ -8,7 +8,9 @@ import Animated, {
   interpolate,
   Extrapolate,
 } from 'react-native-reanimated'
-import { color } from 'canvas-sketch-util'
+
+import { returnScoreText } from '../functions/functions.js'
+
 const blankCard = require('../assets/blankcard.png')
 
 const QuestionCards = ({
@@ -29,7 +31,7 @@ const QuestionCards = ({
   newRound,
 }) => {
   const newQuestionTimeDelay = 1500
-
+  console.log(score)
   useEffect(() => {
     if (resultDisplay && isAnimated) {
       handleFlip(180) // Flip the card to 180 degrees
@@ -119,29 +121,42 @@ const QuestionCards = ({
     annotatedText: {
       color: secondaryColor,
     },
-    textContainer: {
-      backgroundColor: 'white',
+    scoreTextContainer: {
+      backgroundColor: 'white', //rgba(255, 255, 255, 0.7)',
       //TODOreplace this hardcoded margin
       borderColor: 'white',
       borderRadius: 10,
       borderWidth: 1,
       margin: 2,
+      padding: 5,
       height: cardSize.cardHeight,
       width: cardSize.cardWidth,
+      justifyContent: 'space-between',
+
+      color: 'black',
+    },
+
+    scoreText: {
+      flexDirection: 'column',
+      maxWidth: cardSize.cardWidth,
+      fontWeight: 'bold',
+      justifyContent: 'flex-end',
+      alignSelf: 'center',
+      color: 'black',
+    },
+    quoteText: {
+      maxWidth: cardSize.cardWidth,
+      fontWeight: 5,
+      fontStyle: 'italic',
       justifyContent: 'center',
       alignSelf: 'center',
       color: 'black',
     },
     buttonText: {
       justifyContent: 'center',
-      top: 'auto',
+
       color: 'black',
-    },
-    scoreText: {
-      maxWidth: cardSize.cardWidth,
-      justifyContent: 'center',
       alignSelf: 'center',
-      color: 'black',
     },
   })
 
@@ -247,13 +262,16 @@ const QuestionCards = ({
             </>
           )}
         </View>
-        <View style={styles.textContainer}>
-          <Text style={styles.scoreText}>{score}</Text>
-          <Text> </Text>
+        <View style={styles.scoreTextContainer}>
           {score ? (
-            <Pressable onPress={newRound}>
-              <Text style={styles.buttonText}>New Round?</Text>
-            </Pressable>
+            <>
+              <Text>{''}</Text>
+              <Text style={styles.scoreText}>{score + '/12'}</Text>
+              <Text style={styles.quoteText}>{returnScoreText()} </Text>
+              <Pressable onPress={newRound}>
+                <Text style={styles.buttonText}>New Round?</Text>
+              </Pressable>
+            </>
           ) : null}
         </View>
       </View>
