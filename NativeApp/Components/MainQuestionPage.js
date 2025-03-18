@@ -24,9 +24,9 @@ import {
 
 import { noteAudioSrc } from '../data/NotesAudiosSrc.js'
 
-const stylesBool = false
+const stylesBool = false // true
 const newAnswerDelay = 1000
-const pickImage = require('../assets/pickImage.png')
+
 let questionNumber = 10
 let secondAttmept = false
 let droneType = true
@@ -269,64 +269,45 @@ const MainQuestionPage = ({
         style={{ flex: 0, height: 0, width: 0, margin: 0, padding: 0 }}
       />
       <View
-        style={[
-          styles.qCardsAndButtonsCont,
-          stylesBool && styles.qCardsButtonBorder,
-        ]}
+        style={[styles.topRowCards, stylesBool && styles.topRowCardsBorder]}
       >
-        <View
-          style={[
-            styles.questionCardsCont,
-            stylesBool && styles.questionCardsBorder,
-          ]}
-        >
-          {/* {<View style={{ width: cardWidth, height: cardHeight }}></View>} */}
-          {/* {!isRandom && <PickShape questionAB={questionAB} width={width} />} */}
-
-          <View style={{ width: cardWidth, height: cardHeight }}>
-            {!isRandom ? (
-              <Image
-                style={{
-                  width: cardWidth,
-                  height: cardHeight,
-                  resizeMode: 'contain',
-                }}
-                source={pickImage}
-              ></Image>
-            ) : (
-              ' '
-            )}
-          </View>
-
-          {firstCard?.value && (
-            <QuestionCards
-              bgColor={bgColor}
-              secondaryColor={secondaryColor}
-              firstCard={firstCard}
-              secondCard={secondCard}
-              rootCardPress={questionCardPress}
-              resultDisplay={userAnswer?.name === correctAnswer?.name}
-              answerCardOnPress={answerCardOnPress}
-              answer={correctAnswer}
-              cardSize={{ cardWidth: cardWidth, cardHeight: cardHeight }}
-              annotated={annotated}
-              setAnnotatedCard={setAnnotatedCard}
-              animated={isAnimated}
-              score={userScoreDisplay}
-              newRound={gameOver}
-            />
-          )}
-
+        {
           <View
-            style={[
-              {
-                ...styles.questionButtons,
-                height: cardHeight,
-                width: cardWidth,
-              },
-            ]}
+            style={{
+              width: cardWidth,
+              height: cardHeight,
+              // borderColor: 'white',
+              // borderWidth: 1,
+            }}
           ></View>
+        }
+
+        <View style={{ width: cardWidth, height: cardHeight }}>
+          {!isRandom ? (
+            <PickShape questionAB={questionAB} width={cardWidth} />
+          ) : (
+            ' '
+          )}
         </View>
+
+        {firstCard?.value && (
+          <QuestionCards
+            bgColor={bgColor}
+            secondaryColor={secondaryColor}
+            firstCard={firstCard}
+            secondCard={secondCard}
+            rootCardPress={questionCardPress}
+            resultDisplay={userAnswer?.name === correctAnswer?.name}
+            answerCardOnPress={answerCardOnPress}
+            answer={correctAnswer}
+            cardSize={{ cardWidth: cardWidth, cardHeight: cardHeight }}
+            annotated={annotated}
+            setAnnotatedCard={setAnnotatedCard}
+            animated={isAnimated}
+            score={userScoreDisplay}
+            newRound={gameOver}
+          />
+        )}
       </View>
 
       <View
@@ -364,20 +345,27 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     textAlign: 'center',
   },
-  qCardsAndButtonsCont: {
+  topRowCards: {
     flexDirection: 'row',
-    // alignItems: 'flex-end',
     justifyContent: 'center',
+    alignItems: 'center',
+
     margin: 0,
     padding: 0,
   },
-  qCardsButtonBorder: {
+  topRowCardsBorder: {
+    flex: 1,
+
+    flexDirection: 'row',
+
     borderWidth: 3,
-    borderColor: 'red',
+    borderColor: 'white',
+    margin: 0,
+    padding: 0,
   },
   questionCardsCont: {
     flexDirection: 'row',
-    justifyContent: 'center',
+    // justifyContent: 'center',
     margin: 0,
     padding: 0,
   },

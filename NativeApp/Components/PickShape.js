@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { View, Text, StyleSheet, Pressable } from 'react-native'
+import { View, Text, StyleSheet, Pressable, Image } from 'react-native'
 import Animated, {
   useSharedValue,
   useAnimatedStyle,
@@ -7,10 +7,9 @@ import Animated, {
   interpolate,
   Extrapolate,
 } from 'react-native-reanimated'
-
+const pickImage = require('../assets/pickImage.png')
 const PickShape = ({ questionAB, width }) => {
   const [abBool, setabBool] = useState(true)
-  const pickWidth = width * 0.04
   function toggleBool() {
     const newAbBool = !abBool
     setabBool(newAbBool)
@@ -32,6 +31,7 @@ const PickShape = ({ questionAB, width }) => {
       Extrapolate.CLAMP
     )
     return {
+      position: 'absolute',
       transform: [{ rotateY: `${rotateY}deg` }],
       opacity: flipAnimation.value < 90 ? 1 : 0,
     }
@@ -46,6 +46,7 @@ const PickShape = ({ questionAB, width }) => {
       Extrapolate.CLAMP
     )
     return {
+      position: 'absolute',
       transform: [{ rotateY: `${rotateY}deg` }],
       opacity: flipAnimation.value > 90 ? 1 : 0,
     }
@@ -62,86 +63,71 @@ const PickShape = ({ questionAB, width }) => {
   }
 
   return (
-    <View
-      style={[
-        styles.container,
-        {
-          top: -width * 0.01,
-          padding: width * 0.01,
-          marginHorizontal: width * 0.1,
-        },
-      ]}
-    >
+    <View style={{ margin: 0, padding: 0 }}>
+      <Text>{abBool ? 'A' : 'B'}</Text>
       <Pressable onPress={toggleBool}>
-        <Animated.View
-          style={[
-            styles.triangle,
-            {
-              borderLeftWidth: pickWidth,
-              borderRightWidth: pickWidth,
-              borderTopWidth: pickWidth * 1.4,
-            },
-            frontAnimatedStyle,
-          ]}
-        >
-          <Text style={styles.textFront}>{'A'}</Text>
+        <Animated.View style={[{}, frontAnimatedStyle]}>
+          <Image
+            style={{
+              height: width * 1.2,
+              width: width,
+              resizeMode: 'contain',
+              position: 'absolute',
+            }}
+            source={pickImage}
+          ></Image>
         </Animated.View>
-      </Pressable>
 
-      <Pressable onPress={toggleBool}>
-        <Animated.View
-          style={[
-            styles.triangle,
-            {
-              borderLeftWidth: pickWidth,
-              borderRightWidth: pickWidth,
-              borderTopWidth: pickWidth * 1.4,
-            },
-            styles.backCard,
-            backAnimatedStyle,
-          ]}
-        >
-          <Text style={styles.textBack}>{'B'}</Text>
+        <Animated.View style={backAnimatedStyle}>
+          <Image
+            style={{
+              height: width * 1.2,
+              width: width,
+              resizeMode: 'contain',
+              position: 'absolute',
+            }}
+            source={pickImage}
+          ></Image>
         </Animated.View>
       </Pressable>
     </View>
   )
 }
 
-const styles = StyleSheet.create({
-  container: {
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  triangle: {
-    width: 0,
-    height: 0,
+// const styles = StyleSheet.create({
+//   container: {
+//     justifyContent: 'center',
+//     alignItems: 'center',
+//   },
+//   triangle: {
+//     width: 0,
+//     height: 0,
 
-    borderStyle: 'solid',
-    borderRadius: 90,
-    backgroundColor: 'transparent',
-    borderLeftColor: 'transparent',
-    borderRightColor: 'transparent',
-    borderTopColor: 'blue',
-    alignItems: 'center',
-    justifyContent: 'center',
-    // position: 'absolute', // Ensures overlap of both sides
-  },
-  textFront: {
-    color: 'white',
-    // position: 'absolute', // Ensures text is centered within the triangle
-    top: -55,
-  },
-  textBack: {
-    color: 'blue',
-    // position: 'absolute', // Ensures text is centered within the triangle
-    top: -55,
-  },
-  backCard: {
-    // Additional styling for back card if needed
-    backfaceVisibility: 'hidden',
-    borderTopColor: 'white',
-  },
-})
+//     borderStyle: 'solid',
+//     borderRadius: 90,
+//     backgroundColor: 'transparent',
+//     borderLeftColor: 'transparent',
+//     borderRightColor: 'transparent',
+//     borderTopColor: 'blue',
+//     alignItems: 'center',
+//     justifyContent: 'center',
+//     // position: 'absolute', // Ensures overlap of both sides
+//   },
+//   textFront: {
+//     color: 'white',
+//     // position: 'absolute', // Ensures text is centered within the triangle
+//     top: -55,
+//   },
+//   textBack: {
+//     color: 'blue',
+//     // position: 'absolute', // Ensures text is centered within the triangle
+//     top: -55,
+//   },
+//   backCard: {
+//     // Additional styling for back card if needed
+//     backfaceVisibility: 'hidden',
+//     borderTopColor: 'white',
+//   },
+// })
 
 export default PickShape

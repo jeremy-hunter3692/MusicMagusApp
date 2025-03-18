@@ -90,21 +90,27 @@ const QuestionCards = ({
     questionCardsCont: {
       flexDirection: 'row',
       justifyContent: 'center',
-      alignItems: 'flex-end',
+      alignItems: 'center',
       margin: 0,
       padding: 0,
     },
     flipingCardsCont: {
+      margin: 0,
+      padding: 0,
       justifyContent: 'center',
       alignItems: 'center',
       position: 'relative',
     },
     blankCard: {
+      margin: 0,
+      padding: 0,
       zIndex: 2,
       width: '100%',
       height: '100%',
     },
     backCard: {
+      margin: 0,
+      padding: 0,
       zIndex: 1,
       position: 'absolute',
 
@@ -127,7 +133,7 @@ const QuestionCards = ({
       borderColor: 'white',
       borderRadius: 10,
       borderWidth: 1,
-      margin: 2,
+      marginLeft: 1,
       padding: 5,
       height: cardSize.cardHeight,
       width: cardSize.cardWidth,

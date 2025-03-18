@@ -146,9 +146,9 @@ const styles = StyleSheet.create({
     resizeMode: 'contain',
   },
   pressable: {
-    marginHorizontal: 1,
-    marginVertical: 5,
-    padding: 0,
+    // marginHorizontal: 1,
+    // marginVertical: 5,
+    margin: 0,
     justifyContent: 'center',
     alignItems: 'center',
   },
