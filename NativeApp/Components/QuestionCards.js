@@ -133,10 +133,12 @@ const QuestionCards = ({
       borderColor: 'white',
       borderRadius: 10,
       borderWidth: 1,
-      marginLeft: 1,
+
       padding: 5,
-      height: cardSize.cardHeight,
-      width: cardSize.cardWidth,
+      //This Three for margin and height and width is to match with images. TO DO: replace with a prop
+      margin: 3,
+      height: cardSize.cardHeight - 3,
+      width: cardSize.cardWidth - 3,
       justifyContent: 'space-between',
 
       color: 'black',
@@ -149,6 +151,10 @@ const QuestionCards = ({
       justifyContent: 'flex-end',
       alignSelf: 'center',
       color: 'black',
+    },
+    hiddenScoreCard: {
+      height: cardSize.cardHeight,
+      width: cardSize.cardWidth,
     },
     quoteText: {
       maxWidth: cardSize.cardWidth,
@@ -268,7 +274,9 @@ const QuestionCards = ({
             </>
           )}
         </View>
-        <View style={styles.scoreTextContainer}>
+        <View
+          style={[styles.hiddenScoreCard, score && styles.scoreTextContainer]}
+        >
           {score ? (
             <>
               <Text>{''}</Text>

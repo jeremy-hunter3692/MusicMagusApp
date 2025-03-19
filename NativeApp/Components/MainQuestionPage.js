@@ -276,8 +276,7 @@ const MainQuestionPage = ({
             style={{
               width: cardWidth,
               height: cardHeight,
-              // borderColor: 'white',
-              // borderWidth: 1,
+          
             }}
           ></View>
         }
@@ -350,7 +349,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
 
-    margin: 0,
+    margin: 2,
     padding: 0,
   },
   topRowCardsBorder: {
@@ -385,7 +384,7 @@ const styles = StyleSheet.create({
 
   displayCardsGrid: {
     flex: 2,
-    margin: 0,
+    margin: 2,
     padding: 0,
   },
 

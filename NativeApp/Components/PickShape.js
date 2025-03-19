@@ -7,7 +7,8 @@ import Animated, {
   interpolate,
   Extrapolate,
 } from 'react-native-reanimated'
-const pickImage = require('../assets/pickImage.png')
+const pickImage = require('../assets/pickImageA.png')
+const backPickImage = require('../assets/pickImageB.png')
 const PickShape = ({ questionAB, width }) => {
   const [abBool, setabBool] = useState(true)
   function toggleBool() {
@@ -34,6 +35,7 @@ const PickShape = ({ questionAB, width }) => {
       position: 'absolute',
       transform: [{ rotateY: `${rotateY}deg` }],
       opacity: flipAnimation.value < 90 ? 1 : 0,
+      backfaceVisibility: 'hidden',
     }
   })
 
@@ -49,6 +51,7 @@ const PickShape = ({ questionAB, width }) => {
       position: 'absolute',
       transform: [{ rotateY: `${rotateY}deg` }],
       opacity: flipAnimation.value > 90 ? 1 : 0,
+      backfaceVisibility: 'hidden',
     }
   })
 
@@ -64,29 +67,26 @@ const PickShape = ({ questionAB, width }) => {
 
   return (
     <View style={{ margin: 0, padding: 0 }}>
-      <Text>{abBool ? 'A' : 'B'}</Text>
       <Pressable onPress={toggleBool}>
-        <Animated.View style={[{}, frontAnimatedStyle]}>
+        <Animated.View style={[frontAnimatedStyle, { position: 'absolute' }]}>
           <Image
             style={{
               height: width * 1.2,
               width: width,
               resizeMode: 'contain',
-              position: 'absolute',
             }}
             source={pickImage}
           ></Image>
         </Animated.View>
 
-        <Animated.View style={backAnimatedStyle}>
+        <Animated.View style={[backAnimatedStyle, { position: 'absolute' }]}>
           <Image
             style={{
               height: width * 1.2,
               width: width,
               resizeMode: 'contain',
-              position: 'absolute',
             }}
-            source={pickImage}
+            source={backPickImage}
           ></Image>
         </Animated.View>
       </Pressable>

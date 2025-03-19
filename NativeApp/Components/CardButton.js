@@ -137,7 +137,8 @@ const CardButton = ({
 const styles = StyleSheet.create({
   image: {
     flex: 1,
-    margin: 0,
+    //TO DO replace with a prop? and possible computed size 
+    margin: 2,
     padding: 0,
     width: '100%',
     height: '100%',
