@@ -5,12 +5,13 @@ import { DoubleBassDrones } from '../data/DroneAudioSources'
 
 let soundObj = null // Declare it outside of the component
 
-const DronePlayer = ({ rootValueProp, dronePlaying }) => {
+const DronePlayer = ({ rootValue, dronePlaying }) => {
+  console.log(rootValue)
   const renderCount = useRef(0)
-  const rootValue = DoubleBassDrones[1].audioSrc // rootValueProp
+
 
   useEffect(() => {
-    renderCount.current += 1
+    loadAndPlayDrone()
   })
 
   const loadAndPlayDrone = async () => {
@@ -44,16 +45,7 @@ const DronePlayer = ({ rootValueProp, dronePlaying }) => {
     }
   }
 
-  return (
-    <>
-      <Pressable onPress={() => loadAndPlayDrone()}>
-        <Text>Start</Text>
-      </Pressable>
-      <Pressable onPress={() => stopDrone()}>
-        <Text>Stop</Text>
-      </Pressable>
-    </>
-  )
+  return <></>
 }
 
 export default DronePlayer

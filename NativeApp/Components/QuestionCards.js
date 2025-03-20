@@ -31,7 +31,7 @@ const QuestionCards = ({
   newRound,
 }) => {
   const newQuestionTimeDelay = 1500
-  console.log(score)
+  console.log(firstCard, secondCard)
   useEffect(() => {
     if (resultDisplay && isAnimated) {
       handleFlip(180) // Flip the card to 180 degrees

@@ -60,21 +60,24 @@ const QuestionIconButtons = ({ changeQuestionType, annotated, bgColor }) => {
       <View>
         {annotated && <Text>Note</Text>}
         <Pressable onPress={() => selectQType(3)}>
-          <View
-            style={{
-              width: 0,
-              height: 0,
-              padding: 0,
-              // position: 'absolute',
-              top: -25,
-              borderTopWidth: 50,
-              borderRightWidth: 50,
-              borderRightColor: 'transparent',
-              borderTopColor: 'transparent',
-              borderBottomWidth: 50, // Hypotenuse of the triangle
-              borderBottomColor: 'black',
-            }}
-          ></View>
+          {' '}
+          <View style={{ width: 50, height: 50 }}>
+            <View
+              style={{
+                width: 0,
+                height: 0,
+                padding: 0,
+                position: 'absolute',
+                top: -50,
+                borderTopWidth: 50,
+                borderRightWidth: 50,
+                borderRightColor: 'transparent',
+                borderTopColor: 'transparent',
+                borderBottomWidth: 50, // Hypotenuse of the triangle
+                borderBottomColor: 'black',
+              }}
+            ></View>
+          </View>
           <View
             style={[
               styles.underCombo,

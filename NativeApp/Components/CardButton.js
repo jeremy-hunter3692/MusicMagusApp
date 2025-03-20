@@ -66,8 +66,8 @@ const CardButton = ({
     if (annotated) {
       setAnnotatedCard(data)
     } else {
-      //check this for fixing sound first
-      // autoPlay === true ? setNote(onPress(answer)) : handlePressIn()
+      // check this for fixing sound first
+      autoPlay === true ? setNote(onPress(answer)) : handlePressIn()
     }
 
     let res = findAudioSourceFunction ? findAudioSourceFunction(inpt) : ''
@@ -100,11 +100,10 @@ const CardButton = ({
 
   return (
     <>
-      {/* <PlaySound inpt={note} playBool={playBool} /> */}
+      <PlaySound inpt={note} playBool={playBool} />
       <Pressable
         testID={data?.name}
         onPressIn={() => {
-          console.log({ data })
           cardButtonOnPress(data)
         }}
         onPressOut={handlePressOut}
@@ -137,7 +136,7 @@ const CardButton = ({
 const styles = StyleSheet.create({
   image: {
     flex: 1,
-    //TO DO replace with a prop? and possible computed size 
+    //TO DO replace with a prop? and possible computed size
     margin: 2,
     padding: 0,
     width: '100%',

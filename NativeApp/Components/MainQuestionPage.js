@@ -1,12 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import {
-  StyleSheet,
-  View,
-  Text,
-  useWindowDimensions,
-  Image,
-  Pressable,
-} from 'react-native'
+import { StyleSheet, View, Text, useWindowDimensions } from 'react-native'
 //
 import DronePlayer from './DronePlayer.js'
 import DisplayCardsGrid from './DisplayCardsGrid.js'
@@ -17,6 +10,7 @@ import { SynthDrones, DoubleBassDrones } from '../data/DroneAudioSources.js'
 //
 import {
   getIntervalCardsAsNotes,
+  getAltOctaveNotes,
   findNoteEquivalent,
   cardReducer,
   returnAnswerType,
@@ -27,7 +21,7 @@ import { noteAudioSrc } from '../data/NotesAudiosSrc.js'
 const stylesBool = false // true
 const newAnswerDelay = 1000
 
-let questionNumber = 10
+let questionNumber = 0
 let secondAttmept = false
 let droneType = true
 let userScore = 10
@@ -45,7 +39,6 @@ const MainQuestionPage = ({
   annotated,
   isRandom,
   isAnimated,
-  test,
 }) => {
   const [firstCard, setFirstCard] = useState()
   const [secondCard, setSecondCard] = useState()
@@ -67,22 +60,36 @@ const MainQuestionPage = ({
   const cardWidth = width > height ? width * 0.1 : width * 0.14
   const cardHeight = cardWidth * 1.5
 
-  const testUseTemp = test
   useEffect(() => {
-    //let droneSrc
-    let answerObj = cardReducer(questionType, abBool)
-    console.log(answerObj)
-    if (isRandom) {
-      answerObj = randomiseQuestion()
-    }
+    // let droneSrc
+    let answerObj = isRandom
+      ? randomiseQuestion()
+      : cardReducer(questionType, abBool)
+
     const { firstCard, secondCard, array, answer } = answerObj
+
     setUserAnswer(null)
-    // getAndSetDroneAudioSource(firstCard.value)
+    getAndSetDroneAudioSource(firstCard.value)
     setDisplayInputCardArray(array)
     setFirstCard(firstCard)
     setSecondCard(secondCard)
     setCorrectAnswer(array[answer])
   }, [questionType, reloadBool, abBool, isRandom])
+  console.log(droneAudioSrc)
+  function selectDroneAudio() {
+    droneType = !droneType
+    getAndSetDroneAudioSource(firstCard.value)
+  }
+
+  function getAndSetDroneAudioSource(card) {
+    let droneAudioType = droneType ? DoubleBassDrones : SynthDrones
+    let source = findNoteEquivalent(card, droneAudioType)
+    setDroneAudioSrc(source.audioSrc)
+  }
+
+  function droneOnOff() {
+    dronePlaying ? setDronePlaying(false) : setDronePlaying(true)
+  }
 
   function questionAB(bool) {
     //TO DO clear timeout/question change here
@@ -101,7 +108,7 @@ const MainQuestionPage = ({
       questionType === 'Note'
         ? getAudioSrcInterval(cardAny)
         : findNoteEquivalent(cardAny, noteAudioSrc)
-    // audioSrcIdx = getAltOctaveNotes(audioSrcIdx, firstCard)
+    audioSrcIdx = getAltOctaveNotes(audioSrcIdx, firstCard)
     return audioSrcIdx
   }
 
@@ -122,88 +129,6 @@ const MainQuestionPage = ({
     console.log('make this funciton/check if I actually need it')
   }
 
-  function reload() {
-    setReloadBool((x) => !x)
-  }
-
-  function gameOver() {
-    userScore = 0
-    secondAttmept = false
-    questionNumber = 0
-    reload()
-    setScoreSircle(setScoreSircleInit)
-    setScoreDisplay(0)
-    // setScoreDisplay('')
-  }
-
-  function reloadTimeOut() {
-    isReloading = true
-    setTimeout(() => {
-      reload()
-      isReloading = false
-    }, newAnswerDelay)
-  }
-
-  // function firstAttmpetCorrect() {
-  //   console.log('first')
-  //   setScoreSircle((prevArry) => {
-  //     const updatedArr = [...prevArry]
-  //     updatedArr[questionNumber - 1] = true
-  //     return updatedArr
-  //   })
-  //   userScore++
-  //   questionNumber++
-  //   questionNumber < 11 ? reloadTimeOut() : console.log('over 11')
-  // }
-
-  // function secondAttemptCorrect() {
-  //   console.log('second')
-  //   setScoreSircle((prevArry) => {
-  //     const updatedArr = [...prevArry]
-  //     updatedArr[questionNumber - 1] = false
-  //     return updatedArr
-  //   })
-  //   questionNumber < 11 ? reloadTimeOut() : console.log('over 11')
-  // }
-  // function userAnswerSetter(inpt) {
-  //   // console.log('user', { inpt })
-  //   if (isReloading) {
-  //     return
-  //   } else {
-  //     if (!secondAttmept) {
-  //       if (correctAnswer?.name == inpt.name) {
-  //         setScoreSircle((prevArry) => {
-  //           const updatedArr = [...prevArry]
-  //           updatedArr[questionNumber] = true
-  //           return updatedArr
-  //         })
-  //         userScore++
-  //         questionNumber++
-  //         reloadTimeOut()
-  //       } else {
-  //         secondAttmept = true
-  //       }
-  //     } else {
-  //       if (correctAnswer?.name == inpt.name) {
-  //         setScoreSircle((prevArry) => {
-  //           const updatedArr = [...prevArry]
-  //           updatedArr[questionNumber] = false
-  //           return updatedArr
-  //         })
-  //         questionNumber++
-  //         reloadTimeOut()
-  //       } else {
-  //         secondAttmept = true
-  //         questionNumber++
-  //         reloadTimeOut()
-  //       }
-  //       if (questionNumber > 11) {
-  //         setScoreDisplay(`${userScore}/12 ||` + returnScoreText(userScore))
-  //         isReloading = true
-  //       }
-  //     }
-  //   }
-  // }
   function userAnswerSetter(inpt) {
     if (isReloading) {
       return
@@ -228,20 +153,26 @@ const MainQuestionPage = ({
     }
   }
 
-  // *******THIS WAS TEMP TAKEN OUT FOR TESTS function selectDroneAudio() {
-  //   droneType = !droneType
-  //   getAndSetDroneAudioSource(firstCard.value)
-  // }
+  function reload() {
+    setReloadBool((x) => !x)
+  }
 
-  // function getAndSetDroneAudioSource(card) {
-  //   let droneAudioType = droneType ? DoubleBassDrones : SynthDrones
-  //   let source = findNoteEquivalent(card, droneAudioType)
-  //   setDroneAudioSrc(source)
-  // }
+  function gameOver() {
+    userScore = 0
+    secondAttmept = false
+    questionNumber = 0
+    reload()
+    setScoreSircle(setScoreSircleInit)
+    setScoreDisplay(0)
+  }
 
-  // function droneOnOff() {
-  //   dronePlaying ? setDronePlaying(false) : setDronePlaying(true)
-  // }
+  function reloadTimeOut() {
+    isReloading = true
+    setTimeout(() => {
+      reload()
+      isReloading = false
+    }, newAnswerDelay)
+  }
 
   return (
     <>
@@ -262,12 +193,16 @@ const MainQuestionPage = ({
         })}
         {'::' + userScoreDisplay}
       </Text>
-      <DronePlayer
-        rootValue={droneAudioSrc?.audioSrc}
-        dronePlaying={dronePlaying}
-        reload={droneReload}
-        style={{ flex: 0, height: 0, width: 0, margin: 0, padding: 0 }}
-      />
+      {droneAudioSrc ? (
+        <DronePlayer
+          rootValue={droneAudioSrc}
+          dronePlaying={dronePlaying}
+          reload={droneReload}
+          style={{ flex: 0, height: 0, width: 0, margin: 0, padding: 0 }}
+        />
+      ) : (
+        ''
+      )}
       <View
         style={[styles.topRowCards, stylesBool && styles.topRowCardsBorder]}
       >
@@ -276,7 +211,6 @@ const MainQuestionPage = ({
             style={{
               width: cardWidth,
               height: cardHeight,
-          
             }}
           ></View>
         }
@@ -321,7 +255,7 @@ const MainQuestionPage = ({
             stylesBool={stylesBool}
             cardsArray={displayInputCardArray}
             userAnswerSetter={userAnswerSetter}
-            // findNoteFunction={getAudioSrcIdxFromCardReducer}
+            findNoteFunction={getAudioSrcIdxFromCardReducer}
             reDeal={firstCard}
             isAnimated={isAnimated}
           />
