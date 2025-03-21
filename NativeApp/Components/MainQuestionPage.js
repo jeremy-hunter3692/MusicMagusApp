@@ -24,7 +24,7 @@ const newAnswerDelay = 1000
 let questionNumber = 0
 let secondAttmept = false
 let droneType = true
-let userScore = 10
+let userScore = 0
 let isReloading = false
 
 //questionType will refer to what the middle card is
@@ -158,6 +158,7 @@ const MainQuestionPage = ({
   }
 
   function gameOver() {
+    setDroneAudioSrc(null)
     userScore = 0
     secondAttmept = false
     questionNumber = 0
@@ -167,6 +168,7 @@ const MainQuestionPage = ({
   }
 
   function reloadTimeOut() {
+    setDroneAudioSrc(null)
     isReloading = true
     setTimeout(() => {
       reload()
@@ -191,7 +193,7 @@ const MainQuestionPage = ({
             />
           )
         })}
-        {'::' + userScoreDisplay}
+        {/* {'::' + userScoreDisplay} */}
       </Text>
       {droneAudioSrc ? (
         <DronePlayer

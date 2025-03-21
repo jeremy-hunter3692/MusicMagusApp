@@ -3,21 +3,31 @@ import { Text, Pressable } from 'react-native'
 import { Audio } from 'expo-av'
 import { DoubleBassDrones } from '../data/DroneAudioSources'
 
-let soundObj = null // Declare it outside of the component
+let drone = null // Declare it outside of the component
+let droneTwo = null // Declare it outside of the component
 
 const DronePlayer = ({ rootValue, dronePlaying }) => {
   console.log(rootValue)
-  const renderCount = useRef(0)
-
 
   useEffect(() => {
+    drone ? stopDrone(drone) : ''
+    droneTwo ? stopDrone(droneTwo) : ''
     loadAndPlayDrone()
   })
 
   const loadAndPlayDrone = async () => {
     if (rootValue) {
-      soundObj = await loadSound(rootValue) // Store the sound object globally
-      await soundObj.playAsync()
+      drone = await loadSound(rootValue) // Store the sound object globally
+      droneTwo = await loadSound(rootValue)
+
+      await drone.playAsync()
+      const status = await drone.getStatusAsync()
+      let timeDelay = status.durationMillis * 0.5
+
+      let secondDroneID = setTimeout(async () => {
+        console.log('timeout', timeDelay, droneTwo)
+        await droneTwo.playAsync()
+      }, timeDelay)
     }
   }
 
@@ -36,16 +46,41 @@ const DronePlayer = ({ rootValue, dronePlaying }) => {
     return returnSoundObj
   }
 
-  const stopDrone = async () => {
+  const fadeOutAndStop = async (soundObj, duration = 300) => {
+    if (soundObj) {
+      const steps = 30 // Increase the number of steps for smoother fade-out
+      const stepDuration = duration / steps
+      const initialVolume = 0.7 // Assuming initial volume is 0.7
+      const volumeStep = initialVolume / steps
+
+      for (let i = 0; i < steps; i++) {
+        await soundObj.setVolumeAsync(initialVolume - volumeStep * i)
+        await new Promise((resolve) => setTimeout(resolve, stepDuration))
+      }
+
+      await soundObj.stopAsync()
+      await soundObj.unloadAsync()
+    }
+  }
+  const stopDrone = async (soundObj) => {
     if (soundObj) {
       console.log(soundObj)
-      await soundObj.setIsMutedAsync(true) // Muting the sound
+      await fadeOutAndStop(soundObj)
     } else {
       console.log('No sound object available')
     }
   }
 
-  return <></>
+  return (
+    <>
+      {/* <Pressable onPress={() => loadAndPlayDrone()}>
+        <Text>Start</Text>
+      </Pressable>
+      <Pressable onPress={() => stopDrone()}>
+        <Text>Stop</Text>
+      </Pressable> */}
+    </>
+  )
 }
 
 export default DronePlayer
