@@ -1,5 +1,11 @@
 import React, { useState, useEffect } from 'react'
-import { StyleSheet, View, Text, useWindowDimensions } from 'react-native'
+import {
+  StyleSheet,
+  View,
+  Text,
+  useWindowDimensions,
+  Pressable,
+} from 'react-native'
 //
 import DronePlayer from './DronePlayer.js'
 import DisplayCardsGrid from './DisplayCardsGrid.js'
@@ -14,6 +20,7 @@ import {
   findNoteEquivalent,
   cardReducer,
   returnAnswerType,
+  returnScoreText,
 } from '../functions/functions.js'
 
 import { noteAudioSrc } from '../data/NotesAudiosSrc.js'
@@ -22,7 +29,7 @@ const stylesBool = false // true
 const newAnswerDelay = 1000
 
 let questionNumber = 0
-let secondAttmept = false
+let secondAttmept = 0
 let droneType = true
 let userScore = 0
 let isReloading = false
@@ -135,7 +142,7 @@ const MainQuestionPage = ({
     } else {
       const { attempt, incrementQuestionNo, shouldReload, whichCircle } =
         returnAnswerType(inpt, correctAnswer, secondAttmept)
-      secondAttmept = attempt
+      secondAttmept++
 
       setScoreSircle((prevArry) => {
         const updatedArr = [...prevArry]
@@ -145,12 +152,23 @@ const MainQuestionPage = ({
       incrementQuestionNo ? questionNumber++ : ''
       shouldReload && questionNumber < 12 ? reloadTimeOut() : ''
       whichCircle ? userScore++ : ''
-
+      secondAttmept = attempt
       if (questionNumber > 11) {
         setScoreDisplay(userScore)
         isReloading = true
       }
     }
+  }
+
+  function skipQuestion() {
+    setScoreSircle((prevArry) => {
+      const updatedArr = [...prevArry]
+      updatedArr[questionNumber] = null
+      return updatedArr
+    })
+    questionNumber++
+    secondAttmept = false
+    reloadTimeOut()
   }
 
   function reload() {
@@ -178,23 +196,48 @@ const MainQuestionPage = ({
 
   return (
     <>
-      <Text
-        testID="scoreTempTest"
-        style={[styles.answer, { backgroundColor: secondaryColor }]}
+      <View
+        style={{
+          zIndex: 0,
+          // flexDirection: 'row',
+          // justifyContent: 'center',
+          width: '100%',
+          backGroundColor: secondaryColor,
+        }}
       >
-        {scoreCircles.map((x, idx) => {
-          let questionNo = idx === questionNumber ? true : false
-          return (
-            <Circle
-              fillBool={x}
-              scoreCircleRadius={10}
-              key={idx}
-              underLine={questionNo}
-            />
+        <Text
+          testID="scoreTempTest"
+          style={[styles.answer, { backgroundColor: secondaryColor }]}
+        >
+          {scoreCircles.map((x, idx) => {
+            let questionNo = idx === questionNumber ? true : false
+            return (
+              <Circle
+                fillBool={x}
+                scoreCircleRadius={10}
+                key={idx}
+                underLine={questionNo}
+              />
+            )
+          })}
+        </Text>
+        {!userScoreDisplay ? (
+          secondAttmept != 0 && (
+            <Pressable onPressIn={() => skipQuestion()}>
+              <Text style={styles.answer}>Skip question?</Text>
+            </Pressable>
           )
-        })}
-        {/* {'::' + userScoreDisplay} */}
-      </Text>
+        ) : (
+          <>
+            <Text style={styles.answer}>
+              {userScoreDisplay + '/12 -- ' + returnScoreText(userScore)}
+            </Text>
+            <Pressable onPressIn={() => gameOver()}>
+              <Text style={styles.answer}>New Round?</Text>
+            </Pressable>
+          </>
+        )}
+      </View>
       {droneAudioSrc ? (
         <DronePlayer
           rootValue={droneAudioSrc}

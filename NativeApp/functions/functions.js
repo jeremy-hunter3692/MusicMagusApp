@@ -212,23 +212,21 @@ export function returnAnswerType(inpt, correctAnswer, attemptCount) {
   let shouldReload
   let whichCircle = null
   if (correctAnswer?.name == inpt.name) {
-    whichCircle = !attemptCount
-    attempt = false
+    whichCircle = attemptCount === 0 ? true : attemptCount === 1 ? false : null
+    attempt = 0
     incrementQuestionNo = true
     shouldReload = true
   } else {
-    if (attemptCount) {
-      console.log('if in else')
-      incrementQuestionNo = true
-      attempt = false
-      shouldReload = true
-      whichCircle = null
-    } else {
-      console.log('else/wrong')
+    if (attemptCount === 0) {
       incrementQuestionNo = false
-      shouldReload = false
+      attempt = attemptCount + 1
+      // shouldReload = true
       whichCircle = null
-      attempt = true
+      // } else {
+      //   incrementQuestionNo = false
+      //   shouldReload = false
+      //   whichCircle = null
+      //   attempt = attemptCount + 1
     }
   }
 
@@ -249,7 +247,7 @@ export function returnScoreText(score) {
     ? 'Excellent!'
     : score > 6
     ? 'Commendable'
-    : score > 4
+    : score > 3
     ? 'Keep Practising!'
     : `Rome wasn't built in a day`
 }

@@ -30,6 +30,7 @@ const QuestionCards = ({
   score,
   newRound,
 }) => {
+  score = null
   const newQuestionTimeDelay = 1500
   console.log(firstCard, secondCard)
   useEffect(() => {
@@ -125,7 +126,15 @@ const QuestionCards = ({
       justifyContent: 'flex-start',
     },
     annotatedText: {
+      padding: 1,
+
+      justifyContent: 'center',
+      borderRadius: 10,
+      backgroundColor: 'white',
+      fontWeight: 'bold',
       color: secondaryColor,
+      width: cardSize.cardWidth - 2,
+      height: cardSize.cardHeight * 0.25 - 1,
     },
     scoreTextContainer: {
       backgroundColor: 'white', //rgba(255, 255, 255, 0.7)',
@@ -188,7 +197,6 @@ const QuestionCards = ({
 
           {annotated && (
             <>
-              <Text style={styles.annotatedText}>Question Card</Text>
               <Text style={styles.annotatedText}>I.E In this key</Text>
             </>
           )}
@@ -210,7 +218,6 @@ const QuestionCards = ({
           />
           {annotated && (
             <>
-              <Text style={styles.annotatedText}>Second Question card</Text>
               <Text style={styles.annotatedText}>what is this {bgColor}</Text>
             </>
           )}
@@ -269,8 +276,9 @@ const QuestionCards = ({
 
           {annotated && (
             <>
-              <Text style={styles.annotatedText}>Answer Card</Text>
-              <Text style={styles.annotatedText}>To be revealed</Text>
+              <Text style={styles.annotatedText}>
+                Answer Card To be revealed
+              </Text>
             </>
           )}
         </View>
@@ -287,6 +295,13 @@ const QuestionCards = ({
               </Pressable>
             </>
           ) : null}
+          {annotated && (
+            <>
+              <Text style={[styles.annotatedText, { alignSelf: 'center' }]}>
+                Score will appear here at end of round
+              </Text>
+            </>
+          )}
         </View>
       </View>
     </>

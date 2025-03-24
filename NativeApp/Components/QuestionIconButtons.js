@@ -60,15 +60,21 @@ const QuestionIconButtons = ({ changeQuestionType, annotated, bgColor }) => {
       <View>
         {annotated && <Text>Note</Text>}
         <Pressable onPress={() => selectQType(3)}>
-          {' '}
-          <View style={{ width: 50, height: 50 }}>
+          <View
+            style={{
+              width: 50,
+              height: 50,
+              justifyContent: 'flex-end',
+              alignItems: 'center',
+            }}
+          >
             <View
               style={{
                 width: 0,
                 height: 0,
                 padding: 0,
-                position: 'absolute',
-                top: -50,
+                // position: 'absolute',
+                // top: -50,
                 borderTopWidth: 50,
                 borderRightWidth: 50,
                 borderRightColor: 'transparent',
@@ -82,7 +88,6 @@ const QuestionIconButtons = ({ changeQuestionType, annotated, bgColor }) => {
             style={[
               styles.underCombo,
               !annotated & (underLine === 3) ? styles.underLine : null,
-              { top: 9 },
             ]}
           ></View>
         </Pressable>
@@ -93,10 +98,11 @@ const QuestionIconButtons = ({ changeQuestionType, annotated, bgColor }) => {
 
 const styles = StyleSheet.create({
   underLine: {
-    borderBottomColor: 'black',
+    zIndex: 2,
+    borderColor: 'white',
     borderWidth: 2,
   },
-  underCombo: {},
+  underCombo: { zIndex: 2, backgroundColor: 'transparent', height: 2, },
 })
 export default QuestionIconButtons
 
