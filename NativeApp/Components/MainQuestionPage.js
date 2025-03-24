@@ -82,7 +82,7 @@ const MainQuestionPage = ({
     setSecondCard(secondCard)
     setCorrectAnswer(array[answer])
   }, [questionType, reloadBool, abBool, isRandom])
-  console.log(droneAudioSrc)
+
   function selectDroneAudio() {
     droneType = !droneType
     getAndSetDroneAudioSource(firstCard.value)
@@ -137,6 +137,7 @@ const MainQuestionPage = ({
   }
 
   function userAnswerSetter(inpt) {
+    setUserAnswer(inpt)
     if (isReloading) {
       return
     } else {

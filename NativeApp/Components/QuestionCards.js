@@ -12,6 +12,7 @@ import Animated, {
 import { returnScoreText } from '../functions/functions.js'
 
 const blankCard = require('../assets/blankcard.png')
+const newQuestionTimeDelay = 1500
 
 const QuestionCards = ({
   bgColor,
@@ -31,10 +32,12 @@ const QuestionCards = ({
   newRound,
 }) => {
   score = null
-  const newQuestionTimeDelay = 1500
-  console.log(firstCard, secondCard)
+
+  console.log(resultDisplay)
   useEffect(() => {
+    console.log('use', resultDisplay)
     if (resultDisplay && isAnimated) {
+      console.log('if in use')
       handleFlip(180) // Flip the card to 180 degrees
       setTimeout(() => {
         handleFlip(0) // Flip the card back to 0 degrees after 1 second
@@ -82,6 +85,7 @@ const QuestionCards = ({
 
   // Function to handle the flip
   const handleFlip = (toValue) => {
+    console.log('handle flip')
     const animationSpeed = 500
 
     flipAnimation.value = withTiming(toValue, { duration: animationSpeed })

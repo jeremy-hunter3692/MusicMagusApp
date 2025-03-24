@@ -62,7 +62,6 @@ const CardButton = ({
   }
 
   function cardButtonOnPress(inpt) {
-    console.log({ inpt })
     if (annotated) {
       setAnnotatedCard(data)
     } else {

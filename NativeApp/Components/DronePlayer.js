@@ -7,8 +7,6 @@ let drone = null // Declare it outside of the component
 let droneTwo = null // Declare it outside of the component
 
 const DronePlayer = ({ rootValue, dronePlaying }) => {
-  console.log(rootValue)
-
   useEffect(() => {
     drone ? stopDrone(drone) : ''
     droneTwo ? stopDrone(droneTwo) : ''
@@ -25,7 +23,6 @@ const DronePlayer = ({ rootValue, dronePlaying }) => {
       let timeDelay = status.durationMillis * 0.5
 
       let secondDroneID = setTimeout(async () => {
-        console.log('timeout', timeDelay, droneTwo)
         await droneTwo.playAsync()
       }, timeDelay)
     }
@@ -64,7 +61,7 @@ const DronePlayer = ({ rootValue, dronePlaying }) => {
   }
   const stopDrone = async (soundObj) => {
     if (soundObj) {
-      console.log(soundObj)
+      // console.log(soundObj)
       await fadeOutAndStop(soundObj)
     } else {
       console.log('No sound object available')
