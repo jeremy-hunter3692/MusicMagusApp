@@ -26,7 +26,7 @@ import {
 import { noteAudioSrc } from '../data/NotesAudiosSrc.js'
 
 const stylesBool = false // true
-const newAnswerDelay = 1000
+const newAnswerDelay = 1500
 
 let questionNumber = 0
 let secondAttmept = 0
@@ -91,6 +91,7 @@ const MainQuestionPage = ({
   function getAndSetDroneAudioSource(card) {
     let droneAudioType = droneType ? DoubleBassDrones : SynthDrones
     let source = findNoteEquivalent(card, droneAudioType)
+    console.log({source}, {card})
     setDroneAudioSrc(source.audioSrc)
   }
 
@@ -137,19 +138,24 @@ const MainQuestionPage = ({
   }
 
   function userAnswerSetter(inpt) {
+    console.log('inpt', questionNumber)
     setUserAnswer(inpt)
     if (isReloading) {
       return
     } else {
       const { attempt, incrementQuestionNo, shouldReload, whichCircle } =
         returnAnswerType(inpt, correctAnswer, secondAttmept)
+
       secondAttmept++
 
       setScoreSircle((prevArry) => {
         const updatedArr = [...prevArry]
-        updatedArr[questionNumber] = whichCircle
+        if (whichCircle !== null) {
+          updatedArr[questionNumber - 1] = whichCircle
+        }
         return updatedArr
       })
+
       incrementQuestionNo ? questionNumber++ : ''
       shouldReload && questionNumber < 12 ? reloadTimeOut() : ''
       whichCircle ? userScore++ : ''
@@ -162,14 +168,13 @@ const MainQuestionPage = ({
   }
 
   function skipQuestion() {
-    setScoreSircle((prevArry) => {
-      const updatedArr = [...prevArry]
-      updatedArr[questionNumber] = null
-      return updatedArr
-    })
     questionNumber++
-    secondAttmept = false
+    secondAttmept = 0
     reloadTimeOut()
+    if (questionNumber > 11) {
+      setScoreDisplay(userScore)
+      isReloading = true
+    }
   }
 
   function reload() {

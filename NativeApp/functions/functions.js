@@ -257,11 +257,17 @@ export function getDataForAnnotated(inpt) {
     typeof inpt.value?.distanceToRoot === 'number' &&
     typeof inpt.value?.up != 'undefined'
   ) {
+    let upOrDown = inpt.value.up ? 'Up' : 'Down'
     return {
       topLText: 'Interval: ' + inpt.value.name,
       topRText: '',
       bottomLText: '',
-      bottomRText: 'Distance to nearest root: ' + inpt.value.distanceToRoot,
+      bottomRText:
+        'Distance to nearest root: ' +
+        upOrDown +
+        ' ' +
+        inpt.value.distanceToRoot +
+        ' semitones',
     }
   } else if (
     typeof inpt.value.intervals === 'undefined' &&
@@ -282,9 +288,13 @@ export function getDataForAnnotated(inpt) {
     return {
       topLText: 'Key: ' + inpt.value.name,
       topRText: '',
-      bottomLText: 'Relative Minor:' + keys[relMinorIdx]?.name,
+      bottomLText: 'Relative Minor: ' + keys[relMinorIdx]?.name,
       bottomRText:
-        'Accidentals :' + getNoOfAccidentals(inpt) + '|' + santisedAccidentals,
+        'Accidentals : ' +
+        getNoOfAccidentals(inpt) +
+        ' (' +
+        santisedAccidentals +
+        ')',
     }
   } else {
     console.log('broke')

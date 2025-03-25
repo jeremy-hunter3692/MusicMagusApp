@@ -33,7 +33,6 @@ const QuestionCards = ({
 }) => {
   score = null
 
-  console.log(resultDisplay)
   useEffect(() => {
     console.log('use', resultDisplay)
     if (resultDisplay && isAnimated) {
@@ -85,7 +84,6 @@ const QuestionCards = ({
 
   // Function to handle the flip
   const handleFlip = (toValue) => {
-    console.log('handle flip')
     const animationSpeed = 500
 
     flipAnimation.value = withTiming(toValue, { duration: animationSpeed })
@@ -131,12 +129,10 @@ const QuestionCards = ({
     },
     annotatedText: {
       padding: 1,
-
+      color: 'white',
       justifyContent: 'center',
-      borderRadius: 10,
-      backgroundColor: 'white',
       fontWeight: 'bold',
-      color: secondaryColor,
+      borderRadius: 10,
       width: cardSize.cardWidth - 2,
       height: cardSize.cardHeight * 0.25 - 1,
     },
@@ -286,19 +282,21 @@ const QuestionCards = ({
             </>
           )}
         </View>
-        <View
-          style={[styles.hiddenScoreCard, score && styles.scoreTextContainer]}
-        >
-          {score ? (
-            <>
-              <Text>{''}</Text>
-              <Text style={styles.scoreText}>{score + '/12'}</Text>
-              <Text style={styles.quoteText}>{returnScoreText()} </Text>
-              <Pressable onPress={newRound}>
-                <Text style={styles.buttonText}>New Round?</Text>
-              </Pressable>
-            </>
-          ) : null}
+        <View style={styles.forAnnotation}>
+          <View
+            style={[styles.hiddenScoreCard, score && styles.scoreTextContainer]}
+          >
+            {score ? (
+              <>
+                <Text>{''}</Text>
+                <Text style={styles.scoreText}>{score + '/12'}</Text>
+                <Text style={styles.quoteText}>{returnScoreText()} </Text>
+                <Pressable onPress={newRound}>
+                  <Text style={styles.buttonText}>New Round?</Text>
+                </Pressable>
+              </>
+            ) : null}
+          </View>
           {annotated && (
             <>
               <Text style={[styles.annotatedText, { alignSelf: 'center' }]}>

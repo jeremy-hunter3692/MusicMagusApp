@@ -17,8 +17,7 @@ const QuestionIconButtons = ({ changeQuestionType, annotated, bgColor }) => {
 
   return (
     <>
-      <View>
-        {annotated && <Text>Key</Text>}
+      <View style={styles.container}>
         <Pressable onPress={() => selectQType(1)}>
           <View
             style={{
@@ -36,9 +35,9 @@ const QuestionIconButtons = ({ changeQuestionType, annotated, bgColor }) => {
             ]}
           ></View>
         </Pressable>
+        {annotated && <Text style={styles.annotatedText}>Key</Text>}
       </View>
-      <View>
-        {annotated && <Text>Interval</Text>}
+      <View style={styles.container}>
         <Pressable onPress={() => selectQType(2)}>
           <View
             style={{
@@ -56,9 +55,9 @@ const QuestionIconButtons = ({ changeQuestionType, annotated, bgColor }) => {
             ]}
           ></View>
         </Pressable>
+        {annotated && <Text style={styles.annotatedText}>Interval </Text>}
       </View>
-      <View>
-        {annotated && <Text>Note</Text>}
+      <View style={styles.container}>
         <Pressable onPress={() => selectQType(3)}>
           <View
             style={{
@@ -84,6 +83,7 @@ const QuestionIconButtons = ({ changeQuestionType, annotated, bgColor }) => {
               }}
             ></View>
           </View>
+
           <View
             style={[
               styles.underCombo,
@@ -91,18 +91,29 @@ const QuestionIconButtons = ({ changeQuestionType, annotated, bgColor }) => {
             ]}
           ></View>
         </Pressable>
+        {annotated && <Text style={styles.annotatedText}> Note</Text>}
       </View>
     </>
   )
 }
 
 const styles = StyleSheet.create({
+  container: {
+    alignItems: 'flex-start',
+    //TO DO make this computed with font size?
+    marginBottom: 5,
+  },
+  annotatedText: {
+    color: 'white',
+    fontWeight: 'bold',
+    fontColor: 'white',
+  },
   underLine: {
     zIndex: 2,
     borderColor: 'white',
     borderWidth: 2,
   },
-  underCombo: { zIndex: 2, backgroundColor: 'transparent', height: 2, },
+  underCombo: { zIndex: 2, backgroundColor: 'transparent', height: 2 },
 })
 export default QuestionIconButtons
 

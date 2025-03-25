@@ -17,6 +17,7 @@ import QuestionIconButtons from './Components/QuestionIconButtons.js'
 const themeInit = { bgColor: 'purple', secondaryColor: '#19af59' }
 const secondaryTheme = { bgColor: 'black', secondaryColor: 'purple' }
 let themeBool = true
+
 export default function App() {
   const [hexKey, setHexKey] = useState(keys[0])
   const [theme, setTheme] = useState(themeInit)
@@ -88,7 +89,7 @@ export default function App() {
           style={{
             margin: 0,
             fontWeight: 'bold',
-            flex: 0.25,
+            flex: 0.3,
             color: 'white',
             flexDirection: 'row',
             backgroundColor: theme.secondaryColor,
@@ -98,7 +99,9 @@ export default function App() {
           }}
         >
           {annotatedCardDisplay && !annotatedCard && (
-            <Text>{`Change Question Type Here---> `}</Text>
+            <Text
+              style={{ color: 'white', fontWeight: 'bold', fontColor: 'white' }}
+            >{`Change Question Type Here---> `}</Text>
           )}
 
           {!annotatedCard ? (

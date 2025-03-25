@@ -28,16 +28,11 @@ const AnnotatedCards = ({ data, setAnnotated }) => {
       flexDirection: 'row',
       height: '100%',
       width: '100%',
-      // borderColor: 'white',
-      // borderWidth: 3,
     },
     textMain: {
-      color: 'purple',
-      backgroundColor: 'white',
-      borderRadius: 20,
+      color: 'white',
       fontSize: fontSize,
-      borderColor: 'black',
-      borderWidth: 1,
+      alignItems: 'center',
       margin: 2,
       padding: 5,
     },
@@ -75,8 +70,21 @@ const AnnotatedCards = ({ data, setAnnotated }) => {
       </View>
 
       <View style={styles.column}>
-        <Pressable onPress={() => setAnnotated()}>
-          <Text style={styles.textMain}>
+        <Pressable
+          style={{ alignItems: 'center', padding: 5 }}
+          onPress={() => setAnnotated()}
+        >
+          <Text
+            style={[
+              styles.textMain,
+              {
+                backgroundColor: '#D3D3D3',
+                borderRadius: 10,
+                padding: 5,
+                flex: 1,
+              },
+            ]}
+          >
             Back
             {topRtext}
           </Text>
