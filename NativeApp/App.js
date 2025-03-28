@@ -2,6 +2,7 @@ import React, { useState } from 'react'
 import MainQuestionPage from './Components/MainQuestionPage'
 import AnnotatedCards from './Components/AnnotatedCards'
 import OptionsPage from './Components/OptionsPage.js'
+import TheoryCirlces from './Components/TheoryCircles.js'
 import { StatusBar } from 'expo-status-bar'
 import {
   StyleSheet,
@@ -100,8 +101,13 @@ export default function App() {
         >
           {annotatedCardDisplay && !annotatedCard && (
             <Text
-              style={{ color: 'white', fontWeight: 'bold', fontColor: 'white' }}
-            >{`Change Question Type Here---> `}</Text>
+              style={{
+                color: 'white',
+                fontWeight: 'bold',
+                fontColor: 'white',
+                margin: 10,
+              }}
+            >{`Change Question Type Here--->  `}</Text>
           )}
 
           {!annotatedCard ? (
@@ -175,6 +181,8 @@ export default function App() {
             )}
           </>
         )}
+
+        {/* <TheoryCirlces /> */}
       </SafeAreaView>
     </>
   )

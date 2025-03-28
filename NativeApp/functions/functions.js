@@ -253,21 +253,43 @@ export function returnScoreText(score) {
 }
 
 export function getDataForAnnotated(inpt) {
+  const { distanceToRoot, up } = inpt.value
+  const upOrDown = up ? 'Down' : 'Up'
+  const orDirection = up ? 'Up' : 'Down'
+  const extraUpOrDownText = up ? 'hanging down.' : 'pointing up.'
+  const altIntervalDistance = 12 - distanceToRoot
+  const intervalCardText =
+    'These Half-steps are ' +
+    extraUpOrDownText +
+    ' the number of black ones will tell us how many Half-steps to count ' +
+    upOrDown +
+    ' from any Root note. In this case there is ' +
+    inpt.value.distanceToRoot +
+    '. '
+  const orIntervalText =
+    'Or we could count the empty triangles and add 6, (in this case there are ' +
+    altIntervalDistance +
+    ') and count ' +
+    orDirection +
+    ' from any root note. '
+
+  const halfStepS = distanceToRoot > 1 ? ' Half-steps.' : ' Half-step.'
+  const smallIntervalText =
+    'Distance to nearest root: ' +
+    upOrDown +
+    ' ' +
+    inpt.value.distanceToRoot +
+    halfStepS +
+    '   '
   if (
     typeof inpt.value?.distanceToRoot === 'number' &&
     typeof inpt.value?.up != 'undefined'
   ) {
-    let upOrDown = inpt.value.up ? 'Up' : 'Down'
     return {
       topLText: 'Interval: ' + inpt.value.name,
       topRText: '',
-      bottomLText: '',
-      bottomRText:
-        'Distance to nearest root: ' +
-        upOrDown +
-        ' ' +
-        inpt.value.distanceToRoot +
-        ' semitones',
+      bottomLText: smallIntervalText,
+      bottomRText: intervalCardText + orIntervalText + ' ',
     }
   } else if (
     typeof inpt.value.intervals === 'undefined' &&
@@ -285,16 +307,17 @@ export function getDataForAnnotated(inpt) {
       inpt.value.name,
       getAccidentalNames(inpt.value)
     )
+    let noOfAccidentals = getNoOfAccidentals(inpt)
+    let accidentalsText =
+      'Accidentals : ' +
+      noOfAccidentals +
+      ' ' +
+      (noOfAccidentals > 0 ? ' (' + santisedAccidentals + ')' : '')
     return {
       topLText: 'Key: ' + inpt.value.name,
       topRText: '',
       bottomLText: 'Relative Minor: ' + keys[relMinorIdx]?.name,
-      bottomRText:
-        'Accidentals : ' +
-        getNoOfAccidentals(inpt) +
-        ' (' +
-        santisedAccidentals +
-        ')',
+      bottomRText: accidentalsText,
     }
   } else {
     console.log('broke')

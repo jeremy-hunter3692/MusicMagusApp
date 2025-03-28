@@ -135,6 +135,7 @@ const QuestionCards = ({
       borderRadius: 10,
       width: cardSize.cardWidth - 2,
       height: cardSize.cardHeight * 0.25 - 1,
+      marginBottom: 10,
     },
     scoreTextContainer: {
       backgroundColor: 'white', //rgba(255, 255, 255, 0.7)',
@@ -197,7 +198,7 @@ const QuestionCards = ({
 
           {annotated && (
             <>
-              <Text style={styles.annotatedText}>I.E In this key</Text>
+              <Text style={styles.annotatedText}>In this key</Text>
             </>
           )}
         </View>
@@ -218,7 +219,9 @@ const QuestionCards = ({
           />
           {annotated && (
             <>
-              <Text style={styles.annotatedText}>what is this {bgColor}</Text>
+              <Text style={styles.annotatedText}>
+                what interval is this note
+              </Text>
             </>
           )}
         </View>
@@ -276,9 +279,7 @@ const QuestionCards = ({
 
           {annotated && (
             <>
-              <Text style={styles.annotatedText}>
-                Answer Card To be revealed
-              </Text>
+              <Text style={styles.annotatedText}>Answer To be revealed</Text>
             </>
           )}
         </View>
