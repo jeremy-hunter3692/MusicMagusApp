@@ -37,7 +37,7 @@ const CardButton = ({
   const initDealDelay = 30
   const scale = useSharedValue(initCardSizeValue)
   const { cardWidth, cardHeight } = cardSize || {}
-  // console.log('Data passed to  componeent:', data)
+
   useEffect(() => {
     if (annotated) {
       return

@@ -286,17 +286,28 @@
 
 // export default TheoryCircles
 import React, { useState } from 'react'
-import { Animated, View, Text, StyleSheet } from 'react-native'
+import {
+  Animated,
+  View,
+  Image,
+  Text,
+  Pressable,
+  StyleSheet,
+} from 'react-native'
 import CircleTheorySingle from './CircleTheorySingle'
+import { keys } from '../data/KeyCards'
 
 const scoreCircleRadius = 100
-const marginCircleValue = 1
+const marginCircleValue = 2
 const createInitPositions = () => ({
   x: new Animated.Value(0),
   y: new Animated.Value(0),
 })
 
 const TheoryCircles = () => {
+  const [keysIdx, setKeysIdx] = useState(0)
+  // const [selected, setSelected] = useState(keys[keysIdx])
+
   const [positions] = useState({
     2: createInitPositions(),
     3: createInitPositions(),
@@ -388,109 +399,138 @@ const TheoryCircles = () => {
 
   setTimeout(() => moveCircles(), 2000)
 
+  let topIdx = clampIdx(keysIdx + 11)
+
+  function clampIdx(inpt) {
+    return inpt > 11 ? inpt - 12 : inpt
+  }
+
+  function incrementKey() {
+    setKeysIdx((x) => (x === 11 ? 0 : x + 1))
+  }
+
   return (
-    <View style={styles.container}>
-      <CircleTheorySingle
-        positions={positions}
-        circle={[styles.circle, { backgroundColor: 'aqua' }]}
-        textStyle={[styles.text, { color: 'black' }]}
-        text={'b6'}
-      />
+    <>
+      <View style={styles.container}>
+        <Pressable style={styles.imageView} onPress={() => incrementKey()}>
+          <Image source={keys[keysIdx].imgSrc} style={styles.image} />
+        </Pressable>
+        <View style={styles.circlesContainer}>
+          <CircleTheorySingle
+            positions={positions}
+            circle={[styles.circle, { backgroundColor: 'aqua' }]}
+            textStyle={[styles.text, { color: 'black' }]}
+            text={'b6'}
+            source={keys[clampIdx(keysIdx + 8)]}
+          />
 
-      <CircleTheorySingle
-        positions={positions}
-        circle={[styles.circle, { backgroundColor: 'red' }]}
-        textStyle={[styles.text, { color: 'black' }]}
-        text={'b5'}
-      />
+          <CircleTheorySingle
+            positions={positions}
+            circle={[styles.circle, { backgroundColor: 'red' }]}
+            textStyle={[styles.text, { color: 'black' }]}
+            text={'b5'}
+            source={keys[clampIdx(keysIdx + 6)]}
+          />
 
-      <CircleTheorySingle
-        positions={positions}
-        circle={[styles.circle, { backgroundColor: 'orange' }]}
-        textStyle={[styles.text, { color: 'black' }]}
-        text={'6'}
-      />
+          <CircleTheorySingle
+            positions={positions}
+            circle={[styles.circle, { backgroundColor: 'orange' }]}
+            textStyle={[styles.text, { color: 'black' }]}
+            text={'6'}
+            source={keys[clampIdx(keysIdx + 9)]}
+          />
 
-      <CircleTheorySingle
-        positions={positions}
-        circle={[styles.circle, { backgroundColor: 'purple' }]}
-        textStyle={[styles.text, { color: 'black' }]}
-        text={'5'}
-      />
+          <CircleTheorySingle
+            positions={positions}
+            circle={[styles.circle, { backgroundColor: 'purple' }]}
+            textStyle={[styles.text, { color: 'black' }]}
+            text={'5'}
+            source={keys[clampIdx(keysIdx + 7)]}
+          />
 
-      {/* <View
+          <CircleTheorySingle
+            positions={positions}
+            circle={[styles.circle, { backgroundColor: 'aqua' }]}
+            textStyle={[styles.text, { color: 'black' }]}
+            text={'b7'}
+            source={keys[clampIdx(keysIdx + 10)]}
+          />
+
+          <CircleTheorySingle
+            positions={positions}
+            circle={[styles.circle, { backgroundColor: 'orange' }]}
+            textStyle={[styles.text, { color: 'black' }]}
+            text={'7'}
+            source={keys[clampIdx(keysIdx + 11)]}
+          />
+
+          <CircleTheorySingle
+            positions={positions}
+            circle={[styles.circle, { zIndex: 9999 }]}
+            textStyle={[styles.text, { color: 'black' }]}
+            text={'R'}
+            source={keys[keysIdx]}
+          />
+
+          <CircleTheorySingle
+            positions={positions}
+            circle={[styles.circle, { backgroundColor: 'purple' }]}
+            textStyle={[styles.text, { color: 'black' }]}
+            text={'4'}
+            source={keys[clampIdx(keysIdx + 5)]}
+          />
+
+          <CircleTheorySingle
+            positions={positions}
+            circle={[styles.circle, { backgroundColor: 'red' }]}
+            textStyle={[styles.text, { color: 'black' }]}
+            text={'#4'}
+            source={keys[clampIdx(keysIdx + 6)]}
+          />
+
+          <CircleTheorySingle
+            positions={positions}
+            circle={[styles.circle, { backgroundColor: 'orange' }]}
+            textStyle={[styles.text, { color: 'black' }]}
+            text={'2'}
+            source={keys[clampIdx(keysIdx + 2)]}
+          />
+
+          <CircleTheorySingle
+            positions={positions}
+            circle={[styles.circle, { backgroundColor: 'orange' }]}
+            textStyle={[styles.text, { color: 'black' }]}
+            text={'3'}
+            source={keys[clampIdx(keysIdx + 4)]}
+          />
+
+          <CircleTheorySingle
+            positions={positions}
+            circle={[styles.circle, { backgroundColor: 'aqua' }]}
+            textStyle={[styles.text, { color: 'black' }]}
+            text={'b2'}
+            source={keys[clampIdx(keysIdx + 1)]}
+          />
+
+          <CircleTheorySingle
+            positions={positions}
+            circle={[styles.circle, { backgroundColor: 'aqua' }]}
+            textStyle={[styles.text, { color: 'black' }]}
+            text={'b3'}
+            source={keys[clampIdx(keysIdx + 3)]}
+          />
+        </View>
+        <View
           style={{
             justifyContent: 'center',
-            marginTop: 10,
+            marginTop: 'auto',
           }}
         >
           <Text style={[styles.text, { color: 'white' }]}>Enharmonic</Text>
           <Text style={[styles.text, { color: 'white' }]}>Same Pitch</Text>
-        </View> */}
-
-      <CircleTheorySingle
-        positions={positions}
-        circle={[styles.circle, { backgroundColor: 'aqua' }]}
-        textStyle={[styles.text, { color: 'black' }]}
-        text={'b7'}
-      />
-
-      <CircleTheorySingle
-        positions={positions}
-        circle={[styles.circle, { backgroundColor: 'orange' }]}
-        textStyle={[styles.text, { color: 'black' }]}
-        text={'7'}
-      />
-
-      <CircleTheorySingle
-        positions={positions}
-        circle={[styles.circle, { zIndex: 9999 }]}
-        textStyle={[styles.text, { color: 'black' }]}
-        text={'R'}
-      />
-
-      <CircleTheorySingle
-        positions={positions}
-        circle={[styles.circle, { backgroundColor: 'purple' }]}
-        textStyle={[styles.text, { color: 'black' }]}
-        text={'4'}
-      />
-
-      <CircleTheorySingle
-        positions={positions}
-        circle={[styles.circle, { backgroundColor: 'red' }]}
-        textStyle={[styles.text, { color: 'black' }]}
-        text={'#4'}
-      />
-
-      <CircleTheorySingle
-        positions={positions}
-        circle={[styles.circle, { backgroundColor: 'orange' }]}
-        textStyle={[styles.text, { color: 'black' }]}
-        text={'2'}
-      />
-
-      <CircleTheorySingle
-        positions={positions}
-        circle={[styles.circle, { backgroundColor: 'orange' }]}
-        textStyle={[styles.text, { color: 'black' }]}
-        text={'3'}
-      />
-
-      <CircleTheorySingle
-        positions={positions}
-        circle={[styles.circle, { backgroundColor: 'aqua' }]}
-        textStyle={[styles.text, { color: 'black' }]}
-        text={'b2'}
-      />
-
-      <CircleTheorySingle
-        positions={positions}
-        circle={[styles.circle, { backgroundColor: 'aqua' }]}
-        textStyle={[styles.text, { color: 'black' }]}
-        text={'b3'}
-      />
-    </View>
+        </View>
+      </View>
+    </>
   )
 }
 
@@ -498,43 +538,28 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: 'black',
+    flexDirection: 'row-reverse',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  circlesContainer: {
+    flex: 1,
+    backgroundColor: 'black',
     flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center',
   },
-  centerColumn: {
-    borderColor: 'white',
-    borderWidth: 2,
-    flexDirection: 'column',
-    justifyContent: 'center',
-    alignItems: 'center',
-    // position: 'relative',
-  },
-  leftInnerColumn: {
-    height: '%100',
-    flexDirection: 'column',
-    // justifyContent: 'center',
-    // alignItems: 'center',
-  },
-  rightInnerColumn: {
-    height: '%100',
-    flexDirection: 'column',
-    // justifyContent: 'center',
-    // alignItems: 'center',
-  },
-  leftOuterColumn: {
+  image: {
     flex: 1,
-    height: '40%',
-    flexDirection: 'column',
-    justifyContent: 'space-between',
-    alignItems: 'flex-end',
+    height: '100%',
+    maxHeight: '100%',
+    flexShrink: 1,
+    resizeMode: 'contain',
+    zIndex: 10,
   },
-  rightOuterColumn: {
-    flex: 1,
-    height: '40%',
-    flexDirection: 'column',
-    justifyContent: 'space-between',
-    alignItems: 'flex-start',
+  imageView: {
+    height: 100,
+    width: 100,
   },
   circle: {
     width: scoreCircleRadius,
