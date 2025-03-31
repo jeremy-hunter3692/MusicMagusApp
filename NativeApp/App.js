@@ -86,6 +86,7 @@ export default function App() {
           elevation: 5,
         }}
       >
+        {/* 
         <View
           style={{
             margin: 0,
@@ -181,8 +182,8 @@ export default function App() {
             )}
           </>
         )}
-
-        {/* <TheoryCirlces /> */}
+*/}
+        <TheoryCirlces />
       </SafeAreaView>
     </>
   )
