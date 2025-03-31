@@ -309,32 +309,35 @@ const TheoryCircles = () => {
     b5: createInitPositions(),
     b6: createInitPositions(),
     b7: createInitPositions(),
-
-    '#4':createInitPositions(),
+    '#4': createInitPositions(),
     R: createInitPositions(),
   })
 
   const outerX = 2 * (scoreCircleRadius + marginCircleValue)
   const almostOuterY = 1.2 * scoreCircleRadius + 2 * marginCircleValue
+  const innerX = scoreCircleRadius + marginCircleValue
+  const innerY = scoreCircleRadius / 2 + marginCircleValue
+  const innerCenterY = scoreCircleRadius + marginCircleValue
+  const outerCenterY = 2 * (scoreCircleRadius + marginCircleValue)
   const targetPositions = {
     2: {
-      x: scoreCircleRadius + marginCircleValue,
-      y: -scoreCircleRadius / 2 + marginCircleValue,
+      x: innerX,
+      y: -innerY,
     },
     3: {
-      x: scoreCircleRadius + marginCircleValue,
-      y: scoreCircleRadius / 2 + marginCircleValue,
+      x: innerX,
+      y: innerY,
     },
-    4: { x: 0, y: scoreCircleRadius + marginCircleValue },
+    4: { x: 0, y: innerCenterY },
     5: {
-      x: -(scoreCircleRadius + marginCircleValue),
-      y: scoreCircleRadius / 2 + marginCircleValue,
+      x: -innerX,
+      y: innerY,
     },
     6: {
-      x: -(scoreCircleRadius + marginCircleValue),
-      y: -(scoreCircleRadius / 2 + marginCircleValue),
+      x: -innerX,
+      y: -innerY,
     },
-    7: { x: 0, y: -scoreCircleRadius + marginCircleValue },
+    7: { x: 0, y: -innerCenterY },
 
     b2: {
       x: outerX,
@@ -352,8 +355,8 @@ const TheoryCircles = () => {
       x: -outerX,
       y: -almostOuterY,
     },
-    b7: { x: 0, y: -2 * (scoreCircleRadius + marginCircleValue) },
-    '#4': { x: 0, y: 2 * (scoreCircleRadius + marginCircleValue) },
+    b7: { x: 0, y: -outerCenterY },
+    '#4': { x: 0, y: outerCenterY },
     R: { x: 0, y: 0 }, // Center circle
   }
 
