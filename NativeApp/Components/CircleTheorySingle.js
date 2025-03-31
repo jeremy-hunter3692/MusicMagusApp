@@ -3,7 +3,7 @@ import { Animated, View, Text, StyleSheet } from 'react-native'
 
 const CircleTheorySingle = ({ text, source, circle, textStyle, positions }) => {
   const fixedCircle = { ...circle[0], ...circle[1] }
-  console.log(source)
+
   return (
     <View>
       <Animated.View
