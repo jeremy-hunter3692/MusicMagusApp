@@ -1,11 +1,28 @@
-import React from 'react'
-import { Animated, View, Text, StyleSheet } from 'react-native'
+import React, { useState } from 'react'
+import { Animated, Pressable, View, Text, StyleSheet } from 'react-native'
+import PlaySound from './SingleNotePlayer'
 
-const CircleTheorySingle = ({ text, source, circle, textStyle, positions }) => {
+const CircleTheorySingle = ({
+  text,
+
+  circle,
+  textStyle,
+  positions,
+  selectedBool,
+  data,
+}) => {
+  const [playState, setPlayState] = useState(false)
+  const [note, setNotes] = useState(null)
+  //TODOOwas for old problem with Root note Z index might not need
   const fixedCircle = { ...circle[0], ...circle[1] }
+
+  function cirlcePress() {
+    setNotes(data)
+  }
 
   return (
     <View>
+      <PlaySound inpt={note} />
       <Animated.View
         key={text}
         style={[
@@ -16,24 +33,30 @@ const CircleTheorySingle = ({ text, source, circle, textStyle, positions }) => {
               { translateY: positions[text].y },
             ],
           },
+          selectedBool && styles.shadowBox,
         ]}
-        ref={(ref) => {
-          if (ref) {
-            ref.measure((x, y, width, height, pageX, pageY) => {})
-          }
-        }}
       >
-        <View style={circle}>
+        <Pressable onPress={cirlcePress} style={circle}>
           <Text style={textStyle}>{text}</Text>
-        </View>
-        <View>
+        </Pressable>
+        {/* <View> TO DOO this was for checking source prop passing correctlty
           <Text style={{ color: 'white' }}>
             {'           :' + source?.name}
           </Text>
-        </View>
+        </View> */}
       </Animated.View>
     </View>
   )
 }
 
 export default CircleTheorySingle
+
+const styles = StyleSheet.create({
+  shadowBox: {
+    shadowColor: 'white', // Shadow color
+    shadowOffset: { width: 0, height: 5 }, // Offset for the shadow
+    shadowOpacity: 0.5, // Opacity of the shadow
+    shadowRadius: 0.84, // Blur radius of the shadow
+    elevation: 5,
+  },
+})

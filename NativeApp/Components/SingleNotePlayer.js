@@ -6,7 +6,7 @@ const PlaySound = ({ inpt, playBool }) => {
   const [note, setNote] = useState(inpt)
   const isPlayingRef = useRef(false)
 
-  // console.log('note player', inpt, playBool)
+  // console.log('note player', inpt, playBool, note)
   useEffect(() => {
     return note
       ? () => {
@@ -16,6 +16,7 @@ const PlaySound = ({ inpt, playBool }) => {
   }, [note])
 
   useEffect(() => {
+    console.log('use', playBool, inpt)
     playNote()
   }, [playBool, inpt])
 

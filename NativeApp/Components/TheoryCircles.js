@@ -296,9 +296,10 @@ import {
 } from 'react-native'
 import CircleTheorySingle from './CircleTheorySingle'
 import { keys } from '../data/KeyCards'
+import { noteAudioSrc } from '../data/NotesAudiosSrc'
 
 const scoreCircleRadius = 100
-const marginCircleValue = 2
+const marginCircleValue = 4
 const createInitPositions = () => ({
   x: new Animated.Value(0),
   y: new Animated.Value(0),
@@ -396,15 +397,43 @@ const TheoryCircles = () => {
     })
     Animated.parallel(animations).start()
   }
+  const moveSelectedCircles = () => {
+    const animationTime = 50
+    const animations = Object.keys(positions).map((key) => {
+      const position = positions[key]
+      const target = targetPositions[key]
 
-  setTimeout(() => moveCircles(), 2000)
+      if (!position || !target) {
+        console.error(`Invalid key: ${key}`)
+        return null
+      }
 
-  let topIdx = clampIdx(keysIdx + 11)
-
-  function clampIdx(inpt) {
-    return inpt > 11 ? inpt - 12 : inpt
+      // Animate the circle at the given index to the specific target X and Y values
+      if (key != 'R' && key != '#4' && key != 'b5') {
+        return Animated.parallel([
+          Animated.timing(position.y, {
+            toValue: target.y - 2,
+            duration: animationTime,
+            useNativeDriver: true,
+          }),
+        ])
+      } else return
+    })
+    Animated.parallel(animations).start()
   }
 
+  setTimeout(() => moveCircles(), 2000)
+  setTimeout(() => moveSelectedCircles(), 6000)
+
+  function clampIdx(inpt) {
+    //TODO renameto return audio
+
+    if (inpt > 11) {
+      return noteAudioSrc[inpt - 12].audioSrc[2]
+    } else {
+      return noteAudioSrc[inpt].audioSrc[1]
+    }
+  }
   function incrementKey() {
     setKeysIdx((x) => (x === 11 ? 0 : x + 1))
   }
@@ -414,21 +443,21 @@ const TheoryCircles = () => {
       text: 'b6',
       color: 'black',
       backgroundColor: 'aqua',
-      source: keys[clampIdx(keysIdx + 8)],
+      source: clampIdx(keysIdx + 8),
       selectedBool: false,
     },
     {
       text: 'b5',
       color: 'black',
       backgroundColor: 'red',
-      source: keys[clampIdx(keysIdx + 6)],
+      source: clampIdx(keysIdx + 6),
       selectedBool: false,
     },
     {
       text: '6',
       color: 'black',
       backgroundColor: 'orange',
-      source: keys[clampIdx(keysIdx + 9)],
+      source: clampIdx(keysIdx + 9),
       selectedBool: false,
     },
 
@@ -436,21 +465,21 @@ const TheoryCircles = () => {
       text: '5',
       color: 'black',
       backgroundColor: 'purple',
-      source: keys[clampIdx(keysIdx + 7)],
+      source: clampIdx(keysIdx + 7),
       selectedBool: false,
     },
     {
       text: 'b7',
       color: 'black',
       backgroundColor: 'aqua',
-      source: keys[clampIdx(keysIdx + 10)],
+      source: clampIdx(keysIdx + 10),
       selectedBool: false,
     },
     {
       text: '7',
       color: 'black',
       backgroundColor: 'orange',
-      source: keys[clampIdx(keysIdx + 11)],
+      source: clampIdx(keysIdx + 11),
       selectedBool: false,
     },
 
@@ -458,50 +487,73 @@ const TheoryCircles = () => {
       text: '4',
       color: 'black',
       backgroundColor: 'purple',
-      source: keys[clampIdx(keysIdx + 5)],
+      source: clampIdx(keysIdx + 5),
       selectedBool: false,
     },
     {
       text: '#4',
       color: 'black',
       backgroundColor: 'red',
-      source: keys[clampIdx(keysIdx + 6)],
+      source: clampIdx(keysIdx + 6),
       selectedBool: false,
     },
     {
       text: '2',
       color: 'black',
       backgroundColor: 'orange',
-      source: keys[clampIdx(keysIdx + 2)],
+      source: clampIdx(keysIdx + 2),
       selectedBool: false,
     },
     {
       text: '3',
       color: 'black',
       backgroundColor: 'orange',
-      source: keys[clampIdx(keysIdx + 4)],
+      source: clampIdx(keysIdx + 4),
       selectedBool: false,
     },
     {
       text: 'b2',
       color: 'black',
       backgroundColor: 'aqua',
-      source: keys[clampIdx(keysIdx + 1)],
+      source: clampIdx(keysIdx + 1),
       selectedBool: false,
     },
     {
       text: 'b3',
       color: 'black',
       backgroundColor: 'aqua',
-      source: keys[clampIdx(keysIdx + 3)],
+      source: clampIdx(keysIdx + 3),
       selectedBool: false,
     },
     {
       text: 'R',
       color: 'black',
       zIndex: 9999,
-      source: keys[clampIdx(keysIdx)],
+      source: clampIdx(keysIdx),
       selectedBool: false,
+    },
+  ]
+
+  const sideBarData = [
+    {
+      text: 'equidistant',
+      idx: 1,
+    },
+    {
+      text: 'color notes',
+      idx: 2,
+    },
+    {
+      text: 'Going home notes',
+      idx: 6,
+    },
+    {
+      text: 'flatten notes',
+      idx: 11,
+    },
+    {
+      text: 'Home Tree/Root',
+      idx: 12,
     },
   ]
 
@@ -522,14 +574,15 @@ const TheoryCircles = () => {
               zIndex,
               selectedBool,
             } = x
+
             return (
               <CircleTheorySingle
                 key={text}
                 positions={positions}
                 circle={[styles.circle, { backgroundColor: backgroundColor }]}
-                textStyle={[styles.text, { color: color }]}
+                textStyle={styles.text}
                 text={text}
-                source={source}
+                data={source}
                 zIndex={zIndex}
                 selectedBool={selectedBool}
               />
@@ -537,71 +590,27 @@ const TheoryCircles = () => {
           })}
         </View>
         <View style={styles.sideBarCont}>
-          <View style={styles.sideBarRowCont}>
-            <View
-              style={[
-                styles.circle,
-                {
-                  backgroundColor: cirlcesData[7].backgroundColor,
-                  position: 'relative',
-                },
-              ]}
-              textStyle={[styles.text, { color: 'black' }]}
-            ></View>
-            <Text style={styles.sideBarText}>equidistant enharmonic notes</Text>
-          </View>
-          <View style={styles.sideBarRowCont}>
-            <View
-              style={[
-                styles.circle,
-                {
-                  backgroundColor: cirlcesData[6].backgroundColor,
-                  position: 'relative',
-                },
-              ]}
-              textStyle={[styles.text, { color: 'black' }]}
-            ></View>
-            <Text style={styles.sideBarText}>Home notes</Text>
-          </View>
-          <View style={styles.sideBarRowCont}>
-            <View
-              style={[
-                styles.circle,
-                {
-                  backgroundColor: cirlcesData[2].backgroundColor,
-                  position: 'relative',
-                },
-              ]}
-              textStyle={[styles.text, { color: 'black' }]}
-            ></View>
-            <Text style={styles.sideBarText}>color notes</Text>
-          </View>
-          <View style={styles.sideBarRowCont}>
-            <View
-              style={[
-                styles.circle,
-                {
-                  backgroundColor: cirlcesData[11].backgroundColor,
-                  position: 'relative',
-                },
-              ]}
-              textStyle={[styles.text, { color: 'black' }]}
-            ></View>
-            <Text style={styles.sideBarText}>Flatten Notes</Text>
-          </View>
-          <View style={styles.sideBarRowCont}>
-            <View
-              style={[
-                styles.circle,
-                {
-                  backgroundColor: cirlcesData[12].backgroundColor,
-                  position: 'relative',
-                },
-              ]}
-              textStyle={[styles.text, { color: 'black' }]}
-            ></View>
-            <Text style={styles.sideBarText}>Root/Named Note of the scale</Text>
-          </View>
+          {sideBarData.map((x) => {
+            {
+              const { idx, text } = x
+
+              return (
+                <View style={styles.sideBarRowCont}>
+                  <View
+                    style={[
+                      styles.circle,
+                      {
+                        backgroundColor: cirlcesData[idx].backgroundColor,
+                        position: 'relative',
+                      },
+                    ]}
+                    textStyle={[styles.text, { color: 'black' }]}
+                  ></View>
+                  <Text style={styles.sideBarText}>{text}</Text>
+                </View>
+              )
+            }
+          })}
         </View>
       </View>
     </>
@@ -651,6 +660,7 @@ const styles = StyleSheet.create({
   text: {
     fontSize: 18,
     fontWeight: 'bold',
+    color: 'white',
   },
   sideBarText: {
     fontSize: 10,
@@ -662,7 +672,7 @@ const styles = StyleSheet.create({
   },
   sideBarRowCont: {
     flexDirection: 'row',
-
+    alignItems: 'center',
     justifyContent: 'flex-start',
     backgroundColor: 'black',
   },
