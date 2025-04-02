@@ -285,7 +285,7 @@
 // })
 
 // export default TheoryCircles
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import {
   Animated,
   View,
@@ -307,7 +307,7 @@ const createInitPositions = () => ({
 
 const TheoryCircles = () => {
   const [keysIdx, setKeysIdx] = useState(0)
-  // const [selected, setSelected] = useState(keys[keysIdx])
+  const [selectedCircles, setSelected] = useState([])
 
   const [positions] = useState({
     2: createInitPositions(),
@@ -373,7 +373,7 @@ const TheoryCircles = () => {
   }
 
   const moveCircles = () => {
-    const animationTime = 2000
+    const animationTime = 1000
     const animations = Object.keys(positions).map((key) => {
       const position = positions[key]
       const target = targetPositions[key]
@@ -397,33 +397,45 @@ const TheoryCircles = () => {
     })
     Animated.parallel(animations).start()
   }
-  const moveSelectedCircles = () => {
+  const moveSelectedCircles = (selectedArr) => {
+    console.log('move')
     const animationTime = 50
+
     const animations = Object.keys(positions).map((key) => {
-      const position = positions[key]
-      const target = targetPositions[key]
+      if (selectedArr.includes(key)) {
+        const position = positions[key]
+        const target = targetPositions[key]
 
-      if (!position || !target) {
-        console.error(`Invalid key: ${key}`)
-        return null
-      }
+        if (!position || !target) {
+          console.error(`Invalid key: ${key}`)
+          return null
+        }
 
-      // Animate the circle at the given index to the specific target X and Y values
-      if (key != 'R' && key != '#4' && key != 'b5') {
         return Animated.parallel([
           Animated.timing(position.y, {
-            toValue: target.y - 2,
+            toValue: target.y - 10,
             duration: animationTime,
             useNativeDriver: true,
           }),
         ])
-      } else return
+      }
     })
     Animated.parallel(animations).start()
   }
+  //TO DO probably not use effect for this
+  useEffect(() => {
+    const moveCirclesTimeout = setTimeout(() => moveCircles(), 1000)
+    const moveSelectedTimeout = setTimeout(() => {
+      let selection = ['R', 'b7', '2']
+      setSelected(selection)
+      moveSelectedCircles(selection)
+    }, 4000)
 
-  setTimeout(() => moveCircles(), 2000)
-  setTimeout(() => moveSelectedCircles(), 6000)
+    return () => {
+      clearTimeout(moveCirclesTimeout)
+      clearTimeout(moveSelectedTimeout)
+    }
+  }, [])
 
   function clampIdx(inpt) {
     //TODO renameto return audio
@@ -584,7 +596,7 @@ const TheoryCircles = () => {
                 text={text}
                 data={source}
                 zIndex={zIndex}
-                selectedBool={selectedBool}
+                selectedBool={selectedCircles.includes(text)}
               />
             )
           })}
@@ -595,7 +607,7 @@ const TheoryCircles = () => {
               const { idx, text } = x
 
               return (
-                <View style={styles.sideBarRowCont}>
+                <View key={text + 'sidebar'} style={styles.sideBarRowCont}>
                   <View
                     style={[
                       styles.circle,

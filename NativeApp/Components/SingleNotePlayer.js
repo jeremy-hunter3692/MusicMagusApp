@@ -16,7 +16,6 @@ const PlaySound = ({ inpt, playBool }) => {
   }, [note])
 
   useEffect(() => {
-    console.log('use', playBool, inpt)
     playNote()
   }, [playBool, inpt])
 
