@@ -398,7 +398,6 @@ import { noteAudioSrc } from '../data/NotesAudiosSrc'
 
 const scoreCircleRadius = 100
 const marginCircleValue = 4
-const createInitPositions = () => ({})
 
 const circleNames = [
   'b2',
@@ -419,19 +418,19 @@ const circleNamesIdxForNotse = [1, 2, 3, 4, 5, 6, 6, 7, 8, 9, 10, 11, 0]
 const sideBarData = [
   {
     text: 'equidistant',
-    idx: 1,
+    idx: 5,
   },
   {
     text: 'color notes',
-    idx: 2,
+    idx: 1,
   },
   {
     text: 'Going home notes',
-    idx: 6,
+    idx: 4,
   },
   {
     text: 'flatten notes',
-    idx: 11,
+    idx: 0,
   },
   {
     text: 'Home Tree/Root',
