@@ -285,6 +285,104 @@
 // })
 
 // export default TheoryCircles
+// const cirlcesData = [
+//   {
+//     text: 'b6',
+//     color: 'black',
+//     backgroundColor: 'aqua',
+//     source: clampIdx(keysIdx + 8),
+//   },
+//   {
+//     text: 'b5',
+//     color: 'black',
+//     backgroundColor: 'red',
+//     source: clampIdx(keysIdx + 6),
+//   },
+//   {
+//     text: '6',
+//     color: 'black',
+//     backgroundColor: 'orange',
+//     source: clampIdx(keysIdx + 9),
+//   },
+
+//   {
+//     text: '5',
+//     color: 'black',
+//     backgroundColor: 'purple',
+//     source: clampIdx(keysIdx + 7),
+//   },
+//   {
+//     text: 'b7',
+//     color: 'black',
+//     backgroundColor: 'aqua',
+//     source: clampIdx(keysIdx + 10),
+//   },
+//   {
+//     text: '7',
+//     color: 'black',
+//     backgroundColor: 'orange',
+//     source: clampIdx(keysIdx + 11),
+//   },
+
+//   {
+//     text: '4',
+//     color: 'black',
+//     backgroundColor: 'purple',
+//     source: clampIdx(keysIdx + 5),
+//   },
+//   {
+//     text: '#4',
+//     color: 'black',
+//     backgroundColor: 'red',
+//     source: clampIdx(keysIdx + 6),
+//   },
+//   {
+//     text: '2',
+//     color: 'black',
+//     backgroundColor: 'orange',
+//     source: clampIdx(keysIdx + 2),
+//   },
+//   {
+//     text: '3',
+//     color: 'black',
+//     backgroundColor: 'orange',
+//     source: clampIdx(keysIdx + 4),
+//   },
+//   {
+//     text: 'b2',
+//     color: 'black',
+//     backgroundColor: 'aqua',
+//     source: clampIdx(keysIdx + 1),
+//   },
+//   {
+//     text: 'b3',
+//     color: 'black',
+//     backgroundColor: 'aqua',
+//     source: clampIdx(keysIdx + 3),
+//   },
+//   {
+//     text: 'R',
+//     color: 'black',
+//     zIndex: 9999,
+//     source: clampIdx(keysIdx),
+//   },
+// ]
+
+// const [positions] = useState({
+//   2: createInitPositions(),
+//   3: createInitPositions(),
+//   4: createInitPositions(),
+//   5: createInitPositions(),
+//   6: createInitPositions(),
+//   7: createInitPositions(),
+//   b2: createInitPositions(),
+//   b3: createInitPositions(),
+//   b5: createInitPositions(),
+//   b6: createInitPositions(),
+//   b7: createInitPositions(),
+//   '#4': createInitPositions(),
+//   R: createInitPositions(),
+// })
 import React, { useState, useEffect } from 'react'
 import {
   Animated,
@@ -300,30 +398,104 @@ import { noteAudioSrc } from '../data/NotesAudiosSrc'
 
 const scoreCircleRadius = 100
 const marginCircleValue = 4
-const createInitPositions = () => ({
-  x: new Animated.Value(0),
-  y: new Animated.Value(0),
-})
+const createInitPositions = () => ({})
+
+const circleNames = [
+  'b2',
+  '2',
+  'b3',
+  '3',
+  '4',
+  '#4',
+  'b5',
+  '5',
+  'b6',
+  '6',
+  'b7',
+  '7',
+  'R',
+]
+const circleNamesIdxForNotse = [1, 2, 3, 4, 5, 6, 6, 7, 8, 9, 10, 11, 0]
+const sideBarData = [
+  {
+    text: 'equidistant',
+    idx: 1,
+  },
+  {
+    text: 'color notes',
+    idx: 2,
+  },
+  {
+    text: 'Going home notes',
+    idx: 6,
+  },
+  {
+    text: 'flatten notes',
+    idx: 11,
+  },
+  {
+    text: 'Home Tree/Root',
+    idx: 12,
+  },
+]
+function makePositions(inptArr) {
+  const returnObj = {}
+  inptArr.forEach(
+    (x) =>
+      (returnObj[x] = { x: new Animated.Value(0), y: new Animated.Value(0) })
+  )
+  return returnObj
+}
 
 const TheoryCircles = () => {
   const [keysIdx, setKeysIdx] = useState(0)
   const [selectedCircles, setSelected] = useState([])
+  const [positions] = useState(makePositions(circleNames))
 
-  const [positions] = useState({
-    2: createInitPositions(),
-    3: createInitPositions(),
-    4: createInitPositions(),
-    5: createInitPositions(),
-    6: createInitPositions(),
-    7: createInitPositions(),
-    b2: createInitPositions(),
-    b3: createInitPositions(),
-    b5: createInitPositions(),
-    b6: createInitPositions(),
-    b7: createInitPositions(),
-    '#4': createInitPositions(),
-    R: createInitPositions(),
+  //TO DO probably not use effect for this
+  useEffect(() => {
+    const moveCirclesTimeout = setTimeout(() => moveCircles(), 1000)
+    const moveSelectedTimeout = setTimeout(() => {
+      let selection = ['R', 'b7', '2']
+      setSelected(selection)
+      // moveSelectedCircles(selection)
+    }, 4000)
+
+    return () => {
+      clearTimeout(moveCirclesTimeout)
+      clearTimeout(moveSelectedTimeout)
+    }
+  }, [])
+
+  const cirlcesData = circleNames.map((x, idx) => {
+    let retObj = { text: x, color: 'black', backgroundColor: 'orange' }
+    if (x === '4' || x === '5') {
+      retObj.backgroundColor = 'purple'
+    }
+    if (x === '#4' || x === 'b5') {
+      retObj.backgroundColor = 'red'
+    }
+    if (x === 'R') {
+      retObj.backgroundColor = 'green'
+    }
+    if (x === 'b3' || x === 'b6' || x === 'b7' || x === 'b2') {
+      retObj.backgroundColor = 'aqua'
+    }
+    retObj.source = returnAudioSrcForCirlces(
+      keysIdx + circleNamesIdxForNotse[idx]
+    )
+    return retObj
   })
+
+  function returnAudioSrcForCirlces(inpt) {
+    return inpt > 11
+      ? noteAudioSrc[inpt - 12].audioSrc[2]
+      : noteAudioSrc[inpt].audioSrc[1]
+  }
+
+  function incrementKey() {
+    setKeysIdx((x) => (x === 11 ? 0 : x + 1))
+  }
 
   const outerX = 2 * (scoreCircleRadius + marginCircleValue)
   const almostOuterY = 1.2 * scoreCircleRadius + 2 * marginCircleValue
@@ -371,7 +543,6 @@ const TheoryCircles = () => {
     '#4': { x: 0, y: outerCenterY },
     R: { x: 0, y: 0 }, // Center circle
   }
-
   const moveCircles = () => {
     const animationTime = 1000
     const animations = Object.keys(positions).map((key) => {
@@ -381,7 +552,6 @@ const TheoryCircles = () => {
         console.error(`Invalid key: ${key}`)
         return null
       }
-      // Animate the circle at the given index to the specific target X and Y values
       return Animated.parallel([
         Animated.timing(position.x, {
           toValue: target.x,
@@ -398,19 +568,15 @@ const TheoryCircles = () => {
     Animated.parallel(animations).start()
   }
   const moveSelectedCircles = (selectedArr) => {
-    console.log('move')
     const animationTime = 50
-
     const animations = Object.keys(positions).map((key) => {
       if (selectedArr.includes(key)) {
         const position = positions[key]
         const target = targetPositions[key]
-
         if (!position || !target) {
           console.error(`Invalid key: ${key}`)
           return null
         }
-
         return Animated.parallel([
           Animated.timing(position.y, {
             toValue: target.y - 10,
@@ -422,152 +588,6 @@ const TheoryCircles = () => {
     })
     Animated.parallel(animations).start()
   }
-  //TO DO probably not use effect for this
-  useEffect(() => {
-    const moveCirclesTimeout = setTimeout(() => moveCircles(), 1000)
-    const moveSelectedTimeout = setTimeout(() => {
-      let selection = ['R', 'b7', '2']
-      setSelected(selection)
-      moveSelectedCircles(selection)
-    }, 4000)
-
-    return () => {
-      clearTimeout(moveCirclesTimeout)
-      clearTimeout(moveSelectedTimeout)
-    }
-  }, [])
-
-  function clampIdx(inpt) {
-    //TODO renameto return audio
-
-    if (inpt > 11) {
-      return noteAudioSrc[inpt - 12].audioSrc[2]
-    } else {
-      return noteAudioSrc[inpt].audioSrc[1]
-    }
-  }
-  function incrementKey() {
-    setKeysIdx((x) => (x === 11 ? 0 : x + 1))
-  }
-
-  const cirlcesData = [
-    {
-      text: 'b6',
-      color: 'black',
-      backgroundColor: 'aqua',
-      source: clampIdx(keysIdx + 8),
-      selectedBool: false,
-    },
-    {
-      text: 'b5',
-      color: 'black',
-      backgroundColor: 'red',
-      source: clampIdx(keysIdx + 6),
-      selectedBool: false,
-    },
-    {
-      text: '6',
-      color: 'black',
-      backgroundColor: 'orange',
-      source: clampIdx(keysIdx + 9),
-      selectedBool: false,
-    },
-
-    {
-      text: '5',
-      color: 'black',
-      backgroundColor: 'purple',
-      source: clampIdx(keysIdx + 7),
-      selectedBool: false,
-    },
-    {
-      text: 'b7',
-      color: 'black',
-      backgroundColor: 'aqua',
-      source: clampIdx(keysIdx + 10),
-      selectedBool: false,
-    },
-    {
-      text: '7',
-      color: 'black',
-      backgroundColor: 'orange',
-      source: clampIdx(keysIdx + 11),
-      selectedBool: false,
-    },
-
-    {
-      text: '4',
-      color: 'black',
-      backgroundColor: 'purple',
-      source: clampIdx(keysIdx + 5),
-      selectedBool: false,
-    },
-    {
-      text: '#4',
-      color: 'black',
-      backgroundColor: 'red',
-      source: clampIdx(keysIdx + 6),
-      selectedBool: false,
-    },
-    {
-      text: '2',
-      color: 'black',
-      backgroundColor: 'orange',
-      source: clampIdx(keysIdx + 2),
-      selectedBool: false,
-    },
-    {
-      text: '3',
-      color: 'black',
-      backgroundColor: 'orange',
-      source: clampIdx(keysIdx + 4),
-      selectedBool: false,
-    },
-    {
-      text: 'b2',
-      color: 'black',
-      backgroundColor: 'aqua',
-      source: clampIdx(keysIdx + 1),
-      selectedBool: false,
-    },
-    {
-      text: 'b3',
-      color: 'black',
-      backgroundColor: 'aqua',
-      source: clampIdx(keysIdx + 3),
-      selectedBool: false,
-    },
-    {
-      text: 'R',
-      color: 'black',
-      zIndex: 9999,
-      source: clampIdx(keysIdx),
-      selectedBool: false,
-    },
-  ]
-
-  const sideBarData = [
-    {
-      text: 'equidistant',
-      idx: 1,
-    },
-    {
-      text: 'color notes',
-      idx: 2,
-    },
-    {
-      text: 'Going home notes',
-      idx: 6,
-    },
-    {
-      text: 'flatten notes',
-      idx: 11,
-    },
-    {
-      text: 'Home Tree/Root',
-      idx: 12,
-    },
-  ]
 
   return (
     <>
