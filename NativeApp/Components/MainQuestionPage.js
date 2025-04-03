@@ -91,8 +91,7 @@ const MainQuestionPage = ({
   function getAndSetDroneAudioSource(card) {
     let droneAudioType = droneType ? DoubleBassDrones : SynthDrones
     let source = findNoteEquivalent(card, droneAudioType)
-    console.log({source}, {card})
-    setDroneAudioSrc(source.audioSrc)
+    setDroneAudioSrc(source?.audioSrc)
   }
 
   function droneOnOff() {
@@ -145,9 +144,7 @@ const MainQuestionPage = ({
     } else {
       const { attempt, incrementQuestionNo, shouldReload, whichCircle } =
         returnAnswerType(inpt, correctAnswer, secondAttmept)
-
       secondAttmept++
-
       setScoreSircle((prevArry) => {
         const updatedArr = [...prevArry]
         if (whichCircle !== null) {
@@ -155,7 +152,6 @@ const MainQuestionPage = ({
         }
         return updatedArr
       })
-
       incrementQuestionNo ? questionNumber++ : ''
       shouldReload && questionNumber < 12 ? reloadTimeOut() : ''
       whichCircle ? userScore++ : ''
@@ -205,8 +201,6 @@ const MainQuestionPage = ({
       <View
         style={{
           zIndex: 0,
-          // flexDirection: 'row',
-          // justifyContent: 'center',
           width: '100%',
           backGroundColor: secondaryColor,
         }}
@@ -265,7 +259,6 @@ const MainQuestionPage = ({
             }}
           ></View>
         }
-
         <View style={{ width: cardWidth, height: cardHeight }}>
           {!isRandom ? (
             <PickShape questionAB={questionAB} width={cardWidth} />
@@ -273,7 +266,6 @@ const MainQuestionPage = ({
             ' '
           )}
         </View>
-
         {firstCard?.value && (
           <QuestionCards
             bgColor={bgColor}
@@ -293,7 +285,6 @@ const MainQuestionPage = ({
           />
         )}
       </View>
-
       <View
         style={[
           styles.displayCardsGrid,
@@ -333,15 +324,12 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center',
-
     margin: 2,
     padding: 0,
   },
   topRowCardsBorder: {
     flex: 1,
-
     flexDirection: 'row',
-
     borderWidth: 3,
     borderColor: 'white',
     margin: 0,
@@ -349,7 +337,6 @@ const styles = StyleSheet.create({
   },
   questionCardsCont: {
     flexDirection: 'row',
-    // justifyContent: 'center',
     margin: 0,
     padding: 0,
   },
@@ -366,13 +353,11 @@ const styles = StyleSheet.create({
     backgroundColor: 'red',
     borderColor: 'yellow',
   },
-
   displayCardsGrid: {
     flex: 2,
     margin: 2,
     padding: 0,
   },
-
   displayCardsGridBorder: {
     borderWidth: 1,
     borderColor: 'white',
