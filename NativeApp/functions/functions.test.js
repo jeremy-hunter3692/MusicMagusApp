@@ -296,15 +296,15 @@ describe('annotated card reducer', () => {
     let inpt = { value: keys[0], idx: 0 }
     let answer = getDataForAnnotated(inpt)
     expect(answer.topLText).toBe('Key: C')
-    expect(answer.bottomLText).toBe('Relative Minor:A')
-    expect(answer.bottomRText).toBe('Accidentals :0|')
+    expect(answer.bottomLText).toBe('Relative Minor: A')
+    expect(answer.bottomRText).toBe('Accidentals : 0 ')
     expect(answer.topRText).toBe('')
   })
   test('gets right info for key card Gb', () => {
     let inpt = { value: keys[6], idx: 6 }
     let answer = getDataForAnnotated(inpt)
     expect(answer.topLText).toBe('Key: F#')
-    expect(answer.bottomLText).toBe('Relative Minor:Eb')
+    expect(answer.bottomLText).toBe('Relative Minor: Eb')
     // expect(answer.bottomRText).toBe('Accidentals :6|')
     expect(answer.topRText).toBe('')
   })
@@ -312,8 +312,8 @@ describe('annotated card reducer', () => {
     let inpt = { value: keys[4], idx: 4 }
     let answer = getDataForAnnotated(inpt)
     expect(answer.topLText).toBe('Key: E')
-    expect(answer.bottomLText).toBe('Relative Minor:Db')
-    expect(answer.bottomRText).toBe('Accidentals :4|F#,G#,C#,D#')
+    expect(answer.bottomLText).toBe('Relative Minor: Db')
+    expect(answer.bottomRText).toBe('Accidentals : 4  (F#,G#,C#,D#)')
     expect(answer.topRText).toBe('')
   })
 
@@ -321,16 +321,24 @@ describe('annotated card reducer', () => {
     let inpt = { value: intervals[0], idx: 0 }
     let answer = getDataForAnnotated(inpt)
     expect(answer.topLText).toBe('Interval: 1')
-    expect(answer.bottomLText).toBe('')
-    expect(answer.bottomRText).toBe('Distance to nearest root: 0')
+    expect(answer.bottomLText).toBe(
+      'Distance to nearest root: Up 0 Half-step.   '
+    )
+    expect(answer.bottomRText).toBe(
+      'These Half-steps are pointing up. the number of black ones will tell us how many Half-steps to count Up from any Root note. In this case there is 0. Or we could count the empty triangles and add 6, (in this case there are 12) and count Down from any root note.  '
+    )
     expect(answer.topRText).toBe('')
   })
   test('gets right info for F# interval card', () => {
     let inpt = { value: intervals[6], idx: 6 }
     let answer = getDataForAnnotated(inpt)
     expect(answer.topLText).toBe('Interval: #4/b5')
-    expect(answer.bottomLText).toBe('')
-    expect(answer.bottomRText).toBe('Distance to nearest root: 6')
+    expect(answer.bottomLText).toBe(
+      'Distance to nearest root: Up 6 Half-steps.   '
+    )
+    expect(answer.bottomRText).toBe(
+      'These Half-steps are pointing up. the number of black ones will tell us how many Half-steps to count Up from any Root note. In this case there is 6. Or we could count the empty triangles and add 6, (in this case there are 6) and count Down from any root note.  '
+    )
     expect(answer.topRText).toBe('')
   })
   test('gets right info for C note card', () => {
@@ -367,18 +375,17 @@ describe('annotated card reducer', () => {
   })
 })
 
-describe('return associated text for give score', () => {
+describe('return associated text for given score', () => {
   const scoreTexts = [
     { score: 12, text: 'Perfect!' },
     { score: 10, text: 'Excellent!' },
     { score: 7, text: 'Commendable' },
     { score: 6, text: 'Keep Practising!' },
     { score: 0, text: "Rome wasn't built in a day" },
-
     { score: 11, text: 'Excellent!' },
     { score: 9, text: 'Commendable' },
     { score: 5, text: 'Keep Practising!' },
-    { score: 4, text: "Rome wasn't built in a day" },
+    { score: 3, text: "Rome wasn't built in a day" },
   ]
 
   test.each(scoreTexts)(

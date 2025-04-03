@@ -104,6 +104,8 @@ describe('Question Cards', () => {
     const mockRootCardOnPress = jest.fn()
     const { getAllByTestId } = render(
       <QuestionCards
+        //these values are random should probably get actual values
+        cardSize={{ cardwidth: 100, cardHeight: 150 }}
         firstCard={mockFirstCard}
         secondCard={mockSecondCard}
         rootCardPress={mockRootCardOnPress}
