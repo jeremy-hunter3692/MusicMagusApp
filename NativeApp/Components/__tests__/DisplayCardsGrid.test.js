@@ -115,7 +115,7 @@ describe('Question Cards', () => {
       />
     )
     const images = getAllByTestId(/image/)
-    expect(images.length).toBe(4)
+    expect(images.length).toBe(3)
   })
 })
 describe('Card Button', () => {

@@ -137,7 +137,7 @@ const MainQuestionPage = ({
   }
 
   function userAnswerSetter(inpt) {
-    console.log('inpt', questionNumber)
+
     setUserAnswer(inpt)
     if (isReloading) {
       return
