@@ -13,7 +13,6 @@ import {
   SafeAreaView,
 } from 'react-native'
 import { keys, getIntervalNo } from './data/KeyCards'
-import QuestionIconButtons from './Components/QuestionIconButtons.js'
 
 const themeInit = { bgColor: 'purple', secondaryColor: '#19af59' }
 const secondaryTheme = { bgColor: 'black', secondaryColor: 'purple' }
@@ -23,7 +22,6 @@ export default function App() {
   const [hexKey, setHexKey] = useState(keys[0])
   const [theme, setTheme] = useState(themeInit)
   const [annotatedCard, setAnnotatedCard] = useState()
-  const [questionType, setQuestionType] = useState('Key')
   const [showOptions, setShowOptions] = useState(false)
   const [annotatedCardDisplay, setAnnotatedCardDisplay] = useState(false)
   const [animationsOn, setAnimationsOn] = useState(true)
@@ -38,23 +36,15 @@ export default function App() {
     console.log('TODO-App level', inpt)
   }
 
-  function changeQuestionType(inpt) {
-    let type =
-      inpt === 1
-        ? 'Key'
-        : inpt === 2
-        ? 'Interval'
-        : inpt === 3
-        ? 'Note'
-        : 'Random'
-    setQuestionType(type)
-  }
-
   function handleAnnotatedClick() {
+    console.log('annotatedCard', annotatedCard)
     annotatedCard ? setAnnotatedCard(null) : ''
     setAnnotatedCardDisplay((x) => !x)
   }
 
+  function setAnnotatedMode() {
+    setAnnotatedCardDisplay((x) => !x)
+  }
   function changeTheme() {
     themeBool === true ? setTheme(secondaryTheme) : setTheme(themeInit)
     themeBool = !themeBool
@@ -65,6 +55,10 @@ export default function App() {
   }
   function randomQuestionsSetter() {
     setIsRandom((x) => (x = !x))
+  }
+
+  function showOptionsSetter() {
+    setShowOptions((x) => (x = !x))
   }
   return (
     <>
@@ -86,71 +80,6 @@ export default function App() {
           elevation: 5,
         }}
       >
-         <View
-          style={{
-            margin: 0,
-            fontWeight: 'bold',
-            flex: 0.3,
-            color: 'white',
-            flexDirection: 'row',
-            backgroundColor: theme.secondaryColor,
-            justifyContent: 'flex-end',
-            alignItems: 'center',
-            textAlign: 'center',
-          }}
-        >
-          {annotatedCardDisplay && !annotatedCard && (
-            <Text
-              style={{
-                color: 'white',
-                fontWeight: 'bold',
-                fontColor: 'white',
-                margin: 10,
-              }}
-            >{`Change Question Type Here--->  `}</Text>
-          )}
-
-          {!annotatedCard ? (
-            <>
-              {!isRandom ? (
-                <QuestionIconButtons
-                  changeQuestionType={changeQuestionType}
-                  annotated={annotatedCardDisplay}
-                />
-              ) : (
-                <Text>Randomised Questions</Text>
-              )}
-              <Pressable onPress={() => setShowOptions((x) => (x = !x))}>
-                <Text style={styles.optionText}>
-                  {showOptions ? 'Back' : 'Options'}
-                </Text>
-              </Pressable>
-            </>
-          ) : (
-            ''
-          )}
-          <Pressable onPress={handleAnnotatedClick}>
-            <View
-              style={[
-                {},
-                !annotatedCard && {
-                  backgroundColor: 'white',
-                  width: 30,
-                  height: 30,
-                  borderRadius: 30,
-                  alignSelf: 'flex-end',
-                  justifyContent: 'center',
-                  alignItems: 'center',
-                },
-              ]}
-            >
-              <Text style={{ color: theme.bgColor }}>
-                {annotatedCard ? 'Back' : '?'}
-              </Text>
-            </View>
-          </Pressable>
-        </View>
-
         {showOptions ? (
           <OptionsPage
             height={height}
@@ -158,6 +87,7 @@ export default function App() {
             randomQuestionsSetter={randomQuestionsSetter}
             setAnimations={setAnimations}
             isAnimated={animationsOn}
+            setShowOptions={showOptionsSetter}
           />
         ) : (
           <>
@@ -172,15 +102,17 @@ export default function App() {
               <MainQuestionPage
                 bgColor={theme.bgColor}
                 secondaryColor={theme.secondaryColor}
-                questionType={questionType}
-                setAnnotatedCard={setAnnotatedCard}
                 annotated={annotatedCardDisplay}
                 isRandom={isRandom}
                 isAnimated={animationsOn}
+                setShowOptions={showOptionsSetter}
+                showOptions={showOptions}
+                setAnnotatedCard={handleAnnotatedClick}
+                setAnnotatedMode={setAnnotatedMode}
               />
             )}
           </>
-        )} 
+        )}
 
         {/* <TheoryCirlces /> */}
       </SafeAreaView>

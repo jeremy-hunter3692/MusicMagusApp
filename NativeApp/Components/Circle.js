@@ -17,7 +17,9 @@ const Circle = ({ fillBool, scoreCircleRadius, underLine }) => {
             borderWidth: 2,
             margin: 0,
             padding: 0,
-            width: scoreCircleRadius * 1.5,
+            width: scoreCircleRadius * 1.1,
+            justifyContent: 'center',
+            alignItems: 'center',
             // marginTop: 'auto',
           },
         ]}

@@ -11,6 +11,7 @@ const OptionsPage = ({
   randomQuestionsSetter,
   isAnimated,
   setAnimations,
+  setShowOptions,
 }) => {
   const [droneOnButton, setDroneOnButton] = useState(true)
   const [droneSound, setDroneSound] = useState(true)
@@ -45,6 +46,11 @@ const OptionsPage = ({
 
   return (
     <>
+      <>
+        <Pressable onPress={() => setShowOptions()}>
+          <Text style={styles.backText}> Back </Text>
+        </Pressable>
+      </>
       <View style={{ ...styles.options, height: boxHeight }}>
         <Pressable onPress={droneSoundChange}>
           <View style={{ flexDirection: 'row', alignItems: 'center' }}>
@@ -131,6 +137,12 @@ const styles = StyleSheet.create({
     height: circleSize,
     borderColor: 'black',
     borderRadius: circleSize,
+    margin: 5,
+  },
+  backText: {
+    alignSelf: 'flex-end',
+    color: 'white',
+    fontWeight: 'bold',
     margin: 5,
   },
 })

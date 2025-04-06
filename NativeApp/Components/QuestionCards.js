@@ -30,19 +30,19 @@ const QuestionCards = ({
   isAnimated,
   score,
   newRound,
+  skip,
+  skipQuestion,
 }) => {
-  score = null
+  console.log('use', resultDisplay, score, skip)
 
   useEffect(() => {
-    console.log('use', resultDisplay)
     if (resultDisplay && isAnimated) {
-      console.log('if in use')
       handleFlip(180) // Flip the card to 180 degrees
       setTimeout(() => {
         handleFlip(0) // Flip the card back to 0 degrees after 1 second
       }, newQuestionTimeDelay)
     }
-  }, [resultDisplay])
+  }, [resultDisplay, skip])
 
   function droneSetter() {
     rootCardPress()
@@ -116,11 +116,9 @@ const QuestionCards = ({
       padding: 0,
       zIndex: 1,
       position: 'absolute',
-
       width: '100%',
       height: '100%',
       backfaceVisibility: 'hidden',
-
       // Add any specific styles for the back card if needed
     },
     forAnnotation: {
@@ -143,14 +141,12 @@ const QuestionCards = ({
       borderColor: 'white',
       borderRadius: 10,
       borderWidth: 1,
-
       padding: 5,
       //This Three for margin and height and width is to match with images. TO DO: replace with a prop
       margin: 3,
       height: cardSize.cardHeight - 3,
       width: cardSize.cardWidth - 3,
       justifyContent: 'space-between',
-
       color: 'black',
     },
 
@@ -176,7 +172,6 @@ const QuestionCards = ({
     },
     buttonText: {
       justifyContent: 'center',
-
       color: 'black',
       alignSelf: 'center',
     },
@@ -242,7 +237,6 @@ const QuestionCards = ({
                   animated={isAnimated}
                 />
               </Animated.View>
-
               <Animated.View style={[styles.card, frontAnimatedStyle]}>
                 <CardButton
                   cardSize={cardSize}
@@ -276,7 +270,6 @@ const QuestionCards = ({
               )}
             </>
           )}
-
           {annotated && (
             <>
               <Text style={styles.annotatedText}>Answer To be revealed</Text>
@@ -284,20 +277,31 @@ const QuestionCards = ({
           )}
         </View>
         <View style={styles.forAnnotation}>
-          <View
-            style={[styles.hiddenScoreCard, score && styles.scoreTextContainer]}
+          <Animated.View
+            style={[
+              styles.hiddenScoreCard,
+              frontAnimatedStyle,
+              score || (skip && styles.scoreTextContainer),
+            ]}
           >
-            {score ? (
+            {score || skip ? (
               <>
-                <Text>{''}</Text>
-                <Text style={styles.scoreText}>{score + '/12'}</Text>
-                <Text style={styles.quoteText}>{returnScoreText()} </Text>
-                <Pressable onPress={newRound}>
-                  <Text style={styles.buttonText}>New Round?</Text>
-                </Pressable>
+                {skip ? (
+                  <Pressable onPress={skipQuestion}>
+                    <Text style={styles.buttonText}>Skip Question?</Text>
+                  </Pressable>
+                ) : (
+                  <>
+                    <Text style={styles.scoreText}>{score + '/12'}</Text>
+                    <Text style={styles.quoteText}>{returnScoreText()}</Text>
+                    <Pressable onPress={newRound}>
+                      <Text style={styles.buttonText}>New Round?</Text>
+                    </Pressable>
+                  </>
+                )}
               </>
             ) : null}
-          </View>
+          </Animated.View>
           {annotated && (
             <>
               <Text style={[styles.annotatedText, { alignSelf: 'center' }]}>

@@ -12,6 +12,8 @@ import DisplayCardsGrid from './DisplayCardsGrid.js'
 import Circle from './Circle.js'
 import QuestionCards from './QuestionCards.js'
 import PickShape from './PickShape.js'
+import QuestionIconButtons from './QuestionIconButtons.js'
+
 import { SynthDrones, DoubleBassDrones } from '../data/DroneAudioSources.js'
 //
 import {
@@ -28,7 +30,7 @@ import { noteAudioSrc } from '../data/NotesAudiosSrc.js'
 const stylesBool = false // true
 const newAnswerDelay = 1500
 
-let questionNumber = 0
+let questionNumber = 5
 let secondAttmept = 0
 let droneType = true
 let userScore = 0
@@ -40,7 +42,9 @@ let isReloading = false
 const MainQuestionPage = ({
   bgColor,
   secondaryColor,
-  questionType,
+  showOptions,
+  setShowOptions,
+  setAnnotatedMode,
   setAnnotatedCard,
   annotatedCard,
   annotated,
@@ -53,10 +57,10 @@ const MainQuestionPage = ({
   const [droneAudioSrc, setDroneAudioSrc] = useState(null)
   const [abBool, setabBool] = useState(true)
   const [reloadBool, setReloadBool] = useState(false)
-
+  const [questionType, setQuestionType] = useState('Key')
   const [correctAnswer, setCorrectAnswer] = useState()
   const [userAnswer, setUserAnswer] = useState()
-  const [userScoreDisplay, setScoreDisplay] = useState(0)
+  const [userScoreDisplay, setScoreDisplay] = useState(null)
   const setScoreSircleInit = Array(12).fill(null)
   const [scoreCircles, setScoreSircle] = useState(setScoreSircleInit)
   //Might not need, props should re load the children correctly...?
@@ -66,7 +70,7 @@ const MainQuestionPage = ({
 
   const cardWidth = width > height ? width * 0.1 : width * 0.14
   const cardHeight = cardWidth * 1.5
-
+  console.log({ isAnimated })
   useEffect(() => {
     // let droneSrc
     let answerObj = isRandom
@@ -137,7 +141,6 @@ const MainQuestionPage = ({
   }
 
   function userAnswerSetter(inpt) {
-
     setUserAnswer(inpt)
     if (isReloading) {
       return
@@ -155,7 +158,7 @@ const MainQuestionPage = ({
       incrementQuestionNo ? questionNumber++ : ''
       shouldReload && questionNumber < 12 ? reloadTimeOut() : ''
       whichCircle ? userScore++ : ''
-      secondAttmept = attempt
+      // secondAttmept = attempt
       if (questionNumber > 11) {
         setScoreDisplay(userScore)
         isReloading = true
@@ -166,7 +169,7 @@ const MainQuestionPage = ({
   function skipQuestion() {
     questionNumber++
     secondAttmept = 0
-    reloadTimeOut()
+    reload()
     if (questionNumber > 11) {
       setScoreDisplay(userScore)
       isReloading = true
@@ -180,7 +183,7 @@ const MainQuestionPage = ({
   function gameOver() {
     setDroneAudioSrc(null)
     userScore = 0
-    secondAttmept = false
+    secondAttmept = 0
     questionNumber = 0
     reload()
     setScoreSircle(setScoreSircleInit)
@@ -196,48 +199,96 @@ const MainQuestionPage = ({
     }, newAnswerDelay)
   }
 
+  function changeQuestionType(inpt) {
+    let type =
+      inpt === 1
+        ? 'Key'
+        : inpt === 2
+        ? 'Interval'
+        : inpt === 3
+        ? 'Note'
+        : 'Random'
+    setQuestionType(type)
+  }
+
   return (
     <>
       <View
         style={{
           zIndex: 0,
+          flexDirection: 'row-reverse',
+          flex: 0.3,
+          justifyContent: 'space-between',
           width: '100%',
-          backGroundColor: secondaryColor,
+          backgroundColor: secondaryColor,
         }}
       >
-        <Text
+        <View
+          style={{
+            margin: 0,
+            fontWeight: 'bold',
+            flex: 0.3,
+            color: 'white',
+            flexDirection: 'row',
+            backgroundColor: secondaryColor,
+            justifyContent: 'flex-end',
+            alignItems: 'center',
+            textAlign: 'center',
+          }}
+        >
+          {!annotatedCard ? (
+            <Pressable onPress={() => setShowOptions()}>
+              <Text style={styles.optionText}>Options </Text>
+            </Pressable>
+          ) : (
+            ''
+          )}
+          <Pressable onPress={() => setAnnotatedMode()}>
+            <View
+              style={[
+                {},
+                !annotatedCard && {
+                  backgroundColor: 'white',
+                  width: 30,
+                  height: 30,
+                  borderRadius: 30,
+                  alignSelf: 'flex-end',
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                },
+              ]}
+            >
+              <Text style={{ color: bgColor }}>?</Text>
+            </View>
+          </Pressable>
+        </View>
+        <View
           testID="scoreTempTest"
-          style={[styles.answer, { backgroundColor: secondaryColor }]}
+          style={[styles.scoreCircles, { backgroundColor: secondaryColor }]}
         >
           {scoreCircles.map((x, idx) => {
             let questionNo = idx === questionNumber ? true : false
             return (
               <Circle
                 fillBool={x}
-                scoreCircleRadius={10}
+                scoreCircleRadius={30}
                 key={idx}
                 underLine={questionNo}
               />
             )
           })}
-        </Text>
-        {!userScoreDisplay ? (
-          secondAttmept != 0 && (
-            <Pressable onPressIn={() => skipQuestion()}>
-              <Text style={styles.answer}>Skip question?</Text>
-            </Pressable>
-          )
+        </View>
+        {!isRandom ? (
+          <QuestionIconButtons
+            changeQuestionType={changeQuestionType}
+            bgColor={secondaryColor}
+            // annotated={annotatedCardDisplay}
+          />
         ) : (
-          <>
-            <Text style={styles.answer}>
-              {userScoreDisplay + '/12 -- ' + returnScoreText(userScore)}
-            </Text>
-            <Pressable onPressIn={() => gameOver()}>
-              <Text style={styles.answer}>New Round?</Text>
-            </Pressable>
-          </>
+          <Text>Randomised Questions</Text>
         )}
       </View>
+
       {droneAudioSrc ? (
         <DronePlayer
           rootValue={droneAudioSrc}
@@ -279,9 +330,11 @@ const MainQuestionPage = ({
             cardSize={{ cardWidth: cardWidth, cardHeight: cardHeight }}
             annotated={annotated}
             setAnnotatedCard={setAnnotatedCard}
-            animated={isAnimated}
+            isAnimated={isAnimated}
             score={userScoreDisplay}
             newRound={gameOver}
+            skipQuestion={skipQuestion}
+            skip={secondAttmept > 2 ? true : false}
           />
         )}
       </View>
@@ -310,15 +363,17 @@ const MainQuestionPage = ({
 export default MainQuestionPage
 
 const styles = StyleSheet.create({
-  answer: {
+  scoreCircles: {
+    // borderColor: 'white',
+    // borderWidth: 3,
     margin: 0,
     fontWeight: 'bold',
     flex: 0.1,
     color: 'white',
+    flexDirection: 'row',
     backgroundColor: '#19af59',
-    justifyContent: 'center',
+    justifyContent: 'flex-end',
     alignItems: 'center',
-    textAlign: 'center',
   },
   topRowCards: {
     flexDirection: 'row',
