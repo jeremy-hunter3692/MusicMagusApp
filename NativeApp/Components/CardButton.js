@@ -37,7 +37,7 @@ const CardButton = ({
   const initDealDelay = 30
   const scale = useSharedValue(initCardSizeValue)
   const { cardWidth, cardHeight } = cardSize || {}
-
+  annotated ? console.log('card buttons', data?.name) : ''
   useEffect(() => {
     if (annotated) {
       return
@@ -63,7 +63,7 @@ const CardButton = ({
 
   function cardButtonOnPress(inpt) {
     if (annotated) {
-      setAnnotatedCard(data)
+      setAnnotatedCard(inpt)
     } else {
       // check this for fixing sound first
       autoPlay === true ? setNote(onPress(answer)) : handlePressIn()
@@ -83,8 +83,8 @@ const CardButton = ({
   })
 
   const handlePressIn = () => {
-    scale.value = withSpring(initCardSizeValue, {
-      damping: 20,
+    scale.value = withSpring(1.1, {
+      damping: 200,
       stiffness: 1000,
     })
   }

@@ -33,7 +33,7 @@ const QuestionCards = ({
   skip,
   skipQuestion,
 }) => {
-  console.log('use', resultDisplay, score, skip)
+
 
   useEffect(() => {
     if (resultDisplay && isAnimated) {

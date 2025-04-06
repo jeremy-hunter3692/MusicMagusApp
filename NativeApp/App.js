@@ -36,13 +36,13 @@ export default function App() {
     console.log('TODO-App level', inpt)
   }
 
-  function handleAnnotatedClick() {
-    console.log('annotatedCard', annotatedCard)
-    annotatedCard ? setAnnotatedCard(null) : ''
-    setAnnotatedCardDisplay((x) => !x)
+  function handleAnnotatedClick(inpt) {
+    annotatedCard ? setAnnotatedCard(null) : setAnnotatedCard(inpt)
+    setAnnotatedMode()
   }
 
   function setAnnotatedMode() {
+    console.log('TODO-annotated mode')
     setAnnotatedCardDisplay((x) => !x)
   }
   function changeTheme() {
@@ -95,7 +95,7 @@ export default function App() {
               <View style={styles.annotated}>
                 <AnnotatedCards
                   data={annotatedCard}
-                  setAnnotated={handleAnnotatedClick}
+                  setAnnotated={() => setAnnotatedCard(null)}
                 />
               </View>
             ) : (

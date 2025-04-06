@@ -1,7 +1,6 @@
 import React from 'react'
 import { Image, Text, View, StyleSheet, Pressable } from 'react-native'
 import { getDataForAnnotated } from '../functions/functions.js'
-import { keys } from '../data/KeyCards.js'
 
 const AnnotatedCards = ({ data, setAnnotated }) => {
   const fontSize = 25

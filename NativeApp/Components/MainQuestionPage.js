@@ -70,7 +70,7 @@ const MainQuestionPage = ({
 
   const cardWidth = width > height ? width * 0.1 : width * 0.14
   const cardHeight = cardWidth * 1.5
-  console.log({ isAnimated })
+
   useEffect(() => {
     // let droneSrc
     let answerObj = isRandom
