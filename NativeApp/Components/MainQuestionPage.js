@@ -30,14 +30,14 @@ import { noteAudioSrc } from '../data/NotesAudiosSrc.js'
 const stylesBool = false // true
 const newAnswerDelay = 1500
 const scoreCirclesSize = 20
+const annotedDisplayGridSize = 0.8
+const annotatedQCardsSize = 1.2
 let questionNumber = 0
 let attemptCount = 0
 let droneType = true
 let userScore = 0
 let isReloading = false
-
-//questionType will refer to what the middle card is
-//TO DO go over all this state and cut down what we need/don't need
+const setScoreSircleInit = Array(12).fill(null)
 
 const MainQuestionPage = ({
   bgColor,
@@ -51,6 +51,8 @@ const MainQuestionPage = ({
   isRandom,
   isAnimated,
 }) => {
+  //questionType will refer to what the first card
+  //TO DO go over all this state and cut down what we need/don't need
   const [firstCard, setFirstCard] = useState()
   const [secondCard, setSecondCard] = useState()
   const [displayInputCardArray, setDisplayInputCardArray] = useState()
@@ -61,24 +63,19 @@ const MainQuestionPage = ({
   const [correctAnswer, setCorrectAnswer] = useState()
   const [userAnswer, setUserAnswer] = useState()
   const [userScoreDisplay, setScoreDisplay] = useState(null)
-  const setScoreSircleInit = Array(12).fill(null)
   const [scoreCircles, setScoreSircle] = useState(setScoreSircleInit)
   //Might not need, props should re load the children correctly...?
   const [dronePlaying, setDronePlaying] = useState(true)
   ///
   const { width, height } = useWindowDimensions()
-
   const cardWidth = width > height ? width * 0.1 : width * 0.14
   const cardHeight = cardWidth * 1.5
 
   useEffect(() => {
-    // let droneSrc
     let answerObj = isRandom
       ? randomiseQuestion()
       : cardReducer(questionType, abBool)
-
     const { firstCard, secondCard, array, answer } = answerObj
-
     setUserAnswer(null)
     getAndSetDroneAudioSource(firstCard.value)
     setDisplayInputCardArray(array)
@@ -142,7 +139,6 @@ const MainQuestionPage = ({
 
   function userAnswerSetter(inpt) {
     setUserAnswer(inpt)
-    console.log('start', attemptCount, questionNumber)
     if (isReloading) {
       return
     } else {
@@ -157,7 +153,6 @@ const MainQuestionPage = ({
         if (whichCircle !== null) {
           updatedArr[questionNumber - 1] = whichCircle
         }
-        console.log(updatedArr)
         return updatedArr
       })
       attemptCount = incrementAttemptCount ? ++attemptCount : 0
@@ -169,7 +164,6 @@ const MainQuestionPage = ({
         isReloading = true
       }
     }
-    // console.log('end', attemptCount, questionNumber, whichCircle)
   }
 
   function skipQuestion() {
@@ -333,7 +327,14 @@ const MainQuestionPage = ({
             resultDisplay={userAnswer?.name === correctAnswer?.name}
             answerCardOnPress={answerCardOnPress}
             answer={correctAnswer}
-            cardSize={{ cardWidth: cardWidth, cardHeight: cardHeight }}
+            cardSize={{
+              cardWidth: annotated
+                ? cardWidth * annotatedQCardsSize
+                : cardWidth,
+              cardHeight: annotated
+                ? cardHeight * annotatedQCardsSize
+                : cardHeight,
+            }}
             annotated={annotated}
             setAnnotatedCard={setAnnotatedCard}
             isAnimated={isAnimated}
@@ -352,7 +353,14 @@ const MainQuestionPage = ({
       >
         {displayInputCardArray && (
           <DisplayCardsGrid
-            cardSize={{ cardWidth: cardWidth, cardHeight: cardHeight }}
+            cardSize={{
+              cardWidth: annotated
+                ? cardWidth * annotedDisplayGridSize
+                : cardWidth,
+              cardHeight: annotated
+                ? cardHeight * annotedDisplayGridSize
+                : cardHeight,
+            }}
             stylesBool={stylesBool}
             cardsArray={displayInputCardArray}
             userAnswerSetter={userAnswerSetter}

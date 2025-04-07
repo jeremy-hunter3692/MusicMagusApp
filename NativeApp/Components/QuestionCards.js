@@ -33,8 +33,6 @@ const QuestionCards = ({
   skip,
   skipQuestion,
 }) => {
-
-
   useEffect(() => {
     if (resultDisplay && isAnimated) {
       handleFlip(180) // Flip the card to 180 degrees
@@ -89,6 +87,7 @@ const QuestionCards = ({
     flipAnimation.value = withTiming(toValue, { duration: animationSpeed })
   }
   //
+  const arrow = ' ➔ '
   const styles = StyleSheet.create({
     questionCardsCont: {
       flexDirection: 'row',
@@ -124,16 +123,24 @@ const QuestionCards = ({
     forAnnotation: {
       flexDirection: 'column',
       justifyContent: 'flex-start',
+      padding: 0,
+      margin: 0,
     },
     annotatedText: {
-      padding: 1,
+      padding: 10,
       color: 'white',
       justifyContent: 'center',
       fontWeight: 'bold',
+      margin: 6,
+      top: 2,
       borderRadius: 10,
-      width: cardSize.cardWidth - 2,
-      height: cardSize.cardHeight * 0.25 - 1,
+      // backgroundColor: 'white',
+      alignContent: 'center',
+      width: cardSize.cardWidth,
+      height: cardSize.cardHeight - 5,
       marginBottom: 10,
+      borderColor: 'white',
+      // borderWidth: 1,
     },
     scoreTextContainer: {
       backgroundColor: 'white', //rgba(255, 255, 255, 0.7)',
@@ -149,7 +156,6 @@ const QuestionCards = ({
       justifyContent: 'space-between',
       color: 'black',
     },
-
     scoreText: {
       flexDirection: 'column',
       maxWidth: cardSize.cardWidth,
@@ -181,6 +187,13 @@ const QuestionCards = ({
     <>
       <View style={styles.questionCardsCont}>
         <View style={styles.forAnnotation}>
+          {annotated && (
+            <>
+              <Text style={styles.annotatedText}>{'In this key' + arrow}</Text>
+            </>
+          )}
+        </View>
+        <View style={styles.forAnnotation}>
           <CardButton
             cardSize={cardSize}
             data={firstCard}
@@ -190,10 +203,14 @@ const QuestionCards = ({
             setAnnotatedCard={setAnnotatedCard}
             animated={isAnimated}
           />
-
+        </View>
+        <View style={styles.forAnnotation}>
+          {' '}
           {annotated && (
             <>
-              <Text style={styles.annotatedText}>In this key</Text>
+              <Text style={styles.annotatedText}>
+                {'what interval is this note' + arrow}
+              </Text>
             </>
           )}
         </View>
@@ -212,10 +229,12 @@ const QuestionCards = ({
             animationDelay={2}
             animated={isAnimated}
           />
+        </View>
+        <View style={styles.forAnnotation}>
           {annotated && (
             <>
               <Text style={styles.annotatedText}>
-                what interval is this note
+                {'Answer To be revealed' + arrow}
               </Text>
             </>
           )}
@@ -270,44 +289,39 @@ const QuestionCards = ({
               )}
             </>
           )}
-          {annotated && (
-            <>
-              <Text style={styles.annotatedText}>Answer To be revealed</Text>
-            </>
-          )}
         </View>
+
         <View style={styles.forAnnotation}>
-          <Animated.View
-            style={[
-              styles.hiddenScoreCard,
-              frontAnimatedStyle,
-              score || (skip && styles.scoreTextContainer),
-            ]}
-          >
-            {score || skip ? (
-              <>
-                {skip ? (
-                  <Pressable onPress={skipQuestion}>
-                    <Text style={styles.buttonText}>Skip Question?</Text>
-                  </Pressable>
-                ) : (
-                  <>
-                    <Text style={styles.scoreText}>{score + '/12'}</Text>
-                    <Text style={styles.quoteText}>{returnScoreText()}</Text>
-                    <Pressable onPress={newRound}>
-                      <Text style={styles.buttonText}>New Round?</Text>
+          {annotated ? (
+            <Text style={[styles.annotatedText, { alignSelf: 'center' }]}>
+              {'Score will appear here at end of round'}
+            </Text>
+          ) : (
+            <Animated.View
+              style={[
+                styles.hiddenScoreCard,
+                frontAnimatedStyle,
+                score || (skip && styles.scoreTextContainer),
+              ]}
+            >
+              {score || skip ? (
+                <>
+                  {skip ? (
+                    <Pressable onPress={skipQuestion}>
+                      <Text style={styles.buttonText}>Skip Question?</Text>
                     </Pressable>
-                  </>
-                )}
-              </>
-            ) : null}
-          </Animated.View>
-          {annotated && (
-            <>
-              <Text style={[styles.annotatedText, { alignSelf: 'center' }]}>
-                Score will appear here at end of round
-              </Text>
-            </>
+                  ) : (
+                    <>
+                      <Text style={styles.scoreText}>{score + '/12'}</Text>
+                      <Text style={styles.quoteText}>{returnScoreText()}</Text>
+                      <Pressable onPress={newRound}>
+                        <Text style={styles.buttonText}>New Round?</Text>
+                      </Pressable>
+                    </>
+                  )}
+                </>
+              ) : null}
+            </Animated.View>
           )}
         </View>
       </View>
