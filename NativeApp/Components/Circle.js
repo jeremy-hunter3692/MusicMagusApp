@@ -2,8 +2,6 @@ import React from 'react'
 import { Text, View, Pressable } from 'react-native'
 
 const Circle = ({ fillBool, scoreCircleRadius, underLine }) => {
-  // console.log(fillBool)
-
   return (
     <>
       <View

@@ -29,9 +29,9 @@ import { noteAudioSrc } from '../data/NotesAudiosSrc.js'
 
 const stylesBool = false // true
 const newAnswerDelay = 1500
-
-let questionNumber = 5
-let secondAttmept = 0
+const scoreCirclesSize = 20
+let questionNumber = 0
+let attemptCount = 0
 let droneType = true
 let userScore = 0
 let isReloading = false
@@ -142,33 +142,39 @@ const MainQuestionPage = ({
 
   function userAnswerSetter(inpt) {
     setUserAnswer(inpt)
+    console.log('start', attemptCount, questionNumber)
     if (isReloading) {
       return
     } else {
-      const { attempt, incrementQuestionNo, shouldReload, whichCircle } =
-        returnAnswerType(inpt, correctAnswer, secondAttmept)
-      secondAttmept++
+      const {
+        incrementAttemptCount,
+        incrementQuestionNo,
+        shouldReload,
+        whichCircle,
+      } = returnAnswerType(inpt, correctAnswer, attemptCount)
       setScoreSircle((prevArry) => {
         const updatedArr = [...prevArry]
         if (whichCircle !== null) {
           updatedArr[questionNumber - 1] = whichCircle
         }
+        console.log(updatedArr)
         return updatedArr
       })
-      incrementQuestionNo ? questionNumber++ : ''
+      attemptCount = incrementAttemptCount ? ++attemptCount : 0
+      incrementQuestionNo ? ++questionNumber : ''
       shouldReload && questionNumber < 12 ? reloadTimeOut() : ''
       whichCircle ? userScore++ : ''
-      // secondAttmept = attempt
       if (questionNumber > 11) {
         setScoreDisplay(userScore)
         isReloading = true
       }
     }
+    // console.log('end', attemptCount, questionNumber, whichCircle)
   }
 
   function skipQuestion() {
     questionNumber++
-    secondAttmept = 0
+    attemptCount = 0
     reload()
     if (questionNumber > 11) {
       setScoreDisplay(userScore)
@@ -183,7 +189,7 @@ const MainQuestionPage = ({
   function gameOver() {
     setDroneAudioSrc(null)
     userScore = 0
-    secondAttmept = 0
+    attemptCount = 0
     questionNumber = 0
     reload()
     setScoreSircle(setScoreSircleInit)
@@ -271,7 +277,7 @@ const MainQuestionPage = ({
             return (
               <Circle
                 fillBool={x}
-                scoreCircleRadius={30}
+                scoreCircleRadius={scoreCirclesSize}
                 key={idx}
                 underLine={questionNo}
               />
@@ -334,7 +340,7 @@ const MainQuestionPage = ({
             score={userScoreDisplay}
             newRound={gameOver}
             skipQuestion={skipQuestion}
-            skip={secondAttmept > 2 ? true : false}
+            skip={attemptCount > 2 ? true : false}
           />
         )}
       </View>
@@ -372,7 +378,7 @@ const styles = StyleSheet.create({
     color: 'white',
     flexDirection: 'row',
     backgroundColor: '#19af59',
-    justifyContent: 'flex-end',
+    justifyContent: 'flex-start',
     alignItems: 'center',
   },
   topRowCards: {

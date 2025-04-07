@@ -144,9 +144,9 @@ describe('returnRandCard', () => {
 
 describe('returnAnswerType', () => {
   test('returns correctly if first guess is correct', () => {
-    const result = returnAnswerType({ name: 'Bb' }, { name: 'Bb' }, false)
+    const result = returnAnswerType({ name: 'Bb' }, { name: 'Bb' }, 0)
     const answer = {
-      attempt: false,
+      incrementAttemptCount: false,
       incrementQuestionNo: true,
       shouldReload: true,
       whichCircle: true,
@@ -154,31 +154,32 @@ describe('returnAnswerType', () => {
     expect(answer).toEqual(result)
   })
   test('returns correctly if first guess is incorrect', () => {
-    const result = returnAnswerType({ name: 'Bb' }, { name: 'A' }, false)
+    const result = returnAnswerType({ name: 'Bb' }, { name: 'A' }, 0)
     const answer = {
-      attempt: true,
+      incrementAttemptCount: true,
       incrementQuestionNo: false,
       shouldReload: false,
+      //figure this out
       whichCircle: null,
     }
     expect(answer).toEqual(result)
   })
   test('returns correctly if second guess is correct', () => {
-    const result = returnAnswerType({ name: 'Bb' }, { name: 'Bb' }, true)
+    const result = returnAnswerType({ name: 'Bb' }, { name: 'Bb' }, 1)
     const answer = {
-      attempt: false,
+      incrementAttemptCount: false,
       incrementQuestionNo: true,
       shouldReload: true,
       whichCircle: false,
     }
     expect(answer).toEqual(result)
   })
-  test('returns correctly if second guess is inCorrect', () => {
-    const result = returnAnswerType({ name: 'Bb' }, { name: 'A' }, true)
+  test('returns correctly if second guess is Inorrect', () => {
+    const result = returnAnswerType({ name: 'Bb' }, { name: 'A' }, 2)
     const answer = {
-      attempt: false,
-      incrementQuestionNo: true,
-      shouldReload: true,
+      incrementAttemptCount: true,
+      incrementQuestionNo: false,
+      shouldReload: false,
       whichCircle: null,
     }
     expect(answer).toEqual(result)
