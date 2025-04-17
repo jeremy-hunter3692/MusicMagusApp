@@ -10,7 +10,7 @@ import {
 import DronePlayer from './DronePlayer.js'
 import QuestionCards from './QuestionCards.js'
 import DisplayCardsGrid from './DisplayCardsGrid.js'
-import QuestionIconButtons from './QuestionIconButtons.js'
+import QuestionIconButtons from './QuestionTypeIconButtons.js'
 import PickShape from './PickShape.js'
 import Circle from './Circle.js'
 
@@ -29,8 +29,8 @@ import { noteAudioSrc } from '../data/NotesAudiosSrc.js'
 
 const stylesBool = false // true
 const newAnswerDelay = 1500
-const scoreCirclesSize = 20
-const annotatedDisplayGridSizeChangeFactor = 0.8
+const scoreCirclesSize = 10
+const annotatedDisplayGridSizeChangeFactor = 0.4
 const annotatedQCardsSizeChangeFactor = 1.2
 const scoreCirclesInit = Array(12).fill(null)
 let questionNumber = 10
@@ -42,7 +42,6 @@ let globalQuestionTimeOutID
 const MainQuestionPage = ({
   bgColor,
   secondaryColor,
-  showOptions,
   setShowOptions,
   setAnnotatedMode,
   setAnnotatedCard,
@@ -180,7 +179,7 @@ const MainQuestionPage = ({
 
       attemptCount = incrementAttemptCount ? ++attemptCount : 0
       incrementQuestionNo ? ++questionNumber : ''
-      console.log('incrementQuestionNo', questionNumber)
+
       globalQuestionTimeOutID =
         shouldReload && questionNumber < 12 ? nextQuestionReloadTimeOut() : null
       whichCircle ? userScore++ : ''
@@ -232,6 +231,7 @@ const MainQuestionPage = ({
       <View
         style={{
           zIndex: 0,
+
           flexDirection: 'row-reverse',
           flex: 0.3,
           justifyContent: 'space-between',
@@ -242,8 +242,9 @@ const MainQuestionPage = ({
         <View
           style={{
             margin: 0,
+
+            flex: 1,
             fontWeight: 'bold',
-            flex: 0.3,
             color: 'white',
             flexDirection: 'row',
             backgroundColor: secondaryColor,
@@ -252,15 +253,23 @@ const MainQuestionPage = ({
             textAlign: 'center',
           }}
         >
-          {!annotatedCard ? (
-            <Pressable onPress={() => setShowOptions()}>
-              <Text style={styles.optionText}>Options </Text>
-            </Pressable>
-          ) : (
-            ''
-          )}
-          <Pressable onPress={() => setAnnotatedMode()}>
-            <View
+          <View
+            style={{
+              flex: 1,
+              flexDirection: 'row',
+              justifyContent: 'flex-end',
+              alignItems: 'center',
+            }}
+          >
+            {!annotatedCard ? (
+              <Pressable onPress={() => setShowOptions()}>
+                <Text style={styles.optionText}>Options </Text>
+              </Pressable>
+            ) : (
+              ''
+            )}
+            <Pressable
+              onPress={() => setAnnotatedMode()}
               style={[
                 {},
                 !annotatedCard && {
@@ -275,12 +284,20 @@ const MainQuestionPage = ({
               ]}
             >
               <Text style={{ color: bgColor }}>?</Text>
-            </View>
-          </Pressable>
+            </Pressable>
+          </View>
         </View>
         <View
           testID="scoreTempTest"
-          style={[styles.scoreCircles, { backgroundColor: secondaryColor }]}
+          style={[
+            styles.scoreCircles,
+            {
+              backgroundColor: secondaryColor,
+
+              justifyContent: 'center',
+              flex: 1,
+            },
+          ]}
         >
           {scoreCircles.map((x, idx) => {
             let questionNo = idx === questionNumber ? true : false
@@ -294,15 +311,17 @@ const MainQuestionPage = ({
             )
           })}
         </View>
-        {!isRandom ? (
-          <QuestionIconButtons
-            changeQuestionType={changeQuestionType}
-            bgColor={secondaryColor}
-            // annotated={annotatedCardDisplay}
-          />
-        ) : (
-          <Text>Randomised Questions</Text>
-        )}
+        <View style={{ flex: 1 }}>
+          {!isRandom ? (
+            <QuestionIconButtons
+              changeQuestionType={changeQuestionType}
+              bgColor={secondaryColor}
+              // annotated={annotatedCardDisplay}
+            />
+          ) : (
+            <Text>Randomised Questions</Text>
+          )}
+        </View>
       </View>
 
       {droneAudioSrc ? (

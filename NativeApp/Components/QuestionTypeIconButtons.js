@@ -5,6 +5,9 @@ import { useWindowDimensions } from 'react-native'
 
 const QuestionIconButtons = ({ changeQuestionType, annotated, bgColor }) => {
   const [underLine, setUnderline] = useState(1)
+  const { width, height } = useWindowDimensions()
+  const iconSize = height / 20
+  console.log('width', width, 'h', iconSize)
 
   function selectQType(inpt) {
     setUnderline(inpt)
@@ -44,9 +47,9 @@ const QuestionIconButtons = ({ changeQuestionType, annotated, bgColor }) => {
             <View
               style={{
                 backgroundColor: 'yellow',
-                borderRadius: 10,
-                width: 50,
-                height: 50,
+                borderRadius: iconSize / 4,
+                width: iconSize,
+                height: iconSize,
               }}
             ></View>
 
@@ -63,9 +66,9 @@ const QuestionIconButtons = ({ changeQuestionType, annotated, bgColor }) => {
           <Pressable onPress={() => selectQType(2)}>
             <View
               style={{
-                width: 50,
-                height: 50,
-                borderRadius: 50,
+                width: iconSize,
+                height: iconSize,
+                borderRadius: iconSize,
                 backgroundColor: 'green',
               }}
             ></View>
@@ -83,8 +86,8 @@ const QuestionIconButtons = ({ changeQuestionType, annotated, bgColor }) => {
           <Pressable onPress={() => selectQType(3)}>
             <View
               style={{
-                width: 50,
-                height: 50,
+                width: iconSize,
+                height: iconSize,
                 justifyContent: 'flex-end',
                 alignItems: 'center',
               }}
@@ -96,11 +99,11 @@ const QuestionIconButtons = ({ changeQuestionType, annotated, bgColor }) => {
                   padding: 0,
                   // position: 'absolute',
                   // top: -50,
-                  borderTopWidth: 50,
-                  borderRightWidth: 50,
+                  borderTopWidth: iconSize,
+                  borderRightWidth: iconSize,
                   borderRightColor: 'transparent',
                   borderTopColor: 'transparent',
-                  borderBottomWidth: 50, // Hypotenuse of the triangle
+                  borderBottomWidth: iconSize, // Hypotenuse of the triangle
                   borderBottomColor: 'black',
                 }}
               ></View>
