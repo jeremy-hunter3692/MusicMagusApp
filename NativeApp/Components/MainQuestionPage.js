@@ -67,6 +67,8 @@ const MainQuestionPage = ({
   const [dronePlaying, setDronePlaying] = useState(true)
   ///
   const { width, height } = useWindowDimensions()
+  console.log({ width })
+  const scoreCirclesSize = width / 37
   const cardWidth = width > height ? width * 0.1 : width * 0.14
   const cardHeight = cardWidth * 1.5
 

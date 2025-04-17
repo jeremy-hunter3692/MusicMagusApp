@@ -7,7 +7,7 @@ const QuestionIconButtons = ({ changeQuestionType, annotated, bgColor }) => {
   const [underLine, setUnderline] = useState(1)
   const { width, height } = useWindowDimensions()
   const iconSize = height / 20
-  console.log('width', width, 'h', iconSize)
+
 
   function selectQType(inpt) {
     setUnderline(inpt)
