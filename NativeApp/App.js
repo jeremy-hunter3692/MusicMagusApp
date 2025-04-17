@@ -29,12 +29,12 @@ export default function App() {
 
   const { width, height } = useWindowDimensions()
 
-  function getKey(musicKey) {
-    setHexKey(musicKey)
-  }
-  function appLevel(inpt) {
-    console.log('TODO-App level', inpt)
-  }
+  // function getKey(musicKey) {
+  //   setHexKey(musicKey)
+  // }
+  // function appLevel(inpt) {
+  //   console.log('TODO-App level', inpt)
+  // }
 
   function handleAnnotatedClick(inpt) {
     annotatedCard ? setAnnotatedCard(null) : setAnnotatedCard(inpt)
@@ -42,7 +42,6 @@ export default function App() {
   }
 
   function setAnnotatedMode() {
-    console.log('TODO-annotated mode')
     setAnnotatedCardDisplay((x) => !x)
   }
   function changeTheme() {

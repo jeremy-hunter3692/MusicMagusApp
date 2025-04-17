@@ -29,6 +29,7 @@ const CardButton = ({
   annotated,
   setAnnotatedCard,
   animationDelay,
+  tempTest,
   animated,
 }) => {
   const [note, setNote] = useState()
@@ -38,13 +39,14 @@ const CardButton = ({
   const scale = useSharedValue(initCardSizeValue)
   const { cardWidth, cardHeight } = cardSize || {}
   annotated ? console.log('card buttons', data?.name) : ''
+
   useEffect(() => {
     if (annotated) {
       return
     }
     scale.value = withSpring(initCardSizeValue)
-
     setTimeout(() => {
+
       dealAnimationTrigger(animationDelay)
     }, initDealDelay)
 

@@ -28,27 +28,33 @@ const QuestionCards = ({
   setAnnotatedCard,
   annotated,
   isAnimated,
+  displayScore,
   score,
   newRound,
   skip,
   skipQuestion,
 }) => {
-  useEffect(() => {
-    if (resultDisplay && isAnimated) {
-      handleFlip(180) // Flip the card to 180 degrees
-      setTimeout(() => {
-        handleFlip(0) // Flip the card back to 0 degrees after 1 second
-      }, newQuestionTimeDelay)
-    }
-  }, [resultDisplay, skip])
+  useEffect(() => {}, [skip])
+
+  // Function to handle the flip
+  const flipAnimation = useSharedValue(0)
+
+  const handleFlip = (toValue) => {
+    const animationSpeed = 500
+    flipAnimation.value = withTiming(toValue, { duration: animationSpeed })
+  }
+  //
+
+  if (resultDisplay && isAnimated) {
+    handleFlip(180) // Flip the card to 180 degrees
+    setTimeout(() => {
+      flipAnimation.value = 0 // Flip the card back to 0 degrees after 1 second
+    }, newQuestionTimeDelay)
+  }
 
   function droneSetter() {
     rootCardPress()
   }
-
-  //gpt stuff:::
-
-  const flipAnimation = useSharedValue(0)
 
   // Front side animation style
   const frontAnimatedStyle = useAnimatedStyle(() => {
@@ -80,13 +86,6 @@ const QuestionCards = ({
 
   function returnCorrectAnnotatedText(cardValue, abBool) {}
 
-  // Function to handle the flip
-  const handleFlip = (toValue) => {
-    const animationSpeed = 500
-
-    flipAnimation.value = withTiming(toValue, { duration: animationSpeed })
-  }
-  //
   const arrow = ' ➔ '
   const styles = StyleSheet.create({
     questionCardsCont: {
@@ -123,6 +122,7 @@ const QuestionCards = ({
     forAnnotation: {
       flexDirection: 'column',
       justifyContent: 'flex-start',
+      maxHeight: cardSize.cardHeight,
       padding: 0,
       margin: 0,
     },
@@ -186,10 +186,13 @@ const QuestionCards = ({
   return (
     <>
       <View style={styles.questionCardsCont}>
-        <View style={styles.forAnnotation}>
+        <View style={[styles.forAnnotation, { justifyContent: 'center' }]}>
           {annotated && (
             <>
               <Text style={styles.annotatedText}>{'In this key' + arrow}</Text>
+              <Text style={styles.annotatedText}>
+                {'←  Change between two question modes '}
+              </Text>
             </>
           )}
         </View>
@@ -205,7 +208,6 @@ const QuestionCards = ({
           />
         </View>
         <View style={styles.forAnnotation}>
-          {' '}
           {annotated && (
             <>
               <Text style={styles.annotatedText}>
@@ -253,6 +255,7 @@ const QuestionCards = ({
                   annotated={annotated}
                   setAnnotatedCard={setAnnotatedCard}
                   animationDelay={3}
+                  tempTest={true}
                   animated={isAnimated}
                 />
               </Animated.View>
@@ -262,6 +265,7 @@ const QuestionCards = ({
                   source={blankCard}
                   altSourceForReload={answer?.imgSrc}
                   animationDelay={3}
+                  tempTest={true}
                   animated={isAnimated}
                 />
               </Animated.View>
@@ -301,10 +305,10 @@ const QuestionCards = ({
               style={[
                 styles.hiddenScoreCard,
                 frontAnimatedStyle,
-                score || (skip && styles.scoreTextContainer),
+                (displayScore || skip) && styles.scoreTextContainer,
               ]}
             >
-              {score || skip ? (
+              {displayScore || skip ? (
                 <>
                   {skip ? (
                     <Pressable onPress={skipQuestion}>
@@ -313,7 +317,9 @@ const QuestionCards = ({
                   ) : (
                     <>
                       <Text style={styles.scoreText}>{score + '/12'}</Text>
-                      <Text style={styles.quoteText}>{returnScoreText()}</Text>
+                      <Text style={styles.quoteText}>
+                        {returnScoreText(score)}
+                      </Text>
                       <Pressable onPress={newRound}>
                         <Text style={styles.buttonText}>New Round?</Text>
                       </Pressable>

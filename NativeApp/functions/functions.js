@@ -151,15 +151,15 @@ export const cardReducer = (questionType, abBool) => {
   switch (questionType) {
     case KEY:
       firstCard = returnRandomCard(keys)
-      secondCard = returnRandomCard(abBool ? noteNames : intervals, true)
+      secondCard = returnRandomCard(abBool ? intervals : noteNames, true)
       answerIdx = abBool
         ? getNoteCardIdxFromIntervalAndKeyCard(firstCard.idx, secondCard.idx)
         : distanceUpInIntervals(firstCard.idx, secondCard.idx)
       return {
         firstCard: firstCard,
         secondCard: secondCard,
-        array: abBool ? intervals : noteNames,
-        answer: answerIdx,
+        array: abBool ? noteNames : intervals,
+        answerIdx: answerIdx,
       }
     case INTERVAL:
       firstCard = returnRandomCard(intervals, true)
@@ -171,7 +171,7 @@ export const cardReducer = (questionType, abBool) => {
         firstCard: firstCard,
         secondCard: secondCard,
         array: abBool ? keys : noteNames,
-        answer: answerIdx,
+        answerIdx: answerIdx,
       }
     case NOTE:
       firstCard = returnRandomCard(noteNames, true)
@@ -183,7 +183,7 @@ export const cardReducer = (questionType, abBool) => {
         firstCard: firstCard,
         secondCard: secondCard,
         array: abBool ? intervals : keys,
-        answer: answerIdx,
+        answerIdx: answerIdx,
       }
     default:
       console.log(`broken switch in card reducer`)

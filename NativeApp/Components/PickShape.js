@@ -11,6 +11,7 @@ const pickImage = require('../assets/pickImageA.png')
 const backPickImage = require('../assets/pickImageB.png')
 const PickShape = ({ questionAB, width }) => {
   const [abBool, setabBool] = useState(true)
+  
   function toggleBool() {
     const newAbBool = !abBool
     setabBool(newAbBool)

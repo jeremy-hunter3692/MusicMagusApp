@@ -6,16 +6,16 @@ import {
   useWindowDimensions,
   Pressable,
 } from 'react-native'
-//
+
 import DronePlayer from './DronePlayer.js'
-import DisplayCardsGrid from './DisplayCardsGrid.js'
-import Circle from './Circle.js'
 import QuestionCards from './QuestionCards.js'
-import PickShape from './PickShape.js'
+import DisplayCardsGrid from './DisplayCardsGrid.js'
 import QuestionIconButtons from './QuestionIconButtons.js'
+import PickShape from './PickShape.js'
+import Circle from './Circle.js'
 
 import { SynthDrones, DoubleBassDrones } from '../data/DroneAudioSources.js'
-//
+
 import {
   getIntervalCardsAsNotes,
   getAltOctaveNotes,
@@ -30,15 +30,15 @@ import { noteAudioSrc } from '../data/NotesAudiosSrc.js'
 const stylesBool = false // true
 const newAnswerDelay = 1500
 const scoreCirclesSize = 20
-const annotedDisplayGridSize = 0.8
-const annotatedQCardsSize = 1.2
-let questionNumber = 0
+const annotatedDisplayGridSizeChangeFactor = 0.8
+const annotatedQCardsSizeChangeFactor = 1.2
+const scoreCirclesInit = Array(12).fill(null)
+let questionNumber = 10
 let attemptCount = 0
 let droneType = true
 let userScore = 0
 let isReloading = false
-const setScoreSircleInit = Array(12).fill(null)
-
+let globalQuestionTimeOutID
 const MainQuestionPage = ({
   bgColor,
   secondaryColor,
@@ -63,7 +63,7 @@ const MainQuestionPage = ({
   const [correctAnswer, setCorrectAnswer] = useState()
   const [userAnswer, setUserAnswer] = useState()
   const [userScoreDisplay, setScoreDisplay] = useState(null)
-  const [scoreCircles, setScoreSircle] = useState(setScoreSircleInit)
+  const [scoreCircles, setScoreSircle] = useState(scoreCirclesInit)
   //Might not need, props should re load the children correctly...?
   const [dronePlaying, setDronePlaying] = useState(true)
   ///
@@ -72,17 +72,29 @@ const MainQuestionPage = ({
   const cardHeight = cardWidth * 1.5
 
   useEffect(() => {
-    let answerObj = isRandom
+    let questionCardsReturnObj = isRandom
       ? randomiseQuestion()
-      : cardReducer(questionType, abBool)
-    const { firstCard, secondCard, array, answer } = answerObj
+      : cardReducer(questionType, !abBool)
+    const { firstCard, secondCard, array, answerIdx } = questionCardsReturnObj
     setUserAnswer(null)
     getAndSetDroneAudioSource(firstCard.value)
     setDisplayInputCardArray(array)
     setFirstCard(firstCard)
     setSecondCard(secondCard)
-    setCorrectAnswer(array[answer])
-  }, [questionType, reloadBool, abBool, isRandom])
+    setCorrectAnswer(array[answerIdx])
+  }, [questionType, reloadBool, isRandom])
+
+  function changeQuestionType(inpt) {
+    let type =
+      inpt === 1
+        ? 'Key'
+        : inpt === 2
+        ? 'Interval'
+        : inpt === 3
+        ? 'Note'
+        : 'Random'
+    setQuestionType(type)
+  }
 
   function selectDroneAudio() {
     droneType = !droneType
@@ -91,6 +103,7 @@ const MainQuestionPage = ({
 
   function getAndSetDroneAudioSource(card) {
     let droneAudioType = droneType ? DoubleBassDrones : SynthDrones
+    //TO DO  double check what findNoteEquivalent is for and rename it better
     let source = findNoteEquivalent(card, droneAudioType)
     setDroneAudioSrc(source?.audioSrc)
   }
@@ -101,23 +114,34 @@ const MainQuestionPage = ({
 
   function questionAB(bool) {
     //TO DO clear timeout/question change here
+    clearTimeout(globalQuestionTimeOutID)
     setabBool(bool)
+    gameOver()
+    // reloadTimeOut(true)
   }
+
   //TO DO CHECK THIS
   function randomiseQuestion() {
     let questionType = Math.floor(Math.random() * 3) + 1
     questionType =
-      questionType === 1 ? 'Key' : questionType === 1 ? 'Key' : 'Interval'
+      questionType === 0 ? 'Key' : questionType === 1 ? 'Key' : 'Interval'
     return cardReducer(questionType, abBool)
   }
 
   function getAudioSrcIdxFromCardReducer(cardAny) {
+    //TO DO check these names and uses/RENAME them better
     let audioSrcIdx =
-      questionType === 'Note'
+      questionType === 'Key'
         ? getAudioSrcInterval(cardAny)
         : findNoteEquivalent(cardAny, noteAudioSrc)
     audioSrcIdx = getAltOctaveNotes(audioSrcIdx, firstCard)
     return audioSrcIdx
+  }
+
+  function getAudioSrcInterval(intervalCard) {
+    //TO DO check these names and uses/RENAME them better
+    let audioSrc = getIntervalCardsAsNotes(intervalCard, firstCard)
+    return audioSrc
   }
 
   function answerCardOnPress() {
@@ -125,16 +149,13 @@ const MainQuestionPage = ({
     return answer
   }
 
-  function getAudioSrcInterval(intervalCard) {
-    let audioSrc = getIntervalCardsAsNotes(intervalCard, firstCard)
-    return audioSrc
-  }
   //TO DO Think this isn't needed?
   function droneReload() {
     console.log('make this funciton/check if I actually need it')
   }
   function questionCardPress() {
-    console.log('make this funciton/check if I actually need it')
+    console.log('drone off not working pproperly yet')
+    droneOnOff()
   }
 
   function userAnswerSetter(inpt) {
@@ -148,6 +169,7 @@ const MainQuestionPage = ({
         shouldReload,
         whichCircle,
       } = returnAnswerType(inpt, correctAnswer, attemptCount)
+
       setScoreSircle((prevArry) => {
         const updatedArr = [...prevArry]
         if (whichCircle !== null) {
@@ -155,9 +177,12 @@ const MainQuestionPage = ({
         }
         return updatedArr
       })
+
       attemptCount = incrementAttemptCount ? ++attemptCount : 0
       incrementQuestionNo ? ++questionNumber : ''
-      shouldReload && questionNumber < 12 ? reloadTimeOut() : ''
+      console.log('incrementQuestionNo', questionNumber)
+      globalQuestionTimeOutID =
+        shouldReload && questionNumber < 12 ? nextQuestionReloadTimeOut() : null
       whichCircle ? userScore++ : ''
       if (questionNumber > 11) {
         setScoreDisplay(userScore)
@@ -180,35 +205,26 @@ const MainQuestionPage = ({
     setReloadBool((x) => !x)
   }
 
+  function nextQuestionReloadTimeOut(fastReload = false) {
+    let delaySpeed = fastReload ? 200 : newAnswerDelay
+    console.log({ delaySpeed })
+    setDroneAudioSrc(null)
+    isReloading = true
+    let questionChangingTimeOut = setTimeout(() => {
+      reload()
+      isReloading = false
+    }, delaySpeed)
+    return questionChangingTimeOut
+  }
+
   function gameOver() {
     setDroneAudioSrc(null)
     userScore = 0
     attemptCount = 0
     questionNumber = 0
     reload()
-    setScoreSircle(setScoreSircleInit)
+    setScoreSircle(scoreCirclesInit)
     setScoreDisplay(0)
-  }
-
-  function reloadTimeOut() {
-    setDroneAudioSrc(null)
-    isReloading = true
-    setTimeout(() => {
-      reload()
-      isReloading = false
-    }, newAnswerDelay)
-  }
-
-  function changeQuestionType(inpt) {
-    let type =
-      inpt === 1
-        ? 'Key'
-        : inpt === 2
-        ? 'Interval'
-        : inpt === 3
-        ? 'Note'
-        : 'Random'
-    setQuestionType(type)
   }
 
   return (
@@ -329,16 +345,17 @@ const MainQuestionPage = ({
             answer={correctAnswer}
             cardSize={{
               cardWidth: annotated
-                ? cardWidth * annotatedQCardsSize
+                ? cardWidth * annotatedQCardsSizeChangeFactor
                 : cardWidth,
               cardHeight: annotated
-                ? cardHeight * annotatedQCardsSize
+                ? cardHeight * annotatedQCardsSizeChangeFactor
                 : cardHeight,
             }}
             annotated={annotated}
             setAnnotatedCard={setAnnotatedCard}
             isAnimated={isAnimated}
-            score={userScoreDisplay}
+            displayScore={userScoreDisplay}
+            score={userScore}
             newRound={gameOver}
             skipQuestion={skipQuestion}
             skip={attemptCount > 2 ? true : false}
@@ -355,10 +372,10 @@ const MainQuestionPage = ({
           <DisplayCardsGrid
             cardSize={{
               cardWidth: annotated
-                ? cardWidth * annotedDisplayGridSize
+                ? cardWidth * annotatedDisplayGridSizeChangeFactor
                 : cardWidth,
               cardHeight: annotated
-                ? cardHeight * annotedDisplayGridSize
+                ? cardHeight * annotatedDisplayGridSizeChangeFactor
                 : cardHeight,
             }}
             stylesBool={stylesBool}
@@ -378,8 +395,6 @@ export default MainQuestionPage
 
 const styles = StyleSheet.create({
   scoreCircles: {
-    // borderColor: 'white',
-    // borderWidth: 3,
     margin: 0,
     fontWeight: 'bold',
     flex: 0.1,
