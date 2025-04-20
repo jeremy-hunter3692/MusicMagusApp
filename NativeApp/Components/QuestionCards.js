@@ -92,6 +92,7 @@ const QuestionCards = ({
       flexDirection: 'row',
       justifyContent: 'center',
       alignItems: 'center',
+  
       margin: 0,
       padding: 0,
     },

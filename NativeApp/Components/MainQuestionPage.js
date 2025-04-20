@@ -6,32 +6,27 @@ import {
   useWindowDimensions,
   Pressable,
 } from 'react-native'
-
 import DronePlayer from './DronePlayer.js'
 import QuestionCards from './QuestionCards.js'
 import DisplayCardsGrid from './DisplayCardsGrid.js'
 import QuestionIconButtons from './QuestionTypeIconButtons.js'
 import PickShape from './PickShape.js'
 import Circle from './Circle.js'
-
 import { SynthDrones, DoubleBassDrones } from '../data/DroneAudioSources.js'
-
+import { noteAudioSrc } from '../data/NotesAudiosSrc.js'
 import {
   getIntervalCardsAsNotes,
   getAltOctaveNotes,
   findNoteEquivalent,
   cardReducer,
   returnAnswerType,
-  returnScoreText,
 } from '../functions/functions.js'
-
-import { noteAudioSrc } from '../data/NotesAudiosSrc.js'
 
 const stylesBool = false // true
 const newAnswerDelay = 1500
-const scoreCirclesSize = 10
-const annotatedDisplayGridSizeChangeFactor = 0.4
+const annotatedDisplayGridSizeChangeFactor = 0.2
 const annotatedQCardsSizeChangeFactor = 1.2
+const groupedNavMargin = 0
 const scoreCirclesInit = Array(12).fill(null)
 let questionNumber = 10
 let attemptCount = 0
@@ -50,8 +45,9 @@ const MainQuestionPage = ({
   isRandom,
   isAnimated,
 }) => {
-  //questionType will refer to what the first card
+  //questionType will refer to what the first card is
   //TO DO go over all this state and cut down what we need/don't need
+
   const [firstCard, setFirstCard] = useState()
   const [secondCard, setSecondCard] = useState()
   const [displayInputCardArray, setDisplayInputCardArray] = useState()
@@ -67,8 +63,7 @@ const MainQuestionPage = ({
   const [dronePlaying, setDronePlaying] = useState(true)
   ///
   const { width, height } = useWindowDimensions()
-  console.log({ width })
-  const scoreCirclesSize = width / 37
+  const scoreCirclesSize = width / 40
   const cardWidth = width > height ? width * 0.1 : width * 0.14
   const cardHeight = cardWidth * 1.5
 
@@ -110,6 +105,7 @@ const MainQuestionPage = ({
   }
 
   function droneOnOff() {
+    console.log('droneOnOff', dronePlaying)
     dronePlaying ? setDronePlaying(false) : setDronePlaying(true)
   }
 
@@ -208,7 +204,6 @@ const MainQuestionPage = ({
 
   function nextQuestionReloadTimeOut(fastReload = false) {
     let delaySpeed = fastReload ? 200 : newAnswerDelay
-    console.log({ delaySpeed })
     setDroneAudioSrc(null)
     isReloading = true
     let questionChangingTimeOut = setTimeout(() => {
@@ -233,18 +228,20 @@ const MainQuestionPage = ({
       <View
         style={{
           zIndex: 0,
-
-          flexDirection: 'row-reverse',
           flex: 0.3,
+          padding: 0,
+          flexDirection: 'row-reverse',
           justifyContent: 'space-between',
+          alignItems: 'center',
           width: '100%',
           backgroundColor: secondaryColor,
+          margin: groupedNavMargin,
         }}
       >
         <View
           style={{
-            margin: 0,
-
+            margin: groupedNavMargin,
+            padding: 0,
             flex: 1,
             fontWeight: 'bold',
             color: 'white',
@@ -258,9 +255,12 @@ const MainQuestionPage = ({
           <View
             style={{
               flex: 1,
+              margin: groupedNavMargin,
+              padding: 0,
               flexDirection: 'row',
               justifyContent: 'flex-end',
               alignItems: 'center',
+              margin: groupedNavMargin,
             }}
           >
             {!annotatedCard ? (
@@ -295,9 +295,11 @@ const MainQuestionPage = ({
             styles.scoreCircles,
             {
               backgroundColor: secondaryColor,
-
               justifyContent: 'center',
+              alignItems: 'center',
               flex: 1,
+              margin: groupedNavMargin,
+              padding: 0,
             },
           ]}
         >
@@ -313,11 +315,18 @@ const MainQuestionPage = ({
             )
           })}
         </View>
-        <View style={{ flex: 1 }}>
+        <View
+          style={{
+            flex: 1,
+            margin: groupedNavMargin,
+            padding: 0,
+          }}
+        >
           {!isRandom ? (
             <QuestionIconButtons
               changeQuestionType={changeQuestionType}
               bgColor={secondaryColor}
+              groupedNavMargin={groupedNavMargin}
               // annotated={annotatedCardDisplay}
             />
           ) : (
@@ -326,7 +335,7 @@ const MainQuestionPage = ({
         </View>
       </View>
 
-      {droneAudioSrc ? (
+      {droneAudioSrc && dronePlaying ? (
         <DronePlayer
           rootValue={droneAudioSrc}
           dronePlaying={dronePlaying}
@@ -336,18 +345,67 @@ const MainQuestionPage = ({
       ) : (
         ''
       )}
+      {annotated && (
+        <View
+          style={{
+            flex: 0.75,
+            padding: 10,
+            flexDirection: 'row',
+            justifyContent: 'space-between',
+            alignItems: 'flex-start',
+     
+          }}
+        >
+          <View>
+            <Text style={styles.annotatedText}>
+              ↑ Change question type here
+            </Text>
+          </View>
+          <View
+            style={{
+              // flexDirection: 'row',
+
+              justifyContent: 'center',
+              alignItems: 'center',
+            }}
+          >
+            <Text style={styles.annotatedText}>Score tracker ↑</Text>
+            <Text
+              style={[
+                styles.annotatedText,
+                { fontStyle: 'italic', fontSize: 12 },
+              ]}
+            >
+              Full circle for a correct answer and a dot if you got it on your
+              second go
+            </Text>
+          </View>
+          <View>
+            <Text style={styles.annotatedText}>Options here ↑ </Text>
+          </View>
+        </View>
+      )}
       <View
         style={[styles.topRowCards, stylesBool && styles.topRowCardsBorder]}
       >
-        {
+        {!annotated && (
           <View
             style={{
               width: cardWidth,
               height: cardHeight,
+              margin: 0,
+              padding: 0,
             }}
           ></View>
-        }
-        <View style={{ width: cardWidth, height: cardHeight }}>
+        )}
+        <View
+          style={{
+            width: cardWidth,
+            height: cardHeight,
+
+            margin: 0,
+          }}
+        >
           {!isRandom ? (
             <PickShape questionAB={questionAB} width={cardWidth} />
           ) : (
@@ -389,6 +447,20 @@ const MainQuestionPage = ({
           stylesBool && styles.displayCardsGridBorder,
         ]}
       >
+        {annotated && (
+          <View
+            style={{
+              flex: 0.3,
+          
+              justifyContent: 'center',
+              alignItems: 'center',
+            }}
+          >
+            <Text style={styles.annotatedText}>
+              Choose your answer from cards below ↓
+            </Text>
+          </View>
+        )}
         {displayInputCardArray && (
           <DisplayCardsGrid
             cardSize={{
@@ -466,5 +538,10 @@ const styles = StyleSheet.create({
   displayCardsGridBorder: {
     borderWidth: 1,
     borderColor: 'white',
+  },
+  annotatedText: {
+    color: 'white',
+    fontWeight: 'bold',
+    fontColor: 'white',
   },
 })

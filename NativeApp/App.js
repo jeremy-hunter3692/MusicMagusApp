@@ -16,8 +16,8 @@ import { keys, getIntervalNo } from './data/KeyCards'
 
 const themeInit = { bgColor: 'purple', secondaryColor: '#19af59' }
 const secondaryTheme = { bgColor: 'black', secondaryColor: 'purple' }
+const annotatedBackGroundColor = 'rgba(51, 23, 73, 0.99)'
 let themeBool = true
-
 export default function App() {
   const [hexKey, setHexKey] = useState(keys[0])
   const [theme, setTheme] = useState(themeInit)
@@ -69,7 +69,9 @@ export default function App() {
           maxWidth: width,
           // marginTop: 15,
           padding: 0,
-          backgroundColor: theme.bgColor,
+          backgroundColor: annotatedCardDisplay
+            ? annotatedBackGroundColor
+            : theme.bgColor,
           flexDirection: 'column',
           shadowColor: 'black',
           // shadowOffset: { width: 3, height: 3 },
@@ -95,11 +97,12 @@ export default function App() {
                 <AnnotatedCards
                   data={annotatedCard}
                   setAnnotated={() => setAnnotatedCard(null)}
+                  bgColor={annotatedBackGroundColor}
                 />
               </View>
             ) : (
               <MainQuestionPage
-                bgColor={theme.bgColor}
+                primaryColor={theme.bgColor}
                 secondaryColor={theme.secondaryColor}
                 annotated={annotatedCardDisplay}
                 isRandom={isRandom}

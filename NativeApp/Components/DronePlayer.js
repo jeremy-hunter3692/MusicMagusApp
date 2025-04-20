@@ -8,11 +8,21 @@ let droneTwo = null // Declare it outside of the component
 
 const DronePlayer = ({ rootValue, dronePlaying }) => {
   useEffect(() => {
-    drone ? stopDrone(drone) : ''
-    droneTwo ? stopDrone(droneTwo) : ''
-    loadAndPlayDrone()
-  })
+    // Stop any existing drones before starting new ones
+    if (drone) stopDrone(drone)
+    if (droneTwo) stopDrone(droneTwo)
 
+    // Load and play drones if dronePlaying is true
+    if (dronePlaying) {
+      loadAndPlayDrone()
+    }
+
+    // Cleanup function to stop and unload drones
+    return () => {
+      if (drone) stopDrone(drone)
+      if (droneTwo) stopDrone(droneTwo)
+    }
+  }, [rootValue, dronePlaying])
   const loadAndPlayDrone = async () => {
     if (rootValue) {
       drone = await loadSound(rootValue) // Store the sound object globally

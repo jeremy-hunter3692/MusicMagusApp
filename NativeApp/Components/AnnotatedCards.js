@@ -2,27 +2,14 @@ import React from 'react'
 import { Image, Text, View, StyleSheet, Pressable } from 'react-native'
 import { getDataForAnnotated } from '../functions/functions.js'
 
-const AnnotatedCards = ({ data, setAnnotated }) => {
+const AnnotatedCards = ({ data, setAnnotated, bgColor }) => {
   const fontSize = 25
   const { bottomRText, bottomLText, topRtext, topLText } =
     getDataForAnnotated(data)
-  //TO DO refactor all functions to be in functions
-  //make something to find right data for three different cards types
-  // let noOfAccidentals = data?.value.intervals.reduce(
-  //   (count, value) => count + (value === true ? 1 : 0),
-  //   0
-  // )
-  // let relativeMinor = keys[data.idx - 3]?.name
-  // relativeMinor = replaceFlatsForSharps('B', [relativeMinor])
-
-  // let getAccidentals = getAccidentalNames(data.value)
-  // let sanitisedAccidentalsNames = replaceFlatsForSharps(
-  //   data.value.name,
-  //   getAccidentals
-  // )
 
   const styles = StyleSheet.create({
     container: {
+      backgroundColor: bgColor,
       padding: 20,
       flexDirection: 'row',
       height: '100%',

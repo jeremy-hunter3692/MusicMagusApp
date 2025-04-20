@@ -3,11 +3,15 @@ import { StyleSheet, Text, View, Pressable, Image } from 'react-native'
 import QuestionButton from './QuestionButton'
 import { useWindowDimensions } from 'react-native'
 
-const QuestionIconButtons = ({ changeQuestionType, annotated, bgColor }) => {
+const QuestionIconButtons = ({
+  changeQuestionType,
+  annotated,
+  bgColor,
+  groupedNavMargin,
+}) => {
   const [underLine, setUnderline] = useState(1)
   const { width, height } = useWindowDimensions()
   const iconSize = height / 20
-
 
   function selectQType(inpt) {
     setUnderline(inpt)
@@ -17,8 +21,11 @@ const QuestionIconButtons = ({ changeQuestionType, annotated, bgColor }) => {
   const styles = StyleSheet.create({
     iconContainer: {
       flexDirection: 'row',
-      padding: 10,
+      paddingLeft: 5,
       backgroundColor: bgColor,
+      justifyContent: 'flex-start',
+      alignItems: 'center',
+      margin: groupedNavMargin,
     },
     container: {
       alignItems: 'flex-start',
@@ -34,7 +41,7 @@ const QuestionIconButtons = ({ changeQuestionType, annotated, bgColor }) => {
     underLine: {
       zIndex: 2,
       borderColor: 'white',
-      borderWidth: 2,
+      borderWidth: 1.5,
     },
     underCombo: { zIndex: 2, backgroundColor: 'transparent', height: 2 },
   })

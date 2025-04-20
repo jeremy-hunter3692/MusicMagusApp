@@ -190,13 +190,6 @@ export const cardReducer = (questionType, abBool) => {
   }
 }
 
-function getNoOfAccidentals(inpt) {
-  return inpt.value.intervals.reduce(
-    (count, value) => count + (value === true ? 1 : 0),
-    0
-  )
-}
-
 // function getRelativeMinor() {
 //   let minor = keys[data.idx - 3]?.name
 //   return replaceFlatsForSharps(minor, [minor])
@@ -247,6 +240,13 @@ export function returnScoreText(score) {
     : score > 3
     ? 'Keep Practising!'
     : `Rome wasn't built in a day`
+}
+
+function getNoOfAccidentals(inpt) {
+  return inpt.value.intervals.reduce(
+    (count, value) => count + (value === true ? 1 : 0),
+    0
+  )
 }
 
 export function getDataForAnnotated(inpt) {
@@ -317,7 +317,7 @@ export function getDataForAnnotated(inpt) {
       bottomRText: accidentalsText,
     }
   } else {
-    console.log('broke')
+    console.log('broken switch in getDataForAnnotated')
     return 'brken'
   }
 
