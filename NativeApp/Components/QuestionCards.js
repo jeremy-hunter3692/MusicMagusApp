@@ -30,10 +30,11 @@ const QuestionCards = ({
   newRound,
   skip,
   skipQuestion,
+  fontScale,
 }) => {
   const flipAnswerCardAnimation = useSharedValue(0)
   const flipScoreCardAnimation = useSharedValue(0)
-
+  console.log('app')
   useEffect(() => {
     console.log('UseAnswer', answer)
     flipScoreCardAnimation.value = 0
@@ -49,7 +50,6 @@ const QuestionCards = ({
   //
 
   if (resultDisplay && isAnimated) {
-    console.log('question if')
     handleFlip(180, flipAnswerCardAnimation)
   }
 
@@ -92,7 +92,6 @@ const QuestionCards = ({
       flexDirection: 'row',
       justifyContent: 'center',
       alignItems: 'center',
-
       margin: 0,
       padding: 0,
     },
@@ -110,6 +109,7 @@ const QuestionCards = ({
       width: '100%',
       height: '100%',
     },
+
     backCard: {
       margin: 0,
       padding: 0,
@@ -135,13 +135,13 @@ const QuestionCards = ({
       margin: 6,
       top: 2,
       borderRadius: 10,
-      // backgroundColor: 'white',
+
       alignContent: 'center',
       width: cardSize.cardWidth,
       height: cardSize.cardHeight - 5,
       marginBottom: 10,
       borderColor: 'white',
-      // borderWidth: 1,
+      fontSize: fontScale,
     },
     scoreTextContainer: {
       backgroundColor: 'white', //rgba(255, 255, 255, 0.7)',
@@ -164,6 +164,7 @@ const QuestionCards = ({
       justifyContent: 'flex-end',
       alignSelf: 'center',
       color: 'black',
+      fontSize: fontScale,
     },
     hiddenScoreCard: {
       height: cardSize.cardHeight,
@@ -176,11 +177,13 @@ const QuestionCards = ({
       justifyContent: 'center',
       alignSelf: 'center',
       color: 'black',
+      fontSize: fontScale,
     },
     buttonText: {
       justifyContent: 'center',
       color: 'black',
       alignSelf: 'center',
+      fontSize: fontScale,
     },
   })
 
@@ -212,7 +215,7 @@ const QuestionCards = ({
           {annotated && (
             <>
               <Text style={styles.annotatedText}>
-                {'what interval is this note' + arrow}
+                {'what interval is this note ➔ '}
               </Text>
             </>
           )}
@@ -237,7 +240,7 @@ const QuestionCards = ({
           {annotated && (
             <>
               <Text style={styles.annotatedText}>
-                {'Answer To be revealed' + arrow}
+                {'Answer To be revealed ➔'}
               </Text>
             </>
           )}
@@ -311,34 +314,35 @@ const QuestionCards = ({
               {'Score will appear here at end of round'}
             </Text>
           ) : (
-            <Animated.View
-              style={[
-                styles.hiddenScoreCard,
-                frontAnimatedStyle(flipScoreCardAnimation),
-                (displayScore || skip) && styles.scoreTextContainer,
-              ]}
-            >
-              {displayScore || skip ? (
-                <>
-                  {skip ? (
-                    <Pressable onPress={skipQuestion}>
-                      <Text style={styles.buttonText}>Skip Question?</Text>
-                    </Pressable>
-                  ) : (
-                    <>
-                      <Text style={styles.scoreText}>{score + '/12'}</Text>
-                      <Text style={styles.quoteText}>
-                        {returnScoreText(score)}
-                      </Text>
-                      <Pressable onPress={newRound}>
-                        <Text style={styles.buttonText}>New Round?</Text>
-                      </Pressable>
-                    </>
-                  )}
-                </>
-              ) : null}
-            </Animated.View>
+            ''
           )}
+          <Animated.View
+            style={[
+              styles.hiddenScoreCard,
+              frontAnimatedStyle(flipScoreCardAnimation),
+              (displayScore || skip) && styles.scoreTextContainer,
+            ]}
+          >
+            {displayScore || skip ? (
+              <>
+                {skip ? (
+                  <Pressable onPress={skipQuestion}>
+                    <Text style={styles.buttonText}>Skip Question?</Text>
+                  </Pressable>
+                ) : (
+                  <>
+                    <Text style={styles.scoreText}>{score + '/12'}</Text>
+                    <Text style={styles.quoteText}>
+                      {returnScoreText(score)}
+                    </Text>
+                    <Pressable onPress={newRound}>
+                      <Text style={styles.buttonText}>New Round?</Text>
+                    </Pressable>
+                  </>
+                )}
+              </>
+            ) : null}
+          </Animated.View>
         </View>
       </View>
     </>

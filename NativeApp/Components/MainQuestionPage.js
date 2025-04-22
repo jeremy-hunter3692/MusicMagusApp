@@ -49,10 +49,11 @@ const MainQuestionPage = ({
   annotated,
   isRandom,
   isAnimated,
+  dimensions,
 }) => {
   //questionType will refer to what the first card is
   //TO DO go over all this state and cut down what we need/don't need
-
+  const { width, height } = dimensions
   const [firstCard, setFirstCard] = useState()
   const [secondCard, setSecondCard] = useState()
   const [displayInputCardArray, setDisplayInputCardArray] = useState()
@@ -65,12 +66,13 @@ const MainQuestionPage = ({
   const [userScoreDisplay, setScoreDisplay] = useState(null)
   const [scoreCircles, setScoreSircle] = useState(scoreCirclesInit)
   const [choosingKey, setChoosingKey] = useState(false)
+  const [fontScale, setFontScale] = useState(height / 100)
   //Might not need, props should re load the children correctly...?
 
   const [dronePlaying, setDronePlaying] = useState(true)
   ///
-  const { width, height } = useWindowDimensions()
-  const scoreCirclesSize = width / 40
+  console.log('MQ')
+  const scoreCirclesSize = height / 40
   const cardWidth = width > height ? width * 0.1 : width * 0.14
   const cardHeight = cardWidth * 1.5
 
@@ -357,9 +359,14 @@ const MainQuestionPage = ({
               backgroundColor: secondaryColor,
               justifyContent: 'center',
               alignItems: 'center',
-              flex: 1,
+              flex: 10,
+              height: scoreCirclesSize,
               margin: groupedNavMargin,
               padding: 0,
+              zIndex: 100,
+              borderColor: 'white',
+              borderWidth: 1,
+          
             },
           ]}
         >
@@ -432,7 +439,7 @@ const MainQuestionPage = ({
             <Text
               style={[
                 styles.annotatedText,
-                { fontStyle: 'italic', fontSize: 12 },
+                { fontStyle: 'italic', fontSize: fontScale },
               ]}
             >
               Full circle for a correct answer and a dot if you got it on your
@@ -457,15 +464,15 @@ const MainQuestionPage = ({
             }}
           ></View>
         )}
-              <View
-            style={{
-              width: cardWidth,
-              height: cardHeight,
-              margin: 0,
-              padding: 0,
-            }}
-          ></View>
-          
+        <View
+          style={{
+            width: cardWidth,
+            height: cardHeight,
+            margin: 0,
+            padding: 0,
+          }}
+        ></View>
+
         {/* THIS HERE IS FOR THE AB BOOL VERSION <View
           style={{
             width: cardWidth,
@@ -484,6 +491,7 @@ const MainQuestionPage = ({
           <QuestionCards
             bgColor={bgColor}
             secondaryColor={secondaryColor}
+            fontScale={fontScale}
             firstCard={firstCard}
             secondCard={secondCard}
             rootCardPress={questionCardPress}
