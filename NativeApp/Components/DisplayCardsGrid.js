@@ -22,7 +22,6 @@ const DisplayCardsGrid = ({
     //find the note based off the interval
     // let source = findNote(inpt.name, noteAudioSrc)
     // let res = source ? cardOnPress(source) : cardOnPress(inpt)
-
     userAnswerSetter(inpt)
     return null
   }

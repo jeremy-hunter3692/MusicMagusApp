@@ -12,11 +12,8 @@ import Animated, {
 import { returnScoreText } from '../functions/functions.js'
 
 const blankCard = require('../assets/blankcard.png')
-const newQuestionTimeDelay = 1500
 
 const QuestionCards = ({
-  bgColor,
-  secondaryColor,
   firstCard,
   secondCard,
   findNoteFunction,
@@ -34,65 +31,68 @@ const QuestionCards = ({
   skip,
   skipQuestion,
 }) => {
-  useEffect(() => {}, [skip])
+  const flipAnswerCardAnimation = useSharedValue(0)
+  const flipScoreCardAnimation = useSharedValue(0)
+
+  useEffect(() => {
+    console.log('UseAnswer', answer)
+    flipScoreCardAnimation.value = 0
+    flipAnswerCardAnimation.value = 0
+  }, [skip, answer])
 
   // Function to handle the flip
-  const flipAnimation = useSharedValue(0)
 
-  const handleFlip = (toValue) => {
-    const animationSpeed = 500
-    flipAnimation.value = withTiming(toValue, { duration: animationSpeed })
+  const handleFlip = (toValue, card) => {
+    const animationSpeed = 1000
+    card.value = withTiming(toValue, { duration: animationSpeed })
   }
   //
 
   if (resultDisplay && isAnimated) {
-    handleFlip(180) // Flip the card to 180 degrees
-    setTimeout(() => {
-      flipAnimation.value = 0 // Flip the card back to 0 degrees after 1 second
-    }, newQuestionTimeDelay)
+    console.log('question if')
+    handleFlip(180, flipAnswerCardAnimation)
   }
 
   function droneSetter() {
     rootCardPress()
   }
 
-  // Front side animation style
-  const frontAnimatedStyle = useAnimatedStyle(() => {
-    const rotateY = interpolate(
-      flipAnimation.value,
-      [0, 180],
-      [0, 180],
-      Extrapolate.CLAMP
-    )
-    return {
-      transform: [{ rotateY: `${rotateY}deg` }],
-      opacity: flipAnimation.value < 90 ? 1 : 0,
-    }
-  })
+  const frontAnimatedStyle = (card) =>
+    useAnimatedStyle(() => {
+      const rotateY = interpolate(
+        card.value,
+        [0, 180],
+        [0, 180],
+        Extrapolate.CLAMP
+      )
+      return {
+        transform: [{ rotateY: `${rotateY}deg` }],
+        opacity: card.value < 90 ? 1 : 0,
+      }
+    })
 
-  // Back side animation style
-  const backAnimatedStyle = useAnimatedStyle(() => {
-    const rotateY = interpolate(
-      flipAnimation.value,
-      [0, 180],
-      [180, 360],
-      Extrapolate.CLAMP
-    )
-    return {
-      transform: [{ rotateY: `${rotateY}deg` }],
-      opacity: flipAnimation.value > 90 ? 1 : 0,
-    }
-  })
+  const backAnimatedStyle = (card) =>
+    useAnimatedStyle(() => {
+      const rotateY = interpolate(
+        card.value,
+        [0, 180],
+        [180, 360],
+        Extrapolate.CLAMP
+      )
+      return {
+        transform: [{ rotateY: `${rotateY}deg` }],
+        opacity: card.value > 90 ? 1 : 0,
+      }
+    })
 
   function returnCorrectAnnotatedText(cardValue, abBool) {}
 
-  const arrow = ' ➔ '
   const styles = StyleSheet.create({
     questionCardsCont: {
       flexDirection: 'row',
       justifyContent: 'center',
       alignItems: 'center',
-  
+
       margin: 0,
       padding: 0,
     },
@@ -190,7 +190,7 @@ const QuestionCards = ({
         <View style={[styles.forAnnotation, { justifyContent: 'center' }]}>
           {annotated && (
             <>
-              <Text style={styles.annotatedText}>{'In this key' + arrow}</Text>
+              <Text style={styles.annotatedText}>{'In this key  ➔ '}</Text>
               <Text style={styles.annotatedText}>
                 {'←  Change between two question modes '}
               </Text>
@@ -247,7 +247,11 @@ const QuestionCards = ({
           {isAnimated ? (
             <>
               <Animated.View
-                style={[styles.blankCard, styles.backCard, backAnimatedStyle]}
+                style={[
+                  styles.blankCard,
+                  styles.backCard,
+                  backAnimatedStyle(flipAnswerCardAnimation),
+                ]}
               >
                 <CardButton
                   cardSize={cardSize}
@@ -260,7 +264,12 @@ const QuestionCards = ({
                   animated={isAnimated}
                 />
               </Animated.View>
-              <Animated.View style={[styles.card, frontAnimatedStyle]}>
+              <Animated.View
+                style={[
+                  styles.card,
+                  frontAnimatedStyle(flipAnswerCardAnimation),
+                ]}
+              >
                 <CardButton
                   cardSize={cardSize}
                   source={blankCard}
@@ -305,7 +314,7 @@ const QuestionCards = ({
             <Animated.View
               style={[
                 styles.hiddenScoreCard,
-                frontAnimatedStyle,
+                frontAnimatedStyle(flipScoreCardAnimation),
                 (displayScore || skip) && styles.scoreTextContainer,
               ]}
             >

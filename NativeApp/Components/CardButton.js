@@ -38,7 +38,6 @@ const CardButton = ({
   const initDealDelay = 30
   const scale = useSharedValue(initCardSizeValue)
   const { cardWidth, cardHeight } = cardSize || {}
-  annotated ? console.log('card buttons', data?.name) : ''
 
   useEffect(() => {
     if (annotated) {

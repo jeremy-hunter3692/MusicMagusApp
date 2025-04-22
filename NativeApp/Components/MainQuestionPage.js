@@ -20,20 +20,25 @@ import {
   findNoteEquivalent,
   cardReducer,
   returnAnswerType,
+  returnRandomCard,
 } from '../functions/functions.js'
+import { keys } from '../data/KeyCards.js'
 
 const stylesBool = false // true
 const newAnswerDelay = 1500
-const annotatedDisplayGridSizeChangeFactor = 0.2
-const annotatedQCardsSizeChangeFactor = 1.2
+
 const groupedNavMargin = 0
 const scoreCirclesInit = Array(12).fill(null)
-let questionNumber = 10
+let isRandomisedKey = false
+let annotatedDisplayGridSizeChangeFactor = 0.2
+let annotatedQCardsSizeChangeFactor = 1.2
+let questionNumber = 0
 let attemptCount = 0
 let droneType = true
 let userScore = 0
 let isReloading = false
 let globalQuestionTimeOutID
+
 const MainQuestionPage = ({
   bgColor,
   secondaryColor,
@@ -59,7 +64,9 @@ const MainQuestionPage = ({
   const [userAnswer, setUserAnswer] = useState()
   const [userScoreDisplay, setScoreDisplay] = useState(null)
   const [scoreCircles, setScoreSircle] = useState(scoreCirclesInit)
+  const [choosingKey, setChoosingKey] = useState(false)
   //Might not need, props should re load the children correctly...?
+
   const [dronePlaying, setDronePlaying] = useState(true)
   ///
   const { width, height } = useWindowDimensions()
@@ -68,17 +75,38 @@ const MainQuestionPage = ({
   const cardHeight = cardWidth * 1.5
 
   useEffect(() => {
-    let questionCardsReturnObj = isRandom
-      ? randomiseQuestion()
-      : cardReducer(questionType, !abBool)
-    const { firstCard, secondCard, array, answerIdx } = questionCardsReturnObj
+    console.log('use')
+    let questionCard = returnRandomCard(keys)
+    setFirstCard(questionCard)
+    setQuestionCard(isRandomisedKey, questionCard)
+  }, [questionType, isRandom])
+
+  function setQuestionCard(randomiseKey, firstCardStart) {
+    let tempPrevCard = secondCard
+    let count = 0
+    let questionCardsReturnObj
+
+    do {
+      count++
+      questionCardsReturnObj = isRandom
+        ? randomiseQuestion()
+        : cardReducer(questionType, !abBool, randomiseKey, firstCardStart)
+    } while (
+      (tempPrevCard != undefined &&
+        tempPrevCard.value.name ===
+          questionCardsReturnObj.secondCardFromReducer.value.name) ||
+      count > 10
+    )
+
+    const { firstCardFromReducer, secondCardFromReducer, array, answerIdx } =
+      questionCardsReturnObj
     setUserAnswer(null)
-    getAndSetDroneAudioSource(firstCard.value)
+    getAndSetDroneAudioSource(firstCardFromReducer.value)
     setDisplayInputCardArray(array)
-    setFirstCard(firstCard)
-    setSecondCard(secondCard)
+    setFirstCard(firstCardFromReducer)
+    setSecondCard(secondCardFromReducer)
     setCorrectAnswer(array[answerIdx])
-  }, [questionType, reloadBool, isRandom])
+  }
 
   function changeQuestionType(inpt) {
     let type =
@@ -127,6 +155,11 @@ const MainQuestionPage = ({
 
   function getAudioSrcIdxFromCardReducer(cardAny) {
     //TO DO check these names and uses/RENAME them better
+    if (choosingKey) {
+      // console.log(choosingKey, 'getAudioSrcIdxFromCardReducer', cardAny)
+      return
+    }
+    // console.log('getAudioSrcIdxFromCardReducer CONTINUED', choosingKey)
     let audioSrcIdx =
       questionType === 'Key'
         ? getAudioSrcInterval(cardAny)
@@ -150,9 +183,28 @@ const MainQuestionPage = ({
   function droneReload() {
     console.log('make this funciton/check if I actually need it')
   }
-  function questionCardPress() {
-    console.log('drone off not working pproperly yet')
-    droneOnOff()
+
+  function questionCardPress(inpt) {
+    console.log('drone off not working pproperly yet', inpt)
+    setDisplayInputCardArray(keys)
+
+    setDroneAudioSrc(null)
+    //check why annotated is changing these values and what is changing it back
+    annotatedDisplayGridSizeChangeFactor = 1.2
+    annotatedQCardsSizeChangeFactor = 0.7
+    setChoosingKey(true)
+    // reload()
+  }
+
+  function userInputCardPress(inpt) {
+    if (!choosingKey) {
+      userAnswerSetter(inpt)
+      return
+    }
+    setFirstCard(inpt)
+    setQuestionCard(false, inpt)
+    setChoosingKey(false)
+    gameOver()
   }
 
   function userAnswerSetter(inpt) {
@@ -199,7 +251,8 @@ const MainQuestionPage = ({
   }
 
   function reload() {
-    setReloadBool((x) => !x)
+    setQuestionCard(isRandomisedKey, firstCard)
+    // setReloadBool((x) => !x)
   }
 
   function nextQuestionReloadTimeOut(fastReload = false) {
@@ -214,6 +267,7 @@ const MainQuestionPage = ({
   }
 
   function gameOver() {
+    console.log(firstCard)
     setDroneAudioSrc(null)
     userScore = 0
     attemptCount = 0
@@ -221,6 +275,12 @@ const MainQuestionPage = ({
     reload()
     setScoreSircle(scoreCirclesInit)
     setScoreDisplay(0)
+  }
+
+  function setRandom() {
+    isRandomisedKey = true
+    setChoosingKey(false)
+    gameOver()
   }
 
   return (
@@ -353,7 +413,6 @@ const MainQuestionPage = ({
             flexDirection: 'row',
             justifyContent: 'space-between',
             alignItems: 'flex-start',
-     
           }}
         >
           <View>
@@ -398,7 +457,16 @@ const MainQuestionPage = ({
             }}
           ></View>
         )}
-        <View
+              <View
+            style={{
+              width: cardWidth,
+              height: cardHeight,
+              margin: 0,
+              padding: 0,
+            }}
+          ></View>
+          
+        {/* THIS HERE IS FOR THE AB BOOL VERSION <View
           style={{
             width: cardWidth,
             height: cardHeight,
@@ -411,7 +479,7 @@ const MainQuestionPage = ({
           ) : (
             ' '
           )}
-        </View>
+        </View> */}
         {firstCard?.value && (
           <QuestionCards
             bgColor={bgColor}
@@ -447,20 +515,29 @@ const MainQuestionPage = ({
           stylesBool && styles.displayCardsGridBorder,
         ]}
       >
-        {annotated && (
-          <View
-            style={{
-              flex: 0.3,
-          
-              justifyContent: 'center',
-              alignItems: 'center',
-            }}
-          >
-            <Text style={styles.annotatedText}>
-              Choose your answer from cards below ↓
-            </Text>
-          </View>
-        )}
+        {annotated ||
+          (choosingKey && (
+            <View
+              style={{
+                flex: 0.3,
+                justifyContent: 'center',
+                alignItems: 'center',
+              }}
+            >
+              {!choosingKey ? (
+                <Text style={styles.annotatedText}>
+                  Choose your answer from cards below ↓
+                </Text>
+              ) : (
+                <Text style={styles.annotatedText}>
+                  Choose your key below ↓ or
+                  <Pressable onPress={() => setRandom()}>
+                    <Text style={{ fontStyle: 'italic' }}> Select Random</Text>{' '}
+                  </Pressable>
+                </Text>
+              )}
+            </View>
+          ))}
         {displayInputCardArray && (
           <DisplayCardsGrid
             cardSize={{
@@ -473,7 +550,7 @@ const MainQuestionPage = ({
             }}
             stylesBool={stylesBool}
             cardsArray={displayInputCardArray}
-            userAnswerSetter={userAnswerSetter}
+            userAnswerSetter={userInputCardPress}
             findNoteFunction={getAudioSrcIdxFromCardReducer}
             reDeal={firstCard}
             isAnimated={isAnimated}

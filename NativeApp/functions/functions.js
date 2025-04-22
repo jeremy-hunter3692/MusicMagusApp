@@ -143,21 +143,26 @@ const KEY = 'Key'
 const NOTE = 'Note'
 const INTERVAL = 'Interval'
 
-export const cardReducer = (questionType, abBool) => {
-  // console.log(' in reducer:', questionType,abBool)
-  let firstCard
+export const cardReducer = (
+  questionType,
+  abBool,
+  randomiseKey,
+  firstCardProp
+) => {
+  let firstCard = !randomiseKey ? firstCardProp : null
   let secondCard
   let answerIdx
+  // console.log(' in reducer:', firstCardProp, abBool, questionType)
   switch (questionType) {
     case KEY:
-      firstCard = returnRandomCard(keys)
+      firstCard = randomiseKey ? returnRandomCard(keys) : firstCard
       secondCard = returnRandomCard(abBool ? intervals : noteNames, true)
       answerIdx = abBool
         ? getNoteCardIdxFromIntervalAndKeyCard(firstCard.idx, secondCard.idx)
         : distanceUpInIntervals(firstCard.idx, secondCard.idx)
       return {
-        firstCard: firstCard,
-        secondCard: secondCard,
+        firstCardFromReducer: firstCard,
+        secondCardFromReducer: secondCard,
         array: abBool ? noteNames : intervals,
         answerIdx: answerIdx,
       }
@@ -168,8 +173,8 @@ export const cardReducer = (questionType, abBool) => {
         ? intervalOfWhatKey(secondCard.idx, firstCard.idx)
         : getNoteCardIdxFromIntervalAndKeyCard(secondCard.idx, firstCard.idx)
       return {
-        firstCard: firstCard,
-        secondCard: secondCard,
+        firstCardFromReducer: firstCard,
+        secondCardFromReducer: secondCard,
         array: abBool ? keys : noteNames,
         answerIdx: answerIdx,
       }
@@ -180,8 +185,8 @@ export const cardReducer = (questionType, abBool) => {
         ? distanceUpInIntervals(secondCard.idx, firstCard.idx)
         : intervalOfWhatKey(firstCard.idx, secondCard.idx)
       return {
-        firstCard: firstCard,
-        secondCard: secondCard,
+        firstCardFromReducer: firstCard,
+        secondCardFromReducer: secondCard,
         array: abBool ? intervals : keys,
         answerIdx: answerIdx,
       }
