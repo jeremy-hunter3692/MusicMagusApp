@@ -57,6 +57,7 @@ export function returnRandomCard(array, omitRoot = false) {
 }
 
 export function getIdxAndNotes(note, array = noteAudioSrc) {
+  console.log('note:', note)
   let getIdxArr = array.map((x, idx) => {
     if (x.name === note.name) {
       return [x, idx]
@@ -160,6 +161,14 @@ export const cardReducer = (
       answerIdx = abBool
         ? getNoteCardIdxFromIntervalAndKeyCard(firstCard.idx, secondCard.idx)
         : distanceUpInIntervals(firstCard.idx, secondCard.idx)
+      console.log(
+        'firstCard:',
+        firstCard,
+        'secondCard:',
+        secondCard,
+        'answerIdx:',
+        answerIdx
+      )
       return {
         firstCardFromReducer: firstCard,
         secondCardFromReducer: secondCard,

@@ -24,13 +24,12 @@ import {
 } from '../functions/functions.js'
 import { keys } from '../data/KeyCards.js'
 
-const stylesBool = false // true
 const newAnswerDelay = 1500
 
 const groupedNavMargin = 0
 const scoreCirclesInit = Array(12).fill(null)
 let isRandomisedKey = false
-let annotatedDisplayGridSizeChangeFactor = 0.2
+let annotatedDisplayGridSizeChangeFactor = 0.5
 let annotatedQCardsSizeChangeFactor = 1.2
 let questionNumber = 0
 let attemptCount = 0
@@ -66,24 +65,29 @@ const MainQuestionPage = ({
   const [userScoreDisplay, setScoreDisplay] = useState(null)
   const [scoreCircles, setScoreSircle] = useState(scoreCirclesInit)
   const [choosingKey, setChoosingKey] = useState(false)
-  const [fontScale, setFontScale] = useState(height / 100)
+  const [fontScale, setFontScale] = useState(height / 50)
   //Might not need, props should re load the children correctly...?
 
   const [dronePlaying, setDronePlaying] = useState(true)
   ///
-  console.log('MQ')
   const scoreCirclesSize = height / 40
   const cardWidth = width > height ? width * 0.1 : width * 0.14
   const cardHeight = cardWidth * 1.5
 
   useEffect(() => {
-    console.log('use')
     let questionCard = returnRandomCard(keys)
     setFirstCard(questionCard)
-    setQuestionCard(isRandomisedKey, questionCard)
+    setQuestionCards(isRandomisedKey, questionCard)
+    // console.log('use', firstCard)
   }, [questionType, isRandom])
 
-  function setQuestionCard(randomiseKey, firstCardStart) {
+  function setQuestionCards(randomiseKey, firstCardStart) {
+    // console.log('setQuestionCard', randomiseKey, firstCardStart)
+
+    if (firstCardStart.idx === undefined) {
+      let idx = keys.findIndex((x) => x.name === firstCardStart.name)
+      firstCardStart = { value: firstCardStart, idx: idx }
+    }
     let tempPrevCard = secondCard
     let count = 0
     let questionCardsReturnObj
@@ -102,6 +106,7 @@ const MainQuestionPage = ({
 
     const { firstCardFromReducer, secondCardFromReducer, array, answerIdx } =
       questionCardsReturnObj
+
     setUserAnswer(null)
     getAndSetDroneAudioSource(firstCardFromReducer.value)
     setDisplayInputCardArray(array)
@@ -156,6 +161,7 @@ const MainQuestionPage = ({
   }
 
   function getAudioSrcIdxFromCardReducer(cardAny) {
+    return
     //TO DO check these names and uses/RENAME them better
     if (choosingKey) {
       // console.log(choosingKey, 'getAudioSrcIdxFromCardReducer', cardAny)
@@ -187,29 +193,35 @@ const MainQuestionPage = ({
   }
 
   function questionCardPress(inpt) {
-    console.log('drone off not working pproperly yet', inpt)
+    console.log('choosing')
+    // console.log('questionCardPress', inpt, annotatedDisplayGridSizeChangeFactor)
     setDisplayInputCardArray(keys)
-
     setDroneAudioSrc(null)
     //check why annotated is changing these values and what is changing it back
-    annotatedDisplayGridSizeChangeFactor = 1.2
-    annotatedQCardsSizeChangeFactor = 0.7
+    annotatedDisplayGridSizeChangeFactor = 0.1
+    annotatedQCardsSizeChangeFactor = 0.1
+    // console.log('2NDquestionCardPress', annotatedDisplayGridSizeChangeFactor)
     setChoosingKey(true)
     // reload()
   }
 
   function userInputCardPress(inpt) {
+    //betterway to get this idx?
+
+    console.log('CLICK', inpt)
     if (!choosingKey) {
+      console.log('after if')
       userAnswerSetter(inpt)
       return
     }
-    setFirstCard(inpt)
-    setQuestionCard(false, inpt)
-    setChoosingKey(false)
-    gameOver()
+    setFirstCard({ value: inpt })
+    setQuestionCards(false, { value: inpt })
+    gameOver(inpt)
+    setChoosingKey((x) => false)
   }
 
   function userAnswerSetter(inpt) {
+    console.log('user', inpt, isReloading)
     setUserAnswer(inpt)
     if (isReloading) {
       return
@@ -252,8 +264,8 @@ const MainQuestionPage = ({
     }
   }
 
-  function reload() {
-    setQuestionCard(isRandomisedKey, firstCard)
+  function reload(newFirstCard = firstCard) {
+    setQuestionCards(isRandomisedKey, newFirstCard)
     // setReloadBool((x) => !x)
   }
 
@@ -268,13 +280,13 @@ const MainQuestionPage = ({
     return questionChangingTimeOut
   }
 
-  function gameOver() {
-    console.log(firstCard)
+  function gameOver(inpt = firstCard) {
+    console.log(inpt)
     setDroneAudioSrc(null)
     userScore = 0
     attemptCount = 0
     questionNumber = 0
-    reload()
+    reload(inpt)
     setScoreSircle(scoreCirclesInit)
     setScoreDisplay(0)
   }
@@ -284,6 +296,41 @@ const MainQuestionPage = ({
     setChoosingKey(false)
     gameOver()
   }
+
+  const styles = StyleSheet.create({
+    scoreCircles: {
+      margin: 0,
+      fontWeight: 'bold',
+      flex: 0.1,
+      color: 'white',
+      flexDirection: 'row',
+      backgroundColor: '#19af59',
+      justifyContent: 'flex-start',
+      alignItems: 'center',
+    },
+    topRowCards: {
+      flexDirection: 'row',
+      justifyContent: 'center',
+      alignItems: 'center',
+      margin: 2,
+      padding: 0,
+    },
+    questionCardsCont: {
+      flexDirection: 'row',
+      margin: 0,
+      padding: 0,
+    },
+    displayCardsGrid: {
+      flex: 2,
+      margin: 2,
+      padding: 0,
+    },
+    annotatedText: {
+      color: 'white',
+      fontWeight: 'bold',
+      fontSize: fontScale,
+    },
+  })
 
   return (
     <>
@@ -366,7 +413,6 @@ const MainQuestionPage = ({
               zIndex: 100,
               borderColor: 'white',
               borderWidth: 1,
-          
             },
           ]}
         >
@@ -451,9 +497,7 @@ const MainQuestionPage = ({
           </View>
         </View>
       )}
-      <View
-        style={[styles.topRowCards, stylesBool && styles.topRowCardsBorder]}
-      >
+      <View style={styles.topRowCards}>
         {!annotated && (
           <View
             style={{
@@ -517,35 +561,34 @@ const MainQuestionPage = ({
           />
         )}
       </View>
-      <View
-        style={[
-          styles.displayCardsGrid,
-          stylesBool && styles.displayCardsGridBorder,
-        ]}
-      >
-        {annotated ||
-          (choosingKey && (
-            <View
-              style={{
-                flex: 0.3,
-                justifyContent: 'center',
-                alignItems: 'center',
-              }}
-            >
-              {!choosingKey ? (
-                <Text style={styles.annotatedText}>
-                  Choose your answer from cards below ↓
-                </Text>
-              ) : (
-                <Text style={styles.annotatedText}>
-                  Choose your key below ↓ or
-                  <Pressable onPress={() => setRandom()}>
-                    <Text style={{ fontStyle: 'italic' }}> Select Random</Text>{' '}
-                  </Pressable>
-                </Text>
-              )}
-            </View>
-          ))}
+      <View style={styles.displayCardsGrid}>
+        {(annotated || choosingKey) && (
+          <View
+            style={{
+              flex: 0.3,
+              justifyContent: 'center',
+              alignItems: 'center',
+              margin: 3,
+            }}
+          >
+            {!choosingKey ? (
+              <Text style={styles.annotatedText}>
+                Choose your answer from cards below ↓
+              </Text>
+            ) : (
+              <Text style={styles.annotatedText}>
+                Choose your key below ↓ or
+                <Pressable onPress={() => setRandom()}>
+                  <Text style={{ fontStyle: 'italic', fontSize: fontScale }}>
+                    {' '}
+                    Select Random
+                  </Text>
+                </Pressable>
+              </Text>
+            )}
+          </View>
+        )}
+
         {displayInputCardArray && (
           <DisplayCardsGrid
             cardSize={{
@@ -556,7 +599,7 @@ const MainQuestionPage = ({
                 ? cardHeight * annotatedDisplayGridSizeChangeFactor
                 : cardHeight,
             }}
-            stylesBool={stylesBool}
+            stylesBool={false}
             cardsArray={displayInputCardArray}
             userAnswerSetter={userInputCardPress}
             findNoteFunction={getAudioSrcIdxFromCardReducer}
@@ -570,63 +613,3 @@ const MainQuestionPage = ({
 }
 
 export default MainQuestionPage
-
-const styles = StyleSheet.create({
-  scoreCircles: {
-    margin: 0,
-    fontWeight: 'bold',
-    flex: 0.1,
-    color: 'white',
-    flexDirection: 'row',
-    backgroundColor: '#19af59',
-    justifyContent: 'flex-start',
-    alignItems: 'center',
-  },
-  topRowCards: {
-    flexDirection: 'row',
-    justifyContent: 'center',
-    alignItems: 'center',
-    margin: 2,
-    padding: 0,
-  },
-  topRowCardsBorder: {
-    flex: 1,
-    flexDirection: 'row',
-    borderWidth: 3,
-    borderColor: 'white',
-    margin: 0,
-    padding: 0,
-  },
-  questionCardsCont: {
-    flexDirection: 'row',
-    margin: 0,
-    padding: 0,
-  },
-  questionCardsBorder: {
-    flexDirection: 'row',
-    justifyContent: 'center',
-    borderWidth: 3,
-    borderColor: 'blue',
-  },
-  questionButtons: {
-    flex: 1,
-  },
-  questionButtonsBorder: {
-    backgroundColor: 'red',
-    borderColor: 'yellow',
-  },
-  displayCardsGrid: {
-    flex: 2,
-    margin: 2,
-    padding: 0,
-  },
-  displayCardsGridBorder: {
-    borderWidth: 1,
-    borderColor: 'white',
-  },
-  annotatedText: {
-    color: 'white',
-    fontWeight: 'bold',
-    fontColor: 'white',
-  },
-})

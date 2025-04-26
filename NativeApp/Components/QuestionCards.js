@@ -34,9 +34,8 @@ const QuestionCards = ({
 }) => {
   const flipAnswerCardAnimation = useSharedValue(0)
   const flipScoreCardAnimation = useSharedValue(0)
-  console.log('app')
   useEffect(() => {
-    console.log('UseAnswer', answer)
+    // console.log('UseAnswer', answer)
     flipScoreCardAnimation.value = 0
     flipAnswerCardAnimation.value = 0
   }, [skip, answer])
@@ -313,9 +312,7 @@ const QuestionCards = ({
             <Text style={[styles.annotatedText, { alignSelf: 'center' }]}>
               {'Score will appear here at end of round'}
             </Text>
-          ) : (
-            ''
-          )}
+          ) : null}
           <Animated.View
             style={[
               styles.hiddenScoreCard,

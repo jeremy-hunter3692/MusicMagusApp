@@ -35,7 +35,7 @@ export default function App() {
   // function appLevel(inpt) {
   //   console.log('TODO-App level', inpt)
   // }
-  console.log('app')
+ 
   function handleAnnotatedClick(inpt) {
     annotatedCard ? setAnnotatedCard(null) : setAnnotatedCard(inpt)
     setAnnotatedMode()

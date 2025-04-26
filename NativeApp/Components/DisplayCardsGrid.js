@@ -17,6 +17,7 @@ const DisplayCardsGrid = ({
   isAnimated,
 }) => {
   function setAnswer(inpt) {
+    // console.log('displayCards', inpt)
     //input as card with im src
     // console.log('set inpt', inpt)
     //find the note based off the interval
@@ -33,7 +34,7 @@ const DisplayCardsGrid = ({
     cardsArray.length / 2,
     cardsArray.length
   )
-  // console.log('display', reDeal)
+
   return (
     <>
       <View style={stylesBool ? styles.imgContTopBorder : styles.imgContTop}>

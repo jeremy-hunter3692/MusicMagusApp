@@ -22,6 +22,7 @@ const CardButton = ({
   data,
   source,
   reDeal,
+  index,
   autoPlay = false,
   answer,
   findAudioSourceFunction,
@@ -45,7 +46,6 @@ const CardButton = ({
     }
     scale.value = withSpring(initCardSizeValue)
     setTimeout(() => {
-
       dealAnimationTrigger(animationDelay)
     }, initDealDelay)
 
@@ -69,11 +69,11 @@ const CardButton = ({
       // check this for fixing sound first
       autoPlay === true ? setNote(onPress(answer)) : handlePressIn()
     }
-
-    let res = findAudioSourceFunction ? findAudioSourceFunction(inpt) : ''
+    // console.log('cardButtonOnPress', inpt, findAudioSourceFunction)
+    let res = findAudioSourceFunction ? findAudioSourceFunction(inpt) : null
     onPress(inpt)
     res ? setNote(res) : ''
-    note ? setPlayBool((bool) => !bool) : ''
+    note ? setPlayBool((bool) => !bool) : null
     hasPlayed = true
   }
 
