@@ -206,13 +206,15 @@ const MainQuestionPage = ({
 
   function questionCardPress(inpt) {
     // console.log('questionCardPress', inpt, annotatedDisplayGridSizeChangeFactor)
-    setDisplayInputCardArray(keys)
+    
+    setChoosingKey(true)
     setDroneAudioSrc(null)
     //check why annotated is changing these values and what is changing it back
-    annotatedDisplayGridSizeChangeFactor = 0.1
-    annotatedQCardsSizeChangeFactor = 0.1
+    annotatedDisplayGridSizeChangeFactor = 0.9
+    annotatedQCardsSizeChangeFactor = 0.9
     // console.log('2NDquestionCardPress', annotatedDisplayGridSizeChangeFactor)
-    setChoosingKey(true)
+
+    setDisplayInputCardArray(keys)
     // reload()
   }
 
@@ -274,7 +276,6 @@ const MainQuestionPage = ({
 
   function reload(newFirstCard = firstCard) {
     setQuestionCards(isRandomisedKey, newFirstCard)
-    // setReloadBool((x) => !x)
   }
 
   function nextQuestionReloadTimeOut(fastReload = false) {
@@ -551,10 +552,10 @@ const MainQuestionPage = ({
             answerCardOnPress={answerCardOnPress}
             answer={correctAnswer}
             cardSize={{
-              cardWidth: annotated
+              cardWidth: annotated || choosingKey
                 ? cardWidth * annotatedQCardsSizeChangeFactor
                 : cardWidth,
-              cardHeight: annotated
+              cardHeight: annotated || choosingKey
                 ? cardHeight * annotatedQCardsSizeChangeFactor
                 : cardHeight,
             }}
@@ -600,12 +601,14 @@ const MainQuestionPage = ({
         {displayInputCardArray && (
           <DisplayCardsGrid
             cardSize={{
-              cardWidth: annotated
-                ? cardWidth * annotatedDisplayGridSizeChangeFactor
-                : cardWidth,
-              cardHeight: annotated
-                ? cardHeight * annotatedDisplayGridSizeChangeFactor
-                : cardHeight,
+              cardWidth:
+                annotated || choosingKey
+                  ? cardWidth * annotatedDisplayGridSizeChangeFactor
+                  : cardWidth,
+              cardHeight:
+                annotated || choosingKey
+                  ? cardHeight * annotatedDisplayGridSizeChangeFactor
+                  : cardHeight,
             }}
             stylesBool={false}
             cardsArray={displayInputCardArray}

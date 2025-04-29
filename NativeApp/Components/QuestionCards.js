@@ -189,12 +189,19 @@ const QuestionCards = ({
   return (
     <>
       <View style={styles.questionCardsCont}>
-        <View style={[styles.forAnnotation, { justifyContent: 'center' }]}>
+        <View
+          style={[
+            styles.forAnnotation,
+            { justifyContent: 'flex-end', alignItems: 'center' },
+          ]}
+        >
           {annotated && (
             <>
-              <Text style={styles.annotatedText}>{'In this key  ➔ '}</Text>
               <Text style={styles.annotatedText}>
-                {'←  Change between two question modes '}
+                {
+                  'Also click this card to choose a key or random  \n In this key  ➔ '
+                }
+                {/* {'←  Change between two question modes '} */}
               </Text>
             </>
           )}
