@@ -162,11 +162,11 @@ export const cardReducer = (
         ? getNoteCardIdxFromIntervalAndKeyCard(firstCard.idx, secondCard.idx)
         : distanceUpInIntervals(firstCard.idx, secondCard.idx)
       console.log(
-        'firstCard:',
+        'C1:',
         firstCard,
-        'secondCard:',
+        'C2:',
         secondCard,
-        'answerIdx:',
+        'answIdx:',
         answerIdx
       )
       return {

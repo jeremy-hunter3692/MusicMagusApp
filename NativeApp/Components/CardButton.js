@@ -48,7 +48,6 @@ const CardButton = ({
     setTimeout(() => {
       dealAnimationTrigger(animationDelay)
     }, initDealDelay)
-
     hasPlayed = false
     let timeOutId = setTimeout(() => {
       autoPlay && !hasPlayed && answer ? cardButtonOnPress(data) : ''
@@ -63,6 +62,7 @@ const CardButton = ({
   }
 
   function cardButtonOnPress(inpt) {
+    // console.log('cardButtonOnPress', inpt)
     if (annotated) {
       setAnnotatedCard(inpt)
     } else {
@@ -100,7 +100,7 @@ const CardButton = ({
 
   return (
     <>
-      <PlaySound inpt={note} playBool={playBool} />
+      {/* <PlaySound inpt={note} playBool={playBool} /> */}
       <Pressable
         testID={data?.name}
         onPressIn={() => {

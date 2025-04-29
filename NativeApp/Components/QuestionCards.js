@@ -153,7 +153,7 @@ const QuestionCards = ({
       margin: 3,
       height: cardSize.cardHeight - 3,
       width: cardSize.cardWidth - 3,
-      justifyContent: 'space-between',
+      justifyContent: 'space-around',
       color: 'black',
     },
     scoreText: {
@@ -182,7 +182,7 @@ const QuestionCards = ({
       justifyContent: 'center',
       color: 'black',
       alignSelf: 'center',
-      fontSize: fontScale,
+      fontSize: fontScale * 0.8,
     },
   })
 
@@ -332,7 +332,7 @@ const QuestionCards = ({
                     <Text style={styles.quoteText}>
                       {returnScoreText(score)}
                     </Text>
-                    <Pressable onPress={newRound}>
+                    <Pressable onPress={() => newRound()}>
                       <Text style={styles.buttonText}>New Round?</Text>
                     </Pressable>
                   </>

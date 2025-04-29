@@ -25,7 +25,6 @@ import {
 import { keys } from '../data/KeyCards.js'
 
 const newAnswerDelay = 1500
-
 const groupedNavMargin = 0
 const scoreCirclesInit = Array(12).fill(null)
 let isRandomisedKey = false
@@ -33,8 +32,9 @@ let annotatedDisplayGridSizeChangeFactor = 0.5
 let annotatedQCardsSizeChangeFactor = 1.2
 let questionNumber = 0
 let attemptCount = 0
-let droneType = true
 let userScore = 0
+let droneType = true
+
 let isReloading = false
 let globalQuestionTimeOutID
 
@@ -67,7 +67,6 @@ const MainQuestionPage = ({
   const [choosingKey, setChoosingKey] = useState(false)
   const [fontScale, setFontScale] = useState(height / 50)
   //Might not need, props should re load the children correctly...?
-
   const [dronePlaying, setDronePlaying] = useState(true)
   ///
   const scoreCirclesSize = height / 40
@@ -75,19 +74,33 @@ const MainQuestionPage = ({
   const cardHeight = cardWidth * 1.5
 
   useEffect(() => {
-    let questionCard = returnRandomCard(keys)
-    setFirstCard(questionCard)
-    setQuestionCards(isRandomisedKey, questionCard)
-    // console.log('use', firstCard)
+    // let questionCard = returnRandomCard(keys)
+    // setFirstCard(questionCard)
+    setQuestionCards(isRandomisedKey)
   }, [questionType, isRandom])
+  console.log(
+    'FC',
+    firstCard?.value.name,
+    'SC',
+    secondCard?.value.name,
+    'Scoredisplay',
+    userScoreDisplay,
+    attemptCount,
+    userScore
+  )
 
   function setQuestionCards(randomiseKey, firstCardStart) {
-    // console.log('setQuestionCard', randomiseKey, firstCardStart)
-
-    if (firstCardStart.idx === undefined) {
+    // console.log('setQuestionCard', firstCardStart)
+    if (!firstCardStart || isRandomisedKey) {
+      let newFirstCard = returnRandomCard(keys)
+      setFirstCard(newFirstCard)
+      firstCardStart = newFirstCard
+    }
+    if (firstCardStart?.idx === undefined) {
       let idx = keys.findIndex((x) => x.name === firstCardStart.name)
       firstCardStart = { value: firstCardStart, idx: idx }
     }
+
     let tempPrevCard = secondCard
     let count = 0
     let questionCardsReturnObj
@@ -106,7 +119,7 @@ const MainQuestionPage = ({
 
     const { firstCardFromReducer, secondCardFromReducer, array, answerIdx } =
       questionCardsReturnObj
-
+    console.log(questionCardsReturnObj)
     setUserAnswer(null)
     getAndSetDroneAudioSource(firstCardFromReducer.value)
     setDisplayInputCardArray(array)
@@ -140,7 +153,6 @@ const MainQuestionPage = ({
   }
 
   function droneOnOff() {
-    console.log('droneOnOff', dronePlaying)
     dronePlaying ? setDronePlaying(false) : setDronePlaying(true)
   }
 
@@ -193,7 +205,6 @@ const MainQuestionPage = ({
   }
 
   function questionCardPress(inpt) {
-    console.log('choosing')
     // console.log('questionCardPress', inpt, annotatedDisplayGridSizeChangeFactor)
     setDisplayInputCardArray(keys)
     setDroneAudioSrc(null)
@@ -208,20 +219,17 @@ const MainQuestionPage = ({
   function userInputCardPress(inpt) {
     //betterway to get this idx?
 
-    console.log('CLICK', inpt)
     if (!choosingKey) {
-      console.log('after if')
       userAnswerSetter(inpt)
       return
     }
-    setFirstCard({ value: inpt })
-    setQuestionCards(false, { value: inpt })
+    setFirstCard(inpt)
+    setQuestionCards(false, inpt)
     gameOver(inpt)
     setChoosingKey((x) => false)
   }
 
   function userAnswerSetter(inpt) {
-    console.log('user', inpt, isReloading)
     setUserAnswer(inpt)
     if (isReloading) {
       return
@@ -281,11 +289,12 @@ const MainQuestionPage = ({
   }
 
   function gameOver(inpt = firstCard) {
-    console.log(inpt)
     setDroneAudioSrc(null)
     userScore = 0
     attemptCount = 0
     questionNumber = 0
+    inpt = isRandomisedKey ? returnRandomCard(keys) : inpt
+    isReloading = false
     reload(inpt)
     setScoreSircle(scoreCirclesInit)
     setScoreDisplay(0)
@@ -411,8 +420,8 @@ const MainQuestionPage = ({
               margin: groupedNavMargin,
               padding: 0,
               zIndex: 100,
-              borderColor: 'white',
-              borderWidth: 1,
+              // borderColor: 'white',
+              // borderWidth: 1,
             },
           ]}
         >
@@ -476,7 +485,6 @@ const MainQuestionPage = ({
           <View
             style={{
               // flexDirection: 'row',
-
               justifyContent: 'center',
               alignItems: 'center',
             }}
