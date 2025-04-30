@@ -57,7 +57,7 @@ export function returnRandomCard(array, omitRoot = false) {
 }
 
 export function getIdxAndNotes(note, array = noteAudioSrc) {
-  console.log('note:', note)
+  // console.log('note:', note)
   let getIdxArr = array.map((x, idx) => {
     if (x.name === note.name) {
       return [x, idx]
@@ -161,14 +161,7 @@ export const cardReducer = (
       answerIdx = abBool
         ? getNoteCardIdxFromIntervalAndKeyCard(firstCard.idx, secondCard.idx)
         : distanceUpInIntervals(firstCard.idx, secondCard.idx)
-      console.log(
-        'C1:',
-        firstCard,
-        'C2:',
-        secondCard,
-        'answIdx:',
-        answerIdx
-      )
+      console.log('C1:', firstCard, 'C2:', secondCard, 'answIdx:', answerIdx)
       return {
         firstCardFromReducer: firstCard,
         secondCardFromReducer: secondCard,
@@ -261,6 +254,21 @@ function getNoOfAccidentals(inpt) {
     (count, value) => count + (value === true ? 1 : 0),
     0
   )
+}
+
+export function returnScaleCards(keyCard, scaleType) {
+  const { idx } = getIdxAndNotes(keyCard)
+  const mixoSemiTonesIncrement = [2, 2, 1, 2, 2, 1]
+  const majorSemiTonesIncrement = []
+  let accumulator = 0 + idx
+  let answerIdxsArray = scaleType.map((x) => {
+    accumulator = (accumulator + x) % 12
+    return accumulator
+  })
+
+  answerIdxsArray.unshift(idx)
+  // console.log(answerIdxsArray)
+  return answerIdxsArray
 }
 
 export function getDataForAnnotated(inpt) {

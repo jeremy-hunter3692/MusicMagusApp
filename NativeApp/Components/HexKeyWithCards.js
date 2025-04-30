@@ -8,6 +8,7 @@ import { noteNames } from '../data/NoteCards'
 const size = 100
 
 const HexKeyWithCards = ({ musicKey }) => {
+  console.log(musicKey)
   const [data, setData] = useState([
     false,
     false,
@@ -197,7 +198,7 @@ const HexKeyWithCards = ({ musicKey }) => {
           {returnCorrectIntervalCard()}
         </View>
         <View style={{ flexDirection: 'row' }}>
-          <Image source={root.imgSrc} style={{ width: 100, height: 150 }} />
+          <Image source={root?.imgSrc} style={{ width: 100, height: 150 }} />
           {returnCorrectNoteCard()}
         </View>
       </View>

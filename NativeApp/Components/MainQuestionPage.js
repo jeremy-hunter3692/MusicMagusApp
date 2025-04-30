@@ -206,13 +206,14 @@ const MainQuestionPage = ({
 
   function questionCardPress(inpt) {
     // console.log('questionCardPress', inpt, annotatedDisplayGridSizeChangeFactor)
-    
+    if (choosingKey) {
+      annotatedDisplayGridSizeChangeFactor = 0.5
+      annotatedQCardsSizeChangeFactor = 1.2
+    }
     setChoosingKey(true)
     setDroneAudioSrc(null)
-    //check why annotated is changing these values and what is changing it back
     annotatedDisplayGridSizeChangeFactor = 0.9
     annotatedQCardsSizeChangeFactor = 0.9
-    // console.log('2NDquestionCardPress', annotatedDisplayGridSizeChangeFactor)
 
     setDisplayInputCardArray(keys)
     // reload()
@@ -552,12 +553,14 @@ const MainQuestionPage = ({
             answerCardOnPress={answerCardOnPress}
             answer={correctAnswer}
             cardSize={{
-              cardWidth: annotated || choosingKey
-                ? cardWidth * annotatedQCardsSizeChangeFactor
-                : cardWidth,
-              cardHeight: annotated || choosingKey
-                ? cardHeight * annotatedQCardsSizeChangeFactor
-                : cardHeight,
+              cardWidth:
+                annotated || choosingKey
+                  ? cardWidth * annotatedQCardsSizeChangeFactor
+                  : cardWidth,
+              cardHeight:
+                annotated || choosingKey
+                  ? cardHeight * annotatedQCardsSizeChangeFactor
+                  : cardHeight,
             }}
             annotated={annotated}
             setAnnotatedCard={setAnnotatedCard}

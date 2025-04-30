@@ -1,7 +1,6 @@
 import React, { useState } from 'react'
 import MainQuestionPage from './Components/MainQuestionPage'
-import AnnotatedCards from './Components/AnnotatedCards'
-import OptionsPage from './Components/OptionsPage.js'
+import HexKeyWithCards from './Components/HexKeyWithCards.js'
 import TheoryCirlces from './Components/TheoryCircles.js'
 import { StatusBar } from 'expo-status-bar'
 import {
@@ -19,7 +18,7 @@ const secondaryTheme = { bgColor: 'black', secondaryColor: 'purple' }
 const annotatedBackGroundColor = 'rgba(51, 23, 73, 0.99)'
 let themeBool = true
 export default function App() {
-  const [hexKey, setHexKey] = useState(keys[0])
+  const [hexKey, setHexKey] = useState(keys[1])
   const [theme, setTheme] = useState(themeInit)
   const [annotatedCard, setAnnotatedCard] = useState()
   const [showOptions, setShowOptions] = useState(false)
@@ -35,7 +34,7 @@ export default function App() {
   // function appLevel(inpt) {
   //   console.log('TODO-App level', inpt)
   // }
- 
+
   function handleAnnotatedClick(inpt) {
     annotatedCard ? setAnnotatedCard(null) : setAnnotatedCard(inpt)
     setAnnotatedMode()
@@ -81,7 +80,7 @@ export default function App() {
           elevation: 5,
         }}
       >
-        {showOptions ? (
+        {/* {showOptions ? (
           <OptionsPage
             height={height}
             changeTheme={changeTheme}
@@ -115,8 +114,8 @@ export default function App() {
               />
             )}
           </>
-        )}
-
+        )} */}
+        <HexKeyWithCards musicKey={hexKey} />
         {/* <TheoryCirlces /> */}
       </SafeAreaView>
     </>

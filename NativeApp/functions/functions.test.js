@@ -12,6 +12,7 @@ import {
   getDataForAnnotated,
   returnScoreText,
   returnAnswerType,
+  returnScaleCards,
 } from './functions'
 import { noteNames } from '../data/NoteCards'
 import { keys } from '../data/KeyCards'
@@ -395,6 +396,51 @@ describe('return associated text for given score', () => {
       const result = returnScoreText(score)
 
       expect(result).toBe(text)
+    }
+  )
+})
+
+describe('returnsScaleCards', () => {
+  const mixoSemiTonesIncrement = [2, 2, 1, 2, 2, 1]
+  test.each([
+    [keys[0], mixoSemiTonesIncrement, [0, 2, 4, 5, 7, 9, 10]],
+    [keys[5], mixoSemiTonesIncrement, [5, 7, 9, 10, 0, 2, 3]],
+    [keys[11], mixoSemiTonesIncrement, [11, 1, 3, 4, 6, 8, 9]],
+    [keys[6], mixoSemiTonesIncrement, [6, 8, 10, 11, 1, 3, 4]],
+  ])(
+    'gets right idxs for given key and Mixolydian scale ',
+    (keyCard, scale, array) => {
+      let answer = returnScaleCards(keyCard, scale)
+      // expect(answer).toEqual(array)
+      expect(answer).toEqual(array)
+    }
+  )
+  const majorSemiTonesIncrement = [2, 2, 1, 2, 2, 2]
+  test.each([
+    [keys[0], majorSemiTonesIncrement, [0, 2, 4, 5, 7, 9, 11]],
+    [keys[5], majorSemiTonesIncrement, [5, 7, 9, 10, 0, 2, 4]],
+    [keys[11], majorSemiTonesIncrement, [11, 1, 3, 4, 6, 8, 10]],
+    [keys[6], majorSemiTonesIncrement, [6, 8, 10, 11, 1, 3, 5]],
+  ])(
+    'gets right idxs for given key and Major scale ',
+    (keyCard, scale, array) => {
+      let answer = returnScaleCards(keyCard, scale)
+      // expect(answer).toEqual(array)
+      expect(answer).toEqual(array)
+    }
+  )
+  const dorianSemiTonesIncrement = [2, 1, 2, 2, 2, 1]
+  test.each([
+    [keys[0], dorianSemiTonesIncrement, [0, 2, 3, 5, 7, 9, 10]],
+    [keys[5], dorianSemiTonesIncrement, [5, 7, 8, 10, 0, 2, 3]],
+    [keys[11], dorianSemiTonesIncrement, [11, 1, 2, 4, 6, 8, 9]],
+    [keys[6], dorianSemiTonesIncrement, [6, 8, 9, 11, 1, 3, 4]],
+  ])(
+    'gets right idxs for given key and Dorian Minor scale ',
+    (keyCard, scale, array) => {
+      let answer = returnScaleCards(keyCard, scale)
+      // expect(answer).toEqual(array)
+      expect(answer).toEqual(array)
     }
   )
 })
