@@ -67,9 +67,9 @@ const MainQuestionPage = ({
   const [choosingKey, setChoosingKey] = useState(false)
   const [fontScale, setFontScale] = useState(height / 50)
   //Might not need, props should re load the children correctly...?
-  const [dronePlaying, setDronePlaying] = useState(true)
+  const [dronePlaying, setDronePlaying] = useState(false)
   ///
-  const scoreCirclesSize = height / 40
+  const scoreCirclesSize = height / 20
   const cardWidth = width > height ? width * 0.1 : width * 0.14
   const cardHeight = cardWidth * 1.5
 
@@ -78,16 +78,6 @@ const MainQuestionPage = ({
     // setFirstCard(questionCard)
     setQuestionCards(isRandomisedKey)
   }, [questionType, isRandom])
-  console.log(
-    'FC',
-    firstCard?.value.name,
-    'SC',
-    secondCard?.value.name,
-    'Scoredisplay',
-    userScoreDisplay,
-    attemptCount,
-    userScore
-  )
 
   function setQuestionCards(randomiseKey, firstCardStart) {
     // console.log('setQuestionCard', firstCardStart)
@@ -347,13 +337,12 @@ const MainQuestionPage = ({
     <>
       <View
         style={{
-          zIndex: 0,
           flex: 0.3,
           padding: 0,
           flexDirection: 'row-reverse',
           justifyContent: 'space-between',
-          alignItems: 'center',
-          width: '100%',
+          // alignItems: 'center',
+
           backgroundColor: secondaryColor,
           margin: groupedNavMargin,
         }}
@@ -362,7 +351,7 @@ const MainQuestionPage = ({
           style={{
             margin: groupedNavMargin,
             padding: 0,
-            flex: 1,
+            flex: 0.3,
             fontWeight: 'bold',
             color: 'white',
             flexDirection: 'row',
@@ -374,7 +363,6 @@ const MainQuestionPage = ({
         >
           <View
             style={{
-              flex: 1,
               margin: groupedNavMargin,
               padding: 0,
               flexDirection: 'row',
@@ -396,9 +384,9 @@ const MainQuestionPage = ({
                 {},
                 !annotatedCard && {
                   backgroundColor: 'white',
-                  width: 30,
-                  height: 30,
-                  borderRadius: 30,
+                  width: scoreCirclesSize,
+                  height: scoreCirclesSize,
+                  borderRadius: scoreCirclesSize,
                   alignSelf: 'flex-end',
                   justifyContent: 'center',
                   alignItems: 'center',
@@ -417,13 +405,10 @@ const MainQuestionPage = ({
               backgroundColor: secondaryColor,
               justifyContent: 'center',
               alignItems: 'center',
-              flex: 10,
-              height: scoreCirclesSize,
+              flexDirection: 'row',
+              flex: 1,
               margin: groupedNavMargin,
               padding: 0,
-              zIndex: 100,
-              // borderColor: 'white',
-              // borderWidth: 1,
             },
           ]}
         >
@@ -435,15 +420,17 @@ const MainQuestionPage = ({
                 scoreCircleRadius={scoreCirclesSize}
                 key={idx}
                 underLine={questionNo}
+                circlesInsideColor={secondaryColor}
               />
             )
           })}
         </View>
         <View
           style={{
-            flex: 1,
+            flex: 0.3,
             margin: groupedNavMargin,
             padding: 0,
+            justifyContent: 'center',
           }}
         >
           {!isRandom ? (

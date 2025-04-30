@@ -20,6 +20,7 @@ const HexKeyWithCards = ({ musicKey }) => {
   ])
 
   const [root, setRoot] = useState(noteNames.find((x) => x.name === musicKey))
+  
   function clickHandler(inpt) {
     setData((prev) => {
       const newData = [...prev]

@@ -13,6 +13,7 @@ import {
   returnScoreText,
   returnAnswerType,
   returnScaleCards,
+  cutArrayForModes,
 } from './functions'
 import { noteNames } from '../data/NoteCards'
 import { keys } from '../data/KeyCards'
@@ -401,7 +402,12 @@ describe('return associated text for given score', () => {
 })
 
 describe('returnsScaleCards', () => {
-  const mixoSemiTonesIncrement = [2, 2, 1, 2, 2, 1]
+
+  const parentScale = [2, 2, 1, 2, 2, 2, 1]
+  const majorSemiTonesIncrement = parentScale.slice(0, -1)
+  const mixoSemiTonesIncrement =   cutArrayForModes(4)
+  const dorianSemiTonesIncrement = cutArrayForModes(1)
+ 
   test.each([
     [keys[0], mixoSemiTonesIncrement, [0, 2, 4, 5, 7, 9, 10]],
     [keys[5], mixoSemiTonesIncrement, [5, 7, 9, 10, 0, 2, 3]],
@@ -415,7 +421,7 @@ describe('returnsScaleCards', () => {
       expect(answer).toEqual(array)
     }
   )
-  const majorSemiTonesIncrement = [2, 2, 1, 2, 2, 2]
+
   test.each([
     [keys[0], majorSemiTonesIncrement, [0, 2, 4, 5, 7, 9, 11]],
     [keys[5], majorSemiTonesIncrement, [5, 7, 9, 10, 0, 2, 4]],
@@ -429,7 +435,7 @@ describe('returnsScaleCards', () => {
       expect(answer).toEqual(array)
     }
   )
-  const dorianSemiTonesIncrement = [2, 1, 2, 2, 2, 1]
+
   test.each([
     [keys[0], dorianSemiTonesIncrement, [0, 2, 3, 5, 7, 9, 10]],
     [keys[5], dorianSemiTonesIncrement, [5, 7, 8, 10, 0, 2, 3]],
@@ -439,7 +445,6 @@ describe('returnsScaleCards', () => {
     'gets right idxs for given key and Dorian Minor scale ',
     (keyCard, scale, array) => {
       let answer = returnScaleCards(keyCard, scale)
-      // expect(answer).toEqual(array)
       expect(answer).toEqual(array)
     }
   )

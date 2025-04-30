@@ -18,7 +18,7 @@ const secondaryTheme = { bgColor: 'black', secondaryColor: 'purple' }
 const annotatedBackGroundColor = 'rgba(51, 23, 73, 0.99)'
 let themeBool = true
 export default function App() {
-  const [hexKey, setHexKey] = useState(keys[1])
+  const [hexKey, setHexKey] = useState(keys[0])
   const [theme, setTheme] = useState(themeInit)
   const [annotatedCard, setAnnotatedCard] = useState()
   const [showOptions, setShowOptions] = useState(false)
@@ -80,7 +80,7 @@ export default function App() {
           elevation: 5,
         }}
       >
-        {/* {showOptions ? (
+        {showOptions ? (
           <OptionsPage
             height={height}
             changeTheme={changeTheme}
@@ -114,8 +114,8 @@ export default function App() {
               />
             )}
           </>
-        )} */}
-        <HexKeyWithCards musicKey={hexKey} />
+        )}
+
         {/* <TheoryCirlces /> */}
       </SafeAreaView>
     </>

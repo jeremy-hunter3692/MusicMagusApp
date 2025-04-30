@@ -1,7 +1,15 @@
 import React from 'react'
 import { Text, View, Pressable } from 'react-native'
 
-const Circle = ({ fillBool, scoreCircleRadius, underLine }) => {
+const Circle = ({
+  fillBool,
+  scoreCircleRadius,
+  underLine,
+  circlesInsideColor,
+}) => {
+  scoreCircleRadius = Math.floor(scoreCircleRadius)
+  console.log('SCORE CIRCLE RADIUS', scoreCircleRadius, fillBool)
+
   return (
     <>
       <View
@@ -18,7 +26,6 @@ const Circle = ({ fillBool, scoreCircleRadius, underLine }) => {
             width: scoreCircleRadius * 1.1,
             justifyContent: 'center',
             alignItems: 'center',
-            // marginTop: 'auto',
           },
         ]}
       >
@@ -29,10 +36,11 @@ const Circle = ({ fillBool, scoreCircleRadius, underLine }) => {
               height: scoreCircleRadius,
               margin: 0,
               padding: 0,
-              border: 'solid',
+
               borderColor: 'black',
+              borderWidth: 1,
               borderRadius: scoreCircleRadius * 0.5,
-              backgroundColor: 'transparent',
+              backgroundColor: circlesInsideColor,
             }}
           ></View>
         ) : fillBool ? (
@@ -42,7 +50,7 @@ const Circle = ({ fillBool, scoreCircleRadius, underLine }) => {
               height: scoreCircleRadius,
               margin: 0,
               padding: 0,
-              borderRadius: scoreCircleRadius * 0.5, // Half of the width and height to make it a perfect circle
+              borderRadius: scoreCircleRadius * 0.5,
               backgroundColor: 'black',
             }}
           ></View>
@@ -53,10 +61,10 @@ const Circle = ({ fillBool, scoreCircleRadius, underLine }) => {
               height: scoreCircleRadius,
               margin: 0,
               padding: 0,
-              border: 'solid',
+              borderWidth: 2,
               borderColor: 'black',
               borderRadius: scoreCircleRadius * 0.5,
-              backgroundColor: 'transparent',
+              backgroundColor: circlesInsideColor,
               justifyContent: 'center',
               alignItems: 'center',
             }}
@@ -68,7 +76,7 @@ const Circle = ({ fillBool, scoreCircleRadius, underLine }) => {
                 height: scoreCircleRadius * 0.3,
                 margin: 0,
                 padding: 0,
-                borderRadius: scoreCircleRadius * 0.3,
+                borderRadius: scoreCircleRadius * 0.5,
                 backgroundColor: 'black',
               }}
             ></View>

@@ -271,6 +271,13 @@ export function returnScaleCards(keyCard, scaleType) {
   return answerIdxsArray
 }
 
+export function cutArrayForModes(splitIndex) {
+  const parentScale = [2, 2, 1, 2, 2, 2, 1]
+  const firstHalf = parentScale.slice(0, splitIndex-1)
+  const secondHalf = parentScale.slice(splitIndex)
+  console.log(secondHalf.concat(firstHalf))
+  return secondHalf.concat(firstHalf) 
+}
 export function getDataForAnnotated(inpt) {
   const { distanceToRoot, up } = inpt.value
   const upOrDown = up ? 'Down' : 'Up'
