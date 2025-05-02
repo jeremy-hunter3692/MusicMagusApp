@@ -29,22 +29,21 @@ const QuestionCards = ({
   skipQuestion,
   fontScale,
 }) => {
+  //local state so you don't see the answer card before animation
+  const [localAnswer, setLocalAnswer] = useState(null)
   const { firstCard, secondCard, answerCard } = cards
   const answer = answerCard
   const flipAnswerCardAnimation = useSharedValue(0)
   const flipScoreCardAnimation = useSharedValue(0)
+
   useEffect(() => {
     answerDisplay && isAnimated
       ? handleFlip(180, flipAnswerCardAnimation)
       : cardsToInit()
-  }, [skip, answerDisplay])
-  console.log(answerDisplay)
-  // Function to handle the flip
 
-  const handleFlip = (toValue, card) => {
-    const animationSpeed = 1000
-    card.value = withTiming(toValue, { duration: animationSpeed })
-  }
+    setLocalAnswer(answerCard)
+  }, [skip, answerDisplay])
+
   function cardsToInit() {
     flipScoreCardAnimation.value = 0
     flipAnswerCardAnimation.value = 0
@@ -52,6 +51,11 @@ const QuestionCards = ({
 
   function droneSetter() {
     rootCardPress()
+  }
+
+  const handleFlip = (toValue, card) => {
+    const animationSpeed = 1000
+    card.value = withTiming(toValue, { duration: animationSpeed })
   }
 
   const frontAnimatedStyle = (card) =>
@@ -181,6 +185,7 @@ const QuestionCards = ({
         </View>
         <View style={styles.forAnnotation}>
           <CardButton
+            key={`question ${localAnswer?.name || localAnswer?.imgSrc}`}
             cardSize={cardSize}
             data={firstCard}
             source={firstCard.value.imgSrc}
@@ -209,7 +214,7 @@ const QuestionCards = ({
             annotated={annotated}
             setAnnotatedCard={setAnnotatedCard}
             autoPlay={true}
-            animationDelay={2}
+            animationDelay={3}
             animated={isAnimated}
           />
         </View>
@@ -234,11 +239,11 @@ const QuestionCards = ({
               >
                 <CardButton
                   cardSize={cardSize}
-                  data={answer?.name}
-                  source={answer?.imgSrc}
+                  data={localAnswer?.name}
+                  source={localAnswer?.imgSrc}
                   annotated={annotated}
                   setAnnotatedCard={setAnnotatedCard}
-                  animationDelay={3}
+                  animationDelay={5}
                   animated={isAnimated}
                 />
               </Animated.View>
@@ -249,17 +254,17 @@ const QuestionCards = ({
                 ]}
               >
                 <CardButton
+                  key={localAnswer?.name || localAnswer?.imgSrc} // Use a unique key based on the answerCard
                   cardSize={cardSize}
                   source={blankCard}
-                  altSourceForReload={answer?.imgSrc}
-                  animationDelay={3}
+                  animationDelay={5}
                   animated={isAnimated}
                 />
               </Animated.View>
             </>
           ) : (
             <>
-              {answerDisplay ? (
+              {/* {answerDisplay ? (
                 <View
                   style={[
                     styles.card,
@@ -282,7 +287,7 @@ const QuestionCards = ({
                     altSourceForReload={answer?.imgSrc}
                   />
                 </View>
-              )}
+              )} */}
             </>
           )}
         </View>

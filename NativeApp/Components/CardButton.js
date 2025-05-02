@@ -25,6 +25,7 @@ const CardButton = ({
   index,
   autoPlay = false,
   answer,
+  blank,
   findAudioSourceFunction,
   cardSize,
   annotated,
@@ -78,6 +79,9 @@ const CardButton = ({
   }
 
   const animatedStyle = useAnimatedStyle(() => {
+    blank === 'hi' ? console.log('triggered') : ''
+    // blank === 'hi' ? console.log('THIS', scale.value) : ''
+    // blank === 'bye' ? console.log('-', scale.value) : ''
     return {
       transform: [{ scale: scale.value }],
     }
@@ -117,17 +121,11 @@ const CardButton = ({
           },
         ]}
       >
-        {/* This is causing an issue with the shared use value  {animated ? ( */}
         <Animated.View
           style={[{ width: '100%', height: '100%' }, animatedStyle]}
         >
           <Image source={source} testID={`image`} style={styles.image} />
         </Animated.View>
-        {/* ) : (
-          <View style={[{ width: '100%', height: '100%' }, animatedStyle]}>
-            <Image source={source} testID={`image`} style={styles.image} />
-          </View>
-        )} */}
       </Pressable>
     </>
   )

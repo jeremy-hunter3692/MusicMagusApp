@@ -31,7 +31,7 @@ const scoreCirclesInit = Array(12).fill(null)
 let isRandomisedKey = false
 let annotatedDisplayGridSizeChangeFactor = 0.5
 let annotatedQCardsSizeChangeFactor = 1.2
-let questionNumber = 10
+let questionNumber = 0
 let attemptCount = 0
 let userScore = 0
 let droneType = true
@@ -239,7 +239,6 @@ const MainQuestionPage = ({
       return
     } else {
       if (inpt.name === questionCards.answerCard?.name) {
-        console.log('correct')
         setResultDisplay(true)
       }
       const {
@@ -279,7 +278,6 @@ const MainQuestionPage = ({
   }
 
   function skipQuestion() {
-    console.log('skipQuestion', checkForGameOver(), 'might be breaking thigns')
     if (checkForGameOver()) {
       return
     }
