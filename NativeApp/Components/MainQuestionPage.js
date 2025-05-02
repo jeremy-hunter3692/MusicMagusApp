@@ -66,13 +66,14 @@ const MainQuestionPage = ({
   const [scoreCircles, setScoreSircle] = useState(scoreCirclesInit)
   const [choosingKey, setChoosingKey] = useState(false)
   const [fontScale, setFontScale] = useState(height / 50)
+  const [resultDisplay, setResultDisplay] = useState(false)
   //Might not need, props should re load the children correctly...?
   const [dronePlaying, setDronePlaying] = useState(false)
   ///
   const scoreCirclesSize = height / 20
   const cardWidth = width > height ? width * 0.1 : width * 0.14
   const cardHeight = cardWidth * 1.5
-
+  console.log('attmptCount', attemptCount, 'questionNumber', questionNumber)
   useEffect(() => {
     // let questionCard = returnRandomCard(keys)
     // setFirstCard(questionCard)
@@ -223,6 +224,8 @@ const MainQuestionPage = ({
   }
 
   function userAnswerSetter(inpt) {
+    inpt.name === correctAnswer?.name ? setResultDisplay(true) : ''
+    console.log({ resultDisplay })
     setUserAnswer(inpt)
     if (isReloading) {
       return
@@ -246,7 +249,9 @@ const MainQuestionPage = ({
       incrementQuestionNo ? ++questionNumber : ''
 
       globalQuestionTimeOutID =
-        shouldReload && questionNumber < 12 ? nextQuestionReloadTimeOut() : null
+        shouldReload && questionNumber < 12
+          ? nextQuestionReloadTimeOut(false)
+          : null
       whichCircle ? userScore++ : ''
       if (questionNumber > 11) {
         setScoreDisplay(userScore)
@@ -266,10 +271,13 @@ const MainQuestionPage = ({
   }
 
   function reload(newFirstCard = firstCard) {
+    console.log('reload', newFirstCard)
     setQuestionCards(isRandomisedKey, newFirstCard)
   }
 
   function nextQuestionReloadTimeOut(fastReload = false) {
+    console.log('should reload')
+  
     let delaySpeed = fastReload ? 200 : newAnswerDelay
     setDroneAudioSrc(null)
     isReloading = true
@@ -536,7 +544,7 @@ const MainQuestionPage = ({
             firstCard={firstCard}
             secondCard={secondCard}
             rootCardPress={questionCardPress}
-            resultDisplay={userAnswer?.name === correctAnswer?.name}
+            resultDisplay={resultDisplay}
             answerCardOnPress={answerCardOnPress}
             answer={correctAnswer}
             cardSize={{

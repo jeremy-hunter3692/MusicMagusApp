@@ -235,7 +235,7 @@ describe('replaceFlatsForSharps', () => {
 
 describe('question card reducer', () => {
   test('returns obj with img SRc', () => {
-    let answerObj = cardReducer('Key')
+    let answerObj = cardReducer('Key', false, true)
     expect(answerObj.firstCard.value.imgSrc).toBe(1)
     expect(answerObj.secondCard.value.imgSrc).toBe(1)
   })
@@ -402,12 +402,11 @@ describe('return associated text for given score', () => {
 })
 
 describe('returnsScaleCards', () => {
-
   const parentScale = [2, 2, 1, 2, 2, 2, 1]
   const majorSemiTonesIncrement = parentScale.slice(0, -1)
-  const mixoSemiTonesIncrement =   cutArrayForModes(4)
+  const mixoSemiTonesIncrement = cutArrayForModes(4)
   const dorianSemiTonesIncrement = cutArrayForModes(1)
- 
+
   test.each([
     [keys[0], mixoSemiTonesIncrement, [0, 2, 4, 5, 7, 9, 10]],
     [keys[5], mixoSemiTonesIncrement, [5, 7, 9, 10, 0, 2, 3]],

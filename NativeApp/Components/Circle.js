@@ -8,7 +8,6 @@ const Circle = ({
   circlesInsideColor,
 }) => {
   scoreCircleRadius = Math.floor(scoreCircleRadius)
-  console.log('SCORE CIRCLE RADIUS', scoreCircleRadius, fillBool)
 
   return (
     <>

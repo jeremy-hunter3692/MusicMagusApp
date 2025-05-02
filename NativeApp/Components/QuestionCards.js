@@ -35,11 +35,10 @@ const QuestionCards = ({
   const flipAnswerCardAnimation = useSharedValue(0)
   const flipScoreCardAnimation = useSharedValue(0)
   useEffect(() => {
-    // console.log('UseAnswer', answer)
-    flipScoreCardAnimation.value = 0
-    flipAnswerCardAnimation.value = 0
+    // flipScoreCardAnimation.value = 0
+    // flipAnswerCardAnimation.value = 0
   }, [skip, answer])
-
+  console.log(resultDisplay)
   // Function to handle the flip
 
   const handleFlip = (toValue, card) => {
@@ -49,6 +48,7 @@ const QuestionCards = ({
   //
 
   if (resultDisplay && isAnimated) {
+    console.log('handle flip')
     handleFlip(180, flipAnswerCardAnimation)
   }
 
@@ -199,7 +199,7 @@ const QuestionCards = ({
             <>
               <Text style={styles.annotatedText}>
                 {
-                  'Also click this card to choose a key or random  \n In this key  ➔ '
+                  'Also click this card to choose a key or random  \n   In this key  ➔ '
                 }
                 {/* {'←  Change between two question modes '} */}
               </Text>
@@ -257,7 +257,6 @@ const QuestionCards = ({
             <>
               <Animated.View
                 style={[
-                  styles.blankCard,
                   styles.backCard,
                   backAnimatedStyle(flipAnswerCardAnimation),
                 ]}
@@ -269,7 +268,6 @@ const QuestionCards = ({
                   annotated={annotated}
                   setAnnotatedCard={setAnnotatedCard}
                   animationDelay={3}
-                  tempTest={true}
                   animated={isAnimated}
                 />
               </Animated.View>
@@ -284,7 +282,6 @@ const QuestionCards = ({
                   source={blankCard}
                   altSourceForReload={answer?.imgSrc}
                   animationDelay={3}
-                  tempTest={true}
                   animated={isAnimated}
                 />
               </Animated.View>
@@ -292,7 +289,12 @@ const QuestionCards = ({
           ) : (
             <>
               {resultDisplay ? (
-                <View style={styles.card}>
+                <View
+                  style={[
+                    styles.card,
+                    { borderColor: 'white', borderWidth: 1 },
+                  ]}
+                >
                   <CardButton
                     cardSize={cardSize}
                     data={answer?.name}

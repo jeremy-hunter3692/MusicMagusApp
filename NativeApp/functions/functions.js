@@ -150,18 +150,18 @@ export const cardReducer = (
   randomiseKey,
   firstCardProp
 ) => {
-  let firstCard = !randomiseKey ? firstCardProp : null
+  let firstCard
   let secondCard
   let answerIdx
   // console.log(' in reducer:', firstCardProp, abBool, questionType)
   switch (questionType) {
     case KEY:
-      firstCard = randomiseKey ? returnRandomCard(keys) : firstCard
+      firstCard = randomiseKey ? returnRandomCard(keys) : firstCardProp
       secondCard = returnRandomCard(abBool ? intervals : noteNames, true)
       answerIdx = abBool
         ? getNoteCardIdxFromIntervalAndKeyCard(firstCard.idx, secondCard.idx)
-        : distanceUpInIntervals(firstCard.idx, secondCard.idx)
-      console.log('C1:', firstCard, 'C2:', secondCard, 'answIdx:', answerIdx)
+        : distanceUpInIntervals(firstCard?.idx, secondCard.idx)
+      // console.log('C1:', firstCard, 'C2:', secondCard, 'answIdx:', answerIdx)
       return {
         firstCardFromReducer: firstCard,
         secondCardFromReducer: secondCard,
@@ -273,10 +273,9 @@ export function returnScaleCards(keyCard, scaleType) {
 
 export function cutArrayForModes(splitIndex) {
   const parentScale = [2, 2, 1, 2, 2, 2, 1]
-  const firstHalf = parentScale.slice(0, splitIndex-1)
+  const firstHalf = parentScale.slice(0, splitIndex - 1)
   const secondHalf = parentScale.slice(splitIndex)
-  console.log(secondHalf.concat(firstHalf))
-  return secondHalf.concat(firstHalf) 
+  return secondHalf.concat(firstHalf)
 }
 export function getDataForAnnotated(inpt) {
   const { distanceToRoot, up } = inpt.value
