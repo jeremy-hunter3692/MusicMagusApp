@@ -16,7 +16,7 @@ const blankCard = require('../assets/blankcard.png')
 const QuestionCards = ({
   cards,
   findNoteFunction,
-  resultDisplay,
+  answerDisplay,
   cardSize,
   rootCardPress,
   answerCardOnPress,
@@ -30,27 +30,27 @@ const QuestionCards = ({
   skipQuestion,
   fontScale,
 }) => {
-  console.log('q', cards)
+  console.log('q', answerDisplay)
   const { firstCard, secondCard, answerCard } = cards
   const answer = answerCard
   const flipAnswerCardAnimation = useSharedValue(0)
   const flipScoreCardAnimation = useSharedValue(0)
   useEffect(() => {
-    // flipScoreCardAnimation.value = 0
-    // flipAnswerCardAnimation.value = 0
-  }, [skip, answer])
-  console.log(resultDisplay)
+    console.log('use', flipAnswerCardAnimation.value)
+    answerDisplay && isAnimated
+      ? handleFlip(180, flipAnswerCardAnimation)
+      : cardsToInit()
+  }, [skip, answerDisplay])
+  console.log(answerDisplay)
   // Function to handle the flip
 
   const handleFlip = (toValue, card) => {
     const animationSpeed = 1000
     card.value = withTiming(toValue, { duration: animationSpeed })
   }
-  //
-
-  if (resultDisplay && isAnimated) {
-    console.log('handle flip')
-    handleFlip(180, flipAnswerCardAnimation)
+  function cardsToInit() {
+    flipScoreCardAnimation.value = 0
+    flipAnswerCardAnimation.value = 0
   }
 
   function droneSetter() {
@@ -197,14 +197,12 @@ const QuestionCards = ({
           ]}
         >
           {annotated && (
-            <>
-              <Text style={styles.annotatedText}>
-                {
-                  'Also click this card to choose a key or random  \n   In this key  ➔ '
-                }
-                {/* {'←  Change between two question modes '} */}
-              </Text>
-            </>
+            <Text style={styles.annotatedText}>
+              {
+                'Also click this card to choose a key or random  \n   In this key  ➔ '
+              }
+              {/* {'←  Change between two question modes '} */}
+            </Text>
           )}
         </View>
         <View style={styles.forAnnotation}>
@@ -220,11 +218,9 @@ const QuestionCards = ({
         </View>
         <View style={styles.forAnnotation}>
           {annotated && (
-            <>
-              <Text style={styles.annotatedText}>
-                {'what interval is this note ➔ '}
-              </Text>
-            </>
+            <Text style={styles.annotatedText}>
+              {'what interval is this note ➔ '}
+            </Text>
           )}
         </View>
         <View style={styles.forAnnotation}>
@@ -289,7 +285,7 @@ const QuestionCards = ({
             </>
           ) : (
             <>
-              {resultDisplay ? (
+              {answerDisplay ? (
                 <View
                   style={[
                     styles.card,

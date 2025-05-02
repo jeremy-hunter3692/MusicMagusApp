@@ -14,8 +14,8 @@ import {
 } from 'react-native'
 import { keys, getIntervalNo } from './data/KeyCards'
 
-const themeInit = { bgColor: 'purple', secondaryColor: '#19af59' }
-const secondaryTheme = { bgColor: 'black', secondaryColor: 'purple' }
+const themeInit = { primaryColor: 'purple', secondaryColor: '#19af59' }
+const secondaryTheme = { primaryColor: 'black', secondaryColor: 'purple' }
 const annotatedBackGroundColor = 'rgba(51, 23, 73, 0.99)'
 let themeBool = true
 export default function App() {
@@ -71,7 +71,7 @@ export default function App() {
           padding: 0,
           backgroundColor: annotatedCardDisplay
             ? annotatedBackGroundColor
-            : theme.bgColor,
+            : theme.primaryColor,
           flexDirection: 'column',
           shadowColor: 'black',
           // shadowOffset: { width: 3, height: 3 },
@@ -102,8 +102,7 @@ export default function App() {
               </View>
             ) : (
               <MainQuestionPage
-                primaryColor={theme.bgColor}
-                secondaryColor={theme.secondaryColor}
+                theme={theme}
                 annotated={annotatedCardDisplay}
                 isRandomAllQuestionTypes={isRandom}
                 isAnimated={animationsOn}

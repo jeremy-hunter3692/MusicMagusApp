@@ -40,7 +40,7 @@ let isReloading = false
 let globalQuestionTimeOutID
 
 const MainQuestionPage = ({
-  bgColor,
+  theme,
   secondaryColor,
   setShowOptions,
   setAnnotatedMode,
@@ -225,6 +225,8 @@ const MainQuestionPage = ({
       userAnswerSetter(inpt)
       return
     }
+    annotatedDisplayGridSizeChangeFactor = 0.5
+    annotatedQCardsSizeChangeFactor = 1.2
     setQuestionCards((x) => ({ ...x, firstCard: inpt }))
     loadNewQuestionCards(false, inpt)
     resetForNewGame(inpt)
@@ -236,7 +238,6 @@ const MainQuestionPage = ({
     if (isReloading) {
       return
     } else {
-      console.log(inpt, questionCards.answerCard?.name)
       if (inpt.name === questionCards.answerCard?.name) {
         console.log('correct')
         setResultDisplay(true)
@@ -247,6 +248,7 @@ const MainQuestionPage = ({
         shouldReload,
         whichCircle,
       } = returnAnswerType(inpt, questionCards.answerCard, attemptCount)
+
       setScoreSircle((prevArry) => {
         const updatedArr = [...prevArry]
         if (whichCircle !== null) {
@@ -277,14 +279,17 @@ const MainQuestionPage = ({
   }
 
   function skipQuestion() {
+    if (checkForGameOver) {
+      return
+    }
     questionNumber++
     attemptCount = 0
     reload()
-    checkForGameOver() ? ' ' : reload()
   }
 
   function reload(newFirstCard = questionCards.firstCard) {
     console.log('reload', newFirstCard)
+    setResultDisplay(false)
     loadNewQuestionCards(isRandomisedKey, newFirstCard)
   }
 
@@ -337,6 +342,12 @@ const MainQuestionPage = ({
       margin: 2,
       padding: 0,
     },
+    emptyCardPlaceHolder: {
+      width: cardWidth,
+      height: cardHeight,
+      margin: 0,
+      padding: 0,
+    },
     questionCardsCont: {
       flexDirection: 'row',
       margin: 0,
@@ -352,6 +363,13 @@ const MainQuestionPage = ({
       fontWeight: 'bold',
       fontSize: fontScale,
     },
+    choosingKeyText: {
+      flex: 0.3,
+      justifyContent: 'center',
+      alignItems: 'center',
+      margin: 3,
+    },
+    chooseRandomText: { fontStyle: 'italic', fontSize: fontScale },
   })
 
   return (
@@ -363,8 +381,7 @@ const MainQuestionPage = ({
           flexDirection: 'row-reverse',
           justifyContent: 'space-between',
           // alignItems: 'center',
-
-          backgroundColor: secondaryColor,
+          backgroundColor: theme.secondaryColor,
           margin: groupedNavMargin,
         }}
       >
@@ -376,7 +393,7 @@ const MainQuestionPage = ({
             fontWeight: 'bold',
             color: 'white',
             flexDirection: 'row',
-            backgroundColor: secondaryColor,
+            backgroundColor: theme.secondaryColor,
             justifyContent: 'flex-end',
             alignItems: 'center',
             textAlign: 'center',
@@ -414,7 +431,7 @@ const MainQuestionPage = ({
                 },
               ]}
             >
-              <Text style={{ color: bgColor }}>?</Text>
+              <Text style={{ color: theme.primaryColor }}>?</Text>
             </Pressable>
           </View>
         </View>
@@ -423,7 +440,7 @@ const MainQuestionPage = ({
           style={[
             styles.scoreCircles,
             {
-              backgroundColor: secondaryColor,
+              backgroundColor: theme.secondaryColor,
               justifyContent: 'center',
               alignItems: 'center',
               flexDirection: 'row',
@@ -441,7 +458,7 @@ const MainQuestionPage = ({
                 scoreCircleRadius={scoreCirclesSize}
                 key={idx}
                 underLine={questionNo}
-                circlesInsideColor={secondaryColor}
+                circlesInsideColor={theme.secondaryColor}
               />
             )
           })}
@@ -457,7 +474,7 @@ const MainQuestionPage = ({
           {!isRandomAllQuestionTypes ? (
             <QuestionIconButtons
               changeQuestionType={changeQuestionType}
-              bgColor={secondaryColor}
+              bgColor={theme.secondaryColor}
               groupedNavMargin={groupedNavMargin}
               // annotated={annotatedCardDisplay}
             />
@@ -494,7 +511,6 @@ const MainQuestionPage = ({
           </View>
           <View
             style={{
-              // flexDirection: 'row',
               justifyContent: 'center',
               alignItems: 'center',
             }}
@@ -516,50 +532,18 @@ const MainQuestionPage = ({
         </View>
       )}
       <View style={styles.topRowCards}>
-        {!annotated && (
-          <View
-            style={{
-              width: cardWidth,
-              height: cardHeight,
-              margin: 0,
-              padding: 0,
-            }}
-          ></View>
-        )}
-        <View
-          style={{
-            width: cardWidth,
-            height: cardHeight,
-            margin: 0,
-            padding: 0,
-          }}
-        ></View>
-
-        {/* THIS HERE IS FOR THE AB BOOL VERSION <View
-          style={{
-            width: cardWidth,
-            height: cardHeight,
-
-            margin: 0,
-          }}
-        >
-          {!isRandom ? (
-            <PickShape questionAB={questionAB} width={cardWidth} />
-          ) : (
-            ' '
-          )}
-        </View> */}
+        {!annotated && <View style={styles.emptyCardPlaceHolder}></View>}
+        <View style={styles.emptyCardPlaceHolder}></View>
+        {/* THIS HERE IS FOR THE AB BOOL VERSION <View style={styles.emptyCardPlaceHolder}>
+          {!isRandom ? (<PickShape questionAB={questionAB} width={cardWidth} /> ) : (null)}</View> */}
         {questionCards?.firstCard?.value && (
           <QuestionCards
-            bgColor={bgColor}
-            secondaryColor={secondaryColor}
+            bgColor={theme.primaryColor}
+            secondaryColor={theme.secondaryColor}
             fontScale={fontScale}
-            // firstCard={firstCard}
-            // secondCard={secondCard}
-            // answer={correctAnswer}
             cards={questionCards}
             rootCardPress={questionCardPress}
-            resultDisplay={resultDisplay}
+            answerDisplay={resultDisplay}
             answerCardOnPress={answerCardOnPress}
             cardSize={{
               cardWidth:
@@ -584,14 +568,7 @@ const MainQuestionPage = ({
       </View>
       <View style={styles.displayCardsGrid}>
         {(annotated || choosingKey) && (
-          <View
-            style={{
-              flex: 0.3,
-              justifyContent: 'center',
-              alignItems: 'center',
-              margin: 3,
-            }}
-          >
+          <View style={styles.choosingKeyText}>
             {!choosingKey ? (
               <Text style={styles.annotatedText}>
                 Choose your answer from cards below ↓
@@ -600,10 +577,7 @@ const MainQuestionPage = ({
               <Text style={styles.annotatedText}>
                 Choose your key below ↓ or
                 <Pressable onPress={() => setRandom()}>
-                  <Text style={{ fontStyle: 'italic', fontSize: fontScale }}>
-                    {' '}
-                    Select Random
-                  </Text>
+                  <Text style={styles.chooseRandomText}>Select Random</Text>
                 </Pressable>
               </Text>
             )}
@@ -626,7 +600,7 @@ const MainQuestionPage = ({
             cardsArray={displayInputCardArray}
             userAnswerSetter={userInputCardPress}
             findNoteFunction={getAudioSrcIdxFromCardReducer}
-            reDeal={questionCards.firstCard}
+            reDeal={questionCards?.firstCard}
             isAnimated={isAnimated}
           />
         )}
