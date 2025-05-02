@@ -298,7 +298,7 @@ const QuestionCards = ({
             style={[
               styles.hiddenScoreCard,
               frontAnimatedStyle(flipScoreCardAnimation),
-              (displayScore || skip) && styles.scoreTextContainer,
+              !annotated && (displayScore || skip) && styles.scoreTextContainer,
             ]}
           >
             {!annotated && (displayScore || skip) ? (
