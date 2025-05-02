@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
 import MainQuestionPage from './Components/MainQuestionPage'
+import AnnotatedCards from './Components/AnnotatedCards.js'
 import HexKeyWithCards from './Components/HexKeyWithCards.js'
 import TheoryCirlces from './Components/TheoryCircles.js'
 import { StatusBar } from 'expo-status-bar'
@@ -104,7 +105,7 @@ export default function App() {
                 primaryColor={theme.bgColor}
                 secondaryColor={theme.secondaryColor}
                 annotated={annotatedCardDisplay}
-                isRandom={isRandom}
+                isRandomAllQuestionTypes={isRandom}
                 isAnimated={animationsOn}
                 setShowOptions={showOptionsSetter}
                 showOptions={showOptions}

@@ -22,6 +22,7 @@ import {
   returnAnswerType,
   returnRandomCard,
 } from '../functions/functions.js'
+
 import { keys } from '../data/KeyCards.js'
 
 const newAnswerDelay = 1500
@@ -46,23 +47,28 @@ const MainQuestionPage = ({
   setAnnotatedCard,
   annotatedCard,
   annotated,
-  isRandom,
+  isRandomAllQuestionTypes,
   isAnimated,
   dimensions,
 }) => {
   //questionType will refer to what the first card is
   //TO DO go over all this state and cut down what we need/don't need
   const { width, height } = dimensions
-  const [firstCard, setFirstCard] = useState()
-  const [secondCard, setSecondCard] = useState()
+  // const [firstCard, setFirstCard] = useState()
+  // const [secondCard, setSecondCard] = useState()
+  // const [correctAnswer, setCorrectAnswer] = useState()
+  const [questionCards, setQuestionCards] = useState({
+    firstCard: null,
+    secondCard: null,
+    answerCard: null,
+  })
   const [displayInputCardArray, setDisplayInputCardArray] = useState()
   const [droneAudioSrc, setDroneAudioSrc] = useState(null)
   const [abBool, setabBool] = useState(true)
   const [reloadBool, setReloadBool] = useState(false)
   const [questionType, setQuestionType] = useState('Key')
-  const [correctAnswer, setCorrectAnswer] = useState()
   const [userAnswer, setUserAnswer] = useState()
-  const [userScoreDisplay, setScoreDisplay] = useState(null)
+  const [scoreCardDisplay, setScoreCardDisplay] = useState(null)
   const [scoreCircles, setScoreSircle] = useState(scoreCirclesInit)
   const [choosingKey, setChoosingKey] = useState(false)
   const [fontScale, setFontScale] = useState(height / 50)
@@ -73,18 +79,18 @@ const MainQuestionPage = ({
   const scoreCirclesSize = height / 20
   const cardWidth = width > height ? width * 0.1 : width * 0.14
   const cardHeight = cardWidth * 1.5
-  console.log('attmptCount', attemptCount, 'questionNumber', questionNumber)
+  // console.log('attmptCount', attemptCount, 'questionNumber', questionNumber)
   useEffect(() => {
     // let questionCard = returnRandomCard(keys)
     // setFirstCard(questionCard)
-    setQuestionCards(isRandomisedKey)
-  }, [questionType, isRandom])
+    loadNewQuestionCards(false, keys[0])
+  }, [questionType, isRandomAllQuestionTypes])
 
-  function setQuestionCards(randomiseKey, firstCardStart) {
+  function loadNewQuestionCards(randomiseKey, firstCardStart) {
     // console.log('setQuestionCard', firstCardStart)
     if (!firstCardStart || isRandomisedKey) {
       let newFirstCard = returnRandomCard(keys)
-      setFirstCard(newFirstCard)
+      setQuestionCards((x) => ({ ...x, firstCard: newFirstCard }))
       firstCardStart = newFirstCard
     }
     if (firstCardStart?.idx === undefined) {
@@ -92,13 +98,13 @@ const MainQuestionPage = ({
       firstCardStart = { value: firstCardStart, idx: idx }
     }
 
-    let tempPrevCard = secondCard
+    let tempPrevCard = questionCards.secondCard
     let count = 0
     let questionCardsReturnObj
 
     do {
       count++
-      questionCardsReturnObj = isRandom
+      questionCardsReturnObj = isRandomAllQuestionTypes
         ? randomiseQuestion()
         : cardReducer(questionType, !abBool, randomiseKey, firstCardStart)
     } while (
@@ -110,13 +116,14 @@ const MainQuestionPage = ({
 
     const { firstCardFromReducer, secondCardFromReducer, array, answerIdx } =
       questionCardsReturnObj
-    console.log(questionCardsReturnObj)
     setUserAnswer(null)
     getAndSetDroneAudioSource(firstCardFromReducer.value)
     setDisplayInputCardArray(array)
-    setFirstCard(firstCardFromReducer)
-    setSecondCard(secondCardFromReducer)
-    setCorrectAnswer(array[answerIdx])
+    setQuestionCards((x) => ({
+      firstCard: firstCardFromReducer,
+      secondCard: secondCardFromReducer,
+      answerCard: array[answerIdx],
+    }))
   }
 
   function changeQuestionType(inpt) {
@@ -133,7 +140,7 @@ const MainQuestionPage = ({
 
   function selectDroneAudio() {
     droneType = !droneType
-    getAndSetDroneAudioSource(firstCard.value)
+    getAndSetDroneAudioSource(questionCards.firstCard.value)
   }
 
   function getAndSetDroneAudioSource(card) {
@@ -151,7 +158,7 @@ const MainQuestionPage = ({
     //TO DO clear timeout/question change here
     clearTimeout(globalQuestionTimeOutID)
     setabBool(bool)
-    gameOver()
+    resetForNewGame()
     // reloadTimeOut(true)
   }
 
@@ -181,12 +188,15 @@ const MainQuestionPage = ({
 
   function getAudioSrcInterval(intervalCard) {
     //TO DO check these names and uses/RENAME them better
-    let audioSrc = getIntervalCardsAsNotes(intervalCard, firstCard)
+    let audioSrc = getIntervalCardsAsNotes(
+      intervalCard,
+      questionCards.firstCard
+    )
     return audioSrc
   }
 
   function answerCardOnPress() {
-    let answer = getAudioSrcIdxFromCardReducer(correctAnswer)
+    let answer = getAudioSrcIdxFromCardReducer(questionCards.correctAnswer)
     return answer
   }
 
@@ -211,32 +221,32 @@ const MainQuestionPage = ({
   }
 
   function userInputCardPress(inpt) {
-    //betterway to get this idx?
-
     if (!choosingKey) {
       userAnswerSetter(inpt)
       return
     }
-    setFirstCard(inpt)
-    setQuestionCards(false, inpt)
-    gameOver(inpt)
+    setQuestionCards((x) => ({ ...x, firstCard: inpt }))
+    loadNewQuestionCards(false, inpt)
+    resetForNewGame(inpt)
     setChoosingKey((x) => false)
   }
 
   function userAnswerSetter(inpt) {
-    inpt.name === correctAnswer?.name ? setResultDisplay(true) : ''
-    console.log({ resultDisplay })
     setUserAnswer(inpt)
     if (isReloading) {
       return
     } else {
+      console.log(inpt, questionCards.answerCard?.name)
+      if (inpt.name === questionCards.answerCard?.name) {
+        console.log('correct')
+        setResultDisplay(true)
+      }
       const {
         incrementAttemptCount,
         incrementQuestionNo,
         shouldReload,
         whichCircle,
-      } = returnAnswerType(inpt, correctAnswer, attemptCount)
-
+      } = returnAnswerType(inpt, questionCards.answerCard, attemptCount)
       setScoreSircle((prevArry) => {
         const updatedArr = [...prevArry]
         if (whichCircle !== null) {
@@ -253,31 +263,34 @@ const MainQuestionPage = ({
           ? nextQuestionReloadTimeOut(false)
           : null
       whichCircle ? userScore++ : ''
-      if (questionNumber > 11) {
-        setScoreDisplay(userScore)
-        isReloading = true
-      }
+      checkForGameOver()
     }
+  }
+
+  function checkForGameOver() {
+    if (questionNumber > 11) {
+      setScoreCardDisplay(userScore)
+      isReloading = true
+      return true
+    }
+    return false
   }
 
   function skipQuestion() {
     questionNumber++
     attemptCount = 0
     reload()
-    if (questionNumber > 11) {
-      setScoreDisplay(userScore)
-      isReloading = true
-    }
+    checkForGameOver() ? ' ' : reload()
   }
 
-  function reload(newFirstCard = firstCard) {
+  function reload(newFirstCard = questionCards.firstCard) {
     console.log('reload', newFirstCard)
-    setQuestionCards(isRandomisedKey, newFirstCard)
+    loadNewQuestionCards(isRandomisedKey, newFirstCard)
   }
 
   function nextQuestionReloadTimeOut(fastReload = false) {
     console.log('should reload')
-  
+
     let delaySpeed = fastReload ? 200 : newAnswerDelay
     setDroneAudioSrc(null)
     isReloading = true
@@ -288,7 +301,7 @@ const MainQuestionPage = ({
     return questionChangingTimeOut
   }
 
-  function gameOver(inpt = firstCard) {
+  function resetForNewGame(inpt = questionCards.firstCard) {
     setDroneAudioSrc(null)
     userScore = 0
     attemptCount = 0
@@ -297,13 +310,13 @@ const MainQuestionPage = ({
     isReloading = false
     reload(inpt)
     setScoreSircle(scoreCirclesInit)
-    setScoreDisplay(0)
+    setScoreCardDisplay(0)
   }
 
   function setRandom() {
     isRandomisedKey = true
     setChoosingKey(false)
-    gameOver()
+    resetForNewGame()
   }
 
   const styles = StyleSheet.create({
@@ -441,7 +454,7 @@ const MainQuestionPage = ({
             justifyContent: 'center',
           }}
         >
-          {!isRandom ? (
+          {!isRandomAllQuestionTypes ? (
             <QuestionIconButtons
               changeQuestionType={changeQuestionType}
               bgColor={secondaryColor}
@@ -536,17 +549,18 @@ const MainQuestionPage = ({
             ' '
           )}
         </View> */}
-        {firstCard?.value && (
+        {questionCards?.firstCard?.value && (
           <QuestionCards
             bgColor={bgColor}
             secondaryColor={secondaryColor}
             fontScale={fontScale}
-            firstCard={firstCard}
-            secondCard={secondCard}
+            // firstCard={firstCard}
+            // secondCard={secondCard}
+            // answer={correctAnswer}
+            cards={questionCards}
             rootCardPress={questionCardPress}
             resultDisplay={resultDisplay}
             answerCardOnPress={answerCardOnPress}
-            answer={correctAnswer}
             cardSize={{
               cardWidth:
                 annotated || choosingKey
@@ -560,9 +574,9 @@ const MainQuestionPage = ({
             annotated={annotated}
             setAnnotatedCard={setAnnotatedCard}
             isAnimated={isAnimated}
-            displayScore={userScoreDisplay}
+            displayScore={scoreCardDisplay}
             score={userScore}
-            newRound={gameOver}
+            newRound={resetForNewGame}
             skipQuestion={skipQuestion}
             skip={attemptCount > 2 ? true : false}
           />
@@ -612,7 +626,7 @@ const MainQuestionPage = ({
             cardsArray={displayInputCardArray}
             userAnswerSetter={userInputCardPress}
             findNoteFunction={getAudioSrcIdxFromCardReducer}
-            reDeal={firstCard}
+            reDeal={questionCards.firstCard}
             isAnimated={isAnimated}
           />
         )}

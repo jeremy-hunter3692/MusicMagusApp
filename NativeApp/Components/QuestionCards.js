@@ -14,11 +14,9 @@ import { returnScoreText } from '../functions/functions.js'
 const blankCard = require('../assets/blankcard.png')
 
 const QuestionCards = ({
-  firstCard,
-  secondCard,
+  cards,
   findNoteFunction,
   resultDisplay,
-  answer,
   cardSize,
   rootCardPress,
   answerCardOnPress,
@@ -32,6 +30,9 @@ const QuestionCards = ({
   skipQuestion,
   fontScale,
 }) => {
+  console.log('q', cards)
+  const { firstCard, secondCard, answerCard } = cards
+  const answer = answerCard
   const flipAnswerCardAnimation = useSharedValue(0)
   const flipScoreCardAnimation = useSharedValue(0)
   useEffect(() => {
