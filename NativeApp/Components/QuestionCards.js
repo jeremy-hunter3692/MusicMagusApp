@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { StyleSheet, View, Text, Pressable } from 'react-native'
 import CardButton from './CardButton'
+import ScoreCard from './ScoreCard'
 import Animated, {
   useSharedValue,
   useAnimatedStyle,
@@ -8,8 +9,6 @@ import Animated, {
   interpolate,
   Extrapolate,
 } from 'react-native-reanimated'
-
-import { returnScoreText } from '../functions/functions.js'
 
 const blankCard = require('../assets/blankcard.png')
 
@@ -30,13 +29,11 @@ const QuestionCards = ({
   skipQuestion,
   fontScale,
 }) => {
-  console.log('q', answerDisplay)
   const { firstCard, secondCard, answerCard } = cards
   const answer = answerCard
   const flipAnswerCardAnimation = useSharedValue(0)
   const flipScoreCardAnimation = useSharedValue(0)
   useEffect(() => {
-    console.log('use', flipAnswerCardAnimation.value)
     answerDisplay && isAnimated
       ? handleFlip(180, flipAnswerCardAnimation)
       : cardsToInit()
@@ -157,33 +154,10 @@ const QuestionCards = ({
       justifyContent: 'space-around',
       color: 'black',
     },
-    scoreText: {
-      flexDirection: 'column',
-      maxWidth: cardSize.cardWidth,
-      fontWeight: 'bold',
-      justifyContent: 'flex-end',
-      alignSelf: 'center',
-      color: 'black',
-      fontSize: fontScale,
-    },
+
     hiddenScoreCard: {
       height: cardSize.cardHeight,
       width: cardSize.cardWidth,
-    },
-    quoteText: {
-      maxWidth: cardSize.cardWidth,
-      fontWeight: 5,
-      fontStyle: 'italic',
-      justifyContent: 'center',
-      alignSelf: 'center',
-      color: 'black',
-      fontSize: fontScale,
-    },
-    buttonText: {
-      justifyContent: 'center',
-      color: 'black',
-      alignSelf: 'center',
-      fontSize: fontScale * 0.8,
     },
   })
 
@@ -319,6 +293,7 @@ const QuestionCards = ({
               {'Score will appear here at end of round'}
             </Text>
           ) : null}
+
           <Animated.View
             style={[
               styles.hiddenScoreCard,
@@ -326,24 +301,13 @@ const QuestionCards = ({
               (displayScore || skip) && styles.scoreTextContainer,
             ]}
           >
-            {displayScore || skip ? (
-              <>
-                {skip ? (
-                  <Pressable onPress={skipQuestion}>
-                    <Text style={styles.buttonText}>Skip Question?</Text>
-                  </Pressable>
-                ) : (
-                  <>
-                    <Text style={styles.scoreText}>{score + '/12'}</Text>
-                    <Text style={styles.quoteText}>
-                      {returnScoreText(score)}
-                    </Text>
-                    <Pressable onPress={() => newRound()}>
-                      <Text style={styles.buttonText}>New Round?</Text>
-                    </Pressable>
-                  </>
-                )}
-              </>
+            {!annotated && (displayScore || skip) ? (
+              <ScoreCard
+                skipQuestion={skipQuestion}
+                skip={skip}
+                score={score}
+                newRound={newRound}
+              />
             ) : null}
           </Animated.View>
         </View>
