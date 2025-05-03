@@ -24,6 +24,7 @@ import {
 } from '../functions/functions.js'
 
 import { keys } from '../data/KeyCards.js'
+import { intervals } from '../data/IntervalCards.js'
 
 const newAnswerDelay = 1500
 const groupedNavMargin = 0
@@ -87,7 +88,6 @@ const MainQuestionPage = ({
   }, [questionType, isRandomAllQuestionTypes])
 
   function loadNewQuestionCards(randomiseKey, firstCardStart) {
-    // console.log('setQuestionCard', firstCardStart)
     if (!firstCardStart || isRandomisedKey) {
       let newFirstCard = returnRandomCard(keys)
       setQuestionCards((x) => ({ ...x, firstCard: newFirstCard }))
@@ -208,25 +208,31 @@ const MainQuestionPage = ({
   function questionCardPress(inpt) {
     // console.log('questionCardPress', inpt, annotatedDisplayGridSizeChangeFactor)
     if (choosingKey) {
-      annotatedDisplayGridSizeChangeFactor = 0.5
-      annotatedQCardsSizeChangeFactor = 1.2
-    }
-    setChoosingKey(true)
-    setDroneAudioSrc(null)
-    annotatedDisplayGridSizeChangeFactor = 0.9
-    annotatedQCardsSizeChangeFactor = 0.9
+      initCardSizeChanges()
+      setDisplayInputCardArray((x) => [...intervals])
+      console.log(displayInputCardArray)
+      setChoosingKey((x) => false)
+    } else {
+      setChoosingKey(true)
+      setDroneAudioSrc(null)
+      annotatedDisplayGridSizeChangeFactor = 0.9
+      annotatedQCardsSizeChangeFactor = 0.9
 
-    setDisplayInputCardArray(keys)
+      setDisplayInputCardArray(keys)
+    }
     // reload()
   }
-
+  function initCardSizeChanges() {
+    annotatedDisplayGridSizeChangeFactor = 0.5
+    annotatedQCardsSizeChangeFactor = 1.2
+  }
   function userInputCardPress(inpt) {
+    console.log('choosingKey)')
     if (!choosingKey) {
       userAnswerSetter(inpt)
       return
     }
-    annotatedDisplayGridSizeChangeFactor = 0.5
-    annotatedQCardsSizeChangeFactor = 1.2
+    initCardSizeChanges()
     setQuestionCards((x) => ({ ...x, firstCard: inpt }))
     loadNewQuestionCards(false, inpt)
     resetForNewGame(inpt)
