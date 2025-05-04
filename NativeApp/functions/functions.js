@@ -256,27 +256,31 @@ function getNoOfAccidentals(inpt) {
   )
 }
 
+export function generateModesSemiToneIncrements(
+  parentScale = [2, 2, 1, 2, 2, 2, 1]
+) {
+  return parentScale.map((x, idx) => {
+    if (idx === 0) {
+      return parentScale.slice(0, parentScale.length - 1)
+    } else {
+      const firstHalf = parentScale.slice(0, idx - 1)
+      const secondHalf = parentScale.slice(idx)
+      return secondHalf.concat(firstHalf)
+    }
+  })
+}
+
 export function returnScaleCards(keyCard, scaleType) {
   const { idx } = getIdxAndNotes(keyCard)
-  const mixoSemiTonesIncrement = [2, 2, 1, 2, 2, 1]
-  const majorSemiTonesIncrement = []
   let accumulator = 0 + idx
   let answerIdxsArray = scaleType.map((x) => {
     accumulator = (accumulator + x) % 12
     return accumulator
   })
-
   answerIdxsArray.unshift(idx)
-  // console.log(answerIdxsArray)
   return answerIdxsArray
 }
 
-export function cutArrayForModes(splitIndex) {
-  const parentScale = [2, 2, 1, 2, 2, 2, 1]
-  const firstHalf = parentScale.slice(0, splitIndex - 1)
-  const secondHalf = parentScale.slice(splitIndex)
-  return secondHalf.concat(firstHalf)
-}
 export function getDataForAnnotated(inpt) {
   const { distanceToRoot, up } = inpt.value
   const upOrDown = up ? 'Down' : 'Up'

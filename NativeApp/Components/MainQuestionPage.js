@@ -21,6 +21,8 @@ import {
   cardReducer,
   returnAnswerType,
   returnRandomCard,
+  returnScaleCards,
+  generateModesSemiToneIncrements,
 } from '../functions/functions.js'
 
 import { keys } from '../data/KeyCards.js'
@@ -52,12 +54,43 @@ const MainQuestionPage = ({
   isAnimated,
   dimensions,
 }) => {
+  //working but verbose name and refactor all below:
+  function getAllModesWithSameRootNote(rootNote) {
+    const modesIdx = generateModesSemiToneIncrements()
+    modesIdx.forEach((x) => {
+      let ret = returnScaleCards(rootNote, x)
+      ret.forEach((y) => {
+        return keys[y].name
+      })
+    })
+  }
+
+  function getAllModesOfAKey(key) {
+    const modesIdx = generateModesSemiToneIncrements()
+    let thing = returnScaleCards(key, modesIdx[0])
+    let modesOfGivenKEy = thing.map((x, idx) => {
+      if (idx === 0) {
+        return thing
+      } else {
+        return returnScaleCards(keys[x], modesIdx[idx])
+      }
+    })
+    return modesOfGivenKEy
+  }
+
+  let idxs = getAllModesOfAKey(keys[11])
+  console.log(idxs)
+  idxs.forEach((x) => {
+    console.log(x)
+    x.forEach((y) => {
+      console.log(keys[y].name)
+    })
+  })
+
+  ///////////////
   //questionType will refer to what the first card is
   //TO DO go over all this state and cut down what we need/don't need
   const { width, height } = dimensions
-  // const [firstCard, setFirstCard] = useState()
-  // const [secondCard, setSecondCard] = useState()
-  // const [correctAnswer, setCorrectAnswer] = useState()
   const [questionCards, setQuestionCards] = useState({
     firstCard: null,
     secondCard: null,
@@ -85,7 +118,22 @@ const MainQuestionPage = ({
     // let questionCard = returnRandomCard(keys)
     // setFirstCard(questionCard)
     loadNewQuestionCards(false, keys[0])
+    // getScale(keys[11])
   }, [questionType, isRandomAllQuestionTypes])
+
+  function getScale(rootCard) {
+    console.log(rootCard)
+    let arr = [2, 2, 1, 2, 2, 2, 1]
+    let dor = arr.slice(0, -1)
+    let mix = [2, 2, 1, 2, 2, 1]
+    let res = returnScaleCards(rootCard, mix)
+    console.log('res:', res)
+    let cardArr = keys
+    let makeScaleArr = res.map((x) => {
+      return cardArr[x]
+    })
+    setDisplayInputCardArray(makeScaleArr)
+  }
 
   function loadNewQuestionCards(randomiseKey, firstCardStart) {
     if (!firstCardStart || isRandomisedKey) {
