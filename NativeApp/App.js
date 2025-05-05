@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 import MainQuestionPage from './Components/MainQuestionPage'
 import AnnotatedCards from './Components/AnnotatedCards.js'
+import OptionsPage from './Components/OptionsPage.js'
 import HexKeyWithCards from './Components/HexKeyWithCards.js'
 import TheoryCirlces from './Components/TheoryCircles.js'
 import { StatusBar } from 'expo-status-bar'

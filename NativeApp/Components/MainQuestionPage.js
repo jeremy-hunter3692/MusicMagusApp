@@ -55,6 +55,14 @@ const MainQuestionPage = ({
   dimensions,
 }) => {
   //working but verbose name and refactor all below:
+  function getScale(rootCard, scaleType, array) {
+    let res = returnScaleCards(rootCard, scaleType)
+    let makeScaleArr = res.map((x) => {
+      return array[x]
+    })
+    setDisplayInputCardArray(makeScaleArr)
+  }
+
   function getAllModesWithSameRootNote(rootNote) {
     const modesIdx = generateModesSemiToneIncrements()
     modesIdx.forEach((x) => {
@@ -120,20 +128,6 @@ const MainQuestionPage = ({
     loadNewQuestionCards(false, keys[0])
     // getScale(keys[11])
   }, [questionType, isRandomAllQuestionTypes])
-
-  function getScale(rootCard) {
-    console.log(rootCard)
-    let arr = [2, 2, 1, 2, 2, 2, 1]
-    let dor = arr.slice(0, -1)
-    let mix = [2, 2, 1, 2, 2, 1]
-    let res = returnScaleCards(rootCard, mix)
-    console.log('res:', res)
-    let cardArr = keys
-    let makeScaleArr = res.map((x) => {
-      return cardArr[x]
-    })
-    setDisplayInputCardArray(makeScaleArr)
-  }
 
   function loadNewQuestionCards(randomiseKey, firstCardStart) {
     if (!firstCardStart || isRandomisedKey) {

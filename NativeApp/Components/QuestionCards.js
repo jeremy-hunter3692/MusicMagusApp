@@ -175,12 +175,47 @@ const QuestionCards = ({
           ]}
         >
           {annotated && (
-            <Text style={styles.annotatedText}>
-              {
-                'Also click this card to choose a key or random  \n   In this key  ➔ '
-              }
-              {/* {'←  Change between two question modes '} */}
-            </Text>
+            <>
+              <View
+                style={{
+                  flex: 0,
+
+                  maxHeight: cardSize.height,
+                }}
+              >
+                <Text
+                  style={[
+                    styles.annotatedText,
+                    { margein: 0, padding: 0, alignContent: 'flex-end' },
+                  ]}
+                >
+                  {'In this key  ➔ '}
+                  {/* {'←  Change between two question modes '} */}
+                </Text>
+              </View>
+              <View
+                style={{
+                  flex: 0,
+                  justifyContent: 'flex-start',
+                  maxHeight: cardSize.height,
+                }}
+              >
+                <Text
+                  style={[
+                    styles.annotatedText,
+                    {
+                      margein: 0,
+                      paddingBottom: 10,
+                      fontSize: fontScale * 0.9,
+                      fontStyle: 'italic',
+                      alignContent: 'flex-end',
+                    },
+                  ]}
+                >
+                  {`Click card to choose key`}
+                </Text>
+              </View>
+            </>
           )}
         </View>
         <View style={styles.forAnnotation}>
@@ -292,30 +327,37 @@ const QuestionCards = ({
           )}
         </View>
 
-        <View style={styles.forAnnotation}>
+        <View
+          style={[
+            styles.forAnnotation,
+            {
+              justifyContent: 'center',
+              alignContent: 'center',
+            },
+          ]}
+        >
           {annotated ? (
-            <Text style={[styles.annotatedText, { alignSelf: 'center' }]}>
+            <Text style={styles.annotatedText}>
               {'Score will appear here at end of round'}
             </Text>
           ) : null}
-
-          <Animated.View
-            style={[
-              styles.hiddenScoreCard,
-              frontAnimatedStyle(flipScoreCardAnimation),
-              !annotated && (displayScore || skip) && styles.scoreTextContainer,
-            ]}
-          >
-            {!annotated && (displayScore || skip) ? (
-              <ScoreCard
-                skipQuestion={skipQuestion}
-                skip={skip}
-                score={score}
-                newRound={newRound}
-              />
-            ) : null}
-          </Animated.View>
         </View>
+        <Animated.View
+          style={[
+            styles.hiddenScoreCard,
+            frontAnimatedStyle(flipScoreCardAnimation),
+            !annotated && (displayScore || skip) && styles.scoreTextContainer,
+          ]}
+        >
+          {!annotated && (displayScore || skip) ? (
+            <ScoreCard
+              skipQuestion={skipQuestion}
+              skip={skip}
+              score={score}
+              newRound={newRound}
+            />
+          ) : null}
+        </Animated.View>
       </View>
     </>
   )
