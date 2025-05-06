@@ -95,17 +95,20 @@ describe('DisplayCardsGrid', () => {
   })
 })
 
+
+
 describe('Question Cards', () => {
   it('renders four card images(one is hidden)', () => {
     const mockCards = {
       firstCard: { value: { imageSrc: 1 } },
       fecondCard: { value: { imageSrc: 1 } },
-      answerCard: { value: { imageSrc: 1} },
+      answerCard: { value: { imageSrc: 1 } },
     }
     const mockResultDisplay = true
     const mockAnswerCardOnPress = jest.fn()
     const mockRootCardOnPress = jest.fn()
-    const { getAllByTestId } = render(
+
+    const { getAllByTestId, queryAllByTestId } = render(
       <QuestionCards
         //these values are random should probably get actual values
         cardSize={{ cardwidth: 100, cardHeight: 150 }}
@@ -114,10 +117,11 @@ describe('Question Cards', () => {
         resultDisplay={mockResultDisplay}
         answerCardOnPress={mockAnswerCardOnPress}
         answer={mockResultDisplay}
+        isAnimated={true}
       />
     )
-    const images = getAllByTestId(/image/)
-    expect(images.length).toBe(3)
+    const images = queryAllByTestId(/image/)
+    expect(images.length).toBe(4)
   })
 })
 describe('Card Button', () => {

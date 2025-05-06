@@ -179,7 +179,6 @@ const QuestionCards = ({
               <View
                 style={{
                   flex: 0,
-
                   maxHeight: cardSize.height,
                 }}
               >
@@ -350,6 +349,7 @@ const QuestionCards = ({
           ]}
         >
           {!annotated && (displayScore || skip) ? (
+            
             <ScoreCard
               skipQuestion={skipQuestion}
               skip={skip}

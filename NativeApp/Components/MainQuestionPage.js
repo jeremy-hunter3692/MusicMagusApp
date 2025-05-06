@@ -1,11 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import {
-  StyleSheet,
-  View,
-  Text,
-
-  Pressable,
-} from 'react-native'
+import { StyleSheet, View, Text, Pressable } from 'react-native'
 import DronePlayer from './DronePlayer.js'
 import QuestionCards from './QuestionCards.js'
 import DisplayCardsGrid from './DisplayCardsGrid.js'
@@ -127,9 +121,7 @@ const MainQuestionPage = ({
     // setFirstCard(questionCard)
     loadNewQuestionCards(false, keys[0])
     // getScale(keys[11])
-    return ()=>{
-      
-    }
+    return () => {}
   }, [questionType, isRandomAllQuestionTypes])
 
   function loadNewQuestionCards(randomiseKey, firstCardStart) {
@@ -260,17 +252,12 @@ const MainQuestionPage = ({
     } else {
       setChoosingKey(true)
       setDroneAudioSrc(null)
-      annotatedDisplayGridSizeChangeFactor = 0.9
-      annotatedQCardsSizeChangeFactor = 0.9
-
+      choosingKeyCardSizes()
       setDisplayInputCardArray(keys)
     }
     // reload()
   }
-  function initCardSizeChanges() {
-    annotatedDisplayGridSizeChangeFactor = 0.5
-    annotatedQCardsSizeChangeFactor = 1.2
-  }
+
   function userInputCardPress(inpt) {
     console.log('choosingKey)')
     if (!choosingKey) {
@@ -317,6 +304,11 @@ const MainQuestionPage = ({
       whichCircle ? userScore++ : ''
       checkForGameOver()
     }
+  }
+
+  function initCardSizeChanges() {
+    annotatedDisplayGridSizeChangeFactor = 0.5
+    annotatedQCardsSizeChangeFactor = 1.2
   }
 
   function checkForGameOver() {
@@ -374,6 +366,16 @@ const MainQuestionPage = ({
     resetForNewGame()
   }
 
+  function choosingKeyCardSizes() {
+    annotatedDisplayGridSizeChangeFactor = 0.9
+    annotatedQCardsSizeChangeFactor = 0.9
+  }
+  function annotatedButtonClick() {
+    //TO DO double check this
+    choosingKey && annotated ? choosingKeyCardSizes() : initCardSizeChanges()
+    setAnnotatedMode()
+  }
+
   const styles = StyleSheet.create({
     scoreCircles: {
       margin: 0,
@@ -389,7 +391,7 @@ const MainQuestionPage = ({
       flexDirection: 'row',
       justifyContent: 'center',
       alignItems: 'center',
-      margin: 2,
+      marginTop: 12,
       padding: 0,
     },
     emptyCardPlaceHolder: {
@@ -461,13 +463,13 @@ const MainQuestionPage = ({
           >
             {!annotatedCard ? (
               <Pressable onPress={() => setShowOptions()}>
-                <Text style={styles.optionText}>Options </Text>
+                <Text style={styles.optionText}>Options {'  '}</Text>
               </Pressable>
             ) : (
               ''
             )}
             <Pressable
-              onPress={() => setAnnotatedMode()}
+              onPress={() => annotatedButtonClick()}
               style={[
                 {},
                 !annotatedCard && {
@@ -577,13 +579,13 @@ const MainQuestionPage = ({
             </Text>
           </View>
           <View>
-            <Text style={styles.annotatedText}>Options here ↑ </Text>
+            <Text style={styles.annotatedText}>↑ Options here </Text>
           </View>
         </View>
       )}
       <View style={styles.topRowCards}>
-        {!annotated && <View style={styles.emptyCardPlaceHolder}></View>}
-        <View style={styles.emptyCardPlaceHolder}></View>
+        {annotated && <View style={styles.emptyCardPlaceHolder}></View>}
+        {/* <View style={styles.emptyCardPlaceHolder}></View> MAKE ABOVE NOTE ANNOTATED TO SHIFT QCARDS ACROSS  */}
         {/* THIS HERE IS FOR THE AB BOOL VERSION <View style={styles.emptyCardPlaceHolder}>
           {!isRandom ? (<PickShape questionAB={questionAB} width={cardWidth} /> ) : (null)}</View> */}
         {questionCards?.firstCard?.value && (
@@ -616,24 +618,17 @@ const MainQuestionPage = ({
           />
         )}
       </View>
-      <View style={styles.displayCardsGrid}>
-        {(annotated || choosingKey) && (
+      <View style={[styles.displayCardsGrid, annotated && { marginTop: 50 }]}>
+        {choosingKey && (
           <View style={styles.choosingKeyText}>
-            {!choosingKey ? (
-              <Text style={styles.annotatedText}>
-                Choose your answer from cards below ↓
-              </Text>
-            ) : (
-              <Text style={styles.annotatedText}>
-                Choose your key below ↓ or
-                <Pressable onPress={() => setRandom()}>
-                  <Text style={styles.chooseRandomText}>Select Random</Text>
-                </Pressable>
-              </Text>
-            )}
+            <Text style={styles.annotatedText}>
+              Choose your key below ↓ or
+              <Pressable onPress={() => setRandom()}>
+                <Text style={styles.chooseRandomText}>Select Random</Text>
+              </Pressable>
+            </Text>
           </View>
         )}
-
         {displayInputCardArray && (
           <DisplayCardsGrid
             cardSize={{
@@ -653,6 +648,13 @@ const MainQuestionPage = ({
             reDeal={questionCards?.firstCard}
             isAnimated={isAnimated}
           />
+        )}
+        {annotated && (
+          <View style={styles.choosingKeyText}>
+            <Text style={styles.annotatedText}>
+              Choose your answer from these cards ↑
+            </Text>
+          </View>
         )}
       </View>
     </>
