@@ -4,6 +4,7 @@ import AnnotatedCards from './Components/AnnotatedCards.js'
 import OptionsPage from './Components/OptionsPage.js'
 import HexKeyWithCards from './Components/HexKeyWithCards.js'
 import TheoryCirlces from './Components/TheoryCircles.js'
+import ExploreCards from './Components/ExploreCards.js'
 import { StatusBar } from 'expo-status-bar'
 import {
   StyleSheet,
@@ -58,6 +59,7 @@ export default function App() {
   }
 
   function showOptionsSetter() {
+    annotatedCardDisplay ? setAnnotatedCardDisplay(false) : ''
     setShowOptions((x) => (x = !x))
   }
   return (
@@ -90,6 +92,7 @@ export default function App() {
             setAnimations={setAnimations}
             isAnimated={animationsOn}
             setShowOptions={showOptionsSetter}
+            theme={theme}
           />
         ) : (
           <>
@@ -116,7 +119,7 @@ export default function App() {
             )}
           </>
         )}
-
+        {/* <ExploreCards /> */}
         {/* <TheoryCirlces /> */}
       </SafeAreaView>
     </>

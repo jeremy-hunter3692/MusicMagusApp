@@ -3,6 +3,7 @@ import { Image, Text, View, StyleSheet, Pressable } from 'react-native'
 import { getDataForAnnotated } from '../functions/functions.js'
 
 const AnnotatedCards = ({ data, setAnnotated, bgColor }) => {
+  //TO DO font zise for this
   const fontSize = 25
   const { bottomRText, bottomLText, topRtext, topLText } =
     getDataForAnnotated(data)

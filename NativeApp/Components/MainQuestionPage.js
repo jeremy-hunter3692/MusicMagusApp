@@ -3,7 +3,7 @@ import {
   StyleSheet,
   View,
   Text,
-  useWindowDimensions,
+
   Pressable,
 } from 'react-native'
 import DronePlayer from './DronePlayer.js'
@@ -127,6 +127,9 @@ const MainQuestionPage = ({
     // setFirstCard(questionCard)
     loadNewQuestionCards(false, keys[0])
     // getScale(keys[11])
+    return ()=>{
+      
+    }
   }, [questionType, isRandomAllQuestionTypes])
 
   function loadNewQuestionCards(randomiseKey, firstCardStart) {
