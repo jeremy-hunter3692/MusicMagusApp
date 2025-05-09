@@ -5,6 +5,7 @@ import OptionsPage from './Components/OptionsPage.js'
 import HexKeyWithCards from './Components/HexKeyWithCards.js'
 import TheoryCirlces from './Components/TheoryCircles.js'
 import ExploreCards from './Components/ExploreCards.js'
+import ScaleExplore from './Components/ScaleExplore.js'
 import { StatusBar } from 'expo-status-bar'
 import {
   StyleSheet,
@@ -39,6 +40,7 @@ export default function App() {
   // }
 
   function handleAnnotatedClick(inpt) {
+    console.log('anntated', inpt)
     annotatedCard ? setAnnotatedCard(null) : setAnnotatedCard(inpt)
     setAnnotatedMode()
   }
@@ -84,7 +86,7 @@ export default function App() {
           elevation: 5,
         }}
       >
-        {showOptions ? (
+        {/* {showOptions ? (
           <OptionsPage
             height={height}
             changeTheme={changeTheme}
@@ -117,10 +119,11 @@ export default function App() {
                 dimensions={{ width, height }}
               />
             )}
-          </>
+          </> 
         )}
         {/* <ExploreCards /> */}
         {/* <TheoryCirlces /> */}
+        <ScaleExplore />
       </SafeAreaView>
     </>
   )

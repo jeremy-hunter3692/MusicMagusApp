@@ -292,6 +292,8 @@ const QuestionCards = ({
                   cardSize={cardSize}
                   source={blankCard}
                   animationDelay={5}
+                  onPress={answerCardOnPress}
+                  setAnnotatedCard={setAnnotatedCard}
                   animated={isAnimated}
                 />
               </Animated.View>
@@ -349,7 +351,6 @@ const QuestionCards = ({
           ]}
         >
           {!annotated && (displayScore || skip) ? (
-            
             <ScoreCard
               skipQuestion={skipQuestion}
               skip={skip}

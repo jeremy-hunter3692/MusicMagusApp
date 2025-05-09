@@ -206,30 +206,22 @@ export function correctAnswer(inpt, attemptCount, question) {}
 
 export function returnAnswerType(inpt, correctAnswer, attemptCount) {
   let incrementAttemptCount
-  let incrementQuestionNo
   let shouldReload = false
   let whichCircle = null
 
   if (correctAnswer?.name == inpt.name) {
     whichCircle = attemptCount === 0 ? true : attemptCount === 1 ? false : null
     incrementAttemptCount = false
-    incrementQuestionNo = true
     shouldReload = true
   } else {
     incrementAttemptCount = true
-    incrementQuestionNo = false
     if (attemptCount === 0) {
       shouldReload = false
       whichCircle = null
-      //   incrementQuestionNo = false
-      //   shouldReload = false
-      //   whichCircle = null
-      //   attempt = attemptCount + 1
     }
   }
   return {
     incrementAttemptCount: incrementAttemptCount,
-    incrementQuestionNo: incrementQuestionNo,
     shouldReload: shouldReload,
     whichCircle: whichCircle,
   }

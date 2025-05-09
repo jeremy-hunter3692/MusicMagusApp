@@ -1,13 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import PlaySound from './SingleNotePlayer'
-import {
-  Pressable,
-  Image,
-  Text,
-  View,
-  StyleSheet,
-  useWindowDimensions,
-} from 'react-native'
+import { Pressable, Image, StyleSheet } from 'react-native'
 import Animated, {
   useSharedValue,
   useAnimatedStyle,
@@ -22,16 +15,13 @@ const CardButton = ({
   data,
   source,
   reDeal,
-  index,
   autoPlay = false,
   answer,
-  blank,
   findAudioSourceFunction,
   cardSize,
   annotated,
   setAnnotatedCard,
   animationDelay,
-  tempTest,
   animated,
 }) => {
   const [note, setNote] = useState()
@@ -63,14 +53,12 @@ const CardButton = ({
   }
 
   function cardButtonOnPress(inpt) {
-    // console.log('cardButtonOnPress', inpt)
     if (annotated) {
       setAnnotatedCard(inpt)
     } else {
       // check this for fixing sound first
       autoPlay === true ? setNote(onPress(answer)) : handlePressIn()
     }
-    // console.log('cardButtonOnPress', inpt, findAudioSourceFunction)
     let res = findAudioSourceFunction ? findAudioSourceFunction(inpt) : null
     onPress(inpt)
     res ? setNote(res) : ''
@@ -79,9 +67,6 @@ const CardButton = ({
   }
 
   const animatedStyle = useAnimatedStyle(() => {
-    blank === 'hi' ? console.log('triggered') : ''
-    // blank === 'hi' ? console.log('THIS', scale.value) : ''
-    // blank === 'bye' ? console.log('-', scale.value) : ''
     return {
       transform: [{ scale: scale.value }],
     }
@@ -94,8 +79,7 @@ const CardButton = ({
     })
   }
 
-  // Function to handle button release (scale back to normal with spring effect)
-  const handlePressOut = (card) => {
+  const handlePressOut = () => {
     scale.value = withSpring(1, {
       damping: 200,
       stiffness: 5000,
@@ -106,7 +90,7 @@ const CardButton = ({
     <>
       {/* <PlaySound inpt={note} playBool={playBool} /> */}
       <Pressable
-        testID={data?.name} 
+        testID={data?.name}
         onPressIn={() => {
           cardButtonOnPress(data)
         }}

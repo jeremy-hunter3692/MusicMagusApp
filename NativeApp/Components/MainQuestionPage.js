@@ -49,13 +49,15 @@ const MainQuestionPage = ({
   dimensions,
 }) => {
   //working but verbose name and refactor all below:
-  function getScale(rootCard, scaleType, array) {
+
+ function getScale(rootCard, scaleType, array) {
     let res = returnScaleCards(rootCard, scaleType)
     let makeScaleArr = res.map((x) => {
       return array[x]
     })
     setDisplayInputCardArray(makeScaleArr)
   }
+  
 
   function getAllModesWithSameRootNote(rootNote) {
     const modesIdx = generateModesSemiToneIncrements()
@@ -81,11 +83,11 @@ const MainQuestionPage = ({
   }
 
   let idxs = getAllModesOfAKey(keys[11])
-  console.log(idxs)
+  // console.log(idxs)
   idxs.forEach((x) => {
-    console.log(x)
+    // console.log(x)
     x.forEach((y) => {
-      console.log(keys[y].name)
+      // console.log(keys[y].name)
     })
   })
 
@@ -279,12 +281,8 @@ const MainQuestionPage = ({
       if (inpt.name === questionCards.answerCard?.name) {
         setResultDisplay(true)
       }
-      const {
-        incrementAttemptCount,
-        incrementQuestionNo,
-        shouldReload,
-        whichCircle,
-      } = returnAnswerType(inpt, questionCards.answerCard, attemptCount)
+      const { incrementAttemptCount, shouldReload, whichCircle } =
+        returnAnswerType(inpt, questionCards.answerCard, attemptCount)
 
       setScoreSircle((prevArry) => {
         const updatedArr = [...prevArry]
@@ -295,7 +293,6 @@ const MainQuestionPage = ({
       })
 
       attemptCount = incrementAttemptCount ? ++attemptCount : 0
-      incrementQuestionNo ? ++questionNumber : ''
 
       globalQuestionTimeOutID =
         shouldReload && questionNumber < 12
@@ -324,9 +321,11 @@ const MainQuestionPage = ({
     if (checkForGameOver()) {
       return
     }
-    questionNumber++
-    attemptCount = 0
-    reload()
+    setResultDisplay(true)
+    setTimeout(() => {
+      attemptCount = 0
+    }, newAnswerDelay)
+    nextQuestionReloadTimeOut()
   }
 
   function reload(newFirstCard = questionCards.firstCard) {
@@ -337,7 +336,7 @@ const MainQuestionPage = ({
 
   function nextQuestionReloadTimeOut(fastReload = false) {
     console.log('should reload')
-
+    questionNumber++
     let delaySpeed = fastReload ? 200 : newAnswerDelay
     setDroneAudioSrc(null)
     isReloading = true
