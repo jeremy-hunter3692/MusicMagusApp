@@ -8,11 +8,11 @@ import {
 import { keys } from '../data/KeyCards'
 import { intervals } from '../data/IntervalCards'
 import { noteNames } from '../data/NoteCards'
+import DisplayCardsGrid from './DisplayCardsGrid'
 
 const modesArray = generateModesSemiToneIncrements()
 
 const initScale = returnScaleCards(keys[0], modesArray[0], noteNames)
-const initIntervals = returnScaleCards(keys[0], modesArray[0], intervals)
 const modeNames = [
   'Ionian',
   'Dorian',
@@ -70,9 +70,19 @@ const ScaleExplore = () => {
     setScale(newNoteScale)
   }
 
+  function getParentKey() {
+    //TO DO RENAME THESE
+
+    let res = scale.length - modeIDX
+    let idx = scale[res]
+    console.log('p', keys[idx])
+    if (keys[idx]?.imgSrc != null) {
+      return keys[idx].imgSrc
+    }
+  }
+
   function intervalActulIDX() {
     let accumulator = 0
-
     return (
       <View style={styles.rowImageCont}>
         <Image
@@ -96,7 +106,13 @@ const ScaleExplore = () => {
 
   return (
     <View style={styles.container}>
+      <Image source={getParentKey()} style={styles.rowImage} />
       <View style={styles.rowImageCont}>
+        {/* <DisplayCardsGrid
+          cardsArray={keys}
+          cardSize={{ cardHeight: cardHeight, cardWidth: cardWidth }}
+        /> */}
+
         {keys.map((x, idx) => {
           let selected = x.name === keys[rootIDX]?.name
           return (
