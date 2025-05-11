@@ -38,7 +38,7 @@ let globalQuestionTimeOutID
 
 const MainQuestionPage = ({
   theme,
-  secondaryColor,
+
   setShowOptions,
   setAnnotatedMode,
   setAnnotatedCard,
@@ -49,15 +49,14 @@ const MainQuestionPage = ({
   dimensions,
 }) => {
   //working but verbose name and refactor all below:
-
- function getScale(rootCard, scaleType, array) {
+  const { primaryColor, secondaryColor } = theme
+  function getScale(rootCard, scaleType, array) {
     let res = returnScaleCards(rootCard, scaleType)
     let makeScaleArr = res.map((x) => {
       return array[x]
     })
     setDisplayInputCardArray(makeScaleArr)
   }
-  
 
   function getAllModesWithSameRootNote(rootNote) {
     const modesIdx = generateModesSemiToneIncrements()
@@ -420,7 +419,16 @@ const MainQuestionPage = ({
       alignItems: 'center',
       margin: 3,
     },
-    chooseRandomText: { fontStyle: 'italic', fontSize: fontScale },
+    chooseRandomText: {
+      margin: 4,
+      padding: 4,
+      color: primaryColor,
+      fontSize: fontScale,
+      backgroundColor: '#FAFAFA',
+      borderRadius: 10,
+      borderColor: secondaryColor,
+      borderWidth: 3,
+    },
   })
 
   return (
@@ -600,11 +608,11 @@ const MainQuestionPage = ({
               cardWidth:
                 annotated || choosingKey
                   ? cardWidth * annotatedQCardsSizeChangeFactor
-                  : cardWidth,
+                  : cardWidth * 0.8,
               cardHeight:
                 annotated || choosingKey
                   ? cardHeight * annotatedQCardsSizeChangeFactor
-                  : cardHeight,
+                  : cardHeight * 0.8,
             }}
             annotated={annotated}
             setAnnotatedCard={setAnnotatedCard}
@@ -623,7 +631,7 @@ const MainQuestionPage = ({
             <Text style={styles.annotatedText}>
               Choose your key below ↓ or
               <Pressable onPress={() => setRandom()}>
-                <Text style={styles.chooseRandomText}>Select Random</Text>
+                <Text style={styles.chooseRandomText}> Magus Mode</Text>
               </Pressable>
             </Text>
           </View>

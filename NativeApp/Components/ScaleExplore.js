@@ -26,6 +26,7 @@ const ScaleExplore = () => {
   const [rootIDX, setRootIDX] = useState(0)
   const [modeIDX, setModeIDX] = useState(0)
   const [scale, setScale] = useState(initScale)
+  const [parentKey, setParentKey] = useState(keys[0])
 
   const cardHeight = 150
   const cardWidth = 100
@@ -68,17 +69,17 @@ const ScaleExplore = () => {
   function getNewCards() {
     let newNoteScale = returnScaleCards(keys[rootIDX], modesArray[modeIDX])
     setScale(newNoteScale)
+    let res = getParentKey()
+
+    setParentKey(res === undefined ? keys[rootIDX].imgSrc : res)
   }
 
   function getParentKey() {
     //TO DO RENAME THESE
-
     let res = scale.length - modeIDX
     let idx = scale[res]
-    console.log('p', keys[idx])
-    if (keys[idx]?.imgSrc != null) {
-      return keys[idx].imgSrc
-    }
+    console.log('r', res, idx)
+    return keys[idx]?.imgSrc
   }
 
   function intervalActulIDX() {
@@ -106,7 +107,7 @@ const ScaleExplore = () => {
 
   return (
     <View style={styles.container}>
-      <Image source={getParentKey()} style={styles.rowImage} />
+      <Image source={parentKey} style={styles.rowImage} />
       <View style={styles.rowImageCont}>
         {/* <DisplayCardsGrid
           cardsArray={keys}
