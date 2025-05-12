@@ -86,7 +86,7 @@ export default function App() {
           elevation: 5,
         }}
       >
-        {showOptions ? (
+        {/* {showOptions ? (
           <OptionsPage
             height={height}
             changeTheme={changeTheme}
@@ -120,10 +120,10 @@ export default function App() {
               />
             )}
           </>
-        )}
-        {/* <ExploreCards />
-        <TheoryCirlces /> 
-       <ScaleExplore /> */}
+        )} */}
+        {/*  <ExploreCards />
+        <TheoryCirlces /> */}
+        <ScaleExplore />
       </SafeAreaView>
     </>
   )

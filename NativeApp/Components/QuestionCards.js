@@ -30,13 +30,15 @@ const QuestionCards = ({
   fontScale,
 }) => {
   //local state so you don't see the answer card before animation
-  const [localAnswer, setLocalAnswer] = useState(null)
+  const [localAnswer, setLocalAnswer] = useState(answerCard)
   const { firstCard, secondCard, answerCard } = cards
+  //Probablyg et rid of this
   const answer = answerCard
   const flipAnswerCardAnimation = useSharedValue(0)
   const flipScoreCardAnimation = useSharedValue(0)
 
   useEffect(() => {
+    console.log('use qc')
     answerDisplay && isAnimated
       ? handleFlip(180, flipAnswerCardAnimation)
       : cardsToInit()
@@ -223,7 +225,7 @@ const QuestionCards = ({
             cardSize={cardSize}
             data={firstCard}
             source={firstCard.value.imgSrc}
-            onPress={droneSetter}
+            onPressPropFunction={droneSetter}
             annotated={annotated}
             setAnnotatedCard={setAnnotatedCard}
             animated={isAnimated}
@@ -242,8 +244,8 @@ const QuestionCards = ({
             data={secondCard}
             root={firstCard}
             source={secondCard?.value.imgSrc}
-            answer={answer}
-            onPress={answerCardOnPress}
+            answer={answerCard}
+            onPressPropFunction={answerCardOnPress}
             findAudioSourceFunction={findNoteFunction}
             annotated={annotated}
             setAnnotatedCard={setAnnotatedCard}
@@ -292,7 +294,7 @@ const QuestionCards = ({
                   cardSize={cardSize}
                   source={blankCard}
                   animationDelay={5}
-                  onPress={answerCardOnPress}
+                  onPressPropFunction={answerCardOnPress}
                   setAnnotatedCard={setAnnotatedCard}
                   animated={isAnimated}
                 />

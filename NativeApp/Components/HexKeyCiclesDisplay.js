@@ -10,9 +10,7 @@ function fillCricleBool(inpt, key) {
   )
 }
 
-const bgcolor = 'white'
-
-const HexKey = ({ musicKey }) => {
+const HexKey = ({ musicKey, bgColor }) => {
   return (
     <>
       <View style={styles.hexContainer}>
@@ -30,38 +28,42 @@ const HexKey = ({ musicKey }) => {
           {fillCricleBool(musicKey?.intervals[2])}
         </View>
       </View>
-      <Text>{`${getIntervalNo(musicKey.intervals, true)} Accidentals\n`}</Text>
+      {/* <Text>{`${getIntervalNo(musicKey.intervals, true)} Accidentals\n`}</Text> */}
     </>
   )
 }
-
-
+const circleSize = 30
 
 const styles = StyleSheet.create({
   hexContainer: {
     flexDirection: 'row',
     justifyContent: 'space-between',
+    flex: 1,
   },
   column: { padding: 0, alignItems: 'center' },
-  outColumn: { padding: 0, alignItems: 'center', marginVertical: 5 },
+  outColumn: {
+    padding: 0,
+    alignItems: 'center',
+    marginVertical: circleSize / 2,
+  },
   //going to need to change margin and probably other stuff as a variable to keep hex intact
   circleFull: {
-    width: 10,
-    height: 10,
+    width: circleSize,
+    height: circleSize,
     margin: 0,
     padding: 0,
-    borderRadius: 5, // Half of the width and height to make it a perfect circle
+    borderRadius: circleSize / 2, // Half of the width and height to make it a perfect circle
     backgroundColor: 'black',
   },
   circleOutline: {
-    width: 10,
-    height: 10,
+    width: circleSize,
+    height: circleSize,
     margin: 0,
     padding: 0,
     border: 'solid',
     borderColor: 'black',
-    borderRadius: 5, // Half of the width and height to make it a perfect circle
-    backgroundColor: 'white',
+    borderRadius: circleSize / 2, // Half of the width and height to make it a perfect circle
+    backgroundColor: 'purple', // TO DO PASS THIS AS A PROP POTENTIALLY TO FIT WITH BG COLOR
   },
 })
 

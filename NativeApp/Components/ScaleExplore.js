@@ -4,11 +4,13 @@ import CardButton from './CardButton'
 import {
   returnScaleCards,
   generateModesSemiToneIncrements,
+  getDataForAnnotated,
 } from '../functions/functions'
 import { keys } from '../data/KeyCards'
 import { intervals } from '../data/IntervalCards'
 import { noteNames } from '../data/NoteCards'
 import DisplayCardsGrid from './DisplayCardsGrid'
+import HexKey from './HexKeyCiclesDisplay'
 
 const modesArray = generateModesSemiToneIncrements()
 
@@ -27,37 +29,69 @@ const ScaleExplore = () => {
   const [modeIDX, setModeIDX] = useState(0)
   const [scale, setScale] = useState(initScale)
   const [parentKey, setParentKey] = useState(keys[0])
+  const [selectedRoot, setSelectedRoot] = useState(noteNames[1])
+  const [accidentals, setAccidentals] = useState('0')
 
   const cardHeight = 150
   const cardWidth = 100
 
   useEffect(() => {
+    // console.log('use', modeIDX, scale)
     getNewCards()
   }, [rootIDX, modeIDX])
 
   const styles = StyleSheet.create({
     container: {
       flex: 1,
+      flexDirection: 'row',
+      backgroundColor: 'purple',
+      justifyContent: 'space-around',
+    },
+    allScalesContainer: {
+      flexDirection: 'column',
+      alignItems: 'flex-start',
+      justifyContent: 'space-around',
+      backgroundColor: 'purple',
+    },
+    scalesAndParentKeyContainer: {
+      justifyContent: 'space-around',
+      flexDirection: 'row',
+    },
+    parentKeyCont: {
+      flexDirection: 'column',
+      height: '80%',
+      justifyContent: 'space-between',
+      alignItems: 'center',
+    },
+    scalesContainer: {
       justifyContent: 'center',
       alignItems: 'center',
       backgroundColor: 'purple',
     },
+    modeConts: {
+      backgroundColor: 'green',
+      width: cardWidth,
+      height: cardWidth / 2,
+      color: 'white',
+      borderRadius: 10,
+      alignItems: 'center',
+      justifyContent: 'center',
+    },
+    modeText: {
+      color: 'white',
+      fontSize: 20,
+    },
     rowImage: {
-      flex: 1,
       maxHeight: cardHeight,
       maxWidth: cardWidth,
       width: cardWidth,
       height: cardHeight,
     },
     rowImageCont: {
-      flex: 1,
-      borderColor: 'black',
-      borderWidth: 1,
-      width: cardWidth,
-      height: cardHeight,
-      width: '100%',
-      height: '100%',
+      margin: 5,
       flexDirection: 'row',
+      justifyContent: 'center',
+      flexWrap: 'wrap',
     },
     selectingImage: {
       width: 150,
@@ -67,19 +101,25 @@ const ScaleExplore = () => {
   })
 
   function getNewCards() {
-    let newNoteScale = returnScaleCards(keys[rootIDX], modesArray[modeIDX])
+    let newNoteScale = returnScaleCards(noteNames[rootIDX], modesArray[modeIDX])
     setScale(newNoteScale)
-    let res = getParentKey()
-
-    setParentKey(res === undefined ? keys[rootIDX].imgSrc : res)
+    setSelectedRoot(noteNames[rootIDX])
+    let res = getParentKey(newNoteScale)
+    let accidentals = getDataForAnnotated({ value: res })
+    setAccidentals(accidentals.bottomRText)
+    setParentKey(res === undefined ? keys[rootIDX] : res)
   }
 
-  function getParentKey() {
-    //TO DO RENAME THESE
-    let res = scale.length - modeIDX
-    let idx = scale[res]
-    console.log('r', res, idx)
-    return keys[idx]?.imgSrc
+  function sumUpToIdx(arr, idx) {
+    return arr.slice(0, idx).reduce((acc, val) => acc + val, 0)
+  }
+
+  function getParentKey(newNoteScale) {
+    let scale = modesArray[0]
+    let semitoneDistance = sumUpToIdx(scale, modeIDX)
+    let actualIdx =
+      (((rootIDX - semitoneDistance) % keys.length) + keys.length) % keys.length
+    return keys[actualIdx]
   }
 
   function intervalActulIDX() {
@@ -92,7 +132,6 @@ const ScaleExplore = () => {
         />
         {modesArray[modeIDX].map((x) => {
           accumulator = accumulator + x
-
           return (
             <Image
               key={`interval-${accumulator}`}
@@ -107,68 +146,79 @@ const ScaleExplore = () => {
 
   return (
     <View style={styles.container}>
-      <Image source={parentKey} style={styles.rowImage} />
-      <View style={styles.rowImageCont}>
-        {/* <DisplayCardsGrid
+      <View style={styles.allScalesContainer}>
+        <Text style={styles.modeText}>Select Root Note:</Text>
+        <View style={[styles.rowImageCont, { width: '50%', height: '40%' }]}>
+          {/* <DisplayCardsGrid
           cardsArray={keys}
           cardSize={{ cardHeight: cardHeight, cardWidth: cardWidth }}
         /> */}
+          {keys.map((x, idx) => {
+            let selected = x.name === keys[rootIDX]?.name
+            return (
+              <Pressable onPress={() => setRootIDX(idx)}>
+                <Image
+                  source={x?.imgSrc}
+                  style={[
+                    styles.rowImage,
+                    selected && {
+                      borderColor: 'green',
+                      borderWidth: 3,
+                    },
+                  ]}
+                />
+              </Pressable>
+            )
+          })}
+        </View>
 
-        {keys.map((x, idx) => {
-          let selected = x.name === keys[rootIDX]?.name
-          return (
-            <Pressable onPress={() => setRootIDX(idx)}>
-              <Image
-                source={x?.imgSrc}
-                style={[
-                  styles.rowImage,
-                  selected && {
-                    borderColor: 'green',
-                    borderWidth: 3,
-                  },
-                ]}
-              />
-            </Pressable>
-          )
-        })}
+        <View style={styles.scalesAndParentKeyContainer}>
+          <View style={styles.scalesContainer}>
+            <View style={styles.rowImageCont}>
+              {modeNames.map((x, idx) => {
+                let selected = idx === modeIDX
+                return (
+                  <Pressable
+                    style={[
+                      styles.modeConts,
+                      selected && {
+                        backgroundColor: 'purple',
+                        borderRadius: 10,
+                        borderColor: 'white',
+                        borderWidth: 2,
+                      },
+                    ]}
+                    onPress={() => setModeIDX(idx)}
+                  >
+                    <Text style={styles.modeText}>{x}</Text>
+                  </Pressable>
+                )
+              })}
+            </View>
+            <View style={styles.rowImageCont}>
+              {scale.map((x) => {
+                return (
+                  <Image source={noteNames[x].imgSrc} style={styles.rowImage} />
+                )
+              })}
+            </View>
+            {intervalActulIDX()}
+          </View>
+        </View>
       </View>
-      <View
-        style={{
-          alignItems: 'flex-start',
-          flexDirection: 'row',
-          width: '100%',
-        }}
-      >
-        {modeNames.map((x, idx) => {
-          let selected = idx === modeIDX
-          return (
-            <Pressable
-              style={{ width: cardWidth }}
-              onPress={() => setModeIDX(idx)}
-            >
-              <Text
-                style={[
-                  { color: 'white' },
-                  selected && {
-                    borderColor: 'white',
-                    borderWidth: 3,
-                  },
-                ]}
-              >
-                {x}
-              </Text>
-            </Pressable>
-          )
-        })}
+      <View style={styles.parentKeyCont}>
+        <Text style={styles.modeText}>Root Note </Text>
+        <Image source={selectedRoot.imgSrc} style={styles.rowImage} />
+        <Text style={styles.modeText}>Parent Key </Text>
+        <Image source={parentKey.imgSrc} style={styles.rowImage} />
+        <Text style={styles.modeText}>
+          {parentKey.name} scale starting from degree {modeIDX + 1} {'\n'}
+          {accidentals}
+        </Text>
+        <View>
+          <HexKey musicKey={parentKey} bgColor={'purple'} />
+        </View>
       </View>
-      {/* <Pressable onPress={()=>}>rooe</Pressable> */}
-
-      <View style={styles.rowImageCont}>
-        {scale.map((x) => {
-          return <Image source={noteNames[x].imgSrc} style={styles.rowImage} />
-        })}
-      </View>
-      {intervalActulIDX()}
     </View>
   )
 }

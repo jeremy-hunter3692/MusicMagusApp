@@ -16,13 +16,14 @@ const DisplayCardsGrid = ({
   reDeal,
   isAnimated,
 }) => {
+  
   function setAnswer(inpt) {
     // console.log('displayCards', inpt)
     //input as card with im src
     // console.log('set inpt', inpt)
     //find the note based off the interval
-    // let source = findNote(inpt.name, noteAudioSrc)
-    // let res = source ? cardOnPress(source) : cardOnPress(inpt)
+    let source = findNote(inpt.name, noteAudioSrc)
+    let res = source ? cardOnPress(source) : cardOnPress(inpt)
     userAnswerSetter(inpt)
     return null
   }
@@ -40,7 +41,7 @@ const DisplayCardsGrid = ({
           return (
             <CardButton
               cardSize={cardSize}
-              onPress={setAnswer}
+              onPressPropFunction={setAnswer}
               data={x}
               source={x.imgSrc}
               key={x.name}
@@ -59,7 +60,7 @@ const DisplayCardsGrid = ({
           return (
             <CardButton
               cardSize={cardSize}
-              onPress={setAnswer}
+              onPressPropFunction={setAnswer}
               data={x}
               source={x.imgSrc}
               key={x.name}
@@ -101,7 +102,6 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   imgContBottomBorder: {
-
     borderColor: 'red',
     borderWidth: 2,
     backgroundColor: 'yellow',

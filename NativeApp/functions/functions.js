@@ -29,13 +29,12 @@ export function findNoteEquivalent(inpt, array) {
   return result[0]
 }
 
-//SORT THIS 132FUCKING TEST OUT TO DO
 export function getAltOctaveNotes(note, root, testArray = noteAudioSrc) {
+  // console.log('get alt', note, root)
   let result
   //WE ARE PASSING A NOTE HERE INSTEAD OF IDX
   let noteWithIdx = getIdxAndNotes(note, testArray)
-  // let altSource //= note.distanceToRoot * (note.up ? -1 : 1)
-  // altSource = altSource > 11 ? altSource - 11 : altSourc
+
   if (note.name === root.value.name) {
     result = noteWithIdx.note.audioSrc['2']
   } else {
@@ -57,14 +56,12 @@ export function returnRandomCard(array, omitRoot = false) {
 }
 
 export function getIdxAndNotes(note, array = noteAudioSrc) {
-  // console.log('note:', note)
   let getIdxArr = array.map((x, idx) => {
     if (x.name === note.name) {
       return [x, idx]
     }
   })
   let res = getIdxArr.filter((x) => x != undefined)
-
   let resFixed = {
     idx: res[0][1],
     note: res[0][0],
@@ -263,6 +260,7 @@ export function generateModesSemiToneIncrements(
 }
 
 export function returnScaleCards(keyCard, scaleType) {
+  // console.log('ret')
   const { idx } = getIdxAndNotes(keyCard)
   let accumulator = 0 + idx
   let answerIdxsArray = scaleType.map((x) => {

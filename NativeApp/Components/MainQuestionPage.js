@@ -50,6 +50,7 @@ const MainQuestionPage = ({
 }) => {
   //working but verbose name and refactor all below:
   const { primaryColor, secondaryColor } = theme
+
   function getScale(rootCard, scaleType, array) {
     let res = returnScaleCards(rootCard, scaleType)
     let makeScaleArr = res.map((x) => {
@@ -81,14 +82,14 @@ const MainQuestionPage = ({
     return modesOfGivenKEy
   }
 
-  let idxs = getAllModesOfAKey(keys[11])
-  // console.log(idxs)
-  idxs.forEach((x) => {
-    // console.log(x)
-    x.forEach((y) => {
-      // console.log(keys[y].name)
-    })
-  })
+  // let idxs = getAllModesOfAKey(keys[11])
+  // // console.log(idxs)
+  // idxs.forEach((x) => {
+  //   // console.log(x)
+  //   x.forEach((y) => {
+  //     // console.log(keys[y].name)
+  //   })
+  // })
 
   ///////////////
   //questionType will refer to what the first card is
@@ -139,21 +140,31 @@ const MainQuestionPage = ({
     let tempPrevCard = questionCards.secondCard
     let count = 0
     let questionCardsReturnObj
-
-    do {
-      count++
+    //TO DO CHECK OVER THIS
+    if (tempPrevCard != null) {
+      do {
+        count++
+        questionCardsReturnObj = isRandomAllQuestionTypes
+          ? randomiseQuestion()
+          : cardReducer(questionType, !abBool, randomiseKey, firstCardStart)
+      } while (
+        tempPrevCard &&
+        tempPrevCard.value.name ===
+          questionCardsReturnObj.secondCardFromReducer.value.name &&
+        count < 10
+      )
+      if (count > 10) {
+        console.log('do loop going too long')
+      }
+    } else {
       questionCardsReturnObj = isRandomAllQuestionTypes
         ? randomiseQuestion()
         : cardReducer(questionType, !abBool, randomiseKey, firstCardStart)
-    } while (
-      (tempPrevCard != undefined &&
-        tempPrevCard.value.name ===
-          questionCardsReturnObj.secondCardFromReducer.value.name) ||
-      count > 10
-    )
+    }
 
     const { firstCardFromReducer, secondCardFromReducer, array, answerIdx } =
       questionCardsReturnObj
+
     setUserAnswer(null)
     getAndSetDroneAudioSource(firstCardFromReducer.value)
     setDisplayInputCardArray(array)
@@ -208,19 +219,26 @@ const MainQuestionPage = ({
     return cardReducer(questionType, abBool)
   }
 
-  function getAudioSrcIdxFromCardReducer(cardAny) {
-    return
+  function getAudioSrcIdxFromCardReducer(cardWithValueIn) {
+    //Make no value in source here
     //TO DO check these names and uses/RENAME them better
     if (choosingKey) {
-      // console.log(choosingKey, 'getAudioSrcIdxFromCardReducer', cardAny)
       return
     }
-    // console.log('getAudioSrcIdxFromCardReducer CONTINUED', choosingKey)
-    let audioSrcIdx =
-      questionType === 'Key'
-        ? getAudioSrcInterval(cardAny)
-        : findNoteEquivalent(cardAny, noteAudioSrc)
-    audioSrcIdx = getAltOctaveNotes(audioSrcIdx, firstCard)
+    cardAny.value
+      ? console.log(' in audiSrcReducer has value maybe shouldnt')
+      : console.log(' in AudioSRc has not .value')
+
+    let audioSrcIdx = cardAny.value.distanceToRoot
+      ? getAudioSrcInterval(cardWithValueIn.value)
+      : findNoteEquivalent(cardWithValueIn.value, noteAudioSrc)
+    // old version:
+    // let audioSrcIdx =
+    //   questionType === 'Key'
+    //     ? findNoteEquivalent(cardAny, noteAudioSrc)
+    //     : getAudioSrcInterval(cardAny)
+    // console.log(audioSrcIdx, 'end ifgetASRC', questionCards.firstCard)
+    audioSrcIdx = getAltOctaveNotes(audioSrcIdx, questionCards.firstCard)
     return audioSrcIdx
   }
 
@@ -234,21 +252,21 @@ const MainQuestionPage = ({
   }
 
   function answerCardOnPress() {
-    let answer = getAudioSrcIdxFromCardReducer(questionCards.correctAnswer)
+    // console.log('answer', questionCards.answerCard)
+
+    let answer = getAudioSrcIdxFromCardReducer(questionCards.answerCard)
+    // console.log('answ', answer)
     return answer
   }
 
   //TO DO Think this isn't needed?
-  function droneReload() {
-    console.log('make this funciton/check if I actually need it')
-  }
+  function droneReload() {}
 
   function questionCardPress(inpt) {
     // console.log('questionCardPress', inpt, annotatedDisplayGridSizeChangeFactor)
     if (choosingKey) {
       initCardSizeChanges()
       setDisplayInputCardArray((x) => [...intervals])
-      console.log(displayInputCardArray)
       setChoosingKey((x) => false)
     } else {
       setChoosingKey(true)
@@ -260,7 +278,6 @@ const MainQuestionPage = ({
   }
 
   function userInputCardPress(inpt) {
-    console.log('choosingKey)')
     if (!choosingKey) {
       userAnswerSetter(inpt)
       return
@@ -328,13 +345,13 @@ const MainQuestionPage = ({
   }
 
   function reload(newFirstCard = questionCards.firstCard) {
-    console.log('reload', newFirstCard)
+    // console.log('reload', newFirstCard)
     setResultDisplay(false)
     loadNewQuestionCards(isRandomisedKey, newFirstCard)
   }
 
   function nextQuestionReloadTimeOut(fastReload = false) {
-    console.log('should reload')
+    // console.log('should reload')
     questionNumber++
     let delaySpeed = fastReload ? 200 : newAnswerDelay
     setDroneAudioSrc(null)
@@ -603,7 +620,7 @@ const MainQuestionPage = ({
             cards={questionCards}
             rootCardPress={questionCardPress}
             answerDisplay={resultDisplay}
-            answerCardOnPress={answerCardOnPress}
+            answerCardOnPress={getAudioSrcIdxFromCardReducer}
             cardSize={{
               cardWidth:
                 annotated || choosingKey
@@ -636,7 +653,7 @@ const MainQuestionPage = ({
             </Text>
           </View>
         )}
-        {displayInputCardArray && (
+        {/* {displayInputCardArray && (
           <DisplayCardsGrid
             cardSize={{
               cardWidth:
@@ -651,11 +668,11 @@ const MainQuestionPage = ({
             stylesBool={false}
             cardsArray={displayInputCardArray}
             userAnswerSetter={userInputCardPress}
-            findNoteFunction={getAudioSrcIdxFromCardReducer}
+            // findNoteFunction={getAudioSrcIdxFromCardReducer}
             reDeal={questionCards?.firstCard}
             isAnimated={isAnimated}
           />
-        )}
+        )} */}
         {annotated && (
           <View style={styles.choosingKeyText}>
             <Text style={styles.annotatedText}>

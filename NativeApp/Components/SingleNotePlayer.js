@@ -2,11 +2,11 @@
 import React, { useState, useEffect, useRef } from 'react'
 import { Audio } from 'expo-av'
 
-const PlaySound = ({ inpt, playBool }) => {
-  const [note, setNote] = useState(inpt)
+const SingleNotePlayer = ({ audioSrc, shouldPlayBool }) => {
+  //this will/should recieve an audioSrc source not a card or anything that needs destructuring
+  const [note, setNote] = useState()
   const isPlayingRef = useRef(false)
-
-  // console.log('note player', inpt, playBool, note)
+  console.log(shouldPlayBool, audioSrc)
   useEffect(() => {
     return note
       ? () => {
@@ -17,30 +17,24 @@ const PlaySound = ({ inpt, playBool }) => {
 
   useEffect(() => {
     playNote()
-  }, [playBool, inpt])
+  }, [shouldPlayBool, audioSrc])
 
   const playNote = async () => {
-    // console.log('play note', note)
-    if (!inpt || isPlayingRef.current) return
-
+    if (!audioSrc || isPlayingRef.current) return
     isPlayingRef.current = true
-
-    // If there's already a sound playing, unload it first
+    // If thre's already a sound playing, unload it first
     if (note) {
       await note.unloadAsync()
       setNote(null)
     }
-
     const initialStatus = {
       volume: 0.5,
       isLooping: false,
     }
-
     try {
-      const { sound } = await Audio.Sound.createAsync(inpt, initialStatus)
+      const { sound } = await Audio.Sound.createAsync(audioSrc, initialStatus)
       setNote(sound)
       await sound.playAsync()
-
       sound.setOnPlaybackStatusUpdate(async (status) => {
         if (status.didJustFinish) {
           await sound.unloadAsync()
@@ -57,46 +51,4 @@ const PlaySound = ({ inpt, playBool }) => {
   return null
 }
 
-export default PlaySound
-
-//////////Original version creates click on note restart- could be fixed with a fade out before unload?
-// import React, { useState, useEffect } from 'react'
-// import { Audio } from 'expo-av'
-// const fadeOutSpeed = 1000
-// const globalvolume = 0.6
-// const bassDroneVolume = 0.4
-
-// const PlaySound = ({ inpt, playBool }) => {
-//   const [note, setNote] = useState(null)
-//   console.log('reloaded', inpt, note)
-//   useEffect(() => {
-//     return note
-//       ? () => {
-//           note.unloadAsync()
-//         }
-//       : undefined
-//   }, [note])
-
-//   useEffect(() => {
-//     playNote(inpt)
-//   }, [playBool, inpt])
-
-//   const playNote = async (inpt) => {
-//     if (!inpt) return
-//     const initalStatus = {
-//       volume: 0.5,
-//       isLooping: false,
-//     }
-//     const { sound } = await Audio.Sound.createAsync(inpt, initalStatus)
-//     setNote(sound)
-//     await sound.playAsync()
-//     sound.setOnPlaybackStatusUpdate(async (status) => {
-//       if (status.didJustFinish) {
-//         await sound.unloadAsync()
-//         setNote(null) // Clear the note from state after unloading
-//       }
-//     })
-//   }
-// }
-
-// export default PlaySound
+export default SingleNotePlayer
