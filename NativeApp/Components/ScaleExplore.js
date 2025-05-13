@@ -45,9 +45,12 @@ const ScaleExplore = () => {
       flex: 1,
       flexDirection: 'row',
       backgroundColor: 'purple',
-      justifyContent: 'space-around',
+      justifyContent: 'flex-start',
     },
     allScalesContainer: {
+      // borderColor: 'white',
+      // borderWidth: 2,
+      width: '55%',
       flexDirection: 'column',
       alignItems: 'flex-start',
       justifyContent: 'space-around',
@@ -58,10 +61,12 @@ const ScaleExplore = () => {
       flexDirection: 'row',
     },
     parentKeyCont: {
+      // borderColor: 'white',
+      // borderWidth: 2,
       flexDirection: 'column',
       height: '80%',
       justifyContent: 'space-between',
-      alignItems: 'center',
+      alignItems: 'flex-end',
     },
     scalesContainer: {
       justifyContent: 'center',
@@ -148,7 +153,7 @@ const ScaleExplore = () => {
     <View style={styles.container}>
       <View style={styles.allScalesContainer}>
         <Text style={styles.modeText}>Select Root Note:</Text>
-        <View style={[styles.rowImageCont, { width: '50%', height: '40%' }]}>
+        <View style={[styles.rowImageCont, { width: '80%', height: '40%' }]}>
           {/* <DisplayCardsGrid
           cardsArray={keys}
           cardSize={{ cardHeight: cardHeight, cardWidth: cardWidth }}
