@@ -4,9 +4,10 @@ import { Audio } from 'expo-av'
 
 const SingleNotePlayer = ({ audioSrc, shouldPlayBool }) => {
   //this will/should recieve an audioSrc source not a card or anything that needs destructuring
+  // console.log('player', { audioSrc, shouldPlayBool })
   const [note, setNote] = useState()
   const isPlayingRef = useRef(false)
-  console.log(shouldPlayBool, audioSrc)
+
   useEffect(() => {
     return note
       ? () => {

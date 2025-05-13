@@ -16,6 +16,7 @@ import {
   SafeAreaView,
 } from 'react-native'
 import { keys, getIntervalNo } from './data/KeyCards'
+import DoxaSketch from './Components/DoxaSketch.js'
 
 const themeInit = { primaryColor: 'purple', secondaryColor: '#19af59' }
 const secondaryTheme = { primaryColor: 'black', secondaryColor: 'purple' }
@@ -38,7 +39,16 @@ export default function App() {
   // function appLevel(inpt) {
   //   console.log('TODO-App level', inpt)
   // }
-
+  const randomMagusMode = {
+    margin: 4,
+    padding: 4,
+    color:  theme.primaryColor,
+    fontSize: 10,
+    backgroundColor: '#FAFAFA',
+    borderRadius: 10,
+    borderColor: theme.secondaryColor,
+    borderWidth: 3,
+  }
   function handleAnnotatedClick(inpt) {
     console.log('anntated', inpt)
     annotatedCard ? setAnnotatedCard(null) : setAnnotatedCard(inpt)
@@ -86,7 +96,7 @@ export default function App() {
           elevation: 5,
         }}
       >
-        {/* {showOptions ? (
+        {showOptions ? (
           <OptionsPage
             height={height}
             changeTheme={changeTheme}
@@ -95,6 +105,7 @@ export default function App() {
             isAnimated={animationsOn}
             setShowOptions={showOptionsSetter}
             theme={theme}
+            buttonTheme={randomMagusMode}
           />
         ) : (
           <>
@@ -117,13 +128,14 @@ export default function App() {
                 setAnnotatedCard={handleAnnotatedClick}
                 setAnnotatedMode={setAnnotatedMode}
                 dimensions={{ width, height }}
+                randomMagusMode={randomMagusMode}
               />
             )}
           </>
-        )} */}
+        )}
         {/*  <ExploreCards />
-        <TheoryCirlces /> */}
-        <ScaleExplore />
+        <TheoryCirlces /> 
+        <ScaleExplore />*/}
       </SafeAreaView>
     </>
   )

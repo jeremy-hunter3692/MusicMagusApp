@@ -38,7 +38,6 @@ let globalQuestionTimeOutID
 
 const MainQuestionPage = ({
   theme,
-
   setShowOptions,
   setAnnotatedMode,
   setAnnotatedCard,
@@ -47,6 +46,7 @@ const MainQuestionPage = ({
   isRandomAllQuestionTypes,
   isAnimated,
   dimensions,
+  randomMagusMode,
 }) => {
   //working but verbose name and refactor all below:
   const { primaryColor, secondaryColor } = theme
@@ -220,16 +220,18 @@ const MainQuestionPage = ({
   }
 
   function getAudioSrcIdxFromCardReducer(cardWithValueIn) {
-    //Make no value in source here
     //TO DO check these names and uses/RENAME them better
+    cardWithValueIn = !cardWithValueIn.value
+      ? { value: cardWithValueIn }
+      : cardWithValueIn
     if (choosingKey) {
       return
     }
-    cardAny.value
+    cardWithValueIn.value
       ? console.log(' in audiSrcReducer has value maybe shouldnt')
       : console.log(' in AudioSRc has not .value')
 
-    let audioSrcIdx = cardAny.value.distanceToRoot
+    let audioSrcIdx = cardWithValueIn.value.distanceToRoot
       ? getAudioSrcInterval(cardWithValueIn.value)
       : findNoteEquivalent(cardWithValueIn.value, noteAudioSrc)
     // old version:
@@ -249,14 +251,6 @@ const MainQuestionPage = ({
       questionCards.firstCard
     )
     return audioSrc
-  }
-
-  function answerCardOnPress() {
-    // console.log('answer', questionCards.answerCard)
-
-    let answer = getAudioSrcIdxFromCardReducer(questionCards.answerCard)
-    // console.log('answ', answer)
-    return answer
   }
 
   //TO DO Think this isn't needed?
@@ -307,9 +301,7 @@ const MainQuestionPage = ({
         }
         return updatedArr
       })
-
       attemptCount = incrementAttemptCount ? ++attemptCount : 0
-
       globalQuestionTimeOutID =
         shouldReload && questionNumber < 12
           ? nextQuestionReloadTimeOut(false)
@@ -345,13 +337,11 @@ const MainQuestionPage = ({
   }
 
   function reload(newFirstCard = questionCards.firstCard) {
-    // console.log('reload', newFirstCard)
     setResultDisplay(false)
     loadNewQuestionCards(isRandomisedKey, newFirstCard)
   }
 
   function nextQuestionReloadTimeOut(fastReload = false) {
-    // console.log('should reload')
     questionNumber++
     let delaySpeed = fastReload ? 200 : newAnswerDelay
     setDroneAudioSrc(null)
@@ -369,8 +359,8 @@ const MainQuestionPage = ({
     attemptCount = 0
     questionNumber = 0
     inpt = isRandomisedKey ? returnRandomCard(keys) : inpt
-    isReloading = false
     reload(inpt)
+    isReloading = false
     setScoreSircle(scoreCirclesInit)
     setScoreCardDisplay(0)
   }
@@ -436,16 +426,7 @@ const MainQuestionPage = ({
       alignItems: 'center',
       margin: 3,
     },
-    chooseRandomText: {
-      margin: 4,
-      padding: 4,
-      color: primaryColor,
-      fontSize: fontScale,
-      backgroundColor: '#FAFAFA',
-      borderRadius: 10,
-      borderColor: secondaryColor,
-      borderWidth: 3,
-    },
+    chooseRandomText: randomMagusMode,
   })
 
   return (
@@ -625,11 +606,11 @@ const MainQuestionPage = ({
               cardWidth:
                 annotated || choosingKey
                   ? cardWidth * annotatedQCardsSizeChangeFactor
-                  : cardWidth * 0.8,
+                  : cardWidth,
               cardHeight:
                 annotated || choosingKey
                   ? cardHeight * annotatedQCardsSizeChangeFactor
-                  : cardHeight * 0.8,
+                  : cardHeight,
             }}
             annotated={annotated}
             setAnnotatedCard={setAnnotatedCard}
@@ -653,7 +634,7 @@ const MainQuestionPage = ({
             </Text>
           </View>
         )}
-        {/* {displayInputCardArray && (
+        {displayInputCardArray && (
           <DisplayCardsGrid
             cardSize={{
               cardWidth:
@@ -668,11 +649,11 @@ const MainQuestionPage = ({
             stylesBool={false}
             cardsArray={displayInputCardArray}
             userAnswerSetter={userInputCardPress}
-            // findNoteFunction={getAudioSrcIdxFromCardReducer}
+            findNoteFunction={getAudioSrcIdxFromCardReducer}
             reDeal={questionCards?.firstCard}
             isAnimated={isAnimated}
           />
-        )} */}
+        )}
         {annotated && (
           <View style={styles.choosingKeyText}>
             <Text style={styles.annotatedText}>

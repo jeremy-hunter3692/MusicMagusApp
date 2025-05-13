@@ -16,7 +16,6 @@ const CardButton = ({
   reDeal,
   autoPlay,
   answer,
-  findAudioSourceFunction,
   cardSize,
   annotated,
   setAnnotatedCard,
@@ -35,40 +34,30 @@ const CardButton = ({
     if (annotated) {
       return
     }
-
     cardSizeScale.value = withSpring(initCardSizeValue)
+
     setTimeout(() => {
       dealAnimationTrigger(animationDelay)
     }, initDealDelay)
+
     hasPlayed = false
+
     let timeOutId = setTimeout(() => {
+      console.log('timeout')
       autoPlay && !hasPlayed && answer ? handlePressIn(data) : ''
     }, 1000)
     return () => clearTimeout(timeOutId)
   }, [answer, source, reDeal])
 
   function handlePressIn(inpt) {
-    //this must be with {value }
-    console.log('card button top', inpt)
-
+    //??????this must be with {value }
     if (annotated) {
       setAnnotatedCard(inpt)
-    } else {
-      // check this for fixing sound first
-      autoPlay === true ? handleAutoPlay(inpt) : handlePressInAnimation()
     }
-    // let res = findAudioSourceFunction ? findAudioSourceFunction(inpt) : null
-    console.log('b4 onpress', inpt)
-    onPressPropFunction(inpt)
-
-    // res ? setNote(res) : ''
+    let audioSrc = onPressPropFunction(inpt)
+    setNoteAudioSrc(audioSrc)
     noteAudioSrc ? setPlayBool((bool) => !bool) : null
-
     hasPlayed = true
-  }
-
-  function handleAutoPlay(inpt) {
-    setNoteAudioSrc(inpt.value.audioSrc)
   }
 
   function dealAnimationTrigger(cardDelayOrder) {
@@ -120,7 +109,7 @@ const CardButton = ({
 
   return (
     <>
-      <SingleNotePlayer audioSrc={noteAudioSrc} playBool={playBool} />
+      <SingleNotePlayer audioSrc={noteAudioSrc} shouldPlayBool={playBool} />
       <Pressable
         testID={data?.name}
         onPressIn={() => {

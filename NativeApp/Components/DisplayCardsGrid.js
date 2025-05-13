@@ -16,16 +16,10 @@ const DisplayCardsGrid = ({
   reDeal,
   isAnimated,
 }) => {
-  
   function setAnswer(inpt) {
-    // console.log('displayCards', inpt)
-    //input as card with im src
-    // console.log('set inpt', inpt)
-    //find the note based off the interval
-    let source = findNote(inpt.name, noteAudioSrc)
-    let res = source ? cardOnPress(source) : cardOnPress(inpt)
+    let audioSrc = findNoteFunction(inpt)
     userAnswerSetter(inpt)
-    return null
+    return audioSrc
   }
   const dealAnimationDelay = 5
   const firstHalfArray = cardsArray.slice(0, cardsArray.length / 2)

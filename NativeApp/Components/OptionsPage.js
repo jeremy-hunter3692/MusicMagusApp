@@ -14,6 +14,7 @@ const OptionsPage = ({
   isAnimated,
   setAnimations,
   setShowOptions,
+  buttonTheme,
 }) => {
   const [droneOnButton, setDroneOnButton] = useState(true)
   const [droneSound, setDroneSound] = useState(true)
@@ -35,15 +36,17 @@ const OptionsPage = ({
       margin: 10,
       width: '%100',
     },
-    options: {
-      backgroundColor: 'white',
-      borderColor: theme.primaryColor,
-      borderWidth: 5,
-      alignItems: 'center',
-      flexDirection: 'row',
-      padding: 5,
-      margin: 3,
-    },
+    options: buttonTheme,
+
+    // {
+    //   backgroundColor: 'white',
+    //   borderColor: theme.primaryColor,
+    //   borderWidth: 5,
+    //   alignItems: 'center',
+    //   flexDirection: 'row',
+    //   padding: 5,
+    //   margin: 3,
+    // },
     droneOn: {
       backgroundColor: 'white',
       flexDirection: 'row',
@@ -68,7 +71,6 @@ const OptionsPage = ({
     },
     backTextCont: {
       alignSelf: 'flex-end',
-
       color: theme.secondaryColor,
       fontWeight: 'bold',
       margin: 4,
