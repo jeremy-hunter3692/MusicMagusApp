@@ -25,6 +25,7 @@ import { intervals } from '../data/IntervalCards.js'
 const newAnswerDelay = 1500
 const groupedNavMargin = 0
 const scoreCirclesInit = Array(12).fill(null)
+const qCardsAlterationFactor = 0.8
 let isRandomisedKey = false
 let annotatedDisplayGridSizeChangeFactor = 0.5
 let annotatedQCardsSizeChangeFactor = 1.2
@@ -112,7 +113,7 @@ const MainQuestionPage = ({
   const [fontScale, setFontScale] = useState(height / 50)
   const [resultDisplay, setResultDisplay] = useState(false)
   //Might not need, props should re load the children correctly...?
-  const [dronePlaying, setDronePlaying] = useState(false)
+  const [dronePlaying, setDronePlaying] = useState(true)
   ///
   const scoreCirclesSize = height / 20
   const cardWidth = width > height ? width * 0.1 : width * 0.14
@@ -606,11 +607,11 @@ const MainQuestionPage = ({
               cardWidth:
                 annotated || choosingKey
                   ? cardWidth * annotatedQCardsSizeChangeFactor
-                  : cardWidth,
+                  : cardWidth * qCardsAlterationFactor,
               cardHeight:
                 annotated || choosingKey
                   ? cardHeight * annotatedQCardsSizeChangeFactor
-                  : cardHeight,
+                  : cardHeight * qCardsAlterationFactor,
             }}
             annotated={annotated}
             setAnnotatedCard={setAnnotatedCard}
