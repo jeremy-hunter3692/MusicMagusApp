@@ -25,6 +25,7 @@ import { intervals } from '../data/IntervalCards.js'
 const newAnswerDelay = 1500
 const groupedNavMargin = 0
 const scoreCirclesInit = Array(12).fill(null)
+let scoreCirclesStorage
 let isRandomisedKey = false
 let annotatedDisplayGridSizeChangeFactor = 0.5
 let annotatedQCardsSizeChangeFactor = 1.2
@@ -121,9 +122,14 @@ const MainQuestionPage = ({
   useEffect(() => {
     // let questionCard = returnRandomCard(keys)
     // setFirstCard(questionCard)
+    scoreCirclesStorage
+      ? setScoreSircle(scoreCirclesStorage)
+      : setScoreSircle(scoreCirclesInit)
     loadNewQuestionCards(false, keys[0])
     // getScale(keys[11])
-    return () => {}
+    return () => {
+  
+    }
   }, [questionType, isRandomAllQuestionTypes])
 
   function loadNewQuestionCards(randomiseKey, firstCardStart) {
@@ -299,8 +305,10 @@ const MainQuestionPage = ({
         if (whichCircle !== null) {
           updatedArr[questionNumber - 1] = whichCircle
         }
+        scoreCirclesStorage = updatedArr
         return updatedArr
       })
+      console.log('store', scoreCirclesStorage)
       attemptCount = incrementAttemptCount ? ++attemptCount : 0
       globalQuestionTimeOutID =
         shouldReload && questionNumber < 12

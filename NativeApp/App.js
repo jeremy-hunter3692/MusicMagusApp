@@ -42,7 +42,7 @@ export default function App() {
   const randomMagusMode = {
     margin: 4,
     padding: 4,
-    color:  theme.primaryColor,
+    color: theme.primaryColor,
     fontSize: 10,
     backgroundColor: '#FAFAFA',
     borderRadius: 10,

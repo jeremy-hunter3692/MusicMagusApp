@@ -43,7 +43,6 @@ const CardButton = ({
     hasPlayed = false
 
     let timeOutId = setTimeout(() => {
-      console.log('timeout')
       autoPlay && !hasPlayed && answer ? handlePressIn(data) : ''
     }, 1000)
     return () => clearTimeout(timeOutId)

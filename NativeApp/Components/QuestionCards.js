@@ -38,7 +38,6 @@ const QuestionCards = ({
   const flipScoreCardAnimation = useSharedValue(0)
 
   useEffect(() => {
-    console.log('use qc')
     answerDisplay && isAnimated
       ? handleFlip(180, flipAnswerCardAnimation)
       : cardsToInit()
