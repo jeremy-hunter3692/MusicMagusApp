@@ -29,7 +29,7 @@ const ScaleExplore = () => {
   const [modeIDX, setModeIDX] = useState(0)
   const [scale, setScale] = useState(initScale)
   const [parentKey, setParentKey] = useState(keys[0])
-  const [selectedRoot, setSelectedRoot] = useState(noteNames[1])
+  const [selectedRoot, setSelectedRoot] = useState(noteNames[0])
   const [accidentals, setAccidentals] = useState('0')
 
   const cardHeight = 150
@@ -119,7 +119,7 @@ const ScaleExplore = () => {
     return arr.slice(0, idx).reduce((acc, val) => acc + val, 0)
   }
 
-  function getParentKey(newNoteScale) {
+  function getParentKey() {
     let scale = modesArray[0]
     let semitoneDistance = sumUpToIdx(scale, modeIDX)
     let actualIdx =

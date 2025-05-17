@@ -49,49 +49,7 @@ const MainQuestionPage = ({
   dimensions,
   randomMagusMode,
 }) => {
-  //working but verbose name and refactor all below:
   const { primaryColor, secondaryColor } = theme
-
-  function getScale(rootCard, scaleType, array) {
-    let res = returnScaleCards(rootCard, scaleType)
-    let makeScaleArr = res.map((x) => {
-      return array[x]
-    })
-    setDisplayInputCardArray(makeScaleArr)
-  }
-
-  function getAllModesWithSameRootNote(rootNote) {
-    const modesIdx = generateModesSemiToneIncrements()
-    modesIdx.forEach((x) => {
-      let ret = returnScaleCards(rootNote, x)
-      ret.forEach((y) => {
-        return keys[y].name
-      })
-    })
-  }
-
-  function getAllModesOfAKey(key) {
-    const modesIdx = generateModesSemiToneIncrements()
-    let thing = returnScaleCards(key, modesIdx[0])
-    let modesOfGivenKEy = thing.map((x, idx) => {
-      if (idx === 0) {
-        return thing
-      } else {
-        return returnScaleCards(keys[x], modesIdx[idx])
-      }
-    })
-    return modesOfGivenKEy
-  }
-
-  // let idxs = getAllModesOfAKey(keys[11])
-  // // console.log(idxs)
-  // idxs.forEach((x) => {
-  //   // console.log(x)
-  //   x.forEach((y) => {
-  //     // console.log(keys[y].name)
-  //   })
-  // })
-
   ///////////////
   //questionType will refer to what the first card is
   //TO DO go over all this state and cut down what we need/don't need
@@ -118,7 +76,6 @@ const MainQuestionPage = ({
   const scoreCirclesSize = height / 20
   const cardWidth = width > height ? width * 0.095 : width * 0.14
   const cardHeight = cardWidth * 1.5
-  // console.log('attmptCount', attemptCount, 'questionNumber', questionNumber)
   useEffect(() => {
     // let questionCard = returnRandomCard(keys)
     // setFirstCard(questionCard)
@@ -224,25 +181,22 @@ const MainQuestionPage = ({
   }
 
   function getAudioSrcIdxFromCardReducer(cardWithValueIn) {
-    //TO DO check these names and uses/RENAME them better
-    cardWithValueIn = !cardWithValueIn.value
-      ? { value: cardWithValueIn }
-      : cardWithValueIn
     if (choosingKey) {
       return
     }
-    // cardWithValueIn.value
-    //   ? console.log(' in audiSrcReducer has value maybe shouldnt')
-    //   : console.log(' in AudioSRc has not .value')
-    let audioSrcIdx = cardWithValueIn.value.distanceToRoot
-      ? getAudioSrcInterval(cardWithValueIn.value)
-      : findNoteEquivalent(cardWithValueIn.value, noteAudioSrc)
+    cardWithValueIn = !cardWithValueIn.value
+      ? { value: cardWithValueIn }
+      : cardWithValueIn
+    let audioSrcIdx =
+      'distanceToRoot' in cardWithValueIn.value
+        ? getAudioSrcInterval(cardWithValueIn.value)
+        : findNoteEquivalent(cardWithValueIn.value, noteAudioSrc)
+
     audioSrcIdx = getAltOctaveNotes(audioSrcIdx, questionCards.firstCard)
     return audioSrcIdx
   }
 
   function getAudioSrcInterval(intervalCard) {
-    //TO DO check these names and uses/RENAME them better
     let audioSrc = getIntervalCardsAsNotes(
       intervalCard,
       questionCards.firstCard
@@ -254,7 +208,6 @@ const MainQuestionPage = ({
   function droneReload() {}
 
   function questionCardPress(inpt) {
-    // console.log('questionCardPress', inpt, annotatedDisplayGridSizeChangeFactor)
     if (choosingKey) {
       initCardSizeChanges()
       setDisplayInputCardArray((x) => [...intervals])
@@ -265,7 +218,6 @@ const MainQuestionPage = ({
       choosingKeyCardSizes()
       setDisplayInputCardArray(keys)
     }
-    // reload()
   }
 
   function userInputCardPress(inpt) {
@@ -299,7 +251,6 @@ const MainQuestionPage = ({
         scoreCirclesStorage = updatedArr
         return updatedArr
       })
-      console.log('store', scoreCirclesStorage)
       attemptCount = incrementAttemptCount ? ++attemptCount : 0
       globalQuestionTimeOutID =
         shouldReload && questionNumber < 12

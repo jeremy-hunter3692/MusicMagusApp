@@ -30,7 +30,7 @@ export function findNoteEquivalent(inpt, array) {
 }
 
 export function getAltOctaveNotes(note, root, testArray = noteAudioSrc) {
-  // console.log('get alt', note, root)
+  console.log('get alt', note, root)
   let result
   //WE ARE PASSING A NOTE HERE INSTEAD OF IDX
   let noteWithIdx = getIdxAndNotes(note, testArray)
@@ -56,6 +56,7 @@ export function returnRandomCard(array, omitRoot = false) {
 }
 
 export function getIdxAndNotes(note, array = noteAudioSrc) {
+  console.log('idx and ', note)
   let getIdxArr = array.map((x, idx) => {
     if (x.name === note.name) {
       return [x, idx]
@@ -342,39 +343,43 @@ export function getDataForAnnotated(inpt) {
     console.log('broken switch in getDataForAnnotated')
     return 'brken'
   }
-
-  // let correctData = {
-  //   topLText: 'Key:',
-  //   topRText: '',
-  //   bottomLText: 'Relative Minor:',
-  //   bottomRText: 'Accidentals :',
-  // }
-
-  // return correctData
 }
-// if (questionType === 'Interval') {
-//   const { firstCard, secondCard, array, answer } = cardReducer('Key')
-//   arrayTemp = array
-//   firstCardTemp = firstCard
-//   secondCardTemp = secondCard
-//   answerIdxTemp = answer
-// } else if (questionType === 'Note') {
-//   arrayTemp = intervals
-//   secondCardTemp = returnRandomCard(noteNames, true)
-//   answerIdxTemp = distanceUpInIntervals(
-//     firstCardTemp.idx,
-//     secondCardTemp.idx
-//   )
-// } else if (questionType === 'Key') {
-//   arrayTemp = keys
-//   firstCardTemp = {
-//     value: {
-//       ...firstCardTemp.value,
-//       imgSrc: noteNames[firstCardTemp.idx].imgSrc,
-//     },
-//     idx: firstCardTemp.idx,
-//   }
 
-//   secondCardTemp = returnRandomCard(intervals, true)
-//   answerIdxTemp = intervalOfWhatKey(firstCardTemp.idx, secondCardTemp.idx)
-// }
+export function getAllModesOfAKey(key, keysArray) {
+  const modesIdx = generateModesSemiToneIncrements()
+  let thing = returnScaleCards(key, modesIdx[0])
+  let modesOfGivenKEy = thing.map((x, idx) => {
+    if (idx === 0) {
+      return thing
+    } else {
+      return returnScaleCards(keysArray[x], modesIdx[idx])
+    }
+  })
+  return modesOfGivenKEy
+}
+
+export function getAllModesWithSameRootNote(rootNote, keysArray) {
+  const modesIdx = generateModesSemiToneIncrements()
+  modesIdx.forEach((x) => {
+    let ret = returnScaleCards(rootNote, x)
+    ret.forEach((y) => {
+      return keysArray[y].name
+    })
+  })
+}
+
+export function getScale(rootCard, scaleType, array) {
+  let res = returnScaleCards(rootCard, scaleType)
+  let makeScaleArr = res.map((x) => {
+    return array[x]
+  })
+  return makeScaleArr
+}
+// let idxs = getAllModesOfAKey(keys[11])
+// // console.log(idxs)
+// idxs.forEach((x) => {
+//   // console.log(x)
+//   x.forEach((y) => {
+//     // console.log(keys[y].name)
+//   })
+// })
