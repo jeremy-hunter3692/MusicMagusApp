@@ -96,42 +96,54 @@ export default function App() {
           elevation: 5,
         }}
       >
-        {showOptions ? (
-          <OptionsPage
-            height={height}
-            changeTheme={changeTheme}
-            randomQuestionsSetter={randomQuestionsSetter}
-            setAnimations={setAnimations}
+        {annotatedCard ? (
+          <View style={styles.annotated}>
+            <AnnotatedCards
+              data={annotatedCard}
+              setAnnotated={() => setAnnotatedCard(null)}
+              bgColor={annotatedBackGroundColor}
+            />
+          </View>
+        ) : (
+          <MainQuestionPage
+            theme={theme}
+            annotated={annotatedCardDisplay}
+            isRandomAllQuestionTypes={isRandom}
             isAnimated={animationsOn}
             setShowOptions={showOptionsSetter}
-            theme={theme}
-            buttonTheme={randomMagusMode}
+            showOptions={showOptions}
+            setAnnotatedCard={handleAnnotatedClick}
+            setAnnotatedMode={setAnnotatedMode}
+            dimensions={{ width, height }}
+            randomMagusMode={randomMagusMode}
           />
-        ) : (
-          <>
-            {annotatedCard ? (
-              <View style={styles.annotated}>
-                <AnnotatedCards
-                  data={annotatedCard}
-                  setAnnotated={() => setAnnotatedCard(null)}
-                  bgColor={annotatedBackGroundColor}
-                />
-              </View>
-            ) : (
-              <MainQuestionPage
-                theme={theme}
-                annotated={annotatedCardDisplay}
-                isRandomAllQuestionTypes={isRandom}
-                isAnimated={animationsOn}
-                setShowOptions={showOptionsSetter}
-                showOptions={showOptions}
-                setAnnotatedCard={handleAnnotatedClick}
-                setAnnotatedMode={setAnnotatedMode}
-                dimensions={{ width, height }}
-                randomMagusMode={randomMagusMode}
-              />
-            )}
-          </>
+        )}
+
+        {showOptions && (
+          <View
+            style={{
+              flex: 1,
+              position: 'absolute',
+              top: 0,
+              left: 0,
+              right: 0,
+              bottom: 0,
+              backgroundColor: 'rgba(0,0,0,0.5)',
+
+              zIndex: 10,
+            }}
+          >
+            <OptionsPage
+              height={height}
+              changeTheme={changeTheme}
+              randomQuestionsSetter={randomQuestionsSetter}
+              setAnimations={setAnimations}
+              isAnimated={animationsOn}
+              setShowOptions={showOptionsSetter}
+              theme={theme}
+              buttonTheme={randomMagusMode}
+            />
+          </View>
         )}
         {/*  <ExploreCards />
         <TheoryCirlces /> 
