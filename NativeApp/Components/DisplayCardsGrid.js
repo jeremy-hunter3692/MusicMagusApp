@@ -15,12 +15,19 @@ const DisplayCardsGrid = ({
   cardSize,
   reDeal,
   isAnimated,
+  annotated,
+  setAnnotatedCard,
 }) => {
   function setAnswer(inpt) {
+    if (annotated) {
+      setAnnotatedCard({ value: inpt })
+      return
+    }
     let audioSrc = findNoteFunction(inpt)
     userAnswerSetter(inpt)
     return audioSrc
   }
+
   const dealAnimationDelay = 5
   const firstHalfArray = cardsArray.slice(0, cardsArray.length / 2)
   const secondHalfArray = cardsArray.slice(

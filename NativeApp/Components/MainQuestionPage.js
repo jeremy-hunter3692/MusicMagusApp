@@ -116,7 +116,7 @@ const MainQuestionPage = ({
   const [dronePlaying, setDronePlaying] = useState(false)
   ///
   const scoreCirclesSize = height / 20
-  const cardWidth = width > height ? width * 0.1 : width * 0.14
+  const cardWidth = width > height ? width * 0.095 : width * 0.14
   const cardHeight = cardWidth * 1.5
   // console.log('attmptCount', attemptCount, 'questionNumber', questionNumber)
   useEffect(() => {
@@ -126,10 +126,8 @@ const MainQuestionPage = ({
       ? setScoreSircle(scoreCirclesStorage)
       : setScoreSircle(scoreCirclesInit)
     loadNewQuestionCards(false, keys[0])
-    // getScale(keys[11])
-    return () => {
-  
-    }
+
+    return () => {}
   }, [questionType, isRandomAllQuestionTypes])
 
   function loadNewQuestionCards(randomiseKey, firstCardStart) {
@@ -233,19 +231,12 @@ const MainQuestionPage = ({
     if (choosingKey) {
       return
     }
-    cardWithValueIn.value
-      ? console.log(' in audiSrcReducer has value maybe shouldnt')
-      : console.log(' in AudioSRc has not .value')
-
+    // cardWithValueIn.value
+    //   ? console.log(' in audiSrcReducer has value maybe shouldnt')
+    //   : console.log(' in AudioSRc has not .value')
     let audioSrcIdx = cardWithValueIn.value.distanceToRoot
       ? getAudioSrcInterval(cardWithValueIn.value)
       : findNoteEquivalent(cardWithValueIn.value, noteAudioSrc)
-    // old version:
-    // let audioSrcIdx =
-    //   questionType === 'Key'
-    //     ? findNoteEquivalent(cardAny, noteAudioSrc)
-    //     : getAudioSrcInterval(cardAny)
-    // console.log(audioSrcIdx, 'end ifgetASRC', questionCards.firstCard)
     audioSrcIdx = getAltOctaveNotes(audioSrcIdx, questionCards.firstCard)
     return audioSrcIdx
   }
@@ -419,6 +410,7 @@ const MainQuestionPage = ({
       padding: 0,
     },
     displayCardsGrid: {
+      justifyContent: 'flex-end',
       flex: 2,
       margin: 2,
       padding: 0,
@@ -632,16 +624,19 @@ const MainQuestionPage = ({
         )}
       </View>
       <View style={[styles.displayCardsGrid, annotated && { marginTop: 50 }]}>
-        {choosingKey && (
-          <View style={styles.choosingKeyText}>
+        <View style={styles.choosingKeyText}>
+          {choosingKey ? (
             <Text style={styles.annotatedText}>
               Choose your key below ↓ or
               <Pressable onPress={() => setRandom()}>
                 <Text style={styles.chooseRandomText}> Magus Mode</Text>
               </Pressable>
             </Text>
-          </View>
-        )}
+          ) : (
+            <Text style={styles.annotatedText}> </Text>
+          )}
+        </View>
+
         {displayInputCardArray && (
           <DisplayCardsGrid
             cardSize={{
@@ -660,6 +655,8 @@ const MainQuestionPage = ({
             findNoteFunction={getAudioSrcIdxFromCardReducer}
             reDeal={questionCards?.firstCard}
             isAnimated={isAnimated}
+            annotated={annotated}
+            setAnnotatedCard={setAnnotatedCard}
           />
         )}
         {annotated && (
