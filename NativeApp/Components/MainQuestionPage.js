@@ -225,6 +225,7 @@ const MainQuestionPage = ({
     initCardSizeChanges()
     setQuestionCards((x) => ({ ...x, firstCard: inpt }))
     loadNewQuestionCards(false, inpt)
+    isRandomisedKey = false
     resetForNewGame(inpt)
     setChoosingKey((x) => false)
   }
