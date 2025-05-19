@@ -33,7 +33,6 @@ const QuestionCards = ({
   const [localAnswer, setLocalAnswer] = useState(answerCard)
   const { firstCard, secondCard, answerCard } = cards
   //Probablyg et rid of this
-  const answer = answerCard
   const flipAnswerCardAnimation = useSharedValue(0)
   const flipScoreCardAnimation = useSharedValue(0)
 
@@ -87,8 +86,6 @@ const QuestionCards = ({
       }
     })
 
-  function returnCorrectAnnotatedText(cardValue, abBool) {}
-
   const styles = StyleSheet.create({
     questionCardsCont: {
       flexDirection: 'row',
@@ -120,7 +117,6 @@ const QuestionCards = ({
       width: '100%',
       height: '100%',
       backfaceVisibility: 'hidden',
-      // Add any specific styles for the back card if needed
     },
     forAnnotation: {
       flexDirection: 'column',
@@ -204,7 +200,7 @@ const QuestionCards = ({
                   style={[
                     styles.annotatedText,
                     {
-                      margein: 0,
+                      margin: 0,
                       paddingBottom: 10,
                       fontSize: fontScale * 0.9,
                       fontStyle: 'italic',
@@ -290,10 +286,11 @@ const QuestionCards = ({
               >
                 <CardButton
                   key={localAnswer?.name || localAnswer?.imgSrc} // Use a unique key based on the answerCard
+                  data={{ value: { imgSrc: blankCard, blankCard: true } }}
                   cardSize={cardSize}
                   source={blankCard}
                   animationDelay={5}
-                  onPressPropFunction={answerCardOnPress}
+                  annotated={annotated}
                   setAnnotatedCard={setAnnotatedCard}
                   animated={isAnimated}
                 />

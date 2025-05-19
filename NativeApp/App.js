@@ -39,6 +39,7 @@ export default function App() {
   // function appLevel(inpt) {
   //   console.log('TODO-App level', inpt)
   // }
+  console.log('annotatedCard', annotatedCard)
   const randomMagusMode = {
     margin: 4,
     padding: 4,

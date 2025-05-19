@@ -29,6 +29,7 @@ const scoreCirclesInit = Array(12).fill(null)
 let isRandomisedKey = false
 let annotatedDisplayGridSizeChangeFactor = 0.5
 let annotatedQCardsSizeChangeFactor = 1.2
+//
 let questionNumber = 0
 let attemptCount = 0
 let userScore = 0
@@ -71,17 +72,15 @@ const MainQuestionPage = ({
   const [fontScale, setFontScale] = useState(height / 50)
   const [resultDisplay, setResultDisplay] = useState(false)
   //Might not need, props should re load the children correctly...?
-  const [dronePlaying, setDronePlaying] = useState(false)
+  const [dronePlaying, setDronePlaying] = useState(true)
   ///
   const scoreCirclesSize = height / 20
-  const cardWidth = width > height ? width * 0.095 : width * 0.14
+  const cardWidth = width > height ? width * 0.1 : width * 0.14
   const cardHeight = cardWidth * 1.5
   useEffect(() => {
     // let questionCard = returnRandomCard(keys)
     // setFirstCard(questionCard)
-
     loadNewQuestionCards(false, keys[0])
-
     return () => {}
   }, [questionType, isRandomAllQuestionTypes])
 
@@ -321,7 +320,7 @@ const MainQuestionPage = ({
 
   function choosingKeyCardSizes() {
     annotatedDisplayGridSizeChangeFactor = 0.9
-    annotatedQCardsSizeChangeFactor = 0.9
+    annotatedQCardsSizeChangeFactor = 0.8
   }
   function annotatedButtonClick() {
     //TO DO double check this
@@ -544,8 +543,7 @@ const MainQuestionPage = ({
           {!isRandom ? (<PickShape questionAB={questionAB} width={cardWidth} /> ) : (null)}</View> */}
         {questionCards?.firstCard?.value && (
           <QuestionCards
-            bgColor={theme.primaryColor}
-            secondaryColor={theme.secondaryColor}
+            theme={theme}
             fontScale={fontScale}
             cards={questionCards}
             rootCardPress={questionCardPress}
@@ -575,12 +573,14 @@ const MainQuestionPage = ({
       <View style={[styles.displayCardsGrid, annotated && { marginTop: 50 }]}>
         <View style={styles.choosingKeyText}>
           {choosingKey ? (
-            <Text style={styles.annotatedText}>
-              Choose your key below ↓ or
-              <Pressable onPress={() => setRandom()}>
+            <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+              <Text style={styles.annotatedText}>
+                Choose your key below ↓ or{' '}
+              </Text>
+              <Pressable onPress={setRandom}>
                 <Text style={styles.chooseRandomText}> Magus Mode</Text>
               </Pressable>
-            </Text>
+            </View>
           ) : (
             <Text style={styles.annotatedText}> </Text>
           )}

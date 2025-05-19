@@ -30,7 +30,6 @@ export function findNoteEquivalent(inpt, array) {
 }
 
 export function getAltOctaveNotes(note, root, testArray = noteAudioSrc) {
-  console.log('get alt', note, root)
   let result
   //WE ARE PASSING A NOTE HERE INSTEAD OF IDX
   let noteWithIdx = getIdxAndNotes(note, testArray)
@@ -56,7 +55,6 @@ export function returnRandomCard(array, omitRoot = false) {
 }
 
 export function getIdxAndNotes(note, array = noteAudioSrc) {
-  console.log('idx and ', note)
   let getIdxArr = array.map((x, idx) => {
     if (x.name === note.name) {
       return [x, idx]
@@ -261,7 +259,6 @@ export function generateModesSemiToneIncrements(
 }
 
 export function returnScaleCards(keyCard, scaleType) {
-  // console.log('ret')
   const { idx } = getIdxAndNotes(keyCard)
   let accumulator = 0 + idx
   let answerIdxsArray = scaleType.map((x) => {
@@ -273,6 +270,7 @@ export function returnScaleCards(keyCard, scaleType) {
 }
 
 export function getDataForAnnotated(inpt) {
+  console.log('get data', inpt)
   const { distanceToRoot, up } = inpt.value
   const upOrDown = up ? 'Down' : 'Up'
   const orDirection = up ? 'Up' : 'Down'
@@ -310,6 +308,15 @@ export function getDataForAnnotated(inpt) {
       topRText: '',
       bottomLText: smallIntervalText,
       bottomRText: intervalCardText + orIntervalText + ' ',
+    }
+  } else if (inpt.value.blankCard === true) {
+    console.log('blank')
+    return {
+      topLText: `Cards and system by  \n  Aleister James Campbell \n 
+    www.aleisterjames.com  \n 
+    www.facebook.com/AleisterJames \n 
+    Twitter/Instagram: @aleisterjames `,
+      bottomRText: 'App by Jeremy Hunter - website?',
     }
   } else if (
     typeof inpt.value.intervals === 'undefined' &&

@@ -7,6 +7,7 @@ const AnnotatedCards = ({ data, setAnnotated, bgColor }) => {
   const fontSize = 25
   const { bottomRText, bottomLText, topRtext, topLText } =
     getDataForAnnotated(data)
+  console.log('ano', data)
 
   const styles = StyleSheet.create({
     container: {
