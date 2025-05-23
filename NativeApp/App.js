@@ -1,11 +1,13 @@
-import React, { useState } from 'react'
-import MainQuestionPage from './Components/MainQuestionPage'
-import AnnotatedCards from './Components/AnnotatedCards.js'
+import React, { useState, useContext } from 'react'
+import MainGamePage from './Components/MainGamePage'
+import AnnotatedCard from './Components/AnnotatedCards.js'
 import OptionsPage from './Components/OptionsPage.js'
 import HexKeyWithCards from './Components/HexKeyWithCards.js'
 import TheoryCirlces from './Components/TheoryCircles.js'
 import ExploreCards from './Components/ExploreCards.js'
 import ScaleExplore from './Components/ScaleExplore.js'
+
+import AnnotatedContext from './Components/AnnotatedContext.js'
 import { StatusBar } from 'expo-status-bar'
 import {
   StyleSheet,
@@ -30,7 +32,7 @@ export default function App() {
   const [annotatedCardDisplay, setAnnotatedCardDisplay] = useState(false)
   const [animationsOn, setAnimationsOn] = useState(true)
   const [isRandom, setIsRandom] = useState(false)
-
+  // const annotatedContext = useContext(AnnotatedContext)
   const { width, height } = useWindowDimensions()
 
   // function getKey(musicKey) {
@@ -97,28 +99,34 @@ export default function App() {
           elevation: 5,
         }}
       >
-        {annotatedCard ? (
-          <View style={styles.annotated}>
-            <AnnotatedCards
-              data={annotatedCard}
-              setAnnotated={() => setAnnotatedCard(null)}
-              bgColor={annotatedBackGroundColor}
+        <AnnotatedContext.Provider
+          value={{
+            data: annotatedCard,
+            theme,
+            setAnnotatedMode: () => {
+              setAnnotatedCard(false)
+            },
+          }}
+        >
+          {annotatedCard ? (
+            <View style={styles.annotated}>
+              <AnnotatedCard />
+            </View>
+          ) : (
+            <MainGamePage
+              theme={theme}
+              annotated={annotatedCardDisplay}
+              isRandomAllQuestionTypes={isRandom}
+              isAnimated={animationsOn}
+              setShowOptions={showOptionsSetter}
+              showOptions={showOptions}
+              setAnnotatedCard={handleAnnotatedClick}
+              setAnnotatedMode={setAnnotatedMode}
+              dimensions={{ width, height }}
+              randomMagusMode={randomMagusMode}
             />
-          </View>
-        ) : (
-          <MainQuestionPage
-            theme={theme}
-            annotated={annotatedCardDisplay}
-            isRandomAllQuestionTypes={isRandom}
-            isAnimated={animationsOn}
-            setShowOptions={showOptionsSetter}
-            showOptions={showOptions}
-            setAnnotatedCard={handleAnnotatedClick}
-            setAnnotatedMode={setAnnotatedMode}
-            dimensions={{ width, height }}
-            randomMagusMode={randomMagusMode}
-          />
-        )}
+          )}
+        </AnnotatedContext.Provider>
 
         {showOptions && (
           <View

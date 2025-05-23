@@ -38,7 +38,7 @@ let droneType = true
 let isReloading = false
 let globalQuestionTimeOutID
 
-const MainQuestionPage = ({
+const MainGamePage = ({
   theme,
   setShowOptions,
   setAnnotatedMode,
@@ -621,4 +621,4 @@ const MainQuestionPage = ({
   )
 }
 
-export default MainQuestionPage
+export default MainGamePage

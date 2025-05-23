@@ -1,13 +1,17 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import { Image, Text, View, StyleSheet, Pressable } from 'react-native'
 import { getDataForAnnotated } from '../functions/functions.js'
+import AnnotatedContext from './AnnotatedContext.js'
 
-const AnnotatedCards = ({ data, setAnnotated, bgColor }) => {
+const AnnotatedCard = () => {
+  const { data, setAnnotatedMode, theme } = useContext(AnnotatedContext)
+
   //TO DO font zise for this
+  const bgColor = theme
   const fontSize = 25
   const { bottomRText, bottomLText, topRtext, topLText } =
     getDataForAnnotated(data)
-  console.log('ano', data)
+  console.log('ano', theme)
 
   const styles = StyleSheet.create({
     container: {
@@ -60,7 +64,7 @@ const AnnotatedCards = ({ data, setAnnotated, bgColor }) => {
       <View style={styles.column}>
         <Pressable
           style={{ alignItems: 'center', padding: 5 }}
-          onPress={() => setAnnotated()}
+          onPress={setAnnotatedMode}
         >
           <Text
             style={[
@@ -83,4 +87,4 @@ const AnnotatedCards = ({ data, setAnnotated, bgColor }) => {
   )
 }
 
-export default AnnotatedCards
+export default AnnotatedCard
