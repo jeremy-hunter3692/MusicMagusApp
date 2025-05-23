@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useContext } from 'react'
 import { StyleSheet, View, Text, Pressable } from 'react-native'
 import DronePlayer from './DronePlayer.js'
 import QuestionCards from './QuestionCards.js'
@@ -6,6 +6,7 @@ import DisplayCardsGrid from './DisplayCardsGrid.js'
 import QuestionIconButtons from './QuestionTypeIconButtons.js'
 import PickShape from './PickShape.js'
 import Circle from './Circle.js'
+import ThemeContext from './ThemeContext.js'
 import { SynthDrones, DoubleBassDrones } from '../data/DroneAudioSources.js'
 import { noteAudioSrc } from '../data/NotesAudiosSrc.js'
 import {
@@ -39,7 +40,6 @@ let isReloading = false
 let globalQuestionTimeOutID
 
 const MainGamePage = ({
-  theme,
   setShowOptions,
   setAnnotatedMode,
   setAnnotatedCard,
@@ -50,7 +50,7 @@ const MainGamePage = ({
   dimensions,
   randomMagusMode,
 }) => {
-  const { primaryColor, secondaryColor } = theme
+  const { theme } = useContext(ThemeContext)
   ///////////////
   //questionType will refer to what the first card is
   //TO DO go over all this state and cut down what we need/don't need
@@ -377,7 +377,7 @@ const MainGamePage = ({
     },
     chooseRandomText: randomMagusMode,
   })
-
+  console.log(theme)
   return (
     <>
       <View
@@ -399,7 +399,7 @@ const MainGamePage = ({
             fontWeight: 'bold',
             color: 'white',
             flexDirection: 'row',
-            backgroundColor: theme.secondaryColor,
+
             justifyContent: 'flex-end',
             alignItems: 'center',
             textAlign: 'center',

@@ -7,6 +7,7 @@ import TheoryCirlces from './Components/TheoryCircles.js'
 import ExploreCards from './Components/ExploreCards.js'
 import ScaleExplore from './Components/ScaleExplore.js'
 
+import ThemeContext from './Components/ThemeContext.js'
 import AnnotatedContext from './Components/AnnotatedContext.js'
 import { StatusBar } from 'expo-status-bar'
 import {
@@ -18,12 +19,20 @@ import {
   SafeAreaView,
 } from 'react-native'
 import { keys, getIntervalNo } from './data/KeyCards'
-import DoxaSketch from './Components/DoxaSketch.js'
 
-const themeInit = { primaryColor: 'purple', secondaryColor: '#19af59' }
-const secondaryTheme = { primaryColor: 'black', secondaryColor: 'purple' }
-const annotatedBackGroundColor = 'rgba(51, 23, 73, 0.99)'
+const themeInit = {
+  primaryColor: 'purple',
+  secondaryColor: '#19af59',
+  annotatedBackGroundColor: 'rgba(51, 23, 73, 0.99)',
+}
+const secondaryTheme = {
+  primaryColor: 'black',
+  secondaryColor: 'purple',
+  annotatedBackGroundColor: 'rgba(51, 23, 73, 0.99)',
+}
+const font = { fontScale: 1, fontColor: 'white', fontType: 'Arial' }
 let themeBool = true
+
 export default function App() {
   const [hexKey, setHexKey] = useState(keys[0])
   const [theme, setTheme] = useState(themeInit)
@@ -41,7 +50,6 @@ export default function App() {
   // function appLevel(inpt) {
   //   console.log('TODO-App level', inpt)
   // }
-  console.log('annotatedCard', annotatedCard)
   const randomMagusMode = {
     margin: 4,
     padding: 4,
@@ -88,7 +96,7 @@ export default function App() {
           // marginTop: 15,
           padding: 0,
           backgroundColor: annotatedCardDisplay
-            ? annotatedBackGroundColor
+            ? theme.annotatedBackGroundColor
             : theme.primaryColor,
           flexDirection: 'column',
           shadowColor: 'black',
@@ -99,64 +107,64 @@ export default function App() {
           elevation: 5,
         }}
       >
-        <AnnotatedContext.Provider
-          value={{
-            data: annotatedCard,
-            theme,
-            setAnnotatedMode: () => {
-              setAnnotatedCard(false)
-            },
-          }}
-        >
-          {annotatedCard ? (
-            <View style={styles.annotated}>
-              <AnnotatedCard />
-            </View>
-          ) : (
-            <MainGamePage
-              theme={theme}
-              annotated={annotatedCardDisplay}
-              isRandomAllQuestionTypes={isRandom}
-              isAnimated={animationsOn}
-              setShowOptions={showOptionsSetter}
-              showOptions={showOptions}
-              setAnnotatedCard={handleAnnotatedClick}
-              setAnnotatedMode={setAnnotatedMode}
-              dimensions={{ width, height }}
-              randomMagusMode={randomMagusMode}
-            />
-          )}
-        </AnnotatedContext.Provider>
-
-        {showOptions && (
-          <View
-            style={{
-              flex: 1,
-              position: 'absolute',
-              top: 0,
-              left: 0,
-              right: 0,
-              bottom: 0,
-              backgroundColor: 'rgba(0,0,0,0.5)',
-
-              zIndex: 10,
+        <ThemeContext.Provider value={{ font, theme, setTheme }}>
+          <AnnotatedContext.Provider
+            value={{
+              data: annotatedCard,
+              setAnnotatedMode: () => {
+                setAnnotatedCard(false)
+              },
             }}
           >
-            <OptionsPage
-              height={height}
-              changeTheme={changeTheme}
-              randomQuestionsSetter={randomQuestionsSetter}
-              setAnimations={setAnimations}
-              isAnimated={animationsOn}
-              setShowOptions={showOptionsSetter}
-              theme={theme}
-              buttonTheme={randomMagusMode}
-            />
-          </View>
-        )}
-        {/*  <ExploreCards />
+            {annotatedCard ? (
+              <View style={styles.annotated}>
+                <AnnotatedCard />
+              </View>
+            ) : (
+              <MainGamePage
+                annotated={annotatedCardDisplay}
+                isRandomAllQuestionTypes={isRandom}
+                isAnimated={animationsOn}
+                setShowOptions={showOptionsSetter}
+                showOptions={showOptions}
+                setAnnotatedCard={handleAnnotatedClick}
+                setAnnotatedMode={setAnnotatedMode}
+                dimensions={{ width, height }}
+                randomMagusMode={randomMagusMode}
+              />
+            )}
+          </AnnotatedContext.Provider>
+
+          {showOptions && (
+            <View
+              style={{
+                flex: 1,
+                position: 'absolute',
+                top: 0,
+                left: 0,
+                right: 0,
+                bottom: 0,
+                backgroundColor: 'rgba(0,0,0,0.5)',
+
+                zIndex: 10,
+              }}
+            >
+              <OptionsPage
+                height={height}
+                changeTheme={changeTheme}
+                randomQuestionsSetter={randomQuestionsSetter}
+                setAnimations={setAnimations}
+                isAnimated={animationsOn}
+                setShowOptions={showOptionsSetter}
+                theme={theme}
+                buttonTheme={randomMagusMode}
+              />
+            </View>
+          )}
+          {/*  <ExploreCards />
         <TheoryCirlces /> 
         <ScaleExplore />*/}
+        </ThemeContext.Provider>
       </SafeAreaView>
     </>
   )

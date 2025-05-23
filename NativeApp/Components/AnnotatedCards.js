@@ -2,10 +2,11 @@ import React, { useContext } from 'react'
 import { Image, Text, View, StyleSheet, Pressable } from 'react-native'
 import { getDataForAnnotated } from '../functions/functions.js'
 import AnnotatedContext from './AnnotatedContext.js'
+import ThemeContext from './ThemeContext.js'
 
 const AnnotatedCard = () => {
-  const { data, setAnnotatedMode, theme } = useContext(AnnotatedContext)
-
+  const { data, setAnnotatedMode } = useContext(AnnotatedContext)
+  const { font, theme, setTheme } = useContext(ThemeContext)
   //TO DO font zise for this
   const bgColor = theme
   const fontSize = 25
