@@ -16,11 +16,9 @@ const DisplayCardsGrid = ({
   reDeal,
   isAnimated,
   annotated,
-  setAnnotatedCard,
 }) => {
   function setAnswer(inpt) {
     if (annotated) {
-      setAnnotatedCard({ value: inpt })
       return
     }
     let audioSrc = findNoteFunction(inpt)
@@ -43,7 +41,7 @@ const DisplayCardsGrid = ({
             <CardButton
               cardSize={cardSize}
               onPressPropFunction={setAnswer}
-              data={x}
+              data={{ value: x }}
               source={x.imgSrc}
               key={x.name}
               findAudioSourceFunction={findNoteFunction}
@@ -62,7 +60,7 @@ const DisplayCardsGrid = ({
             <CardButton
               cardSize={cardSize}
               onPressPropFunction={setAnswer}
-              data={x}
+              data={{ value: x }}
               source={x.imgSrc}
               key={x.name}
               findAudioSourceFunction={findNoteFunction}

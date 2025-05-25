@@ -1,4 +1,5 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState, useContext } from 'react'
+import AnnotatedContext from './AnnotatedContext'
 import SingleNotePlayer from './SingleNotePlayer'
 import { Pressable, Image, StyleSheet } from 'react-native'
 import Animated, {
@@ -17,8 +18,7 @@ const CardButton = ({
   autoPlay,
   answer,
   cardSize,
-  annotated,
-  setAnnotatedCard,
+
   animationDelay,
   animated,
 }) => {
@@ -29,9 +29,11 @@ const CardButton = ({
   const cardSizeScale = useSharedValue(initCardSizeValue)
   const cardSpacing = { margin: 2, padding: 0 }
   const { cardWidth, cardHeight } = cardSize || {}
+  const { annotated, setAnnotatedCard } = useContext(AnnotatedContext)
 
   useEffect(() => {
     if (annotated) {
+      console.log('anootated IF', data, source)
       return
     }
     cardSizeScale.value = withSpring(initCardSizeValue)
@@ -49,9 +51,11 @@ const CardButton = ({
   }, [answer, source, reDeal])
 
   function handlePressIn(inpt) {
+    console.log('cb')
     //??????this must be with {value }
     if (annotated) {
       setAnnotatedCard(inpt)
+      return
     }
     let audioSrc = onPressPropFunction(inpt)
     setNoteAudioSrc(audioSrc)

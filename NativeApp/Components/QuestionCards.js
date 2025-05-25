@@ -19,7 +19,6 @@ const QuestionCards = ({
   cardSize,
   rootCardPress,
   answerCardOnPress,
-  setAnnotatedCard,
   annotated,
   isAnimated,
   displayScore,
@@ -221,8 +220,6 @@ const QuestionCards = ({
             data={firstCard}
             source={firstCard.value.imgSrc}
             onPressPropFunction={droneSetter}
-            annotated={annotated}
-            setAnnotatedCard={setAnnotatedCard}
             animated={isAnimated}
           />
         </View>
@@ -242,8 +239,6 @@ const QuestionCards = ({
             answer={answerCard}
             onPressPropFunction={answerCardOnPress}
             findAudioSourceFunction={findNoteFunction}
-            annotated={annotated}
-            setAnnotatedCard={setAnnotatedCard}
             autoPlay={true}
             animationDelay={3}
             animated={isAnimated}
@@ -272,8 +267,6 @@ const QuestionCards = ({
                   cardSize={cardSize}
                   data={localAnswer?.name}
                   source={localAnswer?.imgSrc}
-                  annotated={annotated}
-                  setAnnotatedCard={setAnnotatedCard}
                   animationDelay={5}
                   animated={isAnimated}
                 />
@@ -290,8 +283,6 @@ const QuestionCards = ({
                   cardSize={cardSize}
                   source={blankCard}
                   animationDelay={5}
-                  annotated={annotated}
-                  setAnnotatedCard={setAnnotatedCard}
                   animated={isAnimated}
                 />
               </Animated.View>
@@ -310,7 +301,7 @@ const QuestionCards = ({
                     data={answer?.name}
                     source={answer?.imgSrc}
                     annotated={annotated}
-                    setAnnotatedCard={setAnnotatedCard}
+                
                   />
                 </View>
               ) : (

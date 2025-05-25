@@ -5,14 +5,14 @@ import AnnotatedContext from './AnnotatedContext.js'
 import ThemeContext from './ThemeContext.js'
 
 const AnnotatedCard = () => {
-  const { data, setAnnotatedMode } = useContext(AnnotatedContext)
-  const { font, theme, setTheme } = useContext(ThemeContext)
+  const { annotatedCard, setAnnotatedMode } = useContext(AnnotatedContext)
+  const { font, theme } = useContext(ThemeContext)
   //TO DO font zise for this
   const bgColor = theme
-  const fontSize = 25
+  const fontSize = font.fontScale
+
   const { bottomRText, bottomLText, topRtext, topLText } =
-    getDataForAnnotated(data)
-  console.log('ano', theme)
+    getDataForAnnotated(annotatedCard)
 
   const styles = StyleSheet.create({
     container: {
@@ -56,7 +56,7 @@ const AnnotatedCard = () => {
 
       <View style={styles.imageColumn}>
         <Image
-          source={data?.value.imgSrc}
+          source={annotatedCard?.value.imgSrc}
           testID="image"
           style={styles.image}
         />

@@ -7,8 +7,10 @@ import QuestionIconButtons from './QuestionTypeIconButtons.js'
 import PickShape from './PickShape.js'
 import Circle from './Circle.js'
 import ThemeContext from './ThemeContext.js'
+import AnnotatedContext from './AnnotatedContext.js'
 import { SynthDrones, DoubleBassDrones } from '../data/DroneAudioSources.js'
 import { noteAudioSrc } from '../data/NotesAudiosSrc.js'
+
 import {
   getIntervalCardsAsNotes,
   getAltOctaveNotes,
@@ -41,16 +43,11 @@ let globalQuestionTimeOutID
 
 const MainGamePage = ({
   setShowOptions,
-  setAnnotatedMode,
-  setAnnotatedCard,
-  annotatedCard,
-  annotated,
   isRandomAllQuestionTypes,
   isAnimated,
   dimensions,
   randomMagusMode,
 }) => {
-  const { theme } = useContext(ThemeContext)
   ///////////////
   //questionType will refer to what the first card is
   //TO DO go over all this state and cut down what we need/don't need
@@ -69,7 +66,6 @@ const MainGamePage = ({
   const [scoreCardDisplay, setScoreCardDisplay] = useState(null)
   const [scoreCircles, setScoreSircle] = useState(scoreCirclesInit)
   const [choosingKey, setChoosingKey] = useState(false)
-  const [fontScale, setFontScale] = useState(height / 50)
   const [resultDisplay, setResultDisplay] = useState(false)
   //Might not need, props should re load the children correctly...?
   const [dronePlaying, setDronePlaying] = useState(true)
@@ -77,6 +73,14 @@ const MainGamePage = ({
   const scoreCirclesSize = height / 20
   const cardWidth = width > height ? width * 0.1 : width * 0.14
   const cardHeight = cardWidth * 1.5
+
+  const { annotatedCard, annotated, setAnnotatedCard, setAnnotatedMode } =
+    useContext(AnnotatedContext)
+  const {
+    theme,
+    font: { fontScale, fontSize, fontStyle },
+  } = useContext(ThemeContext)
+
   useEffect(() => {
     // let questionCard = returnRandomCard(keys)
     // setFirstCard(questionCard)
@@ -377,7 +381,7 @@ const MainGamePage = ({
     },
     chooseRandomText: randomMagusMode,
   })
-  console.log(theme)
+
   return (
     <>
       <View
@@ -399,7 +403,6 @@ const MainGamePage = ({
             fontWeight: 'bold',
             color: 'white',
             flexDirection: 'row',
-
             justifyContent: 'flex-end',
             alignItems: 'center',
             textAlign: 'center',
@@ -561,7 +564,6 @@ const MainGamePage = ({
                   : cardHeight,
             }}
             annotated={annotated}
-            setAnnotatedCard={setAnnotatedCard}
             isAnimated={isAnimated}
             displayScore={scoreCardDisplay}
             score={userScore}
@@ -606,7 +608,7 @@ const MainGamePage = ({
             reDeal={questionCards?.firstCard}
             isAnimated={isAnimated}
             annotated={annotated}
-            setAnnotatedCard={setAnnotatedCard}
+     
           />
         )}
         {annotated && (

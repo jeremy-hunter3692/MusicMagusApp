@@ -1,4 +1,4 @@
-import React, { useState, useContext } from 'react'
+import React, { useState} from 'react'
 import MainGamePage from './Components/MainGamePage'
 import AnnotatedCard from './Components/AnnotatedCards.js'
 import OptionsPage from './Components/OptionsPage.js'
@@ -30,7 +30,7 @@ const secondaryTheme = {
   secondaryColor: 'purple',
   annotatedBackGroundColor: 'rgba(51, 23, 73, 0.99)',
 }
-const font = { fontScale: 1, fontColor: 'white', fontType: 'Arial' }
+
 let themeBool = true
 
 export default function App() {
@@ -41,15 +41,14 @@ export default function App() {
   const [annotatedCardDisplay, setAnnotatedCardDisplay] = useState(false)
   const [animationsOn, setAnimationsOn] = useState(true)
   const [isRandom, setIsRandom] = useState(false)
-  // const annotatedContext = useContext(AnnotatedContext)
+
   const { width, height } = useWindowDimensions()
+  const font = { fontScale: width / 50, fontColor: 'white', fontType: 'Arial' }
 
   // function getKey(musicKey) {
   //   setHexKey(musicKey)
   // }
-  // function appLevel(inpt) {
-  //   console.log('TODO-App level', inpt)
-  // }
+
   const randomMagusMode = {
     margin: 4,
     padding: 4,
@@ -61,12 +60,11 @@ export default function App() {
     borderWidth: 3,
   }
   function handleAnnotatedClick(inpt) {
-    console.log('anntated', inpt)
     annotatedCard ? setAnnotatedCard(null) : setAnnotatedCard(inpt)
-    setAnnotatedMode()
   }
 
   function setAnnotatedMode() {
+    annotatedCard ? setAnnotatedCard(null) : ''
     setAnnotatedCardDisplay((x) => !x)
   }
   function changeTheme() {
@@ -107,13 +105,19 @@ export default function App() {
           elevation: 5,
         }}
       >
-        <ThemeContext.Provider value={{ font, theme, setTheme }}>
+        <ThemeContext.Provider
+          value={{
+            font,
+            theme,
+            setTheme,
+          }}
+        >
           <AnnotatedContext.Provider
             value={{
-              data: annotatedCard,
-              setAnnotatedMode: () => {
-                setAnnotatedCard(false)
-              },
+              annotatedCard,
+              annotated: annotatedCardDisplay,
+              setAnnotatedCard: handleAnnotatedClick,
+              setAnnotatedMode,
             }}
           >
             {annotatedCard ? (
@@ -122,33 +126,17 @@ export default function App() {
               </View>
             ) : (
               <MainGamePage
-                annotated={annotatedCardDisplay}
                 isRandomAllQuestionTypes={isRandom}
                 isAnimated={animationsOn}
                 setShowOptions={showOptionsSetter}
                 showOptions={showOptions}
-                setAnnotatedCard={handleAnnotatedClick}
-                setAnnotatedMode={setAnnotatedMode}
                 dimensions={{ width, height }}
                 randomMagusMode={randomMagusMode}
               />
             )}
           </AnnotatedContext.Provider>
-
           {showOptions && (
-            <View
-              style={{
-                flex: 1,
-                position: 'absolute',
-                top: 0,
-                left: 0,
-                right: 0,
-                bottom: 0,
-                backgroundColor: 'rgba(0,0,0,0.5)',
-
-                zIndex: 10,
-              }}
-            >
+            <View style={styles.options}>
               <OptionsPage
                 height={height}
                 changeTheme={changeTheme}
@@ -170,15 +158,18 @@ export default function App() {
   )
 }
 
-// {displayOptions ? (
-//   <>
-//     <OptionsPage
-//       selectDroneAudio={selectDroneAudio}
-//       droneOnOff={droneOnOff}
-//       changeQuestionType={changeQuestionType}
-//     />
-//   </>
 const styles = StyleSheet.create({
+  options: {
+    flex: 1,
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0,
+    backgroundColor: 'rgba(0,0,0,0.5)',
+
+    zIndex: 10,
+  },
   optionText: {
     color: 'purple',
     margin: 5,
