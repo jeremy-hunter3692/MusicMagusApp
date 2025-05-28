@@ -1,13 +1,12 @@
-import React, { useState } from 'react'
+import React, { useState, useContext } from 'react'
 import { StyleSheet, Text, View, Pressable, Image } from 'react-native'
-import QuestionButton from './QuestionButton'
+import ThemeContext from './ThemeContext'
 import { useWindowDimensions } from 'react-native'
 
 const QuestionIconButtons = ({
   changeQuestionType,
-  annotated,
-  bgColor,
   groupedNavMargin,
+  annotated,
 }) => {
   const [underLine, setUnderline] = useState(1)
   const { width, height } = useWindowDimensions()
@@ -18,18 +17,20 @@ const QuestionIconButtons = ({
     changeQuestionType(inpt)
   }
 
+  const { theme } = useContext(ThemeContext)
+
   const styles = StyleSheet.create({
     iconContainer: {
       flexDirection: 'row',
       paddingLeft: 5,
-      backgroundColor: bgColor,
+      backgroundColor: theme.secondaryColor,
       justifyContent: 'flex-start',
       alignItems: 'center',
       margin: groupedNavMargin,
     },
     container: {
       alignItems: 'flex-start',
-      backgroundColor: bgColor,
+      backgroundColor: theme.secondaryColor,
       //TO DO make this computed with font size?
       // marginBottom: 5,
     },
@@ -104,8 +105,6 @@ const QuestionIconButtons = ({
                   width: 0,
                   height: 0,
                   padding: 0,
-                  // position: 'absolute',
-                  // top: -50,
                   borderTopWidth: iconSize,
                   borderRightWidth: iconSize,
                   borderRightColor: 'transparent',

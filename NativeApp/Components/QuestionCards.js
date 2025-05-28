@@ -132,7 +132,6 @@ const QuestionCards = ({
       margin: 6,
       top: 2,
       borderRadius: 10,
-
       alignContent: 'center',
       width: cardSize.cardWidth,
       height: cardSize.cardHeight - 5,

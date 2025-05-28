@@ -10,6 +10,8 @@ import ThemeContext from './ThemeContext.js'
 import AnnotatedContext from './AnnotatedContext.js'
 import { SynthDrones, DoubleBassDrones } from '../data/DroneAudioSources.js'
 import { noteAudioSrc } from '../data/NotesAudiosSrc.js'
+import { keys } from '../data/KeyCards.js'
+import { intervals } from '../data/IntervalCards.js'
 
 import {
   getIntervalCardsAsNotes,
@@ -21,9 +23,6 @@ import {
   returnScaleCards,
   generateModesSemiToneIncrements,
 } from '../functions/functions.js'
-
-import { keys } from '../data/KeyCards.js'
-import { intervals } from '../data/IntervalCards.js'
 
 const newAnswerDelay = 1500
 const groupedNavMargin = 0
@@ -37,7 +36,6 @@ let questionNumber = 0
 let attemptCount = 0
 let userScore = 0
 let droneType = true
-
 let isReloading = false
 let globalQuestionTimeOutID
 
@@ -78,7 +76,7 @@ const MainGamePage = ({
     useContext(AnnotatedContext)
   const {
     theme,
-    font: { fontScale, fontSize, fontStyle },
+    font: { fontScale, fontStyle },
   } = useContext(ThemeContext)
 
   useEffect(() => {
@@ -327,6 +325,7 @@ const MainGamePage = ({
     annotatedDisplayGridSizeChangeFactor = 0.9
     annotatedQCardsSizeChangeFactor = 0.8
   }
+  
   function annotatedButtonClick() {
     //TO DO double check this
     choosingKey && annotated ? choosingKeyCardSizes() : initCardSizeChanges()
@@ -483,9 +482,7 @@ const MainGamePage = ({
           {!isRandomAllQuestionTypes ? (
             <QuestionIconButtons
               changeQuestionType={changeQuestionType}
-              bgColor={theme.secondaryColor}
               groupedNavMargin={groupedNavMargin}
-              // annotated={annotatedCardDisplay}
             />
           ) : (
             <Text>Randomised Questions</Text>
@@ -514,8 +511,12 @@ const MainGamePage = ({
           }}
         >
           <View>
+            <Text style={[styles.annotatedText, { fontSize: fontScale * 0.8 }]}>
+              Key Interval Note
+            </Text>
+
             <Text style={styles.annotatedText}>
-              ↑ Change question type here
+              ↑ Change question type here key Interval Note
             </Text>
           </View>
           <View
@@ -608,7 +609,6 @@ const MainGamePage = ({
             reDeal={questionCards?.firstCard}
             isAnimated={isAnimated}
             annotated={annotated}
-     
           />
         )}
         {annotated && (

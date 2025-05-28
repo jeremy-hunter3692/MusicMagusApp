@@ -1,17 +1,12 @@
 import { StatusBar } from 'expo-status-bar'
 import { StyleSheet, Text, View, Image, TouchableOpacity } from 'react-native'
-import { keys } from '../data/KeyCards.js'
-import { noteAudioSrc } from '../data/NotesAudiosSrc.js'
-
 import CardButton from './CardButton.js'
-import { noteNames } from '../data/NoteCards.js'
 
 const DisplayCardsGrid = ({
   userAnswerSetter,
   cardsArray,
   findNoteFunction,
   stylesBool,
-  cardOnPress,
   cardSize,
   reDeal,
   isAnimated,
@@ -35,7 +30,7 @@ const DisplayCardsGrid = ({
 
   return (
     <>
-      <View style={stylesBool ? styles.imgContTopBorder : styles.imgContTop}>
+      <View style={styles.imgContTop}>
         {firstHalfArray?.map((x, index) => {
           return (
             <CardButton
@@ -83,27 +78,8 @@ const styles = StyleSheet.create({
     alignItems: 'flex-end',
     justifyContent: 'center',
   },
-  imgContTopBorder: {
-    borderColor: 'pink',
-    borderWidth: 2,
-    backgroundColor: 'blue',
-    flexDirection: 'row',
-    marginTop: 0,
-    padding: 0,
-    alignItems: 'flex-end',
-    justifyContent: 'center',
-  },
+
   imgContBottom: {
-    flexDirection: 'row',
-    marginTop: 0,
-    padding: 0,
-    alignItems: 'flex-start',
-    justifyContent: 'center',
-  },
-  imgContBottomBorder: {
-    borderColor: 'red',
-    borderWidth: 2,
-    backgroundColor: 'yellow',
     flexDirection: 'row',
     marginTop: 0,
     padding: 0,
