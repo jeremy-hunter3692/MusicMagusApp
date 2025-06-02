@@ -1,5 +1,6 @@
 import React, { useEffect, useState, useContext } from 'react'
 import AnnotatedContext from './AnnotatedContext'
+import ThemeContext from './ThemeContext'
 import SingleNotePlayer from './SingleNotePlayer'
 import { Pressable, Image, StyleSheet } from 'react-native'
 import Animated, {
@@ -17,8 +18,6 @@ const CardButton = ({
   reDeal,
   autoPlay,
   answer,
-  cardSize,
-
   animationDelay,
   animated,
 }) => {
@@ -28,7 +27,9 @@ const CardButton = ({
   const initDealDelay = 30
   const cardSizeScale = useSharedValue(initCardSizeValue)
   const cardSpacing = { margin: 2, padding: 0 }
-  const { cardWidth, cardHeight } = cardSize || {}
+  const {
+    cardSize: { cardWidth, cardHeight },
+  } = useContext(ThemeContext)
   const { annotated, setAnnotatedCard } = useContext(AnnotatedContext)
 
   useEffect(() => {

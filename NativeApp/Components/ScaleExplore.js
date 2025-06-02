@@ -9,7 +9,7 @@ import {
 import { keys } from '../data/KeyCards'
 import { intervals } from '../data/IntervalCards'
 import { noteNames } from '../data/NoteCards'
-import DisplayCardsGrid from './DisplayCardsGrid'
+import DisplayInputCardsGrid from './DisplayInputCardsGrid'
 import HexKey from './HexKeyCiclesDisplay'
 
 const modesArray = generateModesSemiToneIncrements()
@@ -154,7 +154,7 @@ const ScaleExplore = () => {
       <View style={styles.allScalesContainer}>
         <Text style={styles.modeText}>Select Root Note:</Text>
         <View style={[styles.rowImageCont, { width: '80%', height: '40%' }]}>
-          {/* <DisplayCardsGrid
+          {/* <DisplayInputCardsGrid
           cardsArray={keys}
           cardSize={{ cardHeight: cardHeight, cardWidth: cardWidth }}
         /> */}

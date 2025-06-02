@@ -2,16 +2,19 @@ import { StatusBar } from 'expo-status-bar'
 import { StyleSheet, Text, View, Image, TouchableOpacity } from 'react-native'
 import CardButton from './CardButton.js'
 
-const DisplayCardsGrid = ({
-  userAnswerSetter,
-  cardsArray,
-  findNoteFunction,
-  stylesBool,
-  cardSize,
-  reDeal,
-  isAnimated,
-  annotated,
-}) => {
+import { useContext } from 'react'
+import { useGameContext, useGameContextUpdate } from './CardsContext.js'
+import AnnotatedContext from './AnnotatedContext.js'
+import ThemeContext from './ThemeContext.js'
+
+const DisplayInputCardsGrid = ({ findNoteFunction, reDeal, isAnimated }) => {
+  const {
+    questionCard,
+    displayInputCardArray: cardsArray,
+    userAnswerSetter,
+  } = useGameContext()
+  const { annotated } = useContext(AnnotatedContext)
+
   function setAnswer(inpt) {
     if (annotated) {
       return
@@ -34,7 +37,6 @@ const DisplayCardsGrid = ({
         {firstHalfArray?.map((x, index) => {
           return (
             <CardButton
-              cardSize={cardSize}
               onPressPropFunction={setAnswer}
               data={{ value: x }}
               source={x.imgSrc}
@@ -47,13 +49,10 @@ const DisplayCardsGrid = ({
           )
         })}
       </View>
-      <View
-        style={stylesBool ? styles.imgContBottomBorder : styles.imgContBottom}
-      >
+      <View style={styles.imgContBottom}>
         {secondHalfArray?.map((x, index) => {
           return (
             <CardButton
-              cardSize={cardSize}
               onPressPropFunction={setAnswer}
               data={{ value: x }}
               source={x.imgSrc}
@@ -87,4 +86,4 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
 })
-export default DisplayCardsGrid
+export default DisplayInputCardsGrid

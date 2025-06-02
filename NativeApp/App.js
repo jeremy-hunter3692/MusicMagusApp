@@ -1,4 +1,4 @@
-import React, { useState} from 'react'
+import React, { useState } from 'react'
 import MainGamePage from './Components/MainGamePage'
 import AnnotatedCard from './Components/AnnotatedCards.js'
 import OptionsPage from './Components/OptionsPage.js'
@@ -7,6 +7,7 @@ import TheoryCirlces from './Components/TheoryCircles.js'
 import ExploreCards from './Components/ExploreCards.js'
 import ScaleExplore from './Components/ScaleExplore.js'
 
+import { GameContextProvider } from './Components/CardsContext.js'
 import ThemeContext from './Components/ThemeContext.js'
 import AnnotatedContext from './Components/AnnotatedContext.js'
 import { StatusBar } from 'expo-status-bar'
@@ -44,6 +45,11 @@ export default function App() {
 
   const { width, height } = useWindowDimensions()
   const font = { fontScale: width / 50, fontColor: 'white', fontType: 'Arial' }
+  const cardWidth = width > height ? width * 0.1 : width * 0.14
+  const cardSize = {
+    cardWidth: cardWidth,
+    cardHeight: cardWidth * 1.5,
+  }
 
   // function getKey(musicKey) {
   //   setHexKey(musicKey)
@@ -110,6 +116,7 @@ export default function App() {
             font,
             theme,
             setTheme,
+            cardSize,
           }}
         >
           <AnnotatedContext.Provider
@@ -125,14 +132,16 @@ export default function App() {
                 <AnnotatedCard />
               </View>
             ) : (
-              <MainGamePage
-                isRandomAllQuestionTypes={isRandom}
-                isAnimated={animationsOn}
-                setShowOptions={showOptionsSetter}
-                showOptions={showOptions}
-                dimensions={{ width, height }}
-                randomMagusMode={randomMagusMode}
-              />
+              <GameContextProvider>
+                <MainGamePage
+                  isRandomAllQuestionTypes={isRandom}
+                  isAnimated={animationsOn}
+                  setShowOptions={showOptionsSetter}
+                  showOptions={showOptions}
+                  dimensions={{ width, height }}
+                  randomMagusMode={randomMagusMode}
+                />
+              </GameContextProvider>
             )}
           </AnnotatedContext.Provider>
           {showOptions && (

@@ -9,6 +9,7 @@ import Animated, {
   interpolate,
   Extrapolate,
 } from 'react-native-reanimated'
+import { useGameContext } from './CardsContext'
 
 const blankCard = require('../assets/blankcard.png')
 
@@ -21,17 +22,20 @@ const QuestionCards = ({
   answerCardOnPress,
   annotated,
   isAnimated,
-  displayScore,
   score,
   newRound,
-  skip,
   skipQuestion,
-  fontScale,
 }) => {
   //local state so you don't see the answer card before animation
   const [localAnswer, setLocalAnswer] = useState(answerCard)
-  const { firstCard, secondCard, answerCard } = cards
+  const {
+    questionCards: { firstCard, secondCard, answerCard },
+    attmptCount,
+    displayScore,
+  } = useGameContext()
   //Probablyg et rid of this
+  let skip = attemptCount > 2 ? true : false
+
   const flipAnswerCardAnimation = useSharedValue(0)
   const flipScoreCardAnimation = useSharedValue(0)
 
@@ -39,7 +43,6 @@ const QuestionCards = ({
     answerDisplay && isAnimated
       ? handleFlip(180, flipAnswerCardAnimation)
       : cardsToInit()
-
     setLocalAnswer(answerCard)
   }, [skip, answerDisplay])
 

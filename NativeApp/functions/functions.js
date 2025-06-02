@@ -24,7 +24,7 @@ export function intervalOfWhatKey(noteCardIDX, IntervalCardIDX) {
   return answerCardIDX
 }
 
-export function findNoteEquivalent(inpt, array) {
+export function findNoteEquivalentInGivenArray(inpt, array) {
   const result = array.filter((x) => x.name === inpt.name)
   return result[0]
 }
@@ -33,7 +33,6 @@ export function getAltOctaveNotes(note, root, testArray = noteAudioSrc) {
   let result
   //WE ARE PASSING A NOTE HERE INSTEAD OF IDX
   let noteWithIdx = getIdxAndNotes(note, testArray)
-
   if (note.name === root.value.name) {
     result = noteWithIdx.note.audioSrc['2']
   } else {
@@ -149,7 +148,7 @@ export const cardReducer = (
   let firstCard
   let secondCard
   let answerIdx
-  // console.log(' in reducer:', firstCardProp, abBool, questionType)
+
   switch (questionType) {
     case KEY:
       firstCard = randomiseKey ? returnRandomCard(keys) : firstCardProp
@@ -157,7 +156,6 @@ export const cardReducer = (
       answerIdx = abBool
         ? getNoteCardIdxFromIntervalAndKeyCard(firstCard.idx, secondCard.idx)
         : distanceUpInIntervals(firstCard?.idx, secondCard.idx)
-      // console.log('C1:', firstCard, 'C2:', secondCard, 'answIdx:', answerIdx)
       return {
         firstCardFromReducer: firstCard,
         secondCardFromReducer: secondCard,
@@ -204,7 +202,6 @@ export function returnAnswerType(inpt, correctAnswer, attemptCount) {
   let incrementAttemptCount
   let shouldReload = false
   let whichCircle = null
-
   if (correctAnswer?.name == inpt.name) {
     whichCircle = attemptCount === 0 ? true : attemptCount === 1 ? false : null
     incrementAttemptCount = false
