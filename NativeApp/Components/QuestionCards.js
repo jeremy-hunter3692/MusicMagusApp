@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useContext } from 'react'
 import { StyleSheet, View, Text, Pressable } from 'react-native'
 import CardButton from './CardButton'
 import ScoreCard from './ScoreCard'
@@ -9,42 +9,42 @@ import Animated, {
   interpolate,
   Extrapolate,
 } from 'react-native-reanimated'
-import { useGameContext } from './CardsContext'
+import { updateGameContext, useGameContext } from './CardsContext'
+import AnnotatedContext from './AnnotatedContext.js'
 
 const blankCard = require('../assets/blankcard.png')
+let isAnimated = true
 
-const QuestionCards = ({
-  cards,
-  findNoteFunction,
-  answerDisplay,
-  cardSize,
-  rootCardPress,
-  answerCardOnPress,
-  annotated,
-  isAnimated,
-  score,
-  newRound,
-  skipQuestion,
-}) => {
-  //local state so you don't see the answer card before animation
-  const [localAnswer, setLocalAnswer] = useState(answerCard)
-  const {
-    questionCards: { firstCard, secondCard, answerCard },
-    attmptCount,
-    displayScore,
-  } = useGameContext()
-  //Probablyg et rid of this
-  let skip = attemptCount > 2 ? true : false
-
+const QuestionCards = ({ cardSize }) => {
   const flipAnswerCardAnimation = useSharedValue(0)
   const flipScoreCardAnimation = useSharedValue(0)
+  const { annotated } = useContext(AnnotatedContext)
+  const {
+    questionCards: { firstCard, secondCard, answerCard },
+    attemptCount,
+    scoreCardDisplay: displayScore,
+    showAnswerCard,
+  } = useGameContext()
+  const {
+    questionCardPress,
+    score,
+    newRound,
+    skipQuestion,
+    getAudioSrcIdxFromCardReducer,
+  } = updateGameContext()
 
   useEffect(() => {
-    answerDisplay && isAnimated
-      ? handleFlip(180, flipAnswerCardAnimation)
-      : cardsToInit()
-    setLocalAnswer(answerCard)
-  }, [skip, answerDisplay])
+    if (showAnswerCard && isAnimated) {
+      handleFlip(180, flipAnswerCardAnimation)
+      handleFlip(180, flipScoreCardAnimation)
+    } else {
+      cardsToInit()
+    }
+  }, [showAnswerCard])
+  console.log('attmpe', attemptCount)
+
+  let skip = attemptCount > 2 ? true : false
+  let fontScale = cardSize.fontScale || 16
 
   function cardsToInit() {
     flipScoreCardAnimation.value = 0
@@ -217,11 +217,11 @@ const QuestionCards = ({
         </View>
         <View style={styles.forAnnotation}>
           <CardButton
-            key={`question ${localAnswer?.name || localAnswer?.imgSrc}`}
+            key={`question ${firstCard?.name || firstCard?.imgSrc}`}
             cardSize={cardSize}
             data={firstCard}
-            source={firstCard.value.imgSrc}
-            onPressPropFunction={droneSetter}
+            imgSource={firstCard?.value.imgSrc || blankCard}
+            onPressPropFunction={questionCardPress}
             animated={isAnimated}
           />
         </View>
@@ -237,10 +237,10 @@ const QuestionCards = ({
             cardSize={cardSize}
             data={secondCard}
             root={firstCard}
-            source={secondCard?.value.imgSrc}
+            imgSource={secondCard?.value.imgSrc}
             answer={answerCard}
-            onPressPropFunction={answerCardOnPress}
-            findAudioSourceFunction={findNoteFunction}
+            onPressPropFunction={() => console.log('secondcard onpress fired')}
+            findAudioSourceFunction={getAudioSrcIdxFromCardReducer}
             autoPlay={true}
             animationDelay={3}
             animated={isAnimated}
@@ -248,11 +248,9 @@ const QuestionCards = ({
         </View>
         <View style={styles.forAnnotation}>
           {annotated && (
-            <>
-              <Text style={styles.annotatedText}>
-                {'Answer To be revealed ➔'}
-              </Text>
-            </>
+            <Text style={styles.annotatedText}>
+              {'Answer To be revealed ➔'}
+            </Text>
           )}
         </View>
 
@@ -266,9 +264,11 @@ const QuestionCards = ({
                 ]}
               >
                 <CardButton
+                  key={answerCard?.name || answerCard?.imgSrc}
                   cardSize={cardSize}
-                  data={localAnswer?.name}
-                  source={localAnswer?.imgSrc}
+                  data={answerCard}
+                  imgSource={answerCard?.imgSrc}
+                  onPressPropFunction={() => console.log('blank')}
                   animationDelay={5}
                   animated={isAnimated}
                 />
@@ -280,10 +280,11 @@ const QuestionCards = ({
                 ]}
               >
                 <CardButton
-                  key={localAnswer?.name || localAnswer?.imgSrc} // Use a unique key based on the answerCard
-                  data={{ value: { imgSrc: blankCard, blankCard: true } }}
+                  key={`backCard ${blankCard}`} // Use a unique key based on the answerCard
                   cardSize={cardSize}
-                  source={blankCard}
+                  data={{ value: { imgSrc: blankCard, blankCard: true } }}
+                  imgSource={blankCard}
+                  onPressPropFunction={() => console.log('blank')}
                   animationDelay={5}
                   animated={isAnimated}
                 />
@@ -291,7 +292,7 @@ const QuestionCards = ({
             </>
           ) : (
             <>
-              {/* {answerDisplay ? (
+              {/* {ashowAnswerCard? (
                 <View
                   style={[
                     styles.card,
@@ -303,7 +304,7 @@ const QuestionCards = ({
                     data={answer?.name}
                     source={answer?.imgSrc}
                     annotated={annotated}
-                
+
                   />
                 </View>
               ) : (

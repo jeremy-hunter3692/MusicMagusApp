@@ -21,8 +21,9 @@ const MainGamePage = ({
   dimensions,
   randomMagusMode,
 }) => {
+  //TO DO put into theme?
   const { width, height } = dimensions
-  const scoreCirclesSize = height / 20
+
   //Might not need, props should re load the children correctly...?
   const [dronePlaying, setDronePlaying] = useState(true)
 
@@ -44,6 +45,8 @@ const MainGamePage = ({
     attemptCount,
   } = useGameContext()
 
+  const { setRandomisedQuestionsSameType } = updateGameContext()
+  const scoreCirclesSize = height / 20
   function droneOnOff() {
     dronePlaying ? setDronePlaying(false) : setDronePlaying(true)
   }
@@ -74,6 +77,7 @@ const MainGamePage = ({
     choosingKey && annotated ? choosingKeyCardSizes() : initCardSizeChanges()
     setAnnotatedMode()
   }
+
 
   const styles = StyleSheet.create({
     scoreCircles: {
@@ -132,7 +136,6 @@ const MainGamePage = ({
           padding: 0,
           flexDirection: 'row-reverse',
           justifyContent: 'space-between',
-          // alignItems: 'center',
           backgroundColor: theme.secondaryColor,
           margin: groupedNavMargin,
         }}
@@ -297,7 +300,6 @@ const MainGamePage = ({
                 ? cardHeight * annotatedQCardsSizeChangeFactor
                 : cardHeight,
           }}
-      
         />
       </View>
       <View style={[styles.displayCardsGrid, annotated && { marginTop: 50 }]}>
@@ -307,7 +309,7 @@ const MainGamePage = ({
               <Text style={styles.annotatedText}>
                 Choose your key below ↓ or{' '}
               </Text>
-              <Pressable onPress={setRandom}>
+              <Pressable onPress={setRandomisedQuestionsSameType}>
                 <Text style={styles.chooseRandomText}> Magus Mode</Text>
               </Pressable>
             </View>

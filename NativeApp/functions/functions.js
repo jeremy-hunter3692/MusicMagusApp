@@ -199,6 +199,7 @@ export const cardReducer = (
 export function correctAnswer(inpt, attemptCount, question) {}
 
 export function returnAnswerType(inpt, correctAnswer, attemptCount) {
+  console.log('return top', inpt, correctAnswer, attemptCount)
   let incrementAttemptCount
   let shouldReload = false
   let whichCircle = null
@@ -213,6 +214,7 @@ export function returnAnswerType(inpt, correctAnswer, attemptCount) {
       whichCircle = null
     }
   }
+  console.log(incrementAttemptCount, whichCircle)
   return {
     incrementAttemptCount: incrementAttemptCount,
     shouldReload: shouldReload,

@@ -3,24 +3,25 @@ import { StyleSheet, Text, View, Image, TouchableOpacity } from 'react-native'
 import CardButton from './CardButton.js'
 
 import { useContext } from 'react'
-import { useGameContext, useGameContextUpdate } from './CardsContext.js'
+import {
+  updateGameContext,
+  useGameContext,
+  useGameContextUpdate,
+} from './CardsContext.js'
 import AnnotatedContext from './AnnotatedContext.js'
 import ThemeContext from './ThemeContext.js'
 
-const DisplayInputCardsGrid = ({ findNoteFunction, reDeal, isAnimated }) => {
-  const {
-    questionCard,
-    displayInputCardArray: cardsArray,
-    userAnswerSetter,
-  } = useGameContext()
+const DisplayInputCardsGrid = ({ reDeal, isAnimated }) => {
+  const { questionCard, displayInputCardArray: cardsArray } = useGameContext()
+  const { userInputCardPress} = updateGameContext()
   const { annotated } = useContext(AnnotatedContext)
 
   function setAnswer(inpt) {
     if (annotated) {
       return
     }
-    let audioSrc = findNoteFunction(inpt)
-    userAnswerSetter(inpt)
+    let audioSrc = userInputCardPress(inpt)
+
     return audioSrc
   }
 
@@ -39,9 +40,9 @@ const DisplayInputCardsGrid = ({ findNoteFunction, reDeal, isAnimated }) => {
             <CardButton
               onPressPropFunction={setAnswer}
               data={{ value: x }}
-              source={x.imgSrc}
+              imgSource={x.imgSrc}
               key={x.name}
-              findAudioSourceFunction={findNoteFunction}
+              findAudioSourceFunction={userInputCardPress}
               animationDelay={index}
               reDeal={reDeal}
               animated={isAnimated}
@@ -55,9 +56,9 @@ const DisplayInputCardsGrid = ({ findNoteFunction, reDeal, isAnimated }) => {
             <CardButton
               onPressPropFunction={setAnswer}
               data={{ value: x }}
-              source={x.imgSrc}
+              imgSource={x.imgSrc}
               key={x.name}
-              findAudioSourceFunction={findNoteFunction}
+              findAudioSourceFunction={userInputCardPress}
               animationDelay={index + dealAnimationDelay}
               reDeal={reDeal}
               animated={isAnimated}

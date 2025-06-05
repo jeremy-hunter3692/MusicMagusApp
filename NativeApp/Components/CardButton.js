@@ -14,12 +14,13 @@ const initCardSizeValue = 0
 const CardButton = ({
   onPressPropFunction,
   data,
-  source,
+  imgSource,
   reDeal,
   autoPlay,
   answer,
   animationDelay,
   animated,
+  thing,
 }) => {
   const [noteAudioSrc, setNoteAudioSrc] = useState()
   const [playBool, setPlayBool] = useState(autoPlay)
@@ -34,7 +35,7 @@ const CardButton = ({
 
   useEffect(() => {
     if (annotated) {
-      console.log('anootated IF', data, source)
+      // console.log('anootated IF', data, source)
       return
     }
     cardSizeScale.value = withSpring(initCardSizeValue)
@@ -49,10 +50,9 @@ const CardButton = ({
       autoPlay && !hasPlayed && answer ? handlePressIn(data) : ''
     }, 1000)
     return () => clearTimeout(timeOutId)
-  }, [answer, source, reDeal])
+  }, [answer, imgSource, reDeal])
 
   function handlePressIn(inpt) {
-    console.log('cb')
     //??????this must be with {value }
     if (annotated) {
       setAnnotatedCard(inpt)
@@ -125,7 +125,7 @@ const CardButton = ({
         <Animated.View
           style={[{ width: '100%', height: '100%' }, animatedStyle]}
         >
-          <Image source={source} testID={`image`} style={styles.image} />
+          <Image source={imgSource} testID={`image`} style={styles.image} />
         </Animated.View>
       </Pressable>
     </>

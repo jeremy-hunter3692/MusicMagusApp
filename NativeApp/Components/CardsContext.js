@@ -23,6 +23,7 @@ let questionNumber = 0
 let attemptCount = 0
 let userScore = 0
 let globalQuestionTimeOutID
+console.log('QNO', questionNumber)
 //Possibly in a options context?
 let droneType = true
 
@@ -35,22 +36,23 @@ export function updateGameContext() {
 }
 
 export function GameContextProvider({ children }) {
-  const [userAnswer, setUserAnswer] = useState(null)
   //questionType will refer to what the first card is
   const [questionType, setQuestionType] = useState('Key')
   const [droneAudioSrc, setDroneAudioSrc] = useState(null)
   const [displayInputCardArray, setDisplayInputCardArray] = useState()
-  const [scoreCircles, setScoreSircle] = useState(scoreCirclesInit)
-
-  const [questionCards, setQuestionCards] = useState()
+  const [scoreCircles, setScoreCircles] = useState(scoreCirclesInit)
+  const [questionCards, setQuestionCards] = useState({
+    firstCard: null,
+    secondCard: null,
+    answerCard: null,
+  })
   const [abBool, setabBool] = useState(true)
   const [choosingKey, setChoosingKey] = useState(false)
-  const [resultDisplay, setResultDisplay] = useState(false)
+  const [showAnswerCard, setShowAnswerCard] = useState(false)
   const [scoreCardDisplay, setScoreCardDisplay] = useState(null)
 
   useEffect(() => {
-    let cardsInit = loadNewQuestionCards(false, null, false, false)
-    console.log('cardsInit', cardsInit)
+    let cardsInit = loadNewQuestionCards(false, keys[0], false, false)
     setQuestionCards(cardsInit)
   }, [])
 
@@ -74,7 +76,6 @@ export function GameContextProvider({ children }) {
     let storeTempPrevCard = questionCards?.secondCard
       ? questionCards.secondCard
       : null
-
     let count = 0
     //TO DO CHECK OVER THIS Put this checkin in redcuer?
     if (storeTempPrevCard != null) {
@@ -149,7 +150,6 @@ export function GameContextProvider({ children }) {
             questionCards.firstCard
           )
         : findNoteEquivalentInGivenArray(cardWithValueIn.value, noteAudioSrc)
-
     audioSrcIdx = getAltOctaveNotes(audioSrcIdx, questionCards.firstCard)
     return audioSrcIdx
   }
@@ -158,10 +158,7 @@ export function GameContextProvider({ children }) {
     if (checkForGameOver()) {
       return
     }
-    setResultDisplay(true)
-    setTimeout(() => {
-      attemptCount = 0
-    }, newAnswerDelay)
+    setShowAnswerCard(true)
     nextQuestionReloadTimeOut()
   }
 
@@ -178,12 +175,18 @@ export function GameContextProvider({ children }) {
   }
 
   function reload(newFirstCard = questionCards.firstCard) {
-    setResultDisplay(false)
-    loadNewQuestionCards(isRandomisedKey, newFirstCard)
+    setShowAnswerCard(false)
+    let newQuestion = loadNewQuestionCards(
+      isRandomisedQuestionSameType,
+      newFirstCard
+    )
+    setQuestionCards(newQuestion)
   }
 
   function nextQuestionReloadTimeOut(fastReload = false) {
+    console.log('next', questionNumber, scoreCircles)
     questionNumber++
+    attemptCount = 0
     let delaySpeed = fastReload ? 200 : newAnswerDelay
     setDroneAudioSrc(null)
     isReloading = true
@@ -195,19 +198,22 @@ export function GameContextProvider({ children }) {
   }
 
   function resetForNewGame(inpt = questionCards.firstCard) {
-    setDroneAudioSrc(null)
+    console.log('reset')
+    inpt = isRandomisedQuestionSameType ? returnRandomCard(keys) : inpt
     userScore = 0
     attemptCount = 0
     questionNumber = 0
-    inpt = isRandomisedKey ? returnRandomCard(keys) : inpt
+    setDroneAudioSrc(null)
+    setScoreCardDisplay(0)
+    setScoreCircles(scoreCirclesInit)
+
     reload(inpt)
     isReloading = false
-    setScoreSircle(scoreCirclesInit)
-    setScoreCardDisplay(0)
   }
 
-  function setRandom() {
-    isRandomisedKey = true
+  function setRandomisedQuestionsSameType() {
+    //TODO Change for randomised question?
+    isRandomisedQuestionSameType = true
     setChoosingKey(false)
     resetForNewGame()
   }
@@ -222,56 +228,53 @@ export function GameContextProvider({ children }) {
 
   function questionCardPress(inpt) {
     if (choosingKey) {
-      initCardSizeChanges()
+      // initCardSizeChanges()
       setDisplayInputCardArray((x) => [...intervals])
       setChoosingKey((x) => false)
     } else {
       setChoosingKey(true)
       setDroneAudioSrc(null)
-      choosingKeyCardSizes()
+      // choosingKeyCardSizes()
       setDisplayInputCardArray(keys)
     }
   }
 
   function userInputCardPress(inpt) {
-    if (!choosingKey) {
-      userAnswerSetter(inpt)
-      return
-    }
-    initCardSizeChanges()
-    setQuestionCards((x) => ({ ...x, firstCard: inpt }))
-    loadNewQuestionCards(false, inpt)
-    isRandomisedKey = false
-    resetForNewGame(inpt)
-    setChoosingKey((x) => false)
-  }
-
-  function userAnswerSetter(inpt) {
     if (isReloading) {
       return
     } else {
-      setUserAnswer(inpt)
-      if (inpt.name === questionCards.answerCard?.name) {
-        setResultDisplay(true)
+      if (!choosingKey) {
+        userAnswerSetter(inpt)
+        console.log('if in userInpute')
+        return
       }
-      const { incrementAttemptCount, shouldReload, whichCircle } =
-        returnAnswerType(inpt, questionCards.answerCard, attemptCount)
 
-      setScoreSircle((prevArry) => {
-        const updatedArr = [...prevArry]
-        if (whichCircle !== null) {
-          updatedArr[questionNumber - 1] = whichCircle
-        }
-        return updatedArr
-      })
-      attemptCount = incrementAttemptCount ? ++attemptCount : 0
-      globalQuestionTimeOutID =
-        shouldReload && questionNumber < 12
-          ? nextQuestionReloadTimeOut(false)
-          : null
-      whichCircle ? userScore++ : ''
-      checkForGameOver()
+      initCardSizeChanges()
+      setQuestionCards((x) => ({ ...x, firstCard: inpt }))
+      loadNewQuestionCards(false, inpt)
+      isRandomisedKey = false
+      resetForNewGame(inpt)
+      setChoosingKey((x) => false)
     }
+  }
+
+  function userAnswerSetter(inpt) {
+    if (inpt.value.name === questionCards?.answerCard.name) {
+      setShowAnswerCard(true)
+    }
+    //could move this and cut out retunrAnswerType plus should reload?
+    //TO DO fix cards having value or not value CHECK THIS fRIST IF ISSUES
+    const { incrementAttemptCount, shouldReload, whichCircle } =
+      returnAnswerType(inpt.value, questionCards.answerCard, attemptCount)
+    const updatedArr = [...scoreCircles]
+    whichCircle !== null ? (updatedArr[questionNumber] = whichCircle) : ''
+    setScoreCircles((prevArry) => updatedArr)
+
+    attemptCount = incrementAttemptCount ? ++attemptCount : 0
+    globalQuestionTimeOutID =
+      shouldReload && questionNumber < 12 ? nextQuestionReloadTimeOut() : null
+    whichCircle ? userScore++ : ''
+    checkForGameOver()
   }
 
   function selectDroneAudio() {
@@ -283,7 +286,6 @@ export function GameContextProvider({ children }) {
     <GameContext.Provider
       value={{
         questionCards,
-        userAnswer,
         questionType,
         droneAudioSrc,
         displayInputCardArray,
@@ -291,10 +293,21 @@ export function GameContextProvider({ children }) {
         questionNumber,
         choosingKey,
         attemptCount,
+        showAnswerCard,
+        scoreCardDisplay,
+        getAudioSrcIdxFromCardReducer,
       }}
     >
       <GameUpdateContext.Provider
-        value={{ loadNewQuestionCards, userAnswerSetter, userInputCardPress }}
+        value={{
+          loadNewQuestionCards,
+          userAnswerSetter,
+          userInputCardPress,
+          questionCardPress,
+          setRandomisedQuestionsSameType,
+          skipQuestion,
+          nextQuestionReloadTimeOut,
+        }}
       >
         {children}
       </GameUpdateContext.Provider>
