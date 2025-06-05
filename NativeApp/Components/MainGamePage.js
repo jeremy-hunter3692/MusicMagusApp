@@ -1,13 +1,15 @@
 import React, { useState, useContext } from 'react'
 import { StyleSheet, View, Text, Pressable } from 'react-native'
+
 import Circle from './Circle.js'
 import DronePlayer from './DronePlayer.js'
 import QuestionCards from './QuestionCards.js'
 import DisplayCardsGrid from './DisplayInputCardsGrid.js'
 import QuestionIconButtons from './QuestionTypeIconButtons.js'
-import { useGameContext, updateGameContext } from './CardsContext.js'
+
 import AnnotatedContext from './AnnotatedContext.js'
 import ThemeContext from './ThemeContext.js'
+import { useGameContext, useUpdateGameContext } from './CardsContext.js'
 
 const groupedNavMargin = 0
 
@@ -18,12 +20,8 @@ const MainGamePage = ({
   setShowOptions,
   isRandomAllQuestionTypes,
   isAnimated,
-  dimensions,
   randomMagusMode,
 }) => {
-  //TO DO put into theme?
-  const { width, height } = dimensions
-
   //Might not need, props should re load the children correctly...?
   const [dronePlaying, setDronePlaying] = useState(true)
 
@@ -32,8 +30,10 @@ const MainGamePage = ({
 
   const {
     cardSize: { cardWidth, cardHeight },
+    dimensions: { width, height },
     theme,
     font: { fontScale, fontStyle },
+    scoreCirclesSize,
   } = useContext(ThemeContext)
 
   const {
@@ -42,11 +42,20 @@ const MainGamePage = ({
     scoreCircles,
     questionNumber,
     choosingKey,
-    attemptCount,
   } = useGameContext()
 
-  const { setRandomisedQuestionsSameType } = updateGameContext()
-  const scoreCirclesSize = height / 20
+  const { setRandomisedQuestionsSameType } = useUpdateGameContext()
+
+  function initCardSizeChanges() {
+    annotatedDisplayGridSizeChangeFactor = 0.5
+    annotatedQCardsSizeChangeFactor = 1.2
+  }
+
+  function choosingKeyCardSizes() {
+    annotatedDisplayGridSizeChangeFactor = 0.9
+    annotatedQCardsSizeChangeFactor = 0.8
+  }
+
   function droneOnOff() {
     dronePlaying ? setDronePlaying(false) : setDronePlaying(true)
   }
@@ -59,36 +68,48 @@ const MainGamePage = ({
     // reloadTimeOut(true)
   }
 
-  //TO DO Think this isn't needed?
-  function droneReload() {}
-
-  function initCardSizeChanges() {
-    annotatedDisplayGridSizeChangeFactor = 0.5
-    annotatedQCardsSizeChangeFactor = 1.2
-  }
-
-  function choosingKeyCardSizes() {
-    annotatedDisplayGridSizeChangeFactor = 0.9
-    annotatedQCardsSizeChangeFactor = 0.8
-  }
-
   function annotatedButtonClick() {
     //TO DO double check this
     choosingKey && annotated ? choosingKeyCardSizes() : initCardSizeChanges()
     setAnnotatedMode()
   }
 
-
   const styles = StyleSheet.create({
-    scoreCircles: {
-      margin: 0,
-      fontWeight: 'bold',
-      flex: 0.1,
-      color: 'white',
+    leftNavBar: {
+      flexDirection: 'row-reverse',
+      justifyContent: 'space-between',
+      backgroundColor: theme.secondaryColor,
+      margin: groupedNavMargin,
+      flex: 0.3,
+      padding: 0,
+    },
+    questionButtonInRightNavbar: {
       flexDirection: 'row',
-      backgroundColor: '#19af59',
-      justifyContent: 'flex-start',
+      justifyContent: 'flex-end',
       alignItems: 'center',
+      margin: groupedNavMargin,
+      flex: 0.3,
+      padding: 0,
+    },
+    rightNavBar: {
+      fontWeight: 'bold',
+      flexDirection: 'row',
+      justifyContent: 'flex-end',
+      alignItems: 'center',
+      textAlign: 'center',
+      margin: groupedNavMargin,
+      flex: 0.3,
+      padding: 0,
+    },
+    scoreCircles: {
+      fontWeight: 'bold',
+      flexDirection: 'row',
+      justifyContent: 'center',
+      alignItems: 'center',
+      backgroundColor: theme.secondaryColor,
+      margin: groupedNavMargin,
+      flex: 1,
+      padding: 0,
     },
     topRowCards: {
       flexDirection: 'row',
@@ -114,6 +135,18 @@ const MainGamePage = ({
       margin: 2,
       padding: 0,
     },
+    optionText: {
+      color: 'black',
+      fontSize: fontScale,
+    },
+    annotatedButtonText: { color: theme.primaryColor, fontSize: fontScale },
+    topAnnotatedText: {
+      flex: 0.75,
+      padding: 10,
+      flexDirection: 'row',
+      justifyContent: 'space-between',
+      alignItems: 'flex-start',
+    },
     annotatedText: {
       color: 'white',
       fontWeight: 'bold',
@@ -130,39 +163,9 @@ const MainGamePage = ({
 
   return (
     <>
-      <View
-        style={{
-          flex: 0.3,
-          padding: 0,
-          flexDirection: 'row-reverse',
-          justifyContent: 'space-between',
-          backgroundColor: theme.secondaryColor,
-          margin: groupedNavMargin,
-        }}
-      >
-        <View
-          style={{
-            margin: groupedNavMargin,
-            padding: 0,
-            flex: 0.3,
-            fontWeight: 'bold',
-            color: 'white',
-            flexDirection: 'row',
-            justifyContent: 'flex-end',
-            alignItems: 'center',
-            textAlign: 'center',
-          }}
-        >
-          <View
-            style={{
-              margin: groupedNavMargin,
-              padding: 0,
-              flexDirection: 'row',
-              justifyContent: 'flex-end',
-              alignItems: 'center',
-              margin: groupedNavMargin,
-            }}
-          >
+      <View style={styles.leftNavBar}>
+        <View style={styles.rightNavBar}>
+          <View style={styles.questionButtonInRightNavbar}>
             {!annotatedCard ? (
               <Pressable onPress={() => setShowOptions()}>
                 <Text style={styles.optionText}>Options {'  '}</Text>
@@ -185,25 +188,11 @@ const MainGamePage = ({
                 },
               ]}
             >
-              <Text style={{ color: theme.primaryColor }}>?</Text>
+              <Text style={styles.annotatedButtonText}>?</Text>
             </Pressable>
           </View>
         </View>
-        <View
-          testID="scoreTempTest"
-          style={[
-            styles.scoreCircles,
-            {
-              backgroundColor: theme.secondaryColor,
-              justifyContent: 'center',
-              alignItems: 'center',
-              flexDirection: 'row',
-              flex: 1,
-              margin: groupedNavMargin,
-              padding: 0,
-            },
-          ]}
-        >
+        <View testID="scoreTempTest" style={styles.scoreCircles}>
           {scoreCircles.map((x, idx) => {
             let questionNo = idx === questionNumber ? true : false
             return (
@@ -237,27 +226,18 @@ const MainGamePage = ({
         <DronePlayer
           rootValue={droneAudioSrc}
           dronePlaying={dronePlaying}
-          reload={droneReload}
+          // reload={droneReload}
           style={{ flex: 0, height: 0, width: 0, margin: 0, padding: 0 }}
         />
       ) : (
         ''
       )}
       {annotated && (
-        <View
-          style={{
-            flex: 0.75,
-            padding: 10,
-            flexDirection: 'row',
-            justifyContent: 'space-between',
-            alignItems: 'flex-start',
-          }}
-        >
+        <View style={styles.topAnnotatedText}>
           <View>
             <Text style={[styles.annotatedText, { fontSize: fontScale * 0.8 }]}>
               Key Interval Note
             </Text>
-
             <Text style={styles.annotatedText}>
               ↑ Change question type here key Interval Note
             </Text>
@@ -330,7 +310,6 @@ const MainGamePage = ({
                   ? cardHeight * annotatedDisplayGridSizeChangeFactor
                   : cardHeight,
             }}
-            cardsArray={displayInputCardArray}
           />
         )}
         {annotated && (

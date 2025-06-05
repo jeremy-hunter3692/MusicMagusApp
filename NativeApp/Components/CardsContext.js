@@ -31,7 +31,7 @@ export function useGameContext() {
   return useContext(GameContext)
 }
 
-export function updateGameContext() {
+export function useUpdateGameContext() {
   return useContext(GameUpdateContext)
 }
 
@@ -184,7 +184,7 @@ export function GameContextProvider({ children }) {
   }
 
   function nextQuestionReloadTimeOut(fastReload = false) {
-    console.log('next', questionNumber, scoreCircles)
+    console.log('next')
     questionNumber++
     attemptCount = 0
     let delaySpeed = fastReload ? 200 : newAnswerDelay
@@ -206,7 +206,6 @@ export function GameContextProvider({ children }) {
     setDroneAudioSrc(null)
     setScoreCardDisplay(0)
     setScoreCircles(scoreCirclesInit)
-
     reload(inpt)
     isReloading = false
   }
@@ -245,15 +244,13 @@ export function GameContextProvider({ children }) {
     } else {
       if (!choosingKey) {
         userAnswerSetter(inpt)
-        console.log('if in userInpute')
         return
       }
-
-      initCardSizeChanges()
+      // initCardSizeChanges()
       setQuestionCards((x) => ({ ...x, firstCard: inpt }))
       loadNewQuestionCards(false, inpt)
-      isRandomisedKey = false
-      resetForNewGame(inpt)
+      isRandomisedQuestionSameType = false
+      resetForNewGame(inpt.value)
       setChoosingKey((x) => false)
     }
   }
@@ -296,17 +293,19 @@ export function GameContextProvider({ children }) {
         showAnswerCard,
         scoreCardDisplay,
         getAudioSrcIdxFromCardReducer,
+        userScore,
       }}
     >
       <GameUpdateContext.Provider
         value={{
-          loadNewQuestionCards,
           userAnswerSetter,
           userInputCardPress,
+          loadNewQuestionCards,
           questionCardPress,
           setRandomisedQuestionsSameType,
           skipQuestion,
           nextQuestionReloadTimeOut,
+          resetForNewGame,
         }}
       >
         {children}

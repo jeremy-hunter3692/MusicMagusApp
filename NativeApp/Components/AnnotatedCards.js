@@ -7,10 +7,9 @@ import ThemeContext from './ThemeContext.js'
 const AnnotatedCard = () => {
   const { annotatedCard, setAnnotatedMode } = useContext(AnnotatedContext)
   const { font, theme } = useContext(ThemeContext)
-  //TO DO font zise for this
+
   const bgColor = theme
   const fontSize = font.fontScale
-
   const { bottomRText, bottomLText, topRtext, topLText } =
     getDataForAnnotated(annotatedCard)
 
@@ -30,12 +29,12 @@ const AnnotatedCard = () => {
       padding: 5,
     },
     column: {
-      flex: 1, // Each column takes equal space
+      flex: 1,
       justifyContent: 'space-between',
       // paddingHorizontal: 10,
     },
     imageColumn: {
-      flex: 1.5, // Image column slightly larger if needed
+      flex: 1.5,
       justifyContent: 'center',
       alignItems: 'center',
     },
@@ -48,7 +47,6 @@ const AnnotatedCard = () => {
 
   return (
     <View style={styles.container}>
-      {/* First column with text */}
       <View style={styles.column}>
         <Text style={styles.textMain}>{topLText}</Text>
         <Text style={styles.textMain}>{bottomLText}</Text>

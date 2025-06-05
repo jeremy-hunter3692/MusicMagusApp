@@ -19,7 +19,6 @@ const OptionsPage = ({
   const [droneOnButton, setDroneOnButton] = useState(true)
   const [droneSound, setDroneSound] = useState(true)
   const [isRandomQuestion, setRandomQuestions] = useState(false)
-  console.log('thg', theme)
 
   const styles = StyleSheet.create({
     container: {
@@ -34,7 +33,7 @@ const OptionsPage = ({
       backgroundColor: theme.primaryColor,
       height: 1,
       margin: 10,
-      width: '%100',
+      width: '100%',
     },
     options: buttonTheme,
 
@@ -93,7 +92,6 @@ const OptionsPage = ({
     setRandomQuestions((x) => (x = !x))
     randomQuestionsSetter()
   }
-  // console.log({ droneSound })
   const boxHeight = height * 0.1
 
   function droneSwitch() {
@@ -114,7 +112,7 @@ const OptionsPage = ({
           </Pressable>
         </View>
         <View style={styles.line}></View>
-        <View style={{ ...styles.options, height: boxHeight }}>
+        <View style={[styles.options, { height: boxHeight }]}>
           <Pressable onPress={droneSoundChange}>
             <View style={{ flexDirection: 'row', alignItems: 'center' }}>
               <Text style={styles.headerText}>Drone Sound:</Text>
@@ -122,7 +120,7 @@ const OptionsPage = ({
             </View>
           </Pressable>
         </View>
-        <View style={{ ...styles.options, height: boxHeight }}>
+        <View style={[styles.options, { height: boxHeight }]}>
           <Pressable onPress={droneSwitch}>
             <Text style={styles.headerText}>Drone On/Off:</Text>
           </Pressable>
@@ -136,12 +134,12 @@ const OptionsPage = ({
             </View>
           )}
         </View>
-        <View style={{ ...styles.options, height: boxHeight }}>
+        <View style={[styles.options, { height: boxHeight }]}>
           <Pressable onPress={changeTheme}>
             <Text style={styles.headerText}>Change Theme</Text>
           </Pressable>
         </View>
-        <View style={{ ...styles.options, height: boxHeight }}>
+        <View style={[styles.options, { height: boxHeight }]}>
           <Pressable onPress={setRandom}>
             <Text style={styles.headerText}>Randomised Questions: </Text>
             <Text style={styles.headerText}>
@@ -149,7 +147,7 @@ const OptionsPage = ({
             </Text>
           </Pressable>
         </View>
-        <View style={{ ...styles.options, height: boxHeight }}>
+        <View style={[styles.options, { height: boxHeight }]}>
           <Pressable onPress={setAnimated}>
             <Text style={styles.headerText}>Animations: </Text>
             <Text style={styles.headerText}>{isAnimated ? 'on' : 'off'}</Text>

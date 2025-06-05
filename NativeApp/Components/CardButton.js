@@ -28,6 +28,7 @@ const CardButton = ({
   const initDealDelay = 30
   const cardSizeScale = useSharedValue(initCardSizeValue)
   const cardSpacing = { margin: 2, padding: 0 }
+
   const {
     cardSize: { cardWidth, cardHeight },
   } = useContext(ThemeContext)

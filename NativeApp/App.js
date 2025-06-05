@@ -44,27 +44,21 @@ export default function App() {
   const [isRandom, setIsRandom] = useState(false)
 
   const { width, height } = useWindowDimensions()
-  const font = { fontScale: width / 50, fontColor: 'white', fontType: 'Arial' }
+
+  const font = { fontScale: width / 90, fontColor: 'white', fontType: 'Arial' }
+
   const cardWidth = width > height ? width * 0.1 : width * 0.14
   const cardSize = {
     cardWidth: cardWidth,
     cardHeight: cardWidth * 1.5,
   }
+  const scoreCirclesSize = height / 20
+  const dimensions = { width: width, height: height }
 
   // function getKey(musicKey) {
   //   setHexKey(musicKey)
   // }
 
-  const randomMagusMode = {
-    margin: 4,
-    padding: 4,
-    color: theme.primaryColor,
-    fontSize: 10,
-    backgroundColor: '#FAFAFA',
-    borderRadius: 10,
-    borderColor: theme.secondaryColor,
-    borderWidth: 3,
-  }
   function handleAnnotatedClick(inpt) {
     annotatedCard ? setAnnotatedCard(null) : setAnnotatedCard(inpt)
   }
@@ -88,6 +82,17 @@ export default function App() {
   function showOptionsSetter() {
     annotatedCardDisplay ? setAnnotatedCardDisplay(false) : ''
     setShowOptions((x) => (x = !x))
+  }
+
+  const randomMagusMode = {
+    margin: 4,
+    padding: 4,
+    color: theme.primaryColor,
+    fontSize: 10,
+    backgroundColor: '#FAFAFA',
+    borderRadius: 10,
+    borderColor: theme.secondaryColor,
+    borderWidth: 3,
   }
   return (
     <>
@@ -115,8 +120,10 @@ export default function App() {
           value={{
             font,
             theme,
-            setTheme,
+            changeTheme,
             cardSize,
+            dimensions,
+            scoreCirclesSize,
           }}
         >
           <AnnotatedContext.Provider

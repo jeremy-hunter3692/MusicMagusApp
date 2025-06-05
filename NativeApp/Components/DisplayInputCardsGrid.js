@@ -1,19 +1,15 @@
-import { StatusBar } from 'expo-status-bar'
-import { StyleSheet, Text, View, Image, TouchableOpacity } from 'react-native'
-import CardButton from './CardButton.js'
-
 import { useContext } from 'react'
-import {
-  updateGameContext,
-  useGameContext,
-  useGameContextUpdate,
-} from './CardsContext.js'
+import { StatusBar } from 'expo-status-bar'
+import { StyleSheet, View, TouchableOpacity } from 'react-native'
+
+import { useUpdateGameContext, useGameContext } from './CardsContext.js'
 import AnnotatedContext from './AnnotatedContext.js'
 import ThemeContext from './ThemeContext.js'
+import CardButton from './CardButton.js'
 
 const DisplayInputCardsGrid = ({ reDeal, isAnimated }) => {
-  const { questionCard, displayInputCardArray: cardsArray } = useGameContext()
-  const { userInputCardPress} = updateGameContext()
+  const { displayInputCardArray: cardsArray } = useGameContext()
+  const { userInputCardPress } = useUpdateGameContext()
   const { annotated } = useContext(AnnotatedContext)
 
   function setAnswer(inpt) {

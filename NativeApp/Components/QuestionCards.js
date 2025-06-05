@@ -9,8 +9,9 @@ import Animated, {
   interpolate,
   Extrapolate,
 } from 'react-native-reanimated'
-import { updateGameContext, useGameContext } from './CardsContext'
+import { useUpdateGameContext, useGameContext } from './CardsContext'
 import AnnotatedContext from './AnnotatedContext.js'
+import ThemeContext from './ThemeContext.js'
 
 const blankCard = require('../assets/blankcard.png')
 let isAnimated = true
@@ -18,20 +19,27 @@ let isAnimated = true
 const QuestionCards = ({ cardSize }) => {
   const flipAnswerCardAnimation = useSharedValue(0)
   const flipScoreCardAnimation = useSharedValue(0)
+
+  const {
+    font: { fontScale, fontStyle },
+  } = useContext(ThemeContext)
+
   const { annotated } = useContext(AnnotatedContext)
+
   const {
     questionCards: { firstCard, secondCard, answerCard },
     attemptCount,
     scoreCardDisplay: displayScore,
     showAnswerCard,
   } = useGameContext()
+
   const {
     questionCardPress,
     score,
     newRound,
     skipQuestion,
     getAudioSrcIdxFromCardReducer,
-  } = updateGameContext()
+  } = useUpdateGameContext()
 
   useEffect(() => {
     if (showAnswerCard && isAnimated) {
@@ -41,10 +49,8 @@ const QuestionCards = ({ cardSize }) => {
       cardsToInit()
     }
   }, [showAnswerCard])
-  console.log('attmpe', attemptCount)
 
   let skip = attemptCount > 2 ? true : false
-  let fontScale = cardSize.fontScale || 16
 
   function cardsToInit() {
     flipScoreCardAnimation.value = 0
@@ -183,7 +189,7 @@ const QuestionCards = ({ cardSize }) => {
                 <Text
                   style={[
                     styles.annotatedText,
-                    { margein: 0, padding: 0, alignContent: 'flex-end' },
+                    { margin: 0, padding: 0, alignContent: 'flex-end' },
                   ]}
                 >
                   {'In this key  ➔ '}
