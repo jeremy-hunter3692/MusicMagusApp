@@ -7,13 +7,21 @@ import ThemeContext from './ThemeContext.js'
 const ScoreCard = ({}) => {
   const { skip, userScore } = useGameContext()
   const { skipQuestion, resetForNewGame } = useUpdateGameContext()
-  const { fontScale } = useContext(ThemeContext)
+  const { fontScale, cardSize } = useContext(ThemeContext)
   const styles = StyleSheet.create({
     container: {
-      flex: 1,
-      justifyContent: 'center',
-      alignItems: 'center',
-      backgroundColor: '#f8f9fa',
+      backgroundColor: 'white', //rgba(255, 255, 255, 0.7)',
+      //TODOreplace this hardcoded margin
+      borderColor: 'white',
+      borderRadius: 10,
+      borderWidth: 1,
+      padding: 5,
+      //This Three for margin and height and width is to match with images. TO DO: replace with a prop
+      margin: 3,
+      height: cardSize.cardHeight - 3,
+      width: cardSize.cardWidth - 3,
+      justifyContent: 'space-around',
+      color: 'black',
     },
     scoreText: {
       flexDirection: 'column',
@@ -42,7 +50,7 @@ const ScoreCard = ({}) => {
   })
 
   return (
-    <>
+    <View style={styles.container}>
       {skip ? (
         <Pressable onPress={() => skipQuestion()}>
           <Text style={styles.buttonText}>Skip Question?</Text>
@@ -56,7 +64,7 @@ const ScoreCard = ({}) => {
           </Pressable>
         </>
       )}
-    </>
+    </View>
   )
 }
 

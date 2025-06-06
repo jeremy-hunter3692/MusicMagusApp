@@ -40,17 +40,20 @@ const QuestionCards = ({ cardSize }) => {
     skipQuestion,
     getAudioSrcIdxFromCardReducer,
   } = useUpdateGameContext()
-
+  let skip = attemptCount > 2 ? true : false
+  console.log(attemptCount, skip)
   useEffect(() => {
+    console.log('score', flipScoreCardAnimation.value)
     if (showAnswerCard && isAnimated) {
       handleFlip(180, flipAnswerCardAnimation)
+      handleFlip(180, flipScoreCardAnimation)
+    } else if (skip || displayScore) {
+      console.log('display score')
       handleFlip(180, flipScoreCardAnimation)
     } else {
       cardsToInit()
     }
-  }, [showAnswerCard])
-
-  let skip = attemptCount > 2 ? true : false
+  }, [showAnswerCard, skip, displayScore])
 
   function cardsToInit() {
     flipScoreCardAnimation.value = 0
@@ -82,6 +85,7 @@ const QuestionCards = ({ cardSize }) => {
 
   const backAnimatedStyle = (card) =>
     useAnimatedStyle(() => {
+      console.log(card, 'score', flipScoreCardAnimation.value)
       const rotateY = interpolate(
         card.value,
         [0, 180],
@@ -147,20 +151,6 @@ const QuestionCards = ({ cardSize }) => {
       marginBottom: 10,
       borderColor: 'white',
       fontSize: fontScale,
-    },
-    scoreTextContainer: {
-      backgroundColor: 'white', //rgba(255, 255, 255, 0.7)',
-      //TODOreplace this hardcoded margin
-      borderColor: 'white',
-      borderRadius: 10,
-      borderWidth: 1,
-      padding: 5,
-      //This Three for margin and height and width is to match with images. TO DO: replace with a prop
-      margin: 3,
-      height: cardSize.cardHeight - 3,
-      width: cardSize.cardWidth - 3,
-      justifyContent: 'space-around',
-      color: 'black',
     },
 
     hiddenScoreCard: {
@@ -343,19 +333,11 @@ const QuestionCards = ({ cardSize }) => {
         </View>
         <Animated.View
           style={[
-            styles.hiddenScoreCard,
-            frontAnimatedStyle(flipScoreCardAnimation),
-            !annotated && (displayScore || skip) && styles.scoreTextContainer,
+            styles.scoreCardDisplay,
+            backAnimatedStyle(flipScoreCardAnimation),
           ]}
         >
-          {!annotated && (displayScore || skip) ? (
-            <ScoreCard
-              skipQuestion={skipQuestion}
-              skip={skip}
-              score={score}
-              newRound={newRound}
-            />
-          ) : null}
+          <ScoreCard />
         </Animated.View>
       </View>
     </>
