@@ -46,7 +46,7 @@ const QuestionCards = ({ cardSize }) => {
     console.log('score', flipScoreCardAnimation.value)
     if (showAnswerCard && isAnimated) {
       handleFlip(180, flipAnswerCardAnimation)
-      handleFlip(180, flipScoreCardAnimation)
+      // handleFlip(180, flipScoreCardAnimation)
     } else if (skip || displayScore) {
       console.log('display score')
       handleFlip(180, flipScoreCardAnimation)
@@ -337,7 +337,7 @@ const QuestionCards = ({ cardSize }) => {
             backAnimatedStyle(flipScoreCardAnimation),
           ]}
         >
-          <ScoreCard />
+          <ScoreCard skip={skip} />
         </Animated.View>
       </View>
     </>
