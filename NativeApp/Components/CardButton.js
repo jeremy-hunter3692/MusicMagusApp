@@ -114,7 +114,7 @@ const CardButton = ({
 
   return (
     <>
-      <SingleNotePlayer audioSrc={noteAudioSrc} shouldPlayBool={playBool} />
+      {/* <SingleNotePlayer audioSrc={noteAudioSrc} shouldPlayBool={playBool} /> */}
       <Pressable
         testID={data?.name}
         onPressIn={() => {

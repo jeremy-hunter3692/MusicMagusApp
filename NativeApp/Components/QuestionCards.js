@@ -9,7 +9,7 @@ import Animated, {
   interpolate,
   Extrapolate,
 } from 'react-native-reanimated'
-import { useUpdateGameContext, useGameContext } from './CardsContext'
+import { useUpdateGameContext, useGameContext } from './GameContext.js'
 import AnnotatedContext from './AnnotatedContext.js'
 import ThemeContext from './ThemeContext.js'
 
@@ -35,20 +35,14 @@ const QuestionCards = ({ cardSize }) => {
 
   const {
     questionCardPress,
-    score,
-    newRound,
-    skipQuestion,
     getAudioSrcIdxFromCardReducer,
   } = useUpdateGameContext()
   let skip = attemptCount > 2 ? true : false
-  console.log(attemptCount, skip)
   useEffect(() => {
-    console.log('score', flipScoreCardAnimation.value)
     if (showAnswerCard && isAnimated) {
       handleFlip(180, flipAnswerCardAnimation)
       // handleFlip(180, flipScoreCardAnimation)
     } else if (skip || displayScore) {
-      console.log('display score')
       handleFlip(180, flipScoreCardAnimation)
     } else {
       cardsToInit()
@@ -85,7 +79,6 @@ const QuestionCards = ({ cardSize }) => {
 
   const backAnimatedStyle = (card) =>
     useAnimatedStyle(() => {
-      console.log(card, 'score', flipScoreCardAnimation.value)
       const rotateY = interpolate(
         card.value,
         [0, 180],

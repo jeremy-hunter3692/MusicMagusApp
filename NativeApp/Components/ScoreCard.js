@@ -1,7 +1,7 @@
 import React, { useContext } from 'react'
 import { View, Text, StyleSheet, Pressable } from 'react-native'
 import { returnScoreText } from '../functions/functions.js'
-import { useGameContext, useUpdateGameContext } from './CardsContext.js'
+import { useGameContext, useUpdateGameContext } from './GameContext.js'
 import ThemeContext from './ThemeContext.js'
 
 const ScoreCard = ({ skip }) => {
@@ -10,20 +10,15 @@ const ScoreCard = ({ skip }) => {
   const { fontScale, cardSize } = useContext(ThemeContext)
 
   const styles = StyleSheet.create({
-    container: {
-      backgroundColor: 'white', //rgba(255, 255, 255, 0.7)',
-      //TODOreplace this hardcoded margin
-      borderColor: 'white',
-      borderRadius: 10,
-      borderWidth: 1,
-      padding: 5,
-      //This Three for margin and height and width is to match with images. TO DO: replace with a prop
-      margin: 3,
-      height: cardSize.cardHeight - 3,
-      width: cardSize.cardWidth - 3,
-      justifyContent: 'space-around',
-      color: 'black',
-    },
+    // container: {
+    //   padding: 5,
+    //   //This Three for margin and height and width is to match with images. TO DO: replace with a prop
+    //   margin: 3,
+    //   height: cardSize.cardHeight - 3,
+    //   width: cardSize.cardWidth - 3,
+    //   justifyContent: 'space-around',
+    //   color: 'black',
+    // },
     hiddenContainer: {
       padding: 5,
       //This Three for margin and height and width is to match with images. TO DO: replace with a prop
@@ -62,7 +57,12 @@ const ScoreCard = ({ skip }) => {
     <View
       style={[
         styles.hiddenContainer,
-        (skip || scoreCardDisplay) && styles.container,
+        (skip || scoreCardDisplay) && {
+          backgroundColor: 'white', //rgba(255, 255, 255, 0.7)',
+          borderColor: 'white',
+          borderRadius: 10,
+          borderWidth: 1,
+        },
       ]}
     >
       {skip ? (

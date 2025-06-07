@@ -9,7 +9,7 @@ import QuestionIconButtons from './QuestionTypeIconButtons.js'
 
 import AnnotatedContext from './AnnotatedContext.js'
 import ThemeContext from './ThemeContext.js'
-import { useGameContext, useUpdateGameContext } from './CardsContext.js'
+import { useGameContext, useUpdateGameContext } from './GameContext.js'
 
 const groupedNavMargin = 0
 
@@ -221,7 +221,7 @@ const MainGamePage = ({
           )}
         </View>
       </View>
-
+      {/* 
       {droneAudioSrc && dronePlaying ? (
         <DronePlayer
           rootValue={droneAudioSrc}
@@ -231,7 +231,7 @@ const MainGamePage = ({
         />
       ) : (
         ''
-      )}
+      )} */}
       {annotated && (
         <View style={styles.topAnnotatedText}>
           <View>

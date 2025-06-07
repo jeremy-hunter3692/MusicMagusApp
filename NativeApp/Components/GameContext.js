@@ -49,7 +49,7 @@ export function GameContextProvider({ children }) {
   const [abBool, setabBool] = useState(true)
   const [choosingKey, setChoosingKey] = useState(false)
   const [showAnswerCard, setShowAnswerCard] = useState(false)
-  const [scoreCardDisplay, setScoreCardDisplay] = useState(null)
+  const [scoreCardDisplay, setScoreCardDisplay] = useState(false)
 
   useEffect(() => {
     let cardsInit = loadNewQuestionCards(false, keys[0], false, false)
@@ -121,8 +121,10 @@ export function GameContextProvider({ children }) {
   }
 
   function checkForGameOver() {
+    console.log('check game', questionNumber)
     if (questionNumber > 11) {
-      setScoreCardDisplay(userScore)
+      setScoreCardDisplay(true)
+      console.log('gameover', userScore)
       isReloading = true
       return true
     }
@@ -184,8 +186,9 @@ export function GameContextProvider({ children }) {
   }
 
   function nextQuestionReloadTimeOut(fastReload = false) {
-    console.log('next')
+    console.log('next', questionNumber)
     questionNumber++
+    console.log('next after', questionNumber)
     attemptCount = 0
     let delaySpeed = fastReload ? 200 : newAnswerDelay
     setDroneAudioSrc(null)
@@ -204,7 +207,7 @@ export function GameContextProvider({ children }) {
     attemptCount = 0
     questionNumber = 0
     setDroneAudioSrc(null)
-    setScoreCardDisplay(0)
+    setScoreCardDisplay(null)
     setScoreCircles(scoreCirclesInit)
     reload(inpt)
     isReloading = false
@@ -256,21 +259,26 @@ export function GameContextProvider({ children }) {
   }
 
   function userAnswerSetter(inpt) {
+    console.log('user')
+
     if (inpt.value.name === questionCards?.answerCard.name) {
+      console.log('user correct')
       setShowAnswerCard(true)
     }
     //could move this and cut out retunrAnswerType plus should reload?
     //TO DO fix cards having value or not value CHECK THIS fRIST IF ISSUES
     const { incrementAttemptCount, shouldReload, whichCircle } =
       returnAnswerType(inpt.value, questionCards.answerCard, attemptCount)
+
     const updatedArr = [...scoreCircles]
     whichCircle !== null ? (updatedArr[questionNumber] = whichCircle) : ''
     setScoreCircles((prevArry) => updatedArr)
-
+    console.log(scoreCircles)
     attemptCount = incrementAttemptCount ? ++attemptCount : 0
     globalQuestionTimeOutID =
-      shouldReload && questionNumber < 12 ? nextQuestionReloadTimeOut() : null
+      shouldReload && questionNumber <= 11 ? nextQuestionReloadTimeOut() : null
     whichCircle ? userScore++ : ''
+    console.log('user pregame', shouldReload, questionNumber)
     checkForGameOver()
   }
 
@@ -292,8 +300,8 @@ export function GameContextProvider({ children }) {
         attemptCount,
         showAnswerCard,
         scoreCardDisplay,
-        getAudioSrcIdxFromCardReducer,
         userScore,
+        getAudioSrcIdxFromCardReducer,
       }}
     >
       <GameUpdateContext.Provider

@@ -2,7 +2,7 @@ import { useContext } from 'react'
 import { StatusBar } from 'expo-status-bar'
 import { StyleSheet, View, TouchableOpacity } from 'react-native'
 
-import { useUpdateGameContext, useGameContext } from './CardsContext.js'
+import { useUpdateGameContext, useGameContext } from './GameContext.js'
 import AnnotatedContext from './AnnotatedContext.js'
 import ThemeContext from './ThemeContext.js'
 import CardButton from './CardButton.js'

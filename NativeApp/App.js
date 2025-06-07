@@ -1,22 +1,20 @@
 import React, { useState } from 'react'
 import MainGamePage from './Components/MainGamePage'
-import AnnotatedCard from './Components/AnnotatedCards.js'
 import OptionsPage from './Components/OptionsPage.js'
+import AnnotatedCard from './Components/AnnotatedCards.js'
 import HexKeyWithCards from './Components/HexKeyWithCards.js'
 import TheoryCirlces from './Components/TheoryCircles.js'
 import ExploreCards from './Components/ExploreCards.js'
 import ScaleExplore from './Components/ScaleExplore.js'
 
-import { GameContextProvider } from './Components/CardsContext.js'
+import { GameContextProvider } from './Components/GameContext.js'
 import ThemeContext from './Components/ThemeContext.js'
 import AnnotatedContext from './Components/AnnotatedContext.js'
 import { StatusBar } from 'expo-status-bar'
 import {
   StyleSheet,
   View,
-  Text,
   useWindowDimensions,
-  Pressable,
   SafeAreaView,
 } from 'react-native'
 import { keys, getIntervalNo } from './data/KeyCards'
