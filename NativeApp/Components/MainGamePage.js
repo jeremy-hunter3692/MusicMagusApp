@@ -157,9 +157,10 @@ const MainGamePage = ({
       flex: 0.3,
       justifyContent: 'center',
       alignItems: 'center',
-      margin: 3,
+      margin: 5,
+      flexDirection: 'row',
     },
-    choosingKeyText: { flexDirection: 'row', alignItems: 'center' },
+
     chooseRandomText: buttonTheme,
     annotatedButton: {
       backgroundColor: 'white',
@@ -257,8 +258,8 @@ const MainGamePage = ({
           {!isRandom ? (<PickShape questionAB={questionAB} width={cardWidth} /> ) : (null)}</View> */}
         <QuestionCards />
       </View>
-      <View style={[styles.displayCardsGrid, annotated && { marginTop: 50 }]}>
-        <View style={styles.choosingKeyText}>
+      <View style={styles.displayCardsGrid}>
+        <>
           {choosingKey ? (
             <View style={styles.choosingKeyText}>
               <Text style={styles.annotatedText}>
@@ -271,7 +272,7 @@ const MainGamePage = ({
           ) : (
             <Text style={styles.annotatedText}> </Text>
           )}
-        </View>
+        </>
         {displayInputCardArray && <DisplayCardsGrid />}
         {annotated && (
           <View style={styles.choosingKeyText}>

@@ -38,7 +38,7 @@ const QuestionCards = () => {
   const { questionCardPress, getAudioSrcIdxFromCardReducer } =
     useUpdateGameContext()
 
-  let alterationSize = choosingKey ? 0.8 : annotated ? 1.2 : 1
+  let alterationSize = choosingKey ? 0.5 : annotated ? 1.2 : 1
   let skip = attemptCount > 2 ? true : false
 
   useEffect(() => {
@@ -96,11 +96,11 @@ const QuestionCards = () => {
 
   const styles = StyleSheet.create({
     questionCardsCont: {
+      margin: 0,
+      padding: 0,
       flexDirection: 'row',
       justifyContent: 'center',
       alignItems: 'center',
-      margin: 0,
-      padding: 0,
     },
     flipingCardsCont: {
       margin: 0,
@@ -108,6 +108,7 @@ const QuestionCards = () => {
       justifyContent: 'center',
       alignItems: 'center',
       position: 'relative',
+      maxHeight: cardSize.cardHeight,
     },
     blankCard: {
       margin: 0,
@@ -116,7 +117,6 @@ const QuestionCards = () => {
       width: '100%',
       height: '100%',
     },
-
     backCard: {
       margin: 0,
       padding: 0,
@@ -127,28 +127,24 @@ const QuestionCards = () => {
       backfaceVisibility: 'hidden',
     },
     forAnnotation: {
+      padding: 0,
+      margin: 0,
       flexDirection: 'column',
       justifyContent: 'flex-start',
       maxHeight: cardSize.cardHeight,
-      padding: 0,
-      margin: 0,
     },
     annotatedText: {
-      padding: 10,
+      padding: 0,
+      marginHorizontal: 6,
       color: 'white',
       justifyContent: 'center',
-      fontWeight: 'bold',
-      margin: 6,
-      top: 2,
-      borderRadius: 10,
       alignContent: 'center',
+      alignItems: 'center',
+      fontWeight: 'bold',
       width: cardSize.cardWidth,
       height: cardSize.cardHeight - 5,
-      marginBottom: 10,
-      borderColor: 'white',
       fontSize: fontScale,
     },
-
     hiddenScoreCard: {
       height: cardSize.cardHeight,
       width: cardSize.cardWidth,
@@ -247,44 +243,45 @@ const QuestionCards = () => {
         </View>
 
         <View style={styles.flipingCardsCont}>
-          {isAnimated ? (
-            <>
-              <Animated.View
-                style={[
-                  styles.backCard,
-                  backAnimatedStyle(flipAnswerCardAnimation),
-                ]}
-              >
-                <CardButton
-                  key={answerCard?.name || answerCard?.imgSrc}
-                  data={answerCard}
-                  imgSource={answerCard?.imgSrc}
-                  onPressPropFunction={() => console.log('blank')}
-                  animationDelay={5}
-                  animated={isAnimated}
-                  alterationSize={alterationSize}
-                />
-              </Animated.View>
-              <Animated.View
-                style={[
-                  styles.card,
-                  frontAnimatedStyle(flipAnswerCardAnimation),
-                ]}
-              >
-                <CardButton
-                  key={`backCard ${blankCard}`} // Use a unique key based on the answerCard
-                  data={{ value: { imgSrc: blankCard, blankCard: true } }}
-                  imgSource={blankCard}
-                  onPressPropFunction={() => console.log('blank')}
-                  animationDelay={5}
-                  animated={isAnimated}
-                  alterationSize={alterationSize}
-                />
-              </Animated.View>
-            </>
-          ) : (
-            <>
-              {/* {ashowAnswerCard? (
+          <View style={styles.forAnnotation}>
+            {isAnimated ? (
+              <>
+                <Animated.View
+                  style={[
+                    styles.backCard,
+                    backAnimatedStyle(flipAnswerCardAnimation),
+                  ]}
+                >
+                  <CardButton
+                    key={answerCard?.name || answerCard?.imgSrc}
+                    data={answerCard}
+                    imgSource={answerCard?.imgSrc}
+                    onPressPropFunction={() => console.log('blank')}
+                    animationDelay={5}
+                    animated={isAnimated}
+                    alterationSize={alterationSize}
+                  />
+                </Animated.View>
+                <Animated.View
+                  style={[
+                    styles.card,
+                    frontAnimatedStyle(flipAnswerCardAnimation),
+                  ]}
+                >
+                  <CardButton
+                    key={`backCard ${blankCard}`} // Use a unique key based on the answerCard
+                    data={{ value: { imgSrc: blankCard, blankCard: true } }}
+                    imgSource={blankCard}
+                    onPressPropFunction={() => console.log('blank')}
+                    animationDelay={5}
+                    animated={isAnimated}
+                    alterationSize={alterationSize}
+                  />
+                </Animated.View>
+              </>
+            ) : (
+              <>
+                {/* {ashowAnswerCard? (
                 <View
                   style={[
                     styles.card,
@@ -308,8 +305,9 @@ const QuestionCards = () => {
                   />
                 </View>
               )} */}
-            </>
-          )}
+              </>
+            )}
+          </View>
         </View>
 
         <View

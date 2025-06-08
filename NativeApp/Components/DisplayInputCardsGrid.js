@@ -12,7 +12,7 @@ const DisplayInputCardsGrid = ({ reDeal, isAnimated }) => {
   const { userInputCardPress } = useUpdateGameContext()
   const { annotated } = useContext(AnnotatedContext)
 
-  let alterationSize = choosingKey ? 0.9 : annotated ? 0.3 : 1
+  let alterationSize = choosingKey ? 1 : annotated ? 0.3 : 1
 
   function setAnswer(inpt) {
     if (annotated) {
