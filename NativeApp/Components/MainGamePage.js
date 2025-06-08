@@ -13,14 +13,11 @@ import { useGameContext, useUpdateGameContext } from './GameContext.js'
 
 const groupedNavMargin = 0
 
-let annotatedDisplayGridSizeChangeFactor = 0.5
-let annotatedQCardsSizeChangeFactor = 1.2
-
 const MainGamePage = ({
   setShowOptions,
   isRandomAllQuestionTypes,
   isAnimated,
-  randomMagusMode,
+  buttonTheme,
 }) => {
   //Might not need, props should re load the children correctly...?
   const [dronePlaying, setDronePlaying] = useState(true)
@@ -42,19 +39,15 @@ const MainGamePage = ({
     scoreCircles,
     questionNumber,
     choosingKey,
+    annotatedDisplayGridSizeChangeFactor,
+    annotatedQCardsSizeChangeFactor,
   } = useGameContext()
 
-  const { setRandomisedQuestionsSameType } = useUpdateGameContext()
-
-  function initCardSizeChanges() {
-    annotatedDisplayGridSizeChangeFactor = 0.5
-    annotatedQCardsSizeChangeFactor = 1.2
-  }
-
-  function choosingKeyCardSizes() {
-    annotatedDisplayGridSizeChangeFactor = 0.9
-    annotatedQCardsSizeChangeFactor = 0.8
-  }
+  const {
+    setRandomisedQuestionsSameType,
+    choosingKeyCardSizes,
+    initCardSizeChanges,
+  } = useUpdateGameContext()
 
   function droneOnOff() {
     dronePlaying ? setDronePlaying(false) : setDronePlaying(true)
@@ -69,8 +62,6 @@ const MainGamePage = ({
   }
 
   function annotatedButtonClick() {
-    //TO DO double check this
-    choosingKey && annotated ? choosingKeyCardSizes() : initCardSizeChanges()
     setAnnotatedMode()
   }
 
@@ -82,6 +73,12 @@ const MainGamePage = ({
       margin: groupedNavMargin,
       flex: 0.3,
       padding: 0,
+    },
+    leftNavBarTwo: {
+      flex: 0.3,
+      margin: groupedNavMargin,
+      padding: 0,
+      justifyContent: 'center',
     },
     questionButtonInRightNavbar: {
       flexDirection: 'row',
@@ -152,13 +149,27 @@ const MainGamePage = ({
       fontWeight: 'bold',
       fontSize: fontScale,
     },
+    scoreTrackerAnnotatedText: {
+      justifyContent: 'center',
+      alignItems: 'center',
+    },
     choosingKeyText: {
       flex: 0.3,
       justifyContent: 'center',
       alignItems: 'center',
       margin: 3,
     },
-    chooseRandomText: randomMagusMode,
+    choosingKeyText: { flexDirection: 'row', alignItems: 'center' },
+    chooseRandomText: buttonTheme,
+    annotatedButton: {
+      backgroundColor: 'white',
+      width: scoreCirclesSize,
+      height: scoreCirclesSize,
+      borderRadius: scoreCirclesSize,
+      alignSelf: 'flex-end',
+      justifyContent: 'center',
+      alignItems: 'center',
+    },
   })
 
   return (
@@ -170,23 +181,10 @@ const MainGamePage = ({
               <Pressable onPress={() => setShowOptions()}>
                 <Text style={styles.optionText}>Options {'  '}</Text>
               </Pressable>
-            ) : (
-              ''
-            )}
+            ) : null}
             <Pressable
               onPress={() => annotatedButtonClick()}
-              style={[
-                {},
-                !annotatedCard && {
-                  backgroundColor: 'white',
-                  width: scoreCirclesSize,
-                  height: scoreCirclesSize,
-                  borderRadius: scoreCirclesSize,
-                  alignSelf: 'flex-end',
-                  justifyContent: 'center',
-                  alignItems: 'center',
-                },
-              ]}
+              style={[{}, !annotatedCard && styles.annotatedButton]}
             >
               <Text style={styles.annotatedButtonText}>?</Text>
             </Pressable>
@@ -206,14 +204,7 @@ const MainGamePage = ({
             )
           })}
         </View>
-        <View
-          style={{
-            flex: 0.3,
-            margin: groupedNavMargin,
-            padding: 0,
-            justifyContent: 'center',
-          }}
-        >
+        <View style={styles.leftNavBarTwo}>
           {!isRandomAllQuestionTypes ? (
             <QuestionIconButtons groupedNavMargin={groupedNavMargin} />
           ) : (
@@ -242,12 +233,7 @@ const MainGamePage = ({
               ↑ Change question type here key Interval Note
             </Text>
           </View>
-          <View
-            style={{
-              justifyContent: 'center',
-              alignItems: 'center',
-            }}
-          >
+          <View style={styles.scoreTrackerAnnotatedText}>
             <Text style={styles.annotatedText}>Score tracker ↑</Text>
             <Text
               style={[
@@ -269,23 +255,12 @@ const MainGamePage = ({
         {/* <View style={styles.emptyCardPlaceHolder}></View> MAKE ABOVE NOTE ANNOTATED TO SHIFT QCARDS ACROSS  */}
         {/* THIS HERE IS FOR THE AB BOOL VERSION <View style={styles.emptyCardPlaceHolder}>
           {!isRandom ? (<PickShape questionAB={questionAB} width={cardWidth} /> ) : (null)}</View> */}
-        <QuestionCards
-          cardSize={{
-            cardWidth:
-              annotated || choosingKey
-                ? cardWidth * annotatedQCardsSizeChangeFactor
-                : cardWidth,
-            cardHeight:
-              annotated || choosingKey
-                ? cardHeight * annotatedQCardsSizeChangeFactor
-                : cardHeight,
-          }}
-        />
+        <QuestionCards />
       </View>
       <View style={[styles.displayCardsGrid, annotated && { marginTop: 50 }]}>
         <View style={styles.choosingKeyText}>
           {choosingKey ? (
-            <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+            <View style={styles.choosingKeyText}>
               <Text style={styles.annotatedText}>
                 Choose your key below ↓ or{' '}
               </Text>
@@ -297,21 +272,7 @@ const MainGamePage = ({
             <Text style={styles.annotatedText}> </Text>
           )}
         </View>
-
-        {displayInputCardArray && (
-          <DisplayCardsGrid
-            cardSize={{
-              cardWidth:
-                annotated || choosingKey
-                  ? cardWidth * annotatedDisplayGridSizeChangeFactor
-                  : cardWidth,
-              cardHeight:
-                annotated || choosingKey
-                  ? cardHeight * annotatedDisplayGridSizeChangeFactor
-                  : cardHeight,
-            }}
-          />
-        )}
+        {displayInputCardArray && <DisplayCardsGrid />}
         {annotated && (
           <View style={styles.choosingKeyText}>
             <Text style={styles.annotatedText}>

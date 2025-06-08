@@ -16,12 +16,13 @@ import ThemeContext from './ThemeContext.js'
 const blankCard = require('../assets/blankcard.png')
 let isAnimated = true
 
-const QuestionCards = ({ cardSize }) => {
+const QuestionCards = () => {
   const flipAnswerCardAnimation = useSharedValue(0)
   const flipScoreCardAnimation = useSharedValue(0)
 
   const {
     font: { fontScale, fontStyle },
+    cardSize,
   } = useContext(ThemeContext)
 
   const { annotated } = useContext(AnnotatedContext)
@@ -31,13 +32,15 @@ const QuestionCards = ({ cardSize }) => {
     attemptCount,
     scoreCardDisplay: displayScore,
     showAnswerCard,
+    choosingKey,
   } = useGameContext()
 
-  const {
-    questionCardPress,
-    getAudioSrcIdxFromCardReducer,
-  } = useUpdateGameContext()
+  const { questionCardPress, getAudioSrcIdxFromCardReducer } =
+    useUpdateGameContext()
+
+  let alterationSize = choosingKey ? 0.8 : annotated ? 1.2 : 1
   let skip = attemptCount > 2 ? true : false
+
   useEffect(() => {
     if (showAnswerCard && isAnimated) {
       handleFlip(180, flipAnswerCardAnimation)
@@ -207,11 +210,11 @@ const QuestionCards = ({ cardSize }) => {
         <View style={styles.forAnnotation}>
           <CardButton
             key={`question ${firstCard?.name || firstCard?.imgSrc}`}
-            cardSize={cardSize}
             data={firstCard}
             imgSource={firstCard?.value.imgSrc || blankCard}
             onPressPropFunction={questionCardPress}
             animated={isAnimated}
+            alterationSize={alterationSize}
           />
         </View>
         <View style={styles.forAnnotation}>
@@ -223,7 +226,6 @@ const QuestionCards = ({ cardSize }) => {
         </View>
         <View style={styles.forAnnotation}>
           <CardButton
-            cardSize={cardSize}
             data={secondCard}
             root={firstCard}
             imgSource={secondCard?.value.imgSrc}
@@ -233,6 +235,7 @@ const QuestionCards = ({ cardSize }) => {
             autoPlay={true}
             animationDelay={3}
             animated={isAnimated}
+            alterationSize={alterationSize}
           />
         </View>
         <View style={styles.forAnnotation}>
@@ -254,12 +257,12 @@ const QuestionCards = ({ cardSize }) => {
               >
                 <CardButton
                   key={answerCard?.name || answerCard?.imgSrc}
-                  cardSize={cardSize}
                   data={answerCard}
                   imgSource={answerCard?.imgSrc}
                   onPressPropFunction={() => console.log('blank')}
                   animationDelay={5}
                   animated={isAnimated}
+                  alterationSize={alterationSize}
                 />
               </Animated.View>
               <Animated.View
@@ -270,12 +273,12 @@ const QuestionCards = ({ cardSize }) => {
               >
                 <CardButton
                   key={`backCard ${blankCard}`} // Use a unique key based on the answerCard
-                  cardSize={cardSize}
                   data={{ value: { imgSrc: blankCard, blankCard: true } }}
                   imgSource={blankCard}
                   onPressPropFunction={() => console.log('blank')}
                   animationDelay={5}
                   animated={isAnimated}
+                  alterationSize={alterationSize}
                 />
               </Animated.View>
             </>

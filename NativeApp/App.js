@@ -44,7 +44,6 @@ export default function App() {
   const { width, height } = useWindowDimensions()
 
   const font = { fontScale: width / 90, fontColor: 'white', fontType: 'Arial' }
-
   const cardWidth = width > height ? width * 0.1 : width * 0.14
   const cardSize = {
     cardWidth: cardWidth,
@@ -82,7 +81,7 @@ export default function App() {
     setShowOptions((x) => (x = !x))
   }
 
-  const randomMagusMode = {
+  const randomMagusModeButton = {
     margin: 4,
     padding: 4,
     color: theme.primaryColor,
@@ -122,6 +121,7 @@ export default function App() {
             cardSize,
             dimensions,
             scoreCirclesSize,
+            animationsOn,
           }}
         >
           <AnnotatedContext.Provider
@@ -144,7 +144,7 @@ export default function App() {
                   setShowOptions={showOptionsSetter}
                   showOptions={showOptions}
                   dimensions={{ width, height }}
-                  randomMagusMode={randomMagusMode}
+                  buttonTheme={randomMagusModeButton}
                 />
               </GameContextProvider>
             )}
@@ -159,7 +159,7 @@ export default function App() {
                 isAnimated={animationsOn}
                 setShowOptions={showOptionsSetter}
                 theme={theme}
-                buttonTheme={randomMagusMode}
+                buttonTheme={randomMagusModeButton}
               />
             </View>
           )}

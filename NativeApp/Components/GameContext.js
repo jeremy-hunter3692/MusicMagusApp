@@ -23,7 +23,8 @@ let questionNumber = 0
 let attemptCount = 0
 let userScore = 0
 let globalQuestionTimeOutID
-console.log('QNO', questionNumber)
+let annotatedDisplayGridSizeInit = 0.5
+let annotatedQCardsSizeInit = 1.2
 //Possibly in a options context?
 let droneType = true
 
@@ -230,13 +231,11 @@ export function GameContextProvider({ children }) {
 
   function questionCardPress(inpt) {
     if (choosingKey) {
-      // initCardSizeChanges()
-      setDisplayInputCardArray((x) => [...intervals])
+      setDisplayInputCardArray((x) => noteNames)
       setChoosingKey((x) => false)
     } else {
-      setChoosingKey(true)
+      setChoosingKey((x) => true)
       setDroneAudioSrc(null)
-      // choosingKeyCardSizes()
       setDisplayInputCardArray(keys)
     }
   }
@@ -249,7 +248,7 @@ export function GameContextProvider({ children }) {
         userAnswerSetter(inpt)
         return
       }
-      // initCardSizeChanges()
+      initCardSizeChanges()
       setQuestionCards((x) => ({ ...x, firstCard: inpt }))
       loadNewQuestionCards(false, inpt)
       isRandomisedQuestionSameType = false
@@ -259,26 +258,19 @@ export function GameContextProvider({ children }) {
   }
 
   function userAnswerSetter(inpt) {
-    console.log('user')
-
     if (inpt.value.name === questionCards?.answerCard.name) {
-      console.log('user correct')
       setShowAnswerCard(true)
     }
-    //could move this and cut out retunrAnswerType plus should reload?
     //TO DO fix cards having value or not value CHECK THIS fRIST IF ISSUES
     const { incrementAttemptCount, shouldReload, whichCircle } =
       returnAnswerType(inpt.value, questionCards.answerCard, attemptCount)
-
     const updatedArr = [...scoreCircles]
     whichCircle !== null ? (updatedArr[questionNumber] = whichCircle) : ''
     setScoreCircles((prevArry) => updatedArr)
-    console.log(scoreCircles)
     attemptCount = incrementAttemptCount ? ++attemptCount : 0
     globalQuestionTimeOutID =
       shouldReload && questionNumber <= 11 ? nextQuestionReloadTimeOut() : null
     whichCircle ? userScore++ : ''
-    console.log('user pregame', shouldReload, questionNumber)
     checkForGameOver()
   }
 

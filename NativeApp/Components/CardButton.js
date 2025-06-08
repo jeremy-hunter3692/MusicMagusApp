@@ -19,8 +19,7 @@ const CardButton = ({
   autoPlay,
   answer,
   animationDelay,
-  animated,
-  thing,
+  alterationSize,
 }) => {
   const [noteAudioSrc, setNoteAudioSrc] = useState()
   const [playBool, setPlayBool] = useState(autoPlay)
@@ -36,17 +35,13 @@ const CardButton = ({
 
   useEffect(() => {
     if (annotated) {
-      // console.log('anootated IF', data, source)
       return
     }
     cardSizeScale.value = withSpring(initCardSizeValue)
-
     setTimeout(() => {
       dealAnimationTrigger(animationDelay)
     }, initDealDelay)
-
     hasPlayed = false
-
     let timeOutId = setTimeout(() => {
       autoPlay && !hasPlayed && answer ? handlePressIn(data) : ''
     }, 1000)
@@ -105,10 +100,10 @@ const CardButton = ({
       margin: 0,
       justifyContent: 'center',
       alignItems: 'center',
-      maxHeight: cardHeight,
-      maxWidth: cardWidth,
-      height: cardHeight,
-      width: cardWidth,
+      maxHeight: cardHeight * alterationSize,
+      maxWidth: cardWidth * alterationSize,
+      height: cardHeight * alterationSize,
+      width: cardWidth * alterationSize,
     },
   })
 

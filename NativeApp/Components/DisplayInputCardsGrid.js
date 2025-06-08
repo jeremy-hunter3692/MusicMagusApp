@@ -4,13 +4,15 @@ import { StyleSheet, View, TouchableOpacity } from 'react-native'
 
 import { useUpdateGameContext, useGameContext } from './GameContext.js'
 import AnnotatedContext from './AnnotatedContext.js'
-import ThemeContext from './ThemeContext.js'
+
 import CardButton from './CardButton.js'
 
 const DisplayInputCardsGrid = ({ reDeal, isAnimated }) => {
-  const { displayInputCardArray: cardsArray } = useGameContext()
+  const { displayInputCardArray: cardsArray, choosingKey } = useGameContext()
   const { userInputCardPress } = useUpdateGameContext()
   const { annotated } = useContext(AnnotatedContext)
+
+  let alterationSize = choosingKey ? 0.9 : annotated ? 0.3 : 1
 
   function setAnswer(inpt) {
     if (annotated) {
@@ -37,11 +39,12 @@ const DisplayInputCardsGrid = ({ reDeal, isAnimated }) => {
               onPressPropFunction={setAnswer}
               data={{ value: x }}
               imgSource={x.imgSrc}
-              key={x.name}
+              key={`input${x.name}`}
               findAudioSourceFunction={userInputCardPress}
               animationDelay={index}
               reDeal={reDeal}
               animated={isAnimated}
+              alterationSize={alterationSize}
             />
           )
         })}
@@ -53,11 +56,12 @@ const DisplayInputCardsGrid = ({ reDeal, isAnimated }) => {
               onPressPropFunction={setAnswer}
               data={{ value: x }}
               imgSource={x.imgSrc}
-              key={x.name}
+              key={`input${x.name}`}
               findAudioSourceFunction={userInputCardPress}
               animationDelay={index + dealAnimationDelay}
               reDeal={reDeal}
               animated={isAnimated}
+              alterationSize={alterationSize}
             />
           )
         })}
