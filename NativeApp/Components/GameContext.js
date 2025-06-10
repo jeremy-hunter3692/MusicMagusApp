@@ -15,7 +15,8 @@ const GameContext = React.createContext({})
 const GameUpdateContext = React.createContext({})
 const scoreCirclesInit = Array(12).fill(null)
 //Will need to be updated to be able to acess?
-const newAnswerDelay = 1500
+const newAnswerDelay = 2000
+const skipQuestionDelay = 3000
 let isRandomisedQuestionSameType = false
 let isRandomsedAllQuestionTypes = false
 let isReloading = false
@@ -122,10 +123,9 @@ export function GameContextProvider({ children }) {
   }
 
   function checkForGameOver() {
-    console.log('check game', questionNumber)
     if (questionNumber > 11) {
+      console.log('if')
       setScoreCardDisplay(true)
-      console.log('gameover', userScore)
       isReloading = true
       return true
     }
@@ -162,7 +162,11 @@ export function GameContextProvider({ children }) {
       return
     }
     setShowAnswerCard(true)
-    nextQuestionReloadTimeOut()
+    questionNumber++
+    let skippingQuestionTimeOutID = setTimeout(() => {
+      nextQuestionReloadTimeOut(), skipQuestionDelay
+    })
+    return skippingQuestionTimeOutID
   }
 
   function changeQuestionType(inpt) {
@@ -187,9 +191,6 @@ export function GameContextProvider({ children }) {
   }
 
   function nextQuestionReloadTimeOut(fastReload = false) {
-    console.log('next', questionNumber)
-    questionNumber++
-    console.log('next after', questionNumber)
     attemptCount = 0
     let delaySpeed = fastReload ? 200 : newAnswerDelay
     setDroneAudioSrc(null)
@@ -202,7 +203,6 @@ export function GameContextProvider({ children }) {
   }
 
   function resetForNewGame(inpt = questionCards.firstCard) {
-    console.log('reset')
     inpt = isRandomisedQuestionSameType ? returnRandomCard(keys) : inpt
     userScore = 0
     attemptCount = 0
@@ -241,6 +241,7 @@ export function GameContextProvider({ children }) {
   }
 
   function userInputCardPress(inpt) {
+    console.log('inpt')
     if (isReloading) {
       return
     } else {
@@ -248,7 +249,6 @@ export function GameContextProvider({ children }) {
         userAnswerSetter(inpt)
         return
       }
-      initCardSizeChanges()
       setQuestionCards((x) => ({ ...x, firstCard: inpt }))
       loadNewQuestionCards(false, inpt)
       isRandomisedQuestionSameType = false
@@ -258,18 +258,22 @@ export function GameContextProvider({ children }) {
   }
 
   function userAnswerSetter(inpt) {
+    console.log('userAnswerTop')
     if (inpt.value.name === questionCards?.answerCard.name) {
+      questionNumber++
       setShowAnswerCard(true)
     }
     //TO DO fix cards having value or not value CHECK THIS fRIST IF ISSUES
     const { incrementAttemptCount, shouldReload, whichCircle } =
       returnAnswerType(inpt.value, questionCards.answerCard, attemptCount)
     const updatedArr = [...scoreCircles]
-    whichCircle !== null ? (updatedArr[questionNumber] = whichCircle) : ''
+    whichCircle !== null ? (updatedArr[questionNumber - 1] = whichCircle) : ''
     setScoreCircles((prevArry) => updatedArr)
     attemptCount = incrementAttemptCount ? ++attemptCount : 0
     globalQuestionTimeOutID =
-      shouldReload && questionNumber <= 11 ? nextQuestionReloadTimeOut() : null
+      shouldReload && questionNumber < 12
+        ? nextQuestionReloadTimeOut()
+        : console.log('userAnswerTernary', questionNumber)
     whichCircle ? userScore++ : ''
     checkForGameOver()
   }

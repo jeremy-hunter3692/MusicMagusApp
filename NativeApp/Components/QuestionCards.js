@@ -45,9 +45,11 @@ const QuestionCards = () => {
     if (showAnswerCard && isAnimated) {
       handleFlip(180, flipAnswerCardAnimation)
       // handleFlip(180, flipScoreCardAnimation)
-    } else if (skip || displayScore) {
+    }
+    if (skip || displayScore) {
       handleFlip(180, flipScoreCardAnimation)
-    } else {
+    }
+    if (!skip && !displayScore && !showAnswerCard) {
       cardsToInit()
     }
   }, [showAnswerCard, skip, displayScore])

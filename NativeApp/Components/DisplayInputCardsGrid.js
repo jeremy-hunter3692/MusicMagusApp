@@ -1,4 +1,4 @@
-import { useContext } from 'react'
+import { useContext, useRef, useEffect } from 'react'
 import { StatusBar } from 'expo-status-bar'
 import { StyleSheet, View, TouchableOpacity } from 'react-native'
 
@@ -11,6 +11,23 @@ const DisplayInputCardsGrid = ({ reDeal, isAnimated }) => {
   const { displayInputCardArray: cardsArray, choosingKey } = useGameContext()
   const { userInputCardPress } = useUpdateGameContext()
   const { annotated } = useContext(AnnotatedContext)
+
+  //gpt shit for keys pressed
+  const viewRef = useRef(null)
+  useEffect(() => {
+    const handleKeyDown = (e) => {
+      console.log('key', e.key)
+    }
+
+    const node = viewRef.current
+    if (node) {
+      node.addEventListener('keydown', handleKeyDown)
+    }
+    return () => {
+      if (node) node.removeEventListener('keydown', handleKeyDown)
+    }
+  }, [])
+  //////////////////////////////
 
   let alterationSize = choosingKey ? 1 : annotated ? 0.3 : 1
 

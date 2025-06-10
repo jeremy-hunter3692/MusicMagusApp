@@ -154,7 +154,6 @@ const MainGamePage = ({
       alignItems: 'center',
     },
     choosingKeyText: {
-      flex: 0.3,
       justifyContent: 'center',
       alignItems: 'center',
       margin: 5,
