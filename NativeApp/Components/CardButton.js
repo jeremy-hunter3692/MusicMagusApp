@@ -19,7 +19,7 @@ const CardButton = ({
   autoPlay,
   answer,
   animationDelay,
-  alterationSize,
+  alterationSizing,
 }) => {
   const [noteAudioSrc, setNoteAudioSrc] = useState()
   const [playBool, setPlayBool] = useState(autoPlay)
@@ -41,10 +41,13 @@ const CardButton = ({
     setTimeout(() => {
       dealAnimationTrigger(animationDelay)
     }, initDealDelay)
+
     hasPlayed = false
+
     let timeOutId = setTimeout(() => {
       autoPlay && !hasPlayed && answer ? handlePressIn(data) : ''
     }, 1000)
+
     return () => clearTimeout(timeOutId)
   }, [answer, imgSource, reDeal])
 
@@ -54,8 +57,9 @@ const CardButton = ({
       setAnnotatedCard(inpt)
       return
     }
-    let audioSrc = onPressPropFunction(inpt)
-    setNoteAudioSrc(audioSrc)
+    let audioSrc = onPressPropFunction(inpt) // findAudioSrcAnyCard(inpt)
+    console.log('auido', audioSrc)
+    audioSrc ? setNoteAudioSrc(audioSrc) : null
     noteAudioSrc ? setPlayBool((bool) => !bool) : null
     hasPlayed = true
   }
@@ -100,16 +104,16 @@ const CardButton = ({
       margin: 0,
       justifyContent: 'center',
       alignItems: 'center',
-      maxHeight: cardHeight * alterationSize,
-      maxWidth: cardWidth * alterationSize,
-      height: cardHeight * alterationSize,
-      width: cardWidth * alterationSize,
+      maxHeight: cardHeight * alterationSizing,
+      maxWidth: cardWidth * alterationSizing,
+      height: cardHeight * alterationSizing,
+      width: cardWidth * alterationSizing,
     },
   })
 
   return (
     <>
-      {/* <SingleNotePlayer audioSrc={noteAudioSrc} shouldPlayBool={playBool} /> */}
+      <SingleNotePlayer audioSrc={noteAudioSrc} shouldPlayBool={playBool} />
       <Pressable
         testID={data?.name}
         onPressIn={() => {

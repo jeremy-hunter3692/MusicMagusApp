@@ -12,9 +12,7 @@ export function getNoteCardIdxFromIntervalAndKeyCard(
   intervalCardIDX
 ) {
   let answerIdx = rootCardIDX + intervalCardIDX
-
   answerIdx = answerIdx > 11 ? answerIdx - 12 : answerIdx
-
   return answerIdx
 }
 
@@ -29,7 +27,7 @@ export function findNoteEquivalentInGivenArray(inpt, array) {
   return result[0]
 }
 
-export function getAltOctaveNotes(note, root, testArray = noteAudioSrc) {
+export function getAltOctaveNotes(note, root, testArray) {
   let result
   //WE ARE PASSING A NOTE HERE INSTEAD OF IDX
   let noteWithIdx = getIdxAndNotes(note, testArray)
@@ -219,8 +217,6 @@ export function returnAnswerType(inpt, correctAnswer, attemptCount) {
     whichCircle: whichCircle,
   }
 }
-
-//needTo  setUserAnswer(inpt)
 
 export function returnScoreText(score) {
   return score === 12

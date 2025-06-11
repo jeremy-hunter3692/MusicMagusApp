@@ -1,5 +1,5 @@
-import React, { useState, useEffect, useContext } from 'react'
-import { StyleSheet, View, Text, Pressable } from 'react-native'
+import React, { useEffect, useContext } from 'react'
+import { StyleSheet, View, Text } from 'react-native'
 import CardButton from './CardButton'
 import ScoreCard from './ScoreCard'
 import Animated, {
@@ -9,6 +9,7 @@ import Animated, {
   interpolate,
   Extrapolate,
 } from 'react-native-reanimated'
+
 import { useUpdateGameContext, useGameContext } from './GameContext.js'
 import AnnotatedContext from './AnnotatedContext.js'
 import ThemeContext from './ThemeContext.js'
@@ -38,7 +39,8 @@ const QuestionCards = () => {
   const { questionCardPress, getAudioSrcIdxFromCardReducer } =
     useUpdateGameContext()
 
-  let alterationSize = choosingKey ? 0.5 : annotated ? 1.2 : 1
+  let alterationSizing = choosingKey ? 0.5 : annotated ? 1.2 : 1
+
   let skip = attemptCount > 2 ? true : false
 
   useEffect(() => {
@@ -136,6 +138,7 @@ const QuestionCards = () => {
       maxHeight: cardSize.cardHeight,
     },
     annotatedText: {
+      margin: 0,
       padding: 0,
       marginHorizontal: 6,
       color: 'white',
@@ -171,10 +174,7 @@ const QuestionCards = () => {
                 }}
               >
                 <Text
-                  style={[
-                    styles.annotatedText,
-                    { margin: 0, padding: 0, alignContent: 'flex-end' },
-                  ]}
+                  style={[styles.annotatedText, { alignContent: 'flex-end' }]}
                 >
                   {'In this key  ➔ '}
                   {/* {'←  Change between two question modes '} */}
@@ -191,7 +191,6 @@ const QuestionCards = () => {
                   style={[
                     styles.annotatedText,
                     {
-                      margin: 0,
                       paddingBottom: 10,
                       fontSize: fontScale * 0.9,
                       fontStyle: 'italic',
@@ -212,7 +211,7 @@ const QuestionCards = () => {
             imgSource={firstCard?.value.imgSrc || blankCard}
             onPressPropFunction={questionCardPress}
             animated={isAnimated}
-            alterationSize={alterationSize}
+            alterationSizing={alterationSizing}
           />
         </View>
         <View style={styles.forAnnotation}>
@@ -233,7 +232,7 @@ const QuestionCards = () => {
             autoPlay={true}
             animationDelay={3}
             animated={isAnimated}
-            alterationSize={alterationSize}
+            alterationSizing={alterationSizing}
           />
         </View>
         <View style={styles.forAnnotation}>
@@ -261,7 +260,7 @@ const QuestionCards = () => {
                     onPressPropFunction={() => console.log('blank')}
                     animationDelay={5}
                     animated={isAnimated}
-                    alterationSize={alterationSize}
+                    alterationSizing={alterationSizing}
                   />
                 </Animated.View>
                 <Animated.View
@@ -277,7 +276,7 @@ const QuestionCards = () => {
                     onPressPropFunction={() => console.log('blank')}
                     animationDelay={5}
                     animated={isAnimated}
-                    alterationSize={alterationSize}
+                    alterationSizing={alterationSizing}
                   />
                 </Animated.View>
               </>

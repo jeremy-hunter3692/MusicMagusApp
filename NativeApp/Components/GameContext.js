@@ -124,7 +124,6 @@ export function GameContextProvider({ children }) {
 
   function checkForGameOver() {
     if (questionNumber > 11) {
-      console.log('if')
       setScoreCardDisplay(true)
       isReloading = true
       return true
@@ -143,16 +142,18 @@ export function GameContextProvider({ children }) {
     if (choosingKey) {
       return
     }
+    console.log(cardWithValueIn)
     cardWithValueIn = !cardWithValueIn.value
       ? { value: cardWithValueIn }
       : cardWithValueIn
+
     let audioSrcIdx =
       'distanceToRoot' in cardWithValueIn.value
         ? getIntervalCardsAsNotes(
             cardWithValueIn.value,
             questionCards.firstCard
           )
-        : findNoteEquivalentInGivenArray(cardWithValueIn.value, noteAudioSrc)
+        : findNoteEquivalentInGivenArray(cardWithValueIn.value, keys)
     audioSrcIdx = getAltOctaveNotes(audioSrcIdx, questionCards.firstCard)
     return audioSrcIdx
   }
