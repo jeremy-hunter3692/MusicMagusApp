@@ -156,7 +156,7 @@ const OptionsPage = ({
             )}
           </Pressable>
         </View>
-        <View style={[styles.options, { height: boxHeight }]}>
+        {/* <View style={[styles.options, { height: boxHeight }]}>
           <Text style={styles.headerText}>Randomised Questions: </Text>
           <Pressable onPress={setRandom}>
             {isRandomQuestion ? (
@@ -169,7 +169,7 @@ const OptionsPage = ({
               </View>
             )}
           </Pressable>
-        </View>
+        </View> */}
         <View style={[styles.options, { height: boxHeight }]}>
           <Text style={styles.headerText}>Animations: </Text>
           <Pressable onPress={setAnimated}>

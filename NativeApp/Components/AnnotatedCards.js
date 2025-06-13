@@ -1,15 +1,21 @@
-import React, { useContext } from 'react'
+import React, { useContext, useState } from 'react'
 import { Image, Text, View, StyleSheet, Pressable } from 'react-native'
 import { getDataForAnnotated } from '../functions/functions.js'
 import AnnotatedContext from './AnnotatedContext.js'
 import ThemeContext from './ThemeContext.js'
+import { ScrollView } from 'react-native-gesture-handler'
 
 const AnnotatedCard = () => {
+  const [zoomInText, setZoomInText] = useState(null)
   const { annotatedCard, setAnnotatedMode } = useContext(AnnotatedContext)
   const { font, theme } = useContext(ThemeContext)
+  const fontColor = 'white'
+  const bgColor = theme.primaryColor
+  const fontSize =
+    typeof font.fontScale === 'number' && !isNaN(font.fontScale)
+      ? font.fontScale * 1.3
+      : 16
 
-  const bgColor = theme
-  const fontSize = font.fontScale
   const { bottomRText, bottomLText, topRtext, topLText } =
     getDataForAnnotated(annotatedCard)
 
@@ -22,16 +28,23 @@ const AnnotatedCard = () => {
       width: '100%',
     },
     textMain: {
-      color: 'white',
+      color: fontColor,
       fontSize: fontSize,
       alignItems: 'center',
-      margin: 2,
-      padding: 5,
+    },
+    textBoxesTop: {
+      flex: 0.5,
+      justifyContent: 'flex-start',
+    },
+    textBoxesBottom: {
+      flex: 1,
+      justifyContent: 'flex-end',
     },
     column: {
       flex: 1,
       justifyContent: 'space-between',
-      // paddingHorizontal: 10,
+      width: '90%',
+      height: '90%',
     },
     imageColumn: {
       flex: 1.5,
@@ -39,48 +52,97 @@ const AnnotatedCard = () => {
       alignItems: 'center',
     },
     image: {
-      width: '100%',
-      height: '100%',
+      width: '80%',
+      height: '80%',
       resizeMode: 'contain',
     },
+    zoomInTextCont: {
+      flex: 1,
+      backgroundColor: theme.primaryColor,
+      // borderColor: 'red',
+      // borderWidth: 2,
+      color: fontColor,
+      fontSize: fontSize * 1.5,
+      justifyContent: 'center',
+      alignItems: 'center',
+    },
+    zoomInTextView: {
+      backgroundColor: theme.primaryColor,
+      shadowRadius: 10,
+      minHeight: '80%',
+      minWidth: '80%',
+      justifyContent: 'center',
+      alignContent: 'center',
+    },
+    zoomInText: {
+      flex: 1,
+      color: fontColor,
+      fontSize: fontSize * 1.5,
+    },
   })
-
-  return (
+  console.log('ANO CARD', annotatedCard)
+  return zoomInText ? (
+    <Pressable
+      style={styles.zoomInTextCont}
+      onPress={() => setZoomInText(false)}
+    >
+      <View style={styles.zoomInTextView}>
+        <Text style={styles.zoomInText}>{zoomInText}</Text>
+      </View>
+    </Pressable>
+  ) : (
     <View style={styles.container}>
       <View style={styles.column}>
-        <Text style={styles.textMain}>{topLText}</Text>
-        <Text style={styles.textMain}>{bottomLText}</Text>
+        <Pressable onPress={() => setZoomInText(topLText)}>
+          <View style={styles.textBoxesTop}>
+            <Text style={styles.textMain}>{topLText}</Text>
+          </View>
+        </Pressable>
+        <Pressable onPress={() => setZoomInText(bottomLText)}>
+          <View style={styles.textBoxesBottom}>
+            <Text style={styles.textMain}>{bottomLText}</Text>
+          </View>
+        </Pressable>
       </View>
-
       <View style={styles.imageColumn}>
         <Image
-          source={annotatedCard?.value.imgSrc}
+          source={annotatedCard?.value?.imgSrc}
           testID="image"
           style={styles.image}
         />
       </View>
-
       <View style={styles.column}>
-        <Pressable
-          style={{ alignItems: 'center', padding: 5 }}
-          onPress={setAnnotatedMode}
-        >
-          <Text
-            style={[
-              styles.textMain,
-              {
-                backgroundColor: '#D3D3D3',
-                borderRadius: 10,
-                padding: 5,
-                flex: 1,
-              },
-            ]}
+        <View style={styles.textBoxesTop}>
+          <Pressable
+            style={{ alignItems: 'center', padding: 5 }}
+            onPress={setAnnotatedMode}
           >
-            Back
-            {topRtext}
-          </Text>
+            <Text
+              style={[
+                styles.textMain,
+                {
+                  color: bgColor,
+                  backgroundColor: '#D3D3D3',
+                  borderRadius: 10,
+                  padding: 5,
+                  flex: 1,
+                },
+              ]}
+            >
+              Back
+              {topRtext}
+            </Text>
+          </Pressable>
+        </View>
+        {/* <GestureHandlerRootView style={{ flex: 1 }}> */}
+        {/* <ScrollView contentContainerStyle={styles.textBoxesBottom}> */}
+        <Pressable onPress={() => setZoomInText(bottomRText)}>
+          <View style={styles.textBoxesBottom}>
+            <Text style={styles.textMain}>{bottomRText}</Text>
+          </View>
         </Pressable>
-        <Text style={styles.textMain}>{bottomRText}</Text>
+        {/* </ScrollView> */}
+        {/* </GestureHandlerRootView> */}
       </View>
     </View>
   )

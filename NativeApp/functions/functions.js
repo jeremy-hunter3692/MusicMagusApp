@@ -263,7 +263,17 @@ export function returnScaleCards(keyCard, scaleType) {
 }
 
 export function getDataForAnnotated(inpt) {
+
   console.log('get data', inpt)
+  if (!inpt || !inpt.value) {
+    // Return a default object or null if input is missing or malformed
+    return {
+      topLText: '',
+      topRText: '',
+      bottomLText: '',
+      bottomRText: '',
+    }
+  }
   const { distanceToRoot, up } = inpt.value
   const upOrDown = up ? 'Down' : 'Up'
   const orDirection = up ? 'Up' : 'Down'
@@ -305,10 +315,9 @@ export function getDataForAnnotated(inpt) {
   } else if (inpt.value.blankCard === true) {
     console.log('blank')
     return {
-      topLText: `Cards and system by  \n  Aleister James Campbell \n 
-    www.aleisterjames.com  \n 
-    www.facebook.com/AleisterJames \n 
-    Twitter/Instagram: @aleisterjames `,
+      topLText: `Cards and system by\nAleister James Campbell\n
+www.aleisterjames.com\n
+Twitter/Instagram: @aleisterjames`,
       bottomRText: 'App by Jeremy Hunter - website?',
     }
   } else if (

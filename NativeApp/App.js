@@ -43,7 +43,7 @@ export default function App() {
 
   const { width, height } = useWindowDimensions()
 
-  const font = { fontScale: width / 90, fontColor: 'white', fontType: 'Arial' }
+  const font = { fontScale: width / 70, fontColor: 'white', fontType: 'Arial' }
   const cardWidth = width > height ? width * 0.1 : width * 0.14
   const cardSize = {
     cardWidth: cardWidth,
@@ -57,6 +57,7 @@ export default function App() {
   // }
 
   function handleAnnotatedClick(inpt) {
+    console.log('INT', inpt)
     annotatedCard ? setAnnotatedCard(null) : setAnnotatedCard(inpt)
   }
 

@@ -11,6 +11,10 @@ import {
   returnRandomCard,
 } from '../functions/functions.js'
 
+const blankCard = {
+  value: { name: 'blank', imgSrc: require('../assets/blankcard.png') },
+  idx: 0,
+}
 const GameContext = React.createContext({})
 const GameUpdateContext = React.createContext({})
 const scoreCirclesInit = Array(12).fill(null)
@@ -24,8 +28,7 @@ let questionNumber = 0
 let attemptCount = 0
 let userScore = 0
 let globalQuestionTimeOutID
-let annotatedDisplayGridSizeInit = 0.5
-let annotatedQCardsSizeInit = 1.2
+
 //Possibly in a options context?
 let droneType = true
 
@@ -288,6 +291,7 @@ export function GameContextProvider({ children }) {
     <GameContext.Provider
       value={{
         questionCards,
+        blankCard,
         questionType,
         droneAudioSrc,
         displayInputCardArray,

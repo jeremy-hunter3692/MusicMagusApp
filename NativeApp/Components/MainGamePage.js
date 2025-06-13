@@ -66,7 +66,7 @@ const MainGamePage = ({
   }
 
   const styles = StyleSheet.create({
-    leftNavBar: {
+    navBar: {
       flexDirection: 'row-reverse',
       justifyContent: 'space-between',
       backgroundColor: theme.secondaryColor,
@@ -74,7 +74,7 @@ const MainGamePage = ({
       flex: 0.3,
       padding: 0,
     },
-    leftNavBarTwo: {
+    leftNavBar: {
       flex: 0.3,
       margin: groupedNavMargin,
       padding: 0,
@@ -174,7 +174,7 @@ const MainGamePage = ({
 
   return (
     <>
-      <View style={styles.leftNavBar}>
+      <View style={styles.navBar}>
         <View style={styles.rightNavBar}>
           <View style={styles.questionButtonInRightNavbar}>
             {!annotatedCard ? (
@@ -204,12 +204,12 @@ const MainGamePage = ({
             )
           })}
         </View>
-        <View style={styles.leftNavBarTwo}>
-          {!isRandomAllQuestionTypes ? (
+        <View style={styles.leftNavBar}>
+          {/* {!isRandomAllQuestionTypes ? (
             <QuestionIconButtons groupedNavMargin={groupedNavMargin} />
           ) : (
             <Text>Randomised Questions</Text>
-          )}
+          )} */}
         </View>
       </View>
       {/* 
@@ -230,7 +230,7 @@ const MainGamePage = ({
               Key Interval Note
             </Text>
             <Text style={styles.annotatedText}>
-              ↑ Change question type here key Interval Note
+              ↑ Change question type here
             </Text>
           </View>
           <View style={styles.scoreTrackerAnnotatedText}>

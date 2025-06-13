@@ -14,7 +14,6 @@ import { useUpdateGameContext, useGameContext } from './GameContext.js'
 import AnnotatedContext from './AnnotatedContext.js'
 import ThemeContext from './ThemeContext.js'
 
-const blankCard = require('../assets/blankcard.png')
 let isAnimated = true
 
 const QuestionCards = () => {
@@ -34,6 +33,7 @@ const QuestionCards = () => {
     scoreCardDisplay: displayScore,
     showAnswerCard,
     choosingKey,
+    blankCard,
   } = useGameContext()
 
   const { questionCardPress, getAudioSrcIdxFromCardReducer } =
@@ -208,7 +208,7 @@ const QuestionCards = () => {
           <CardButton
             key={`question ${firstCard?.name || firstCard?.imgSrc}`}
             data={firstCard}
-            imgSource={firstCard?.value.imgSrc || blankCard}
+            imgSource={firstCard?.value.imgSrc || blankCard.value.imgSrc}
             onPressPropFunction={questionCardPress}
             animated={isAnimated}
             alterationSizing={alterationSizing}
@@ -225,7 +225,7 @@ const QuestionCards = () => {
           <CardButton
             data={secondCard}
             root={firstCard}
-            imgSource={secondCard?.value.imgSrc}
+            imgSource={secondCard?.value.imgSrc || blankCard.value.imgSrc}
             answer={answerCard}
             onPressPropFunction={() => console.log('secondcard onpress fired')}
             findAudioSourceFunction={getAudioSrcIdxFromCardReducer}
@@ -271,8 +271,8 @@ const QuestionCards = () => {
                 >
                   <CardButton
                     key={`backCard ${blankCard}`} // Use a unique key based on the answerCard
-                    data={{ value: { imgSrc: blankCard, blankCard: true } }}
-                    imgSource={blankCard}
+                    data={blankCard}
+                    imgSource={blankCard.value.imgSrc}
                     onPressPropFunction={() => console.log('blank')}
                     animationDelay={5}
                     animated={isAnimated}
