@@ -19,7 +19,6 @@ let isAnimated = true
 const QuestionCards = () => {
   const flipAnswerCardAnimation = useSharedValue(0)
   const flipScoreCardAnimation = useSharedValue(0)
-
   const {
     font: { fontScale, fontStyle },
     cardSize,
@@ -39,10 +38,6 @@ const QuestionCards = () => {
   const { questionCardPress, getAudioSrcIdxFromCardReducer } =
     useUpdateGameContext()
 
-  let alterationSizing = choosingKey ? 0.5 : annotated ? 1.2 : 1
-
-  let skip = attemptCount > 2 ? true : false
-
   useEffect(() => {
     if (showAnswerCard && isAnimated) {
       handleFlip(180, flipAnswerCardAnimation)
@@ -55,6 +50,12 @@ const QuestionCards = () => {
       cardsToInit()
     }
   }, [showAnswerCard, skip, displayScore])
+
+  const fontSize =
+    typeof fontScale === 'number' && !isNaN(fontScale) ? fontScale : 16
+
+  let alterationSizing = choosingKey ? 0.9 : annotated ? 1.2 : 1
+  let skip = attemptCount > 2 ? true : false
 
   function cardsToInit() {
     flipScoreCardAnimation.value = 0
@@ -148,7 +149,7 @@ const QuestionCards = () => {
       fontWeight: 'bold',
       width: cardSize.cardWidth,
       height: cardSize.cardHeight - 5,
-      fontSize: fontScale,
+      fontSize: fontSize,
     },
     hiddenScoreCard: {
       height: cardSize.cardHeight,
@@ -192,13 +193,13 @@ const QuestionCards = () => {
                     styles.annotatedText,
                     {
                       paddingBottom: 10,
-                      fontSize: fontScale * 0.9,
+                      fontSize: fontSize * 0.9,
                       fontStyle: 'italic',
                       alignContent: 'flex-end',
                     },
                   ]}
                 >
-                  {`Click card to choose key`}
+                  {`Click card to change key`}
                 </Text>
               </View>
             </>
@@ -214,6 +215,11 @@ const QuestionCards = () => {
             alterationSizing={alterationSizing}
           />
         </View>
+        {choosingKey && (
+          <View style={styles.forAnnotation}>
+            <Text style={styles.annotatedText}>{'← Current Key'}</Text>
+          </View>
+        )}
         <View style={styles.forAnnotation}>
           {annotated && (
             <Text style={styles.annotatedText}>
@@ -222,18 +228,22 @@ const QuestionCards = () => {
           )}
         </View>
         <View style={styles.forAnnotation}>
-          <CardButton
-            data={secondCard}
-            root={firstCard}
-            imgSource={secondCard?.value.imgSrc || blankCard.value.imgSrc}
-            answer={answerCard}
-            onPressPropFunction={() => console.log('secondcard onpress fired')}
-            findAudioSourceFunction={getAudioSrcIdxFromCardReducer}
-            autoPlay={true}
-            animationDelay={3}
-            animated={isAnimated}
-            alterationSizing={alterationSizing}
-          />
+          {!choosingKey && (
+            <CardButton
+              data={secondCard}
+              root={firstCard}
+              imgSource={secondCard?.value.imgSrc || blankCard.value.imgSrc}
+              answer={answerCard}
+              onPressPropFunction={() =>
+                console.log('secondcard onpress fired')
+              }
+              findAudioSourceFunction={getAudioSrcIdxFromCardReducer}
+              autoPlay={true}
+              animationDelay={3}
+              animated={isAnimated}
+              alterationSizing={alterationSizing}
+            />
+          )}
         </View>
         <View style={styles.forAnnotation}>
           {annotated && (
@@ -242,75 +252,43 @@ const QuestionCards = () => {
             </Text>
           )}
         </View>
-
         <View style={styles.flipingCardsCont}>
           <View style={styles.forAnnotation}>
-            {isAnimated ? (
-              <>
-                <Animated.View
-                  style={[
-                    styles.backCard,
-                    backAnimatedStyle(flipAnswerCardAnimation),
-                  ]}
-                >
-                  <CardButton
-                    key={answerCard?.name || answerCard?.imgSrc}
-                    data={answerCard}
-                    imgSource={answerCard?.imgSrc}
-                    onPressPropFunction={() => console.log('blank')}
-                    animationDelay={5}
-                    animated={isAnimated}
-                    alterationSizing={alterationSizing}
-                  />
-                </Animated.View>
-                <Animated.View
-                  style={[
-                    styles.card,
-                    frontAnimatedStyle(flipAnswerCardAnimation),
-                  ]}
-                >
-                  <CardButton
-                    key={`backCard ${blankCard}`} // Use a unique key based on the answerCard
-                    data={blankCard}
-                    imgSource={blankCard.value.imgSrc}
-                    onPressPropFunction={() => console.log('blank')}
-                    animationDelay={5}
-                    animated={isAnimated}
-                    alterationSizing={alterationSizing}
-                  />
-                </Animated.View>
-              </>
-            ) : (
-              <>
-                {/* {ashowAnswerCard? (
-                <View
-                  style={[
-                    styles.card,
-                    { borderColor: 'white', borderWidth: 1 },
-                  ]}
-                >
-                  <CardButton
-                    cardSize={cardSize}
-                    data={answer?.name}
-                    source={answer?.imgSrc}
-                    annotated={annotated}
-
-                  />
-                </View>
-              ) : (
-                <View style={styles.card}>
-                  <CardButton
-                    cardSize={cardSize}
-                    source={blankCard}
-                    altSourceForReload={answer?.imgSrc}
-                  />
-                </View>
-              )} */}
-              </>
-            )}
+            <Animated.View
+              style={[
+                styles.backCard,
+                backAnimatedStyle(flipAnswerCardAnimation),
+              ]}
+            >
+              {!choosingKey && (
+                <CardButton
+                  key={answerCard?.name || answerCard?.imgSrc}
+                  data={answerCard}
+                  imgSource={answerCard?.imgSrc}
+                  onPressPropFunction={() => console.log('blank')}
+                  animationDelay={5}
+                  animated={isAnimated}
+                  alterationSizing={alterationSizing}
+                />
+              )}
+            </Animated.View>
+            <Animated.View
+              style={[styles.card, frontAnimatedStyle(flipAnswerCardAnimation)]}
+            >
+              {!choosingKey && (
+                <CardButton
+                  key={`backCard ${blankCard}`} // Use a unique key based on the answerCard
+                  data={blankCard}
+                  imgSource={blankCard.value.imgSrc}
+                  onPressPropFunction={() => console.log('blank')}
+                  animationDelay={5}
+                  animated={isAnimated}
+                  alterationSizing={alterationSizing}
+                />
+              )}
+            </Animated.View>
           </View>
         </View>
-
         <View
           style={[
             styles.forAnnotation,

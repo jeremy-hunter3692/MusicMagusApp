@@ -24,7 +24,6 @@ const MainGamePage = ({
 
   const { annotatedCard, annotated, setAnnotatedCard, setAnnotatedMode } =
     useContext(AnnotatedContext)
-
   const {
     cardSize: { cardWidth, cardHeight },
     dimensions: { width, height },
@@ -32,22 +31,18 @@ const MainGamePage = ({
     font: { fontScale, fontStyle },
     scoreCirclesSize,
   } = useContext(ThemeContext)
-
   const {
     displayInputCardArray,
     droneAudioSrc,
     scoreCircles,
     questionNumber,
     choosingKey,
-    annotatedDisplayGridSizeChangeFactor,
-    annotatedQCardsSizeChangeFactor,
   } = useGameContext()
 
-  const {
-    setRandomisedQuestionsSameType,
-    choosingKeyCardSizes,
-    initCardSizeChanges,
-  } = useUpdateGameContext()
+  const { setRandomisedQuestionsSameType } = useUpdateGameContext()
+
+  const fontSize =
+    typeof fontScale === 'number' && !isNaN(fontScale) ? fontScale : 16
 
   function droneOnOff() {
     dronePlaying ? setDronePlaying(false) : setDronePlaying(true)
@@ -134,9 +129,9 @@ const MainGamePage = ({
     },
     optionText: {
       color: 'black',
-      fontSize: fontScale,
+      fontSize: fontSize,
     },
-    annotatedButtonText: { color: theme.primaryColor, fontSize: fontScale },
+    annotatedButtonText: { color: theme.primaryColor, fontSize: fontSize },
     topAnnotatedText: {
       flex: 0.75,
       padding: 10,
@@ -147,7 +142,7 @@ const MainGamePage = ({
     annotatedText: {
       color: 'white',
       fontWeight: 'bold',
-      fontSize: fontScale,
+      fontSize: fontSize,
     },
     scoreTrackerAnnotatedText: {
       justifyContent: 'center',
@@ -226,7 +221,7 @@ const MainGamePage = ({
       {annotated && (
         <View style={styles.topAnnotatedText}>
           <View>
-            <Text style={[styles.annotatedText, { fontSize: fontScale * 0.8 }]}>
+            <Text style={[styles.annotatedText, { fontSize: fontSize * 0.8 }]}>
               Key Interval Note
             </Text>
             <Text style={styles.annotatedText}>
@@ -238,7 +233,7 @@ const MainGamePage = ({
             <Text
               style={[
                 styles.annotatedText,
-                { fontStyle: 'italic', fontSize: fontScale },
+                { fontStyle: 'italic', fontSize: fontSize },
               ]}
             >
               Full circle for a correct answer and a dot if you got it on your
@@ -262,7 +257,7 @@ const MainGamePage = ({
           {choosingKey ? (
             <View style={styles.choosingKeyText}>
               <Text style={styles.annotatedText}>
-                Choose your key below ↓ or{' '}
+                Choose a new key below ↓ or
               </Text>
               <Pressable onPress={setRandomisedQuestionsSameType}>
                 <Text style={styles.chooseRandomText}> Magus Mode</Text>

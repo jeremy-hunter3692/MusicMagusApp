@@ -7,17 +7,17 @@ import { ScrollView } from 'react-native-gesture-handler'
 
 const AnnotatedCard = () => {
   const [zoomInText, setZoomInText] = useState(null)
-  const { annotatedCard, setAnnotatedMode } = useContext(AnnotatedContext)
+  const { annotatedCard, setAnnotatedMode, annotatedBackGroundColor } =
+    useContext(AnnotatedContext)
   const { font, theme } = useContext(ThemeContext)
+  const { bottomRText, bottomLText, topRtext, topLText } =
+    getDataForAnnotated(annotatedCard)
   const fontColor = 'white'
-  const bgColor = theme.primaryColor
+  const bgColor = annotatedBackGroundColor //theme.primaryColor
   const fontSize =
     typeof font.fontScale === 'number' && !isNaN(font.fontScale)
       ? font.fontScale * 1.3
       : 16
-
-  const { bottomRText, bottomLText, topRtext, topLText } =
-    getDataForAnnotated(annotatedCard)
 
   const styles = StyleSheet.create({
     container: {
@@ -58,7 +58,7 @@ const AnnotatedCard = () => {
     },
     zoomInTextCont: {
       flex: 1,
-      backgroundColor: theme.primaryColor,
+      backgroundColor: annotatedBackGroundColor,
       // borderColor: 'red',
       // borderWidth: 2,
       color: fontColor,
@@ -67,10 +67,10 @@ const AnnotatedCard = () => {
       alignItems: 'center',
     },
     zoomInTextView: {
+      flex: 1,
       backgroundColor: theme.primaryColor,
       shadowRadius: 10,
-      minHeight: '80%',
-      minWidth: '80%',
+
       justifyContent: 'center',
       alignContent: 'center',
     },

@@ -9,7 +9,6 @@ const OptionsPage = ({
   droneOnOff,
   changeTheme,
   randomQuestionsSetter,
-
   setAnimations,
   setShowOptions,
   buttonTheme,

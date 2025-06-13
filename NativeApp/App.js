@@ -18,11 +18,11 @@ import {
   SafeAreaView,
 } from 'react-native'
 import { keys, getIntervalNo } from './data/KeyCards'
-
+const annotatedBackGroundColor = 'rgba(51, 23, 73, 0.99)'
 const themeInit = {
   primaryColor: 'purple',
   secondaryColor: '#19af59',
-  annotatedBackGroundColor: 'rgba(51, 23, 73, 0.99)',
+  annotatedBackGroundColor: annotatedBackGroundColor,
 }
 const secondaryTheme = {
   primaryColor: 'black',
@@ -86,7 +86,7 @@ export default function App() {
     margin: 4,
     padding: 4,
     color: theme.primaryColor,
-    fontSize: 10,
+    fontSize: font.fontScale,
     backgroundColor: '#FAFAFA',
     borderRadius: 10,
     borderColor: theme.secondaryColor,
@@ -131,6 +131,7 @@ export default function App() {
               annotated: annotatedCardDisplay,
               setAnnotatedCard: handleAnnotatedClick,
               setAnnotatedMode,
+              annotatedBackGroundColor: annotatedBackGroundColor,
             }}
           >
             {annotatedCard ? (

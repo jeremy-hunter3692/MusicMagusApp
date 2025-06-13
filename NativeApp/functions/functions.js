@@ -263,7 +263,6 @@ export function returnScaleCards(keyCard, scaleType) {
 }
 
 export function getDataForAnnotated(inpt) {
-
   console.log('get data', inpt)
   if (!inpt || !inpt.value) {
     // Return a default object or null if input is missing or malformed
@@ -275,8 +274,8 @@ export function getDataForAnnotated(inpt) {
     }
   }
   const { distanceToRoot, up } = inpt.value
-  const upOrDown = up ? 'Down' : 'Up'
-  const orDirection = up ? 'Up' : 'Down'
+  const upOrDown = up ? 'down' : 'up'
+  const orDirection = up ? 'up' : 'down'
   const extraUpOrDownText = up ? 'hanging down.' : 'pointing up.'
   const altIntervalDistance = 12 - distanceToRoot
   const intervalCardText =
@@ -288,7 +287,7 @@ export function getDataForAnnotated(inpt) {
     inpt.value.distanceToRoot +
     '. '
   const orIntervalText =
-    'Or we could count the empty triangles and add 6, (in this case there are ' +
+    'Or we could count the empty triangles and add 6 (in this case there are ' +
     altIntervalDistance +
     ') and count ' +
     orDirection +

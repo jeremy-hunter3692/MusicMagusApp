@@ -1,4 +1,4 @@
-import { useContext, useRef, useEffect } from 'react'
+import { useContext } from 'react'
 import { StatusBar } from 'expo-status-bar'
 import { StyleSheet, View, TouchableOpacity } from 'react-native'
 
@@ -41,7 +41,6 @@ const DisplayInputCardsGrid = ({ reDeal, isAnimated }) => {
       return
     }
     userInputCardPress(inpt)
-
     let audioSrc = getAudioSrcIdxFromCardReducer(inpt)
     return audioSrc
   }

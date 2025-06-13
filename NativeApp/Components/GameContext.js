@@ -43,7 +43,7 @@ export function useUpdateGameContext() {
 export function GameContextProvider({ children }) {
   //questionType will refer to what the first card is
   const [questionType, setQuestionType] = useState('Key')
-  const [droneAudioSrc, setDroneAudioSrc] = useState(null)
+  const [droneAudioSrc, setDroneAudioSrc] = useState()
   const [displayInputCardArray, setDisplayInputCardArray] = useState()
   const [scoreCircles, setScoreCircles] = useState(scoreCirclesInit)
   const [questionCards, setQuestionCards] = useState({
@@ -142,23 +142,22 @@ export function GameContextProvider({ children }) {
   }
 
   function getAudioSrcIdxFromCardReducer(cardWithValueIn) {
-    if (choosingKey) {
-      return
-    }
-    console.log(cardWithValueIn)
-    cardWithValueIn = !cardWithValueIn.value
-      ? { value: cardWithValueIn }
-      : cardWithValueIn
+    if (!choosingKey) {
+      console.log(cardWithValueIn)
+      cardWithValueIn = !cardWithValueIn.value
+        ? { value: cardWithValueIn }
+        : cardWithValueIn
 
-    let audioSrcIdx =
-      'distanceToRoot' in cardWithValueIn.value
-        ? getIntervalCardsAsNotes(
-            cardWithValueIn.value,
-            questionCards.firstCard
-          )
-        : findNoteEquivalentInGivenArray(cardWithValueIn.value, keys)
-    audioSrcIdx = getAltOctaveNotes(audioSrcIdx, questionCards.firstCard)
-    return audioSrcIdx
+      let audioSrcIdx =
+        'distanceToRoot' in cardWithValueIn.value
+          ? getIntervalCardsAsNotes(
+              cardWithValueIn.value,
+              questionCards.firstCard
+            )
+          : findNoteEquivalentInGivenArray(cardWithValueIn.value, keys)
+      audioSrcIdx = getAltOctaveNotes(audioSrcIdx, questionCards.firstCard)
+      return audioSrcIdx
+    }
   }
 
   function skipQuestion() {
@@ -234,6 +233,7 @@ export function GameContextProvider({ children }) {
   }
 
   function questionCardPress(inpt) {
+    console.log('qcard')
     if (choosingKey) {
       setDisplayInputCardArray((x) => noteNames)
       setChoosingKey((x) => false)
@@ -245,19 +245,16 @@ export function GameContextProvider({ children }) {
   }
 
   function userInputCardPress(inpt) {
-    console.log('inpt')
-    if (isReloading) {
-      return
-    } else {
-      if (!choosingKey) {
+    if (!isReloading) {
+      if (choosingKey) {
+        setQuestionCards((x) => ({ ...x, firstCard: inpt }))
+        loadNewQuestionCards(false, inpt)
+        isRandomisedQuestionSameType = false
+        resetForNewGame(inpt.value)
+        setChoosingKey((x) => false)
+      } else {
         userAnswerSetter(inpt)
-        return
       }
-      setQuestionCards((x) => ({ ...x, firstCard: inpt }))
-      loadNewQuestionCards(false, inpt)
-      isRandomisedQuestionSameType = false
-      resetForNewGame(inpt.value)
-      setChoosingKey((x) => false)
     }
   }
 
