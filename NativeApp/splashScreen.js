@@ -1,12 +1,11 @@
 import React from 'react'
-import { View, Text, StyleSheet, ActivityIndicator } from 'react-native'
+import { View, Text, StyleSheet, Image, ActivityIndicator } from 'react-native'
 
 const blankCard = require('../assets/blankcard.png')
 
 const SplashScreen = () => (
   <View style={styles.container}>
-    <ActivityIndicator size="large" color="#4F8EF7" />
-    <Text style={styles.text}>Loading...</Text>
+    <Image source={blankCard} />
   </View>
 )
 

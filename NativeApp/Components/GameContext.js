@@ -11,8 +11,14 @@ import {
   returnRandomCard,
 } from '../functions/functions.js'
 
+let cardBlank = require('../assets/blankcard.png')
+
 const blankCard = {
-  value: { name: 'blank', imgSrc: require('../assets/blankcard.png') },
+  value: {
+    name: 'blank',
+    imgSrc: cardBlank,
+    blankCard: true,
+  },
   idx: 0,
 }
 const GameContext = React.createContext({})

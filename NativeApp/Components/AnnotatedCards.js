@@ -16,9 +16,9 @@ const AnnotatedCard = () => {
   const bgColor = annotatedBackGroundColor //theme.primaryColor
   const fontSize =
     typeof font.fontScale === 'number' && !isNaN(font.fontScale)
-      ? font.fontScale * 1.3
+      ? font.fontScale * 1.5
       : 16
-
+  console.log('font', fontSize, font.fontScale)
   const styles = StyleSheet.create({
     container: {
       backgroundColor: bgColor,
@@ -33,11 +33,10 @@ const AnnotatedCard = () => {
       alignItems: 'center',
     },
     textBoxesTop: {
-      flex: 0.5,
       justifyContent: 'flex-start',
     },
     textBoxesBottom: {
-      flex: 1,
+      border: 3,
       justifyContent: 'flex-end',
     },
     column: {
@@ -59,8 +58,8 @@ const AnnotatedCard = () => {
     zoomInTextCont: {
       flex: 1,
       backgroundColor: annotatedBackGroundColor,
-      // borderColor: 'red',
-      // borderWidth: 2,
+      borderColor: 'blue',
+      borderWidth: 2,
       color: fontColor,
       fontSize: fontSize * 1.5,
       justifyContent: 'center',
@@ -68,19 +67,21 @@ const AnnotatedCard = () => {
     },
     zoomInTextView: {
       flex: 1,
+      borderColor: 'red',
+      borderWidth: 1,
       backgroundColor: theme.primaryColor,
       shadowRadius: 10,
-
       justifyContent: 'center',
       alignContent: 'center',
     },
     zoomInText: {
       flex: 1,
+      borderColor: 'white',
+      borderWidth: 1,
       color: fontColor,
       fontSize: fontSize * 1.5,
     },
   })
-  console.log('ANO CARD', annotatedCard)
   return zoomInText ? (
     <Pressable
       style={styles.zoomInTextCont}
@@ -125,7 +126,6 @@ const AnnotatedCard = () => {
                   backgroundColor: '#D3D3D3',
                   borderRadius: 10,
                   padding: 5,
-                  flex: 1,
                 },
               ]}
             >
@@ -134,15 +134,12 @@ const AnnotatedCard = () => {
             </Text>
           </Pressable>
         </View>
-        {/* <GestureHandlerRootView style={{ flex: 1 }}> */}
-        {/* <ScrollView contentContainerStyle={styles.textBoxesBottom}> */}
+
         <Pressable onPress={() => setZoomInText(bottomRText)}>
           <View style={styles.textBoxesBottom}>
             <Text style={styles.textMain}>{bottomRText}</Text>
           </View>
         </Pressable>
-        {/* </ScrollView> */}
-        {/* </GestureHandlerRootView> */}
       </View>
     </View>
   )

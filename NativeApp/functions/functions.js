@@ -263,7 +263,7 @@ export function returnScaleCards(keyCard, scaleType) {
 }
 
 export function getDataForAnnotated(inpt) {
-  console.log('get data', inpt)
+  console.log('in', inpt)
   if (!inpt || !inpt.value) {
     // Return a default object or null if input is missing or malformed
     return {
@@ -312,7 +312,6 @@ export function getDataForAnnotated(inpt) {
       bottomRText: intervalCardText + orIntervalText + ' ',
     }
   } else if (inpt.value.blankCard === true) {
-    console.log('blank')
     return {
       topLText: `Cards and system by\nAleister James Campbell\n
 www.aleisterjames.com\n

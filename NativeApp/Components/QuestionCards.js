@@ -139,6 +139,7 @@ const QuestionCards = () => {
       maxHeight: cardSize.cardHeight,
     },
     annotatedText: {
+      flexDirection: 'row',
       margin: 0,
       padding: 0,
       marginHorizontal: 6,
@@ -175,7 +176,10 @@ const QuestionCards = () => {
                 }}
               >
                 <Text
-                  style={[styles.annotatedText, { alignContent: 'flex-end' }]}
+                  style={[
+                    styles.annotatedText,
+                    { alignContent: 'flex-end', textAlign: 'center' },
+                  ]}
                 >
                   {'In this key  ➔ '}
                   {/* {'←  Change between two question modes '} */}
