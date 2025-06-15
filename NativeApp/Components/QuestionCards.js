@@ -269,10 +269,14 @@ const QuestionCards = () => {
                   key={answerCard?.name || answerCard?.imgSrc}
                   data={answerCard}
                   imgSource={answerCard?.imgSrc}
-                  onPressPropFunction={() => console.log('blank')}
+                  onPressPropFunction={() =>
+                    console.log('blankOnPressFunction')
+                  }
                   animationDelay={5}
                   animated={isAnimated}
                   alterationSizing={alterationSizing}
+                  isAnswerCardForAnnotated={true}
+                  blankCard={blankCard}
                 />
               )}
             </Animated.View>
@@ -284,9 +288,13 @@ const QuestionCards = () => {
                   key={`backCard ${blankCard}`} // Use a unique key based on the answerCard
                   data={blankCard}
                   imgSource={blankCard.value.imgSrc}
-                  onPressPropFunction={() => console.log('blank')}
+                  onPressPropFunction={() =>
+                    console.log('blankOnPressFunction')
+                  }
                   animationDelay={5}
                   animated={isAnimated}
+                  isAnswerCardForAnnotated={true}
+                  blankCard={blankCard}
                   alterationSizing={alterationSizing}
                 />
               )}
