@@ -3,6 +3,7 @@ import { Pressable, StyleSheet, Text, View } from 'react-native'
 import { useState, useContext } from 'react'
 import ThemeContext from './ThemeContext.js'
 import Animated from 'react-native-reanimated'
+import { jsxs } from 'react/jsx-runtime'
 
 const OptionsPage = ({
   selectDroneAudio,
@@ -22,9 +23,12 @@ const OptionsPage = ({
     font,
     animationsOn,
   } = useContext(ThemeContext)
+  const numOfBoxes = 4
 
-  const circleSize = height / 20
   const optionsPadding = height / 30
+  const boxHeight = (height * 0.7) / numOfBoxes
+  const circleSize = boxHeight * 0.6
+  const onOffButtonSize = font.fontSize
   const styles = StyleSheet.create({
     container: {
       flex: 1,
@@ -40,7 +44,13 @@ const OptionsPage = ({
       margin: 10,
       width: '100%',
     },
-    options: buttonTheme,
+    options: {
+      ...buttonTheme,
+      flexDirection: 'row',
+      borderColor: 'white',
+      height: boxHeight,
+      justifyContent: 'space-around',
+    },
     // {
     //   backgroundColor: 'white',
     //   borderColor: theme.primaryColor,
@@ -57,6 +67,7 @@ const OptionsPage = ({
       alignItems: 'center',
       width: circleSize,
       height: circleSize,
+      fontSize: onOffButtonSize,
       borderColor: 'black',
       borderRadius: circleSize,
       margin: 5,
@@ -68,6 +79,7 @@ const OptionsPage = ({
       alignItems: 'center',
       width: circleSize,
       height: circleSize,
+      fontSize: onOffButtonSize,
       borderWidth: 1,
       borderColor: 'black',
       borderRadius: circleSize,
@@ -99,11 +111,10 @@ const OptionsPage = ({
     setRandomQuestions((x) => (x = !x))
     randomQuestionsSetter()
   }
-  const boxHeight = height * 0.1
 
   function droneSwitch() {
     setDroneOnButton((x) => !x)
-    droneOnOff()
+    // droneOnOff()
   }
   function droneSoundChange() {
     setDroneSound((x) => !x)
@@ -121,8 +132,10 @@ const OptionsPage = ({
         <View style={styles.line}></View>
         <View style={[styles.options, { height: boxHeight }]}>
           <Pressable onPress={droneSoundChange}>
-            <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-              <Text style={styles.headerText}>Drone Sound:</Text>
+            <View>
+              <Text style={styles.headerText}>Drone Sound: </Text>
+            </View>
+            <View>
               <Text> {droneSound ? 'Double Bass' : 'Synth'} </Text>
             </View>
           </Pressable>
@@ -132,11 +145,15 @@ const OptionsPage = ({
           <Pressable onPress={droneSwitch}>
             {droneOnButton ? (
               <View style={styles.on}>
-                <Text style={{ color: 'white' }}>On</Text>
+                <Text style={{ color: 'white', fontSize: onOffButtonSize }}>
+                  on
+                </Text>
               </View>
             ) : (
               <View style={styles.off}>
-                <Text>Off</Text>
+                <Text style={{ color: 'black', fontSize: onOffButtonSize }}>
+                  Off
+                </Text>
               </View>
             )}
           </Pressable>
@@ -145,12 +162,16 @@ const OptionsPage = ({
           <Text style={styles.headerText}>Change Theme</Text>
           <Pressable onPress={changeTheme}>
             {theme.primaryColor === 'purple' ? (
-              <View style={styles.on}>
-                <Text style={{ color: 'white' }}>Dark</Text>
+              <View style={styles.off}>
+                <Text style={{ color: 'black', fontSize: onOffButtonSize }}>
+                  1
+                </Text>
               </View>
             ) : (
-              <View style={styles.off}>
-                <Text>Light</Text>
+              <View style={styles.on}>
+                <Text style={{ color: 'white', fontSize: onOffButtonSize }}>
+                  2
+                </Text>
               </View>
             )}
           </Pressable>
@@ -174,11 +195,15 @@ const OptionsPage = ({
           <Pressable onPress={setAnimated}>
             {animationsOn ? (
               <View style={styles.on}>
-                <Text style={{ color: 'white' }}>On</Text>
+                <Text style={{ color: 'white', fontSize: onOffButtonSize }}>
+                  on
+                </Text>
               </View>
             ) : (
               <View style={styles.off}>
-                <Text>Off</Text>
+                <Text style={{ color: 'black', fontSize: onOffButtonSize }}>
+                  off
+                </Text>
               </View>
             )}
           </Pressable>
