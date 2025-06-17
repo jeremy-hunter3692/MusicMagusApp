@@ -15,8 +15,6 @@ const groupedNavMargin = 0
 
 const MainGamePage = ({
   setShowOptions,
-  isRandomAllQuestionTypes,
-  isAnimated,
   buttonTheme,
 }) => {
   //Might not need, props should re load the children correctly...?

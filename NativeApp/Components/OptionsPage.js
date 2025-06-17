@@ -3,10 +3,9 @@ import { Pressable, StyleSheet, Text, View } from 'react-native'
 import { useState, useContext } from 'react'
 import ThemeContext from './ThemeContext.js'
 import Animated from 'react-native-reanimated'
-import { jsxs } from 'react/jsx-runtime'
+import { useGameContext, useUpdateGameContext } from './GameContext.js'
 
 const OptionsPage = ({
-  selectDroneAudio,
   droneOnOff,
   changeTheme,
   randomQuestionsSetter,
@@ -15,7 +14,6 @@ const OptionsPage = ({
   buttonTheme,
 }) => {
   const [droneOnButton, setDroneOnButton] = useState(true)
-  const [droneSound, setDroneSound] = useState(true)
   const [isRandomQuestion, setRandomQuestions] = useState(false)
   const {
     dimensions: { height, width },
@@ -23,8 +21,11 @@ const OptionsPage = ({
     font,
     animationsOn,
   } = useContext(ThemeContext)
-  const numOfBoxes = 4
 
+  const { droneType } = useGameContext()
+  const { selectDroneAudio } = useUpdateGameContext()
+
+  const numOfBoxes = 4
   const optionsPadding = height / 30
   const boxHeight = (height * 0.7) / numOfBoxes
   const circleSize = boxHeight * 0.6
@@ -116,10 +117,6 @@ const OptionsPage = ({
     setDroneOnButton((x) => !x)
     // droneOnOff()
   }
-  function droneSoundChange() {
-    setDroneSound((x) => !x)
-    selectDroneAudio()
-  }
 
   return (
     <>
@@ -131,12 +128,12 @@ const OptionsPage = ({
         </View>
         <View style={styles.line}></View>
         <View style={[styles.options, { height: boxHeight }]}>
-          <Pressable onPress={droneSoundChange}>
+          <Pressable onPress={() => selectDroneAudio()}>
             <View>
               <Text style={styles.headerText}>Drone Sound: </Text>
             </View>
             <View>
-              <Text> {droneSound ? 'Double Bass' : 'Synth'} </Text>
+              <Text> {droneType ? 'Double Bass' : 'Synth'} </Text>
             </View>
           </Pressable>
         </View>

@@ -239,7 +239,6 @@ export function GameContextProvider({ children }) {
   }
 
   function questionCardPress(inpt) {
-    console.log('qcard')
     if (choosingKey) {
       setDisplayInputCardArray((x) => noteNames)
       setChoosingKey((x) => false)
@@ -265,7 +264,6 @@ export function GameContextProvider({ children }) {
   }
 
   function userAnswerSetter(inpt) {
-    console.log('userAnswerTop')
     if (inpt.value.name === questionCards?.answerCard.name) {
       questionNumber++
       setShowAnswerCard(true)
@@ -296,16 +294,17 @@ export function GameContextProvider({ children }) {
         questionCards,
         blankCard,
         questionType,
-        droneAudioSrc,
         displayInputCardArray,
-        scoreCircles,
-        questionNumber,
-        choosingKey,
-        attemptCount,
         showAnswerCard,
         scoreCardDisplay,
+        scoreCircles,
+        questionNumber,
         userScore,
+        attemptCount,
+        choosingKey,
         getAudioSrcIdxFromCardReducer,
+        droneAudioSrc,
+        droneType,
       }}
     >
       <GameUpdateContext.Provider
@@ -318,6 +317,7 @@ export function GameContextProvider({ children }) {
           skipQuestion,
           nextQuestionReloadTimeOut,
           resetForNewGame,
+          selectDroneAudio,
         }}
       >
         {children}

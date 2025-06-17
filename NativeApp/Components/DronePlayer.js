@@ -2,11 +2,13 @@ import React, { useEffect, useRef } from 'react'
 import { Text, Pressable } from 'react-native'
 import { Audio } from 'expo-av'
 import { DoubleBassDrones } from '../data/DroneAudioSources'
+import { useGameContext } from './GameContext'
 
 let drone = null // Declare it outside of the component
 let droneTwo = null // Declare it outside of the component
 
 const DronePlayer = ({ rootValue, dronePlaying }) => {
+  const { droneAudioSrc } = useGameContext()
   useEffect(() => {
     // Stop any existing drones before starting new ones
     if (drone) stopDrone(drone)

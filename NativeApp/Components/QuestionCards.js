@@ -164,22 +164,23 @@ const QuestionCards = () => {
         <View
           style={[
             styles.forAnnotation,
-            { justifyContent: 'flex-end', alignItems: 'center' },
+            {
+              justifyContent: 'flex-end',
+              alignItems: 'center',
+              maxHeight: cardSize.height,
+            },
           ]}
         >
-          {annotated && (
+          {annotated ? (
             <>
-              <View
-                style={{
-                  flex: 0,
-                  maxHeight: cardSize.height,
-                }}
-              >
+              <View style={styles.annotatedText}>
                 <Text
-                  style={[
-                    styles.annotatedText,
-                    { alignContent: 'flex-end', textAlign: 'center' },
-                  ]}
+                  style={{
+                    alignContent: 'flex-end',
+                    fontSize: fontSize,
+                    textAlign: 'center',
+                    color: 'white',
+                  }}
                 >
                   {'In this key  ➔ '}
                   {/* {'←  Change between two question modes '} */}
@@ -187,16 +188,13 @@ const QuestionCards = () => {
               </View>
               <View
                 style={{
-                  flex: 0,
                   justifyContent: 'flex-start',
-                  maxHeight: cardSize.height,
                 }}
               >
                 <Text
                   style={[
-                    styles.annotatedText,
                     {
-                      paddingBottom: 10,
+                      color: 'white',
                       fontSize: fontSize * 0.9,
                       fontStyle: 'italic',
                       alignContent: 'flex-end',
@@ -207,6 +205,8 @@ const QuestionCards = () => {
                 </Text>
               </View>
             </>
+          ) : (
+            <View styl={styles.annotatedText}></View>
           )}
         </View>
         <View style={styles.forAnnotation}>

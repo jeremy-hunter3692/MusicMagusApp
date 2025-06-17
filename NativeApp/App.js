@@ -25,9 +25,9 @@ const themeInit = {
   annotatedBackGroundColor: annotatedBackGroundColor,
 }
 const secondaryTheme = {
-  primaryColor: 'black',
+  primaryColor: '#19af59',
   secondaryColor: 'purple',
-  annotatedBackGroundColor: 'rgba(51, 23, 73, 0.99)',
+  annotatedBackGroundColor: annotatedBackGroundColor,
 }
 
 let themeBool = true
@@ -134,37 +134,40 @@ export default function App() {
               annotatedBackGroundColor: annotatedBackGroundColor,
             }}
           >
-            {annotatedCard ? (
-              <View style={styles.annotated}>
-                <AnnotatedCard />
-              </View>
-            ) : (
-              <GameContextProvider>
-                <MainGamePage
-                  isRandomAllQuestionTypes={isRandom}
-                  isAnimated={animationsOn}
-                  setShowOptions={showOptionsSetter}
-                  showOptions={showOptions}
-                  dimensions={{ width, height }}
-                  buttonTheme={randomMagusModeButton}
-                />
-              </GameContextProvider>
-            )}
+            <GameContextProvider>
+              {annotatedCard ? (
+                <View style={styles.annotated}>
+                  <AnnotatedCard />
+                </View>
+              ) : (
+                <>
+                  <MainGamePage
+                    isRandomAllQuestionTypes={isRandom}
+                    isAnimated={animationsOn}
+                    setShowOptions={showOptionsSetter}
+                    showOptions={showOptions}
+                    dimensions={{ width, height }}
+                    buttonTheme={randomMagusModeButton}
+                  />
+
+                  {showOptions && (
+                    <View style={styles.options}>
+                      <OptionsPage
+                        height={height}
+                        changeTheme={changeTheme}
+                        randomQuestionsSetter={randomQuestionsSetter}
+                        setAnimations={setAnimations}
+                        isAnimated={animationsOn}
+                        setShowOptions={showOptionsSetter}
+                        theme={theme}
+                        buttonTheme={randomMagusModeButton}
+                      />
+                    </View>
+                  )}
+                </>
+              )}
+            </GameContextProvider>
           </AnnotatedContext.Provider>
-          {showOptions && (
-            <View style={styles.options}>
-              <OptionsPage
-                height={height}
-                changeTheme={changeTheme}
-                randomQuestionsSetter={randomQuestionsSetter}
-                setAnimations={setAnimations}
-                isAnimated={animationsOn}
-                setShowOptions={showOptionsSetter}
-                theme={theme}
-                buttonTheme={randomMagusModeButton}
-              />
-            </View>
-          )}
           {/*  <ExploreCards />
         <TheoryCirlces /> 
         <ScaleExplore />*/}
