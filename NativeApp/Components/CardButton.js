@@ -54,6 +54,7 @@ const CardButton = ({
   }, [answer, imgSource, reDeal])
 
   function handlePressIn(inpt) {
+    console.log('hanlePress', inpt, onPressPropFunction)
     //this must be with {value }
     if (annotated) {
       //This for an IOS bug that takes answer card instead of the visible blank card

@@ -8,12 +8,9 @@ import AnnotatedContext from './AnnotatedContext.js'
 import CardButton from './CardButton.js'
 
 const DisplayInputCardsGrid = ({ reDeal, isAnimated }) => {
-  const {
-    displayInputCardArray: cardsArray,
-    choosingKey,
-    getAudioSrcIdxFromCardReducer,
-  } = useGameContext()
-  const { userInputCardPress } = useUpdateGameContext()
+  const { displayInputCardArray: cardsArray, choosingKey } = useGameContext()
+  const { userInputCardPress, getAudioSrcIdxFromCardReducer } =
+    useUpdateGameContext()
   const { annotated } = useContext(AnnotatedContext)
 
   //gpt shit for keys pressed

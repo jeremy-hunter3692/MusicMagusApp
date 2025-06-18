@@ -37,7 +37,7 @@ const QuestionCards = () => {
 
   const { questionCardPress, getAudioSrcIdxFromCardReducer } =
     useUpdateGameContext()
-
+  console.log('QuestionCardss', getAudioSrcIdxFromCardReducer)
   useEffect(() => {
     if (showAnswerCard && isAnimated) {
       handleFlip(180, flipAnswerCardAnimation)
@@ -238,9 +238,7 @@ const QuestionCards = () => {
               root={firstCard}
               imgSource={secondCard?.value.imgSrc || blankCard.value.imgSrc}
               answer={answerCard}
-              onPressPropFunction={() =>
-                console.log('secondcard onpress fired')
-              }
+              onPressPropFunction={getAudioSrcIdxFromCardReducer}
               findAudioSourceFunction={getAudioSrcIdxFromCardReducer}
               autoPlay={true}
               animationDelay={3}

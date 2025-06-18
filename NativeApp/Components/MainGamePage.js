@@ -13,10 +13,7 @@ import { useGameContext, useUpdateGameContext } from './GameContext.js'
 
 const groupedNavMargin = 0
 
-const MainGamePage = ({
-  setShowOptions,
-  buttonTheme,
-}) => {
+const MainGamePage = ({ setShowOptions, buttonTheme }) => {
   //Might not need, props should re load the children correctly...?
   const [dronePlaying, setDronePlaying] = useState(true)
 
@@ -29,12 +26,15 @@ const MainGamePage = ({
     font: { fontScale, fontStyle },
     scoreCirclesSize,
   } = useContext(ThemeContext)
+
   const {
-    displayInputCardArray,
-    droneAudioSrc,
     scoreCircles,
     questionNumber,
+    displayInputCardArray,
     choosingKey,
+    droneAudioSrc,
+    droneType,
+    
   } = useGameContext()
 
   const { setRandomisedQuestionsSameType } = useUpdateGameContext()
@@ -205,7 +205,7 @@ const MainGamePage = ({
           )} */}
         </View>
       </View>
-      {/* 
+
       {droneAudioSrc && dronePlaying ? (
         <DronePlayer
           rootValue={droneAudioSrc}
@@ -215,7 +215,7 @@ const MainGamePage = ({
         />
       ) : (
         ''
-      )} */}
+      )}
       {annotated && (
         <View style={styles.topAnnotatedText}>
           <View>

@@ -141,6 +141,7 @@ export function GameContextProvider({ children }) {
   }
 
   function getAndSetDroneAudioSource(card) {
+    console.log(card, droneType)
     let droneAudioType = droneType ? DoubleBassDrones : SynthDrones
     //TO DO  double check what findNoteEquivalent is for and rename it better
     let source = findNoteEquivalentInGivenArray(card, droneAudioType)
@@ -148,6 +149,7 @@ export function GameContextProvider({ children }) {
   }
 
   function getAudioSrcIdxFromCardReducer(cardWithValueIn) {
+    console.log('getaudio', cardWithValueIn)
     if (!choosingKey) {
       console.log(cardWithValueIn)
       cardWithValueIn = !cardWithValueIn.value
@@ -302,7 +304,7 @@ export function GameContextProvider({ children }) {
         userScore,
         attemptCount,
         choosingKey,
-        getAudioSrcIdxFromCardReducer,
+
         droneAudioSrc,
         droneType,
       }}
@@ -318,6 +320,7 @@ export function GameContextProvider({ children }) {
           nextQuestionReloadTimeOut,
           resetForNewGame,
           selectDroneAudio,
+          getAudioSrcIdxFromCardReducer,
         }}
       >
         {children}
