@@ -37,7 +37,7 @@ const QuestionCards = () => {
 
   const { questionCardPress, getAudioSrcIdxFromCardReducer } =
     useUpdateGameContext()
-  console.log('QuestionCardss', getAudioSrcIdxFromCardReducer)
+  let skip = attemptCount > 2 ? true : false
   useEffect(() => {
     if (showAnswerCard && isAnimated) {
       handleFlip(180, flipAnswerCardAnimation)
@@ -50,12 +50,11 @@ const QuestionCards = () => {
       cardsToInit()
     }
   }, [showAnswerCard, skip, displayScore])
-
+  console.log('qcards: ', skip)
   const fontSize =
     typeof fontScale === 'number' && !isNaN(fontScale) ? fontScale : 16
 
   let alterationSizing = choosingKey ? 0.9 : annotated ? 1.2 : 1
-  let skip = attemptCount > 2 ? true : false
 
   function cardsToInit() {
     flipScoreCardAnimation.value = 0

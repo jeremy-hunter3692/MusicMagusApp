@@ -6,14 +6,12 @@ import Animated from 'react-native-reanimated'
 import { useGameContext, useUpdateGameContext } from './GameContext.js'
 
 const OptionsPage = ({
-  droneOnOff,
   changeTheme,
   randomQuestionsSetter,
   setAnimations,
   setShowOptions,
   buttonTheme,
 }) => {
-  const [droneOnButton, setDroneOnButton] = useState(true)
   const [isRandomQuestion, setRandomQuestions] = useState(false)
   const {
     dimensions: { height, width },
@@ -22,8 +20,8 @@ const OptionsPage = ({
     animationsOn,
   } = useContext(ThemeContext)
 
-  const { droneType } = useGameContext()
-  const { selectDroneAudio } = useUpdateGameContext()
+  const { droneType, dronePlaying } = useGameContext()
+  const { selectDroneAudio, droneOnOffToggle } = useUpdateGameContext()
 
   const numOfBoxes = 4
   const optionsPadding = height / 30
@@ -35,6 +33,9 @@ const OptionsPage = ({
       flex: 1,
       padding: optionsPadding,
       backgroundColor: theme.secondaryColor,
+      justifyContent: 'center',
+      alignContent: 'center',
+      alignItems: 'center',
     },
     headerText: {
       fontWeight: 'bold',
@@ -45,12 +46,15 @@ const OptionsPage = ({
       margin: 10,
       width: '100%',
     },
+    pressableOptions: {
+      width: '60%',
+    },
     options: {
       ...buttonTheme,
       flexDirection: 'row',
       borderColor: 'white',
       height: boxHeight,
-      justifyContent: 'space-around',
+      justifyContent: 'space-between',
     },
     // {
     //   backgroundColor: 'white',
@@ -113,9 +117,8 @@ const OptionsPage = ({
     randomQuestionsSetter()
   }
 
-  function droneSwitch() {
-    setDroneOnButton((x) => !x)
-    // droneOnOff()
+  function droneOnOff() {
+    droneOnOffToggle()
   }
 
   return (
@@ -127,20 +130,23 @@ const OptionsPage = ({
           </Pressable>
         </View>
         <View style={styles.line}></View>
-        <View style={[styles.options, { height: boxHeight }]}>
-          <Pressable onPress={() => selectDroneAudio()}>
+        <Pressable
+          style={styles.pressableOptions}
+          onPress={() => selectDroneAudio()}
+        >
+          <View style={[styles.options, { height: boxHeight }]}>
             <View>
               <Text style={styles.headerText}>Drone Sound: </Text>
             </View>
             <View>
               <Text> {droneType ? 'Double Bass' : 'Synth'} </Text>
             </View>
-          </Pressable>
-        </View>
-        <View style={[styles.options, { height: boxHeight }]}>
-          <Text style={styles.headerText}>Drone On/Off:</Text>
-          <Pressable onPress={droneSwitch}>
-            {droneOnButton ? (
+          </View>
+        </Pressable>
+        <Pressable style={styles.pressableOptions} onPress={droneOnOff}>
+          <View style={[styles.options, { height: boxHeight }]}>
+            <Text style={styles.headerText}>Drone On/Off:</Text>
+            {dronePlaying ? (
               <View style={styles.on}>
                 <Text style={{ color: 'white', fontSize: onOffButtonSize }}>
                   on
@@ -153,11 +159,11 @@ const OptionsPage = ({
                 </Text>
               </View>
             )}
-          </Pressable>
-        </View>
-        <View style={[styles.options, { height: boxHeight }]}>
-          <Text style={styles.headerText}>Change Theme</Text>
-          <Pressable onPress={changeTheme}>
+          </View>
+        </Pressable>
+        <Pressable style={styles.pressableOptions} onPress={changeTheme}>
+          <View style={[styles.options, { height: boxHeight }]}>
+            <Text style={styles.headerText}>Change Theme</Text>
             {theme.primaryColor === 'purple' ? (
               <View style={styles.off}>
                 <Text style={{ color: 'black', fontSize: onOffButtonSize }}>
@@ -171,8 +177,8 @@ const OptionsPage = ({
                 </Text>
               </View>
             )}
-          </Pressable>
-        </View>
+          </View>
+        </Pressable>
         {/* <View style={[styles.options, { height: boxHeight }]}>
           <Text style={styles.headerText}>Randomised Questions: </Text>
           <Pressable onPress={setRandom}>
@@ -187,9 +193,9 @@ const OptionsPage = ({
             )}
           </Pressable>
         </View> */}
-        <View style={[styles.options, { height: boxHeight }]}>
-          <Text style={styles.headerText}>Animations: </Text>
-          <Pressable onPress={setAnimated}>
+        <Pressable style={styles.pressableOptions} onPress={setAnimated}>
+          <View style={[styles.options, { height: boxHeight }]}>
+            <Text style={styles.headerText}>Animations: </Text>
             {animationsOn ? (
               <View style={styles.on}>
                 <Text style={{ color: 'white', fontSize: onOffButtonSize }}>
@@ -203,8 +209,8 @@ const OptionsPage = ({
                 </Text>
               </View>
             )}
-          </Pressable>
-        </View>
+          </View>
+        </Pressable>
       </View>
     </>
   )

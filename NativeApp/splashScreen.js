@@ -1,13 +1,17 @@
 import React from 'react'
 import { View, Text, StyleSheet, Image, ActivityIndicator } from 'react-native'
+import { useSharedValue } from 'react-native-reanimated'
 
 const blankCard = require('../assets/blankcard.png')
 
-const SplashScreen = () => (
-  <View style={styles.container}>
-    <Image source={blankCard} />
-  </View>
-)
+const SplashScreen = () => {
+  const flipCardannimation = useSharedValue(0)
+  return (
+    <View style={styles.container}>
+      <Image source={blankCard} />
+    </View>
+  )
+}
 
 const styles = StyleSheet.create({
   container: {

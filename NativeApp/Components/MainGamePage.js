@@ -1,12 +1,10 @@
 import React, { useState, useContext } from 'react'
 import { StyleSheet, View, Text, Pressable } from 'react-native'
-
 import Circle from './Circle.js'
 import DronePlayer from './DronePlayer.js'
 import QuestionCards from './QuestionCards.js'
 import DisplayCardsGrid from './DisplayInputCardsGrid.js'
 import QuestionIconButtons from './QuestionTypeIconButtons.js'
-
 import AnnotatedContext from './AnnotatedContext.js'
 import ThemeContext from './ThemeContext.js'
 import { useGameContext, useUpdateGameContext } from './GameContext.js'
@@ -33,18 +31,12 @@ const MainGamePage = ({ setShowOptions, buttonTheme }) => {
     displayInputCardArray,
     choosingKey,
     droneAudioSrc,
-    droneType,
-    
   } = useGameContext()
 
   const { setRandomisedQuestionsSameType } = useUpdateGameContext()
 
   const fontSize =
     typeof fontScale === 'number' && !isNaN(fontScale) ? fontScale : 16
-
-  function droneOnOff() {
-    dronePlaying ? setDronePlaying(false) : setDronePlaying(true)
-  }
 
   function questionAB(bool) {
     //TO DO clear timeout/question change here
@@ -55,7 +47,11 @@ const MainGamePage = ({ setShowOptions, buttonTheme }) => {
   }
 
   function annotatedButtonClick() {
-    setAnnotatedMode()
+    annotatedCard
+      ? setAnnotatedCard(null)
+      : !annotated
+      ? setAnnotatedMode(true)
+      : setAnnotatedMode(false)
   }
 
   const styles = StyleSheet.create({
@@ -175,12 +171,14 @@ const MainGamePage = ({ setShowOptions, buttonTheme }) => {
                 <Text style={styles.optionText}>Options {'  '}</Text>
               </Pressable>
             ) : null}
-            <Pressable
-              onPress={() => annotatedButtonClick()}
-              style={[{}, !annotatedCard && styles.annotatedButton]}
-            >
-              <Text style={styles.annotatedButtonText}>?</Text>
-            </Pressable>
+            {!choosingKey && (
+              <Pressable
+                onPress={() => annotatedButtonClick()}
+                style={[{}, !annotatedCard && styles.annotatedButton]}
+              >
+                <Text style={styles.annotatedButtonText}>?</Text>
+              </Pressable>
+            )}
           </View>
         </View>
         <View testID="scoreTempTest" style={styles.scoreCircles}>
@@ -208,7 +206,6 @@ const MainGamePage = ({ setShowOptions, buttonTheme }) => {
 
       {droneAudioSrc && dronePlaying ? (
         <DronePlayer
-          rootValue={droneAudioSrc}
           dronePlaying={dronePlaying}
           // reload={droneReload}
           style={{ flex: 0, height: 0, width: 0, margin: 0, padding: 0 }}

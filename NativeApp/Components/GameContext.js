@@ -48,18 +48,20 @@ export function useUpdateGameContext() {
 
 export function GameContextProvider({ children }) {
   //questionType will refer to what the first card is
-  const [questionType, setQuestionType] = useState('Key')
   const [droneAudioSrc, setDroneAudioSrc] = useState()
-  const [displayInputCardArray, setDisplayInputCardArray] = useState()
+  const [dronePlaying, setDronePlaying] = useState(true)
   const [scoreCircles, setScoreCircles] = useState(scoreCirclesInit)
+  const [questionType, setQuestionType] = useState('Key')
+  const [displayInputCardArray, setDisplayInputCardArray] = useState()
+
   const [questionCards, setQuestionCards] = useState({
     firstCard: null,
     secondCard: null,
     answerCard: null,
   })
+  const [showAnswerCard, setShowAnswerCard] = useState(false)
   const [abBool, setabBool] = useState(true)
   const [choosingKey, setChoosingKey] = useState(false)
-  const [showAnswerCard, setShowAnswerCard] = useState(false)
   const [scoreCardDisplay, setScoreCardDisplay] = useState(false)
 
   useEffect(() => {
@@ -135,6 +137,7 @@ export function GameContextProvider({ children }) {
     if (questionNumber > 11) {
       setScoreCardDisplay(true)
       isReloading = true
+      !droneOnOffToggle ? droneOnOffToggle() : ''
       return true
     }
     return false
@@ -290,6 +293,9 @@ export function GameContextProvider({ children }) {
     getAndSetDroneAudioSource(questionCards.firstCard.value)
   }
 
+  function droneOnOffToggle() {
+    setDronePlaying((x) => !x)
+  }
   return (
     <GameContext.Provider
       value={{
@@ -304,9 +310,9 @@ export function GameContextProvider({ children }) {
         userScore,
         attemptCount,
         choosingKey,
-
         droneAudioSrc,
         droneType,
+        dronePlaying,
       }}
     >
       <GameUpdateContext.Provider
@@ -321,6 +327,7 @@ export function GameContextProvider({ children }) {
           resetForNewGame,
           selectDroneAudio,
           getAudioSrcIdxFromCardReducer,
+          droneOnOffToggle,
         }}
       >
         {children}

@@ -6,6 +6,7 @@ import HexKeyWithCards from './Components/HexKeyWithCards.js'
 import TheoryCirlces from './Components/TheoryCircles.js'
 import ExploreCards from './Components/ExploreCards.js'
 import ScaleExplore from './Components/ScaleExplore.js'
+import * as ScreenOrientation from 'expo-screen-orientation'
 
 import { GameContextProvider } from './Components/GameContext.js'
 import ThemeContext from './Components/ThemeContext.js'
@@ -33,6 +34,9 @@ const secondaryTheme = {
 let themeBool = true
 
 export default function App() {
+  useEffect(() => {
+    ScreenOrientation.lockAsync(ScreenOrientation.OrientationLock.LANDSCAPE)
+  }, [])
   const [hexKey, setHexKey] = useState(keys[0])
   const [theme, setTheme] = useState(themeInit)
   const [annotatedCard, setAnnotatedCard] = useState()
