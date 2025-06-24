@@ -52,7 +52,9 @@ const QuestionCards = () => {
   }, [showAnswerCard, skip, displayScore])
   console.log('qcards: ', skip)
   const fontSize =
-    typeof fontScale === 'number' && !isNaN(fontScale) ? fontScale : 16
+    typeof fontScale === 'number' && !isNaN(fontScale)
+      ? Math.ceil(fontScale)
+      : 16
 
   let alterationSizing = choosingKey ? 0.9 : annotated ? 1.2 : 1
 
@@ -194,7 +196,7 @@ const QuestionCards = () => {
                   style={[
                     {
                       color: 'white',
-                      fontSize: fontSize * 0.9,
+                      fontSize: Math.ceil(fontSize * 0.9),
                       fontStyle: 'italic',
                       alignContent: 'flex-end',
                     },

@@ -16,9 +16,8 @@ const AnnotatedCard = () => {
   const bgColor = annotatedBackGroundColor //theme.primaryColor
   const fontSize =
     typeof font.fontScale === 'number' && !isNaN(font.fontScale)
-      ? font.fontScale * 1.5
+      ? Math.ceil(font.fontScale * 1.5)
       : 16
-  console.log(fontColor, fontSize, annotatedBackGroundColor)
   const styles = StyleSheet.create({
     container: {
       backgroundColor: bgColor,
@@ -59,8 +58,7 @@ const AnnotatedCard = () => {
       // borderColor: theme.primaryColor,
       // borderRaduis: 10,
       // backgroundColor: annotatedBackGroundColor,
-      color: fontColor,
-      fontSize: fontSize * 1.5,
+
       justifyContent: 'center',
       alignItems: 'center',
     },
@@ -76,7 +74,6 @@ const AnnotatedCard = () => {
       alignContent: 'center',
     },
     zoomInText: {
-      flex: 1,
       color: fontColor,
       fontSize: fontSize * 1.5,
     },

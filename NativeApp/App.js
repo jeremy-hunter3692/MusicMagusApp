@@ -6,7 +6,7 @@ import HexKeyWithCards from './Components/HexKeyWithCards.js'
 import TheoryCirlces from './Components/TheoryCircles.js'
 import ExploreCards from './Components/ExploreCards.js'
 import ScaleExplore from './Components/ScaleExplore.js'
-import * as ScreenOrientation from 'expo-screen-orientation'
+// import * as ScreenOrientation from 'expo-screen-orientation'
 
 import { GameContextProvider } from './Components/GameContext.js'
 import ThemeContext from './Components/ThemeContext.js'
@@ -34,9 +34,9 @@ const secondaryTheme = {
 let themeBool = true
 
 export default function App() {
-  useEffect(() => {
-    ScreenOrientation.lockAsync(ScreenOrientation.OrientationLock.LANDSCAPE)
-  }, [])
+  // useEffect(() => {
+  //   ScreenOrientation.lockAsync(ScreenOrientation.OrientationLock.LANDSCAPE)
+  // }, [])
   const [hexKey, setHexKey] = useState(keys[0])
   const [theme, setTheme] = useState(themeInit)
   const [annotatedCard, setAnnotatedCard] = useState()
@@ -47,7 +47,11 @@ export default function App() {
 
   const { width, height } = useWindowDimensions()
 
-  const font = { fontScale: width / 70, fontColor: 'white', fontType: 'Arial' }
+  const font = {
+    fontScale: Math.ceil(width / 70),
+    fontColor: 'white',
+    fontType: 'Arial',
+  }
   const cardWidth = width > height ? width * 0.1 : width * 0.14
   const cardSize = {
     cardWidth: cardWidth,
@@ -60,6 +64,7 @@ export default function App() {
   //   setHexKey(musicKey)
   // }
 
+  console.log('APPFONT', font.fontScale)
   function handleAnnotatedClick(inpt) {
     console.log('INT', inpt)
     annotatedCard ? setAnnotatedCard(null) : setAnnotatedCard(inpt)

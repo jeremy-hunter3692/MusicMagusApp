@@ -204,7 +204,7 @@ const MainGamePage = ({ setShowOptions, buttonTheme }) => {
         </View>
       </View>
 
-      {droneAudioSrc && dronePlaying ? (
+      {droneAudioSrc && dronePlaying && !annotated ? (
         <DronePlayer
           dronePlaying={dronePlaying}
           // reload={droneReload}

@@ -7,8 +7,15 @@ import ThemeContext from './ThemeContext.js'
 const ScoreCard = ({ skip }) => {
   const { userScore, scoreCardDisplay } = useGameContext()
   const { skipQuestion, resetForNewGame } = useUpdateGameContext()
-  const { fontScale, cardSize } = useContext(ThemeContext)
-
+  const {
+    font: { fontScale },
+    cardSize,
+  } = useContext(ThemeContext)
+  const fontSize =
+    typeof fontScale === 'number' && !isNaN(fontScale)
+      ? Math.ceil(fontScale)
+      : 16
+  console.log('FONT', fontSize, fontScale)
   const styles = StyleSheet.create({
     // container: {
     //   padding: 5,
@@ -34,7 +41,7 @@ const ScoreCard = ({ skip }) => {
       justifyContent: 'flex-end',
       alignSelf: 'center',
       color: 'black',
-      fontSize: fontScale,
+      fontSize: fontSize,
     },
     quoteText: {
       maxWidth: '%100',
@@ -43,13 +50,13 @@ const ScoreCard = ({ skip }) => {
       justifyContent: 'center',
       alignSelf: 'center',
       color: 'black',
-      fontSize: fontScale,
+      fontSize: fontSize,
     },
     buttonText: {
       justifyContent: 'center',
       color: 'black',
       alignSelf: 'center',
-      fontSize: fontScale * 0.8,
+      fontSize: Math.ceil(fontSize * 0.8),
     },
   })
 
