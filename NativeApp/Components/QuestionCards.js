@@ -50,7 +50,6 @@ const QuestionCards = () => {
       cardsToInit()
     }
   }, [showAnswerCard, skip, displayScore])
-  console.log('qcards: ', skip)
   const fontSize =
     typeof fontScale === 'number' && !isNaN(fontScale)
       ? Math.ceil(fontScale)
@@ -321,7 +320,7 @@ const QuestionCards = () => {
             backAnimatedStyle(flipScoreCardAnimation),
           ]}
         >
-          <ScoreCard skip={skip} />
+          {!annotated && <ScoreCard skip={skip} />}
         </Animated.View>
       </View>
     </>

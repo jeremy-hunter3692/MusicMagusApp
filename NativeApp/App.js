@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import MainGamePage from './Components/MainGamePage'
 import OptionsPage from './Components/OptionsPage.js'
 import AnnotatedCard from './Components/AnnotatedCards.js'
@@ -6,6 +6,9 @@ import HexKeyWithCards from './Components/HexKeyWithCards.js'
 import TheoryCirlces from './Components/TheoryCircles.js'
 import ExploreCards from './Components/ExploreCards.js'
 import ScaleExplore from './Components/ScaleExplore.js'
+import AnimatedSplashScreen from './splashScreen.js'
+import * as SplashScreen from 'expo-splash-screen'
+
 // import * as ScreenOrientation from 'expo-screen-orientation'
 
 import { GameContextProvider } from './Components/GameContext.js'
@@ -44,8 +47,21 @@ export default function App() {
   const [annotatedCardDisplay, setAnnotatedCardDisplay] = useState(false)
   const [animationsOn, setAnimationsOn] = useState(true)
   const [isRandom, setIsRandom] = useState(false)
+  const [showSplash, setShowSplash] = useState(true)
+
+  useEffect(() => {
+    SplashScreen.preventAutoHideAsync()
+    setTimeout(() => {
+      setShowSplash(false)
+      SplashScreen.hideAsync()
+    }, 2000)
+  }, [])
 
   const { width, height } = useWindowDimensions()
+
+  if (showSplash) {
+    return <AnimatedSplashScreen />
+  }
 
   const font = {
     fontScale: Math.ceil(width / 70),
@@ -64,9 +80,7 @@ export default function App() {
   //   setHexKey(musicKey)
   // }
 
-  console.log('APPFONT', font.fontScale)
   function handleAnnotatedClick(inpt) {
-    console.log('INT', inpt)
     annotatedCard ? setAnnotatedCard(null) : setAnnotatedCard(inpt)
   }
 

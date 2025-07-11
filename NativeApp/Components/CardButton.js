@@ -54,18 +54,15 @@ const CardButton = ({
   }, [answer, imgSource, reDeal])
 
   function handlePressIn(inpt) {
-    console.log('hanlePress', inpt, onPressPropFunction)
     //this must be with {value }
     if (annotated) {
       //This for an IOS bug that takes answer card instead of the visible blank card
-      // console.log('if', isAnswerCardForAnnotated, blankCard)
       isAnswerCardForAnnotated
         ? setAnnotatedCard(blankCard)
         : setAnnotatedCard(inpt)
       return
     }
     let audioSrc = onPressPropFunction(inpt) // findAudioSrcAnyCard(inpt)
-    console.log('auido', audioSrc)
     audioSrc ? setNoteAudioSrc(audioSrc) : null
     noteAudioSrc ? setPlayBool((bool) => !bool) : null
     hasPlayed = true

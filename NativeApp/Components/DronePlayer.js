@@ -10,15 +10,17 @@ let droneTwo = null // Declare it outside of the component
 const DronePlayer = () => {
   const { droneAudioSrc, dronePlaying } = useGameContext()
   const rootValue = droneAudioSrc || null
-  
-  useEffect(() => {
-    // Stop any existing drones before starting new ones
-    if (drone) stopDrone(drone)
-    if (droneTwo) stopDrone(droneTwo)
 
-    // Load and play drones if dronePlaying is true
+  useEffect(() => {
     if (dronePlaying) {
-      loadAndPlayDrone()
+      // Stop any existing drones before starting new ones
+      if (drone) stopDrone(drone)
+      if (droneTwo) stopDrone(droneTwo)
+
+      // Load and play drones if dronePlaying is true
+      if (dronePlaying) {
+        loadAndPlayDrone()
+      }
     }
 
     // Cleanup function to stop and unload drones
@@ -32,11 +34,17 @@ const DronePlayer = () => {
     if (rootValue) {
       drone = await loadSound(rootValue) // Store the sound object globally
       droneTwo = await loadSound(rootValue)
-      await drone.playAsync()
-      const status = await drone.getStatusAsync()
-      let timeDelay = status.durationMillis * 0.5
+
+      const statusDOne = await drone.getStatusAsync()
+      statusDOne.isLoaded
+        ? await drone.playAsync()
+        : console.log('Drone sound not loaded')
+      let timeDelay = statusDOne.durationMillis * 0.5
       let secondDroneID = setTimeout(async () => {
-        await droneTwo.playAsync()
+        const statusDTwo = await drone.getStatusAsync()
+        statusDTwo.isLoaded
+          ? await droneTwo.playAsync()
+          : console.log('Drone sound not loaded')
       }, timeDelay)
     }
   }
@@ -58,6 +66,8 @@ const DronePlayer = () => {
 
   const fadeOutAndStop = async (soundObj, duration = 300) => {
     if (soundObj) {
+      const status = await soundObj.getStatusAsync()
+      if (!status.isLoaded) return
       const steps = 30 // Increase the number of steps for smoother fade-out
       const stepDuration = duration / steps
       const initialVolume = 0.7 // Assuming initial volume is 0.7

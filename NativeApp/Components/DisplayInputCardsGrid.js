@@ -1,4 +1,4 @@
-import { useContext } from 'react'
+import { useContext, useRef } from 'react'
 import { StatusBar } from 'expo-status-bar'
 import { StyleSheet, View, TouchableOpacity } from 'react-native'
 
@@ -12,7 +12,9 @@ const DisplayInputCardsGrid = ({ reDeal, isAnimated }) => {
   const { userInputCardPress, getAudioSrcIdxFromCardReducer } =
     useUpdateGameContext()
   const { annotated } = useContext(AnnotatedContext)
-
+  const renderCount = useRef(0)
+  renderCount.current += 1
+  console.log(' Display Inpt page render count:', renderCount.current)
   //gpt shit for keys pressed
   // const viewRef = useRef(null)
   // useEffect(() => {

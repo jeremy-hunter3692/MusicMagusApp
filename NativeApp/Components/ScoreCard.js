@@ -15,7 +15,6 @@ const ScoreCard = ({ skip }) => {
     typeof fontScale === 'number' && !isNaN(fontScale)
       ? Math.ceil(fontScale)
       : 16
-  console.log('FONT', fontSize, fontScale)
   const styles = StyleSheet.create({
     // container: {
     //   padding: 5,
@@ -36,7 +35,7 @@ const ScoreCard = ({ skip }) => {
     },
     scoreText: {
       flexDirection: 'column',
-      maxWidth: '%100',
+      maxWidth: '100%',
       fontWeight: 'bold',
       justifyContent: 'flex-end',
       alignSelf: 'center',
@@ -44,8 +43,8 @@ const ScoreCard = ({ skip }) => {
       fontSize: fontSize,
     },
     quoteText: {
-      maxWidth: '%100',
-      fontWeight: 5,
+      maxWidth: '100%',
+      fontWeight: '100',
       fontStyle: 'italic',
       justifyContent: 'center',
       alignSelf: 'center',
@@ -53,7 +52,7 @@ const ScoreCard = ({ skip }) => {
       fontSize: fontSize,
     },
     buttonText: {
-      justifyContent: 'center',
+      textAlign: 'center',
       color: 'black',
       alignSelf: 'center',
       fontSize: Math.ceil(fontSize * 0.8),

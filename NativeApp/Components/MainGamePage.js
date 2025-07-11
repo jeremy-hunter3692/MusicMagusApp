@@ -1,4 +1,4 @@
-import React, { useState, useContext } from 'react'
+import React, { useState, useContext, useRef } from 'react'
 import { StyleSheet, View, Text, Pressable } from 'react-native'
 import Circle from './Circle.js'
 import DronePlayer from './DronePlayer.js'
@@ -34,6 +34,7 @@ const MainGamePage = ({ setShowOptions, buttonTheme }) => {
   } = useGameContext()
 
   const { setRandomisedQuestionsSameType } = useUpdateGameContext()
+
 
   const fontSize =
     typeof fontScale === 'number' && !isNaN(fontScale) ? fontScale : 16
@@ -168,7 +169,7 @@ const MainGamePage = ({ setShowOptions, buttonTheme }) => {
           <View style={styles.questionButtonInRightNavbar}>
             {!annotatedCard ? (
               <Pressable onPress={() => setShowOptions()}>
-                <Text style={styles.optionText}>Options {'  '}</Text>
+                <Text style={styles.optionText}>Options</Text>
               </Pressable>
             ) : null}
             {!choosingKey && (
