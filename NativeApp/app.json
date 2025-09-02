@@ -1,6 +1,7 @@
 {
   "expo": {
-    "name": "Magus Cards",
+
+    "name": "MagusCards",
     "slug": "Magus-Cards",
     "version": "1.0.0",
     "orientation": "landscape",
@@ -44,6 +45,9 @@
       "eas": {
         "projectId": "572a1e58-6da5-4eb8-9a8d-7868e8526c15"
       }
+    },
+    "android": {
+      "package": "com.yourcompany.yourappname"
     }
   }
 }
