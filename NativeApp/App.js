@@ -68,10 +68,12 @@ export default function App() {
     fontColor: 'white',
     fontType: 'Arial',
   }
-  const cardWidth = width > height ? width * 0.1 : width * 0.14
+  // const cardWidth = width > height ? width * 0.1 : width * 0.14
+  const cardHeight = (height / 4) * 1.1
+
   const cardSize = {
-    cardWidth: cardWidth,
-    cardHeight: cardWidth * 1.5,
+    cardWidth: cardHeight * (2 / 3),
+    cardHeight: cardHeight, //cardWidth * 1.5,
   }
   const scoreCirclesSize = height / 20
   const dimensions = { width: width, height: height }

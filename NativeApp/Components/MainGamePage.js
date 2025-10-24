@@ -35,7 +35,6 @@ const MainGamePage = ({ setShowOptions, buttonTheme }) => {
 
   const { setRandomisedQuestionsSameType } = useUpdateGameContext()
 
-
   const fontSize =
     typeof fontScale === 'number' && !isNaN(fontScale) ? fontScale : 16
 
@@ -54,15 +53,17 @@ const MainGamePage = ({ setShowOptions, buttonTheme }) => {
       ? setAnnotatedMode(true)
       : setAnnotatedMode(false)
   }
-
+ const navBarInset = width/10
   const styles = StyleSheet.create({
     navBar: {
       flexDirection: 'row-reverse',
       justifyContent: 'space-between',
       backgroundColor: theme.secondaryColor,
-      margin: groupedNavMargin,
+      marginBottom: groupedNavMargin,
       flex: 0.3,
-      padding: 0,
+      paddingHorizontal: navBarInset,
+      marginHorizontal: -navBarInset
+      // borderWidth: 1,
     },
     leftNavBar: {
       flex: 0.3,
@@ -164,6 +165,17 @@ const MainGamePage = ({ setShowOptions, buttonTheme }) => {
 
   return (
     <>
+      {/* <View
+        style={{
+          position: 'absolute',
+            left: 0,
+          right: 0,
+          top: 0,
+     
+          backgroundColor: 'pink',
+          zIndex: 10,
+        }}
+      /> */}
       <View style={styles.navBar}>
         <View style={styles.rightNavBar}>
           <View style={styles.questionButtonInRightNavbar}>
