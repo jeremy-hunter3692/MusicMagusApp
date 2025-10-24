@@ -38,6 +38,7 @@ const QuestionCards = () => {
   const { questionCardPress, getAudioSrcIdxFromCardReducer } =
     useUpdateGameContext()
   let skip = attemptCount > 2 ? true : false
+
   useEffect(() => {
     if (showAnswerCard && isAnimated) {
       handleFlip(180, flipAnswerCardAnimation)
@@ -55,7 +56,7 @@ const QuestionCards = () => {
       ? Math.ceil(fontScale)
       : 16
 
-  let alterationSizing = choosingKey ? 0.9 : annotated ? 1.2 : 1
+  let alterationSizing = choosingKey ? 0.7 : annotated ? 1.2 : 1
 
   function cardsToInit() {
     flipScoreCardAnimation.value = 0
@@ -136,7 +137,7 @@ const QuestionCards = () => {
       margin: 0,
       flexDirection: 'column',
       justifyContent: 'flex-start',
-      maxHeight: cardSize.cardHeight,
+      height: cardSize.cardHeight,
     },
     annotatedText: {
       flexDirection: 'row',
@@ -160,7 +161,12 @@ const QuestionCards = () => {
 
   return (
     <>
-      <View style={styles.questionCardsCont}>
+      <View
+        style={[
+          styles.questionCardsCont,
+          choosingKey && { justifyContent: 'flex-start' },
+        ]}
+      >
         <View
           style={[
             styles.forAnnotation,
@@ -206,10 +212,10 @@ const QuestionCards = () => {
               </View>
             </>
           ) : (
-            <View styl={styles.annotatedText}></View>
+            <View style={styles.annotatedText}></View>
           )}
         </View>
-        <View style={styles.forAnnotation}>
+        <View style={[styles.forAnnotation]}>
           <CardButton
             key={`question ${firstCard?.name || firstCard?.imgSrc}`}
             data={firstCard}
