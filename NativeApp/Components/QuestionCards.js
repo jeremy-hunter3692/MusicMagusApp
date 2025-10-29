@@ -179,31 +179,31 @@ const QuestionCards = () => {
         >
           {annotated ? (
             <>
-              <View style={styles.annotatedText}>
+              <View style={styles.forAnnotation}>
                 <Text
-                  style={{
-                    alignContent: 'flex-end',
-                    fontSize: fontSize,
-                    textAlign: 'center',
-                    color: 'white',
-                  }}
+                  style={[
+                    styles.annotatedText,
+                    {
+                      // alignContent: 'flex-start',
+                      fontSize: fontSize,
+                      textAlign: 'center',
+                      color: 'white',
+                      margin: 0,
+                      padding: 0,
+                    },
+                  ]}
                 >
                   {'In this key  ➔ '}
                   {/* {'←  Change between two question modes '} */}
                 </Text>
-              </View>
-              <View
-                style={{
-                  justifyContent: 'flex-start',
-                }}
-              >
+
                 <Text
                   style={[
                     {
                       color: 'white',
-                      fontSize: Math.ceil(fontSize * 0.9),
+                      fontSize: Math.ceil(fontSize * 0.8),
                       fontStyle: 'italic',
-                      alignContent: 'flex-end',
+                      // alignContent: 'flex-end',
                     },
                   ]}
                 >

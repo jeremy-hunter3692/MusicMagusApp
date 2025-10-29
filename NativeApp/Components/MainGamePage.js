@@ -9,7 +9,7 @@ import AnnotatedContext from './AnnotatedContext.js'
 import ThemeContext from './ThemeContext.js'
 import { useGameContext, useUpdateGameContext } from './GameContext.js'
 
-const groupedNavMargin = 0
+const groupedNavMargin = 1
 
 const MainGamePage = ({ setShowOptions, buttonTheme }) => {
   //Might not need, props should re load the children correctly...?
@@ -17,7 +17,7 @@ const MainGamePage = ({ setShowOptions, buttonTheme }) => {
 
   const { annotatedCard, annotated, setAnnotatedCard, setAnnotatedMode } =
     useContext(AnnotatedContext)
-    
+
   const {
     cardSize: { cardWidth, cardHeight },
     dimensions: { width, height },
@@ -64,7 +64,6 @@ const MainGamePage = ({ setShowOptions, buttonTheme }) => {
       flex: 0.3,
       paddingHorizontal: navBarInset,
       marginHorizontal: -navBarInset,
-      // borderWidth: 1,
     },
     leftNavBar: {
       flex: 0.3,
@@ -78,6 +77,7 @@ const MainGamePage = ({ setShowOptions, buttonTheme }) => {
       alignItems: 'center',
       margin: groupedNavMargin,
       flex: 0.3,
+
       padding: 0,
     },
     rightNavBar: {
@@ -86,9 +86,14 @@ const MainGamePage = ({ setShowOptions, buttonTheme }) => {
       justifyContent: 'flex-end',
       alignItems: 'center',
       textAlign: 'center',
+
       margin: groupedNavMargin,
       flex: 0.3,
       padding: 0,
+    },
+    optionText: {
+      color: 'black',
+      fontSize: fontSize,
     },
     scoreCircles: {
       fontWeight: 'bold',
@@ -97,7 +102,7 @@ const MainGamePage = ({ setShowOptions, buttonTheme }) => {
       alignItems: 'center',
       backgroundColor: theme.secondaryColor,
       margin: groupedNavMargin,
-      flex: 1,
+      flex: 0.6,
       padding: 0,
     },
     topRowCards: {
@@ -124,10 +129,7 @@ const MainGamePage = ({ setShowOptions, buttonTheme }) => {
       margin: 2,
       padding: 0,
     },
-    optionText: {
-      color: 'black',
-      fontSize: fontSize,
-    },
+
     annotatedButtonText: { color: theme.primaryColor, fontSize: fontSize },
     topAnnotatedText: {
       flex: 0.75,
@@ -140,8 +142,12 @@ const MainGamePage = ({ setShowOptions, buttonTheme }) => {
       color: 'white',
       fontWeight: 'bold',
       fontSize: fontSize,
+      margin: 2,
+      borderWidth: 1,
+      borderColor: 'white',
     },
     scoreTrackerAnnotatedText: {
+      fontSize: Math.ceil(fontSize * 0.8),
       justifyContent: 'center',
       alignItems: 'center',
     },
@@ -171,7 +177,7 @@ const MainGamePage = ({ setShowOptions, buttonTheme }) => {
           <View style={styles.questionButtonInRightNavbar}>
             {!annotatedCard ? (
               <Pressable onPress={() => setShowOptions()}>
-                <Text style={styles.optionText}>Options</Text>
+                <Text style={styles.optionText}>Options </Text>
               </Pressable>
             ) : null}
             {!choosingKey && (
@@ -233,6 +239,7 @@ const MainGamePage = ({ setShowOptions, buttonTheme }) => {
                 styles.annotatedText,
                 { fontStyle: 'italic', fontSize: fontSize },
               ]}
+              numberOfLines={2}
             >
               Full circle for a correct answer and a dot if you got it on your
               second go
