@@ -139,6 +139,7 @@ const QuestionCards = () => {
       justifyContent: 'flex-start',
       height: cardSize.cardHeight,
     },
+
     annotatedText: {
       flexDirection: 'row',
       margin: 0,
@@ -149,9 +150,29 @@ const QuestionCards = () => {
       alignContent: 'center',
       alignItems: 'center',
       fontWeight: 'bold',
+      maxWidth: cardSize.cardWidth,
+      maxHeight: cardSize.cardHeight,
+      fontSize: fontSize,
+    },
+
+    annotatedWithSubTextContainer: {
+      flex: 1,
+      margin: 0,
+      padding: 0,
       width: cardSize.cardWidth,
       height: cardSize.cardHeight - 5,
-      fontSize: fontSize,
+      flexDirection: 'column',
+      justifyContent: 'space-between',
+      alignItems: 'center',
+    },
+    annotatedSubText: {
+      margin: 0,
+      padding: 0,
+      color: 'white',
+      fontSize: Math.ceil(fontSize * 0.8),
+      fontStyle: 'italic',
+      alignSelf: 'center',
+      textAlign: 'center',
     },
     hiddenScoreCard: {
       height: cardSize.cardHeight,
@@ -178,41 +199,15 @@ const QuestionCards = () => {
           ]}
         >
           {annotated ? (
-            <>
-              <View style={styles.forAnnotation}>
-                <Text
-                  style={[
-                    styles.annotatedText,
-                    {
-                      // alignContent: 'flex-start',
-                      fontSize: fontSize,
-                      textAlign: 'center',
-                      color: 'white',
-                      margin: 0,
-                      padding: 0,
-                    },
-                  ]}
-                >
-                  {'In this key  ➔ '}
-                  {/* {'←  Change between two question modes '} */}
-                </Text>
+            <View style={styles.annotatedWithSubTextContainer}>
+              <Text style={styles.annotatedText}>{'In this key  ➔ '}</Text>
 
-                <Text
-                  style={[
-                    {
-                      color: 'white',
-                      fontSize: Math.ceil(fontSize * 0.8),
-                      fontStyle: 'italic',
-                      // alignContent: 'flex-end',
-                    },
-                  ]}
-                >
-                  {`Click card to change key`}
-                </Text>
-              </View>
-            </>
+              <Text style={styles.annotatedSubText}>
+                {`Click this card to change key`}
+              </Text>
+            </View>
           ) : (
-            <View style={styles.annotatedText}></View>
+            <View style={styles.annotatedWithSubTextContainer}></View>
           )}
         </View>
         <View style={[styles.forAnnotation]}>
@@ -233,7 +228,7 @@ const QuestionCards = () => {
         <View style={styles.forAnnotation}>
           {annotated && (
             <Text style={styles.annotatedText}>
-              {'what interval is this note ➔ '}
+              {'What interval is this note ➔ '}
             </Text>
           )}
         </View>
@@ -309,7 +304,7 @@ const QuestionCards = () => {
           style={[
             styles.forAnnotation,
             {
-              justifyContent: 'center',
+              justifyContent: 'flex-end',
               alignContent: 'center',
             },
           ]}

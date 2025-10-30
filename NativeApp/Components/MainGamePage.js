@@ -7,6 +7,7 @@ import DisplayCardsGrid from './DisplayInputCardsGrid.js'
 import QuestionIconButtons from './QuestionTypeIconButtons.js'
 import AnnotatedContext from './AnnotatedContext.js'
 import ThemeContext from './ThemeContext.js'
+
 import { useGameContext, useUpdateGameContext } from './GameContext.js'
 
 const groupedNavMargin = 1
@@ -25,6 +26,8 @@ const MainGamePage = ({ setShowOptions, buttonTheme }) => {
     font: { fontScale, fontStyle },
     scoreCirclesSize,
   } = useContext(ThemeContext)
+  console.log('theme',  theme, scoreCirclesSize)
+  
 
   const {
     scoreCircles,
@@ -143,8 +146,6 @@ const MainGamePage = ({ setShowOptions, buttonTheme }) => {
       fontWeight: 'bold',
       fontSize: fontSize,
       margin: 2,
-      borderWidth: 1,
-      borderColor: 'white',
     },
     scoreTrackerAnnotatedText: {
       fontSize: Math.ceil(fontSize * 0.8),
@@ -233,20 +234,20 @@ const MainGamePage = ({ setShowOptions, buttonTheme }) => {
             </Text>
           </View>
           <View style={styles.scoreTrackerAnnotatedText}>
-            <Text style={styles.annotatedText}>Score tracker ↑</Text>
             <Text
               style={[
                 styles.annotatedText,
-                { fontStyle: 'italic', fontSize: fontSize },
+                { fontStyle: 'italic', fontSize: Math.ceil(fontSize * 0.7) },
               ]}
               numberOfLines={2}
             >
               Full circle for a correct answer and a dot if you got it on your
               second go
             </Text>
+            <Text style={styles.annotatedText}>Score tracker ↑</Text>
           </View>
           <View>
-            <Text style={styles.annotatedText}>↑ Options here </Text>
+            <Text style={styles.annotatedText}> Options here ↑ </Text>
           </View>
         </View>
       )}

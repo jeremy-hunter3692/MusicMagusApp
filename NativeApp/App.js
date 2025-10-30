@@ -22,7 +22,7 @@ import {
   SafeAreaView,
 } from 'react-native'
 import { keys, getIntervalNo } from './data/KeyCards'
-const annotatedBackGroundColor = 'rgba(51, 23, 73, 0.99)'
+const annotatedBackGroundColor = 'rgba(21, 14, 35, 0.99)'
 const themeInit = {
   primaryColor: 'purple',
   secondaryColor: '#19af59',
@@ -37,9 +37,7 @@ const secondaryTheme = {
 let themeBool = true
 
 export default function App() {
-  // useEffect(() => {
-  //   ScreenOrientation.lockAsync(ScreenOrientation.OrientationLock.LANDSCAPE)
-  // }, [])
+
   const [hexKey, setHexKey] = useState(keys[0])
   const [theme, setTheme] = useState(themeInit)
   const [annotatedCard, setAnnotatedCard] = useState()
