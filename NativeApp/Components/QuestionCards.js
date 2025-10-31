@@ -8,6 +8,8 @@ import Animated, {
   withTiming,
   interpolate,
   Extrapolate,
+  cancelAnimation,
+  withDelay,
 } from 'react-native-reanimated'
 
 import { useUpdateGameContext, useGameContext } from './GameContext.js'
@@ -19,10 +21,15 @@ let isAnimated = true
 const QuestionCards = () => {
   const flipAnswerCardAnimation = useSharedValue(0)
   const flipScoreCardAnimation = useSharedValue(0)
+  console.log('top', flipAnswerCardAnimation.value)
   const {
     font: { fontScale, fontStyle },
     cardSize,
   } = useContext(ThemeContext)
+  const fontSize =
+    typeof fontScale === 'number' && !isNaN(fontScale)
+      ? Math.ceil(fontScale)
+      : 16
 
   const { annotated } = useContext(AnnotatedContext)
 
@@ -37,30 +44,40 @@ const QuestionCards = () => {
 
   const { questionCardPress, getAudioSrcIdxFromCardReducer } =
     useUpdateGameContext()
+
   let skip = attemptCount > 2 ? true : false
+  let alterationSizing = choosingKey ? 0.7 : annotated ? 1.2 : 1
+
+  console.log(
+    'context',
+    showAnswerCard,
+    answerCard?.name,
+    flipAnswerCardAnimation.value
+  )
 
   useEffect(() => {
-    if (showAnswerCard && isAnimated) {
-      handleFlip(180, flipAnswerCardAnimation)
-      // handleFlip(180, flipScoreCardAnimation)
-    }
-    if (skip || displayScore) {
-      handleFlip(180, flipScoreCardAnimation)
-    }
     if (!skip && !displayScore && !showAnswerCard) {
       cardsToInit()
+      return
     }
-  }, [showAnswerCard, skip, displayScore])
-  const fontSize =
-    typeof fontScale === 'number' && !isNaN(fontScale)
-      ? Math.ceil(fontScale)
-      : 16
+    if (showAnswerCard && isAnimated) {
+      cancelAnimation(flipAnswerCardAnimation)
 
-  let alterationSizing = choosingKey ? 0.7 : annotated ? 1.2 : 1
+      handleFlip(180, flipAnswerCardAnimation)
+    }
+    if (skip || displayScore) {
+      cancelAnimation(flipScoreCardAnimation)
+
+      handleFlip(180, flipScoreCardAnimation)
+    }
+
+    // !showAnswerCard ? cardsToInit() : null
+  }, [showAnswerCard, skip, displayScore, answerCard])
 
   function cardsToInit() {
     flipScoreCardAnimation.value = 0
     flipAnswerCardAnimation.value = 0
+    console.log('cardsToInit fired', flipAnswerCardAnimation.value)
   }
 
   function droneSetter() {
@@ -68,8 +85,16 @@ const QuestionCards = () => {
   }
 
   const handleFlip = (toValue, card) => {
+    console.log('handleFlip fired toValue:', toValue)
     const animationSpeed = 1000
-    card.value = withTiming(toValue, { duration: animationSpeed })
+    cancelAnimation(card)
+    card.value = withTiming(
+      toValue,
+      { duration: animationSpeed },
+      (finished) => {
+        card.value = finished ? withDelay(700, withTiming(0)) : toValue
+      }
+    )
   }
 
   const frontAnimatedStyle = (card) =>
@@ -265,7 +290,7 @@ const QuestionCards = () => {
             >
               {!choosingKey && (
                 <CardButton
-                  key={answerCard?.name || answerCard?.imgSrc}
+                  key={answerCard?.name} //|| answerCard?.imgSrc}
                   data={answerCard}
                   imgSource={answerCard?.imgSrc}
                   onPressPropFunction={() =>

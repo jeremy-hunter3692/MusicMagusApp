@@ -80,7 +80,10 @@ const SingleNotePlayer = ({ audioSrc, shouldPlayBool }) => {
       let sound = soundCache.get(audioSrc)
       if (!sound) {
         try {
-          const { sound: newSound } = await Audio.Sound.createAsync(audioSrc, { volume: 0.5, isLooping: false })
+          const { sound: newSound } = await Audio.Sound.createAsync(audioSrc, {
+            volume: 0,
+            isLooping: false,
+          })
           soundCache.set(audioSrc, newSound)
           sound = newSound
         } catch (error) {
