@@ -40,18 +40,19 @@ const AnnotatedCard = () => {
     },
     column: {
       flex: 1,
+
       justifyContent: 'space-between',
       width: '90%',
       height: '90%',
     },
     imageColumn: {
-      flex: 1.5,
+      flex: 1.2,
+
       justifyContent: 'center',
       alignItems: 'center',
     },
     image: {
-      width: '80%',
-      height: '80%',
+      flex: 1,
       resizeMode: 'contain',
     },
     zoomInTextCont: {
@@ -118,9 +119,11 @@ const AnnotatedCard = () => {
               style={[
                 styles.textMain,
                 {
-                  color: bgColor,
-                  backgroundColor: '#D3D3D3',
-                  borderRadius: 10,
+                  color: fontColor,
+                  backgroundColor: theme.annotatedBackGroundColor,
+                  borderWidth: 1,
+                  borderColor: fontColor,
+                  borderRadius: 5,
                   padding: 5,
                 },
               ]}

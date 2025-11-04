@@ -11,10 +11,11 @@ const ScoreCard = ({ skip }) => {
     font: { fontScale },
     cardSize,
   } = useContext(ThemeContext)
+
   const fontSize =
     typeof fontScale === 'number' && !isNaN(fontScale)
       ? Math.ceil(fontScale)
-      : 16
+      : 8
   const styles = StyleSheet.create({
     // container: {
     //   padding: 5,
@@ -29,8 +30,8 @@ const ScoreCard = ({ skip }) => {
       padding: 5,
       //This Three for margin and height and width is to match with images. TO DO: replace with a prop
       margin: 3,
-      height: cardSize.cardHeight - 3,
-      width: cardSize.cardWidth - 3,
+      height: cardSize.cardHeight - 4,
+      width: cardSize.cardWidth - 4,
       justifyContent: 'space-around',
     },
     scoreText: {
@@ -49,7 +50,7 @@ const ScoreCard = ({ skip }) => {
       justifyContent: 'center',
       alignSelf: 'center',
       color: 'black',
-      fontSize: fontSize,
+      fontSize: fontSize * 0.8,
     },
     buttonText: {
       textAlign: 'center',
@@ -66,8 +67,8 @@ const ScoreCard = ({ skip }) => {
         (skip || scoreCardDisplay) && {
           backgroundColor: 'white', //rgba(255, 255, 255, 0.7)',
           borderColor: 'white',
-          borderRadius: 10,
-          borderWidth: 1,
+          borderRadius: 6,
+          borderWidth: 0.5,
         },
       ]}
     >

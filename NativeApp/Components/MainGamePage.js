@@ -213,12 +213,12 @@ const MainGamePage = ({ setShowOptions, buttonTheme }) => {
       </View>
 
       {droneAudioSrc && dronePlaying && !annotated ? (
-        <View></View>
-        // <DronePlayer
-        //   dronePlaying={dronePlaying}
-        //   // reload={droneReload}
-        //   style={{ flex: 0, height: 0, width: 0, margin: 0, padding: 0 }}
-        // />
+        // <View></View>
+        <DronePlayer
+          dronePlaying={dronePlaying}
+          // reload={droneReload}
+          style={{ flex: 0, height: 0, width: 0, margin: 0, padding: 0 }}
+        />
       ) : (
         ''
       )}

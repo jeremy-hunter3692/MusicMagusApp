@@ -66,7 +66,7 @@ import React, { useEffect, useRef } from 'react'
 import { Audio } from 'expo-av'
 
 const soundCache = new Map()
-
+const globalVolume = 0.5
 const SingleNotePlayer = ({ audioSrc, shouldPlayBool }) => {
   const soundRef = useRef(null)
 
@@ -81,7 +81,7 @@ const SingleNotePlayer = ({ audioSrc, shouldPlayBool }) => {
       if (!sound) {
         try {
           const { sound: newSound } = await Audio.Sound.createAsync(audioSrc, {
-            volume: 0,
+            volume: globalVolume || 0.5,
             isLooping: false,
           })
           soundCache.set(audioSrc, newSound)

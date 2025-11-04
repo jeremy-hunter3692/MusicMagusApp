@@ -296,6 +296,23 @@ export function GameContextProvider({ children }) {
   function droneOnOffToggle() {
     setDronePlaying((x) => !x)
   }
+
+  console.log('CONTEXt', {
+    questionCards,
+    blankCard,
+    questionType,
+    displayInputCardArray,
+    showAnswerCard,
+    scoreCardDisplay,
+    scoreCircles,
+    questionNumber,
+    userScore,
+    attemptCount,
+    choosingKey,
+    droneAudioSrc,
+    droneType,
+    dronePlaying,
+  })
   return (
     <GameContext.Provider
       value={{

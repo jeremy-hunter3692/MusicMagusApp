@@ -48,12 +48,12 @@ const QuestionCards = () => {
   let skip = attemptCount > 2 ? true : false
   let alterationSizing = choosingKey ? 0.7 : annotated ? 1.2 : 1
 
-  console.log(
-    'context',
-    showAnswerCard,
-    answerCard?.name,
-    flipAnswerCardAnimation.value
-  )
+  // console.log(
+  //   'context',
+  //   showAnswerCard,
+  //   answerCard?.name,
+  //   flipAnswerCardAnimation.value
+  // )
 
   useEffect(() => {
     if (!skip && !displayScore && !showAnswerCard) {
@@ -92,7 +92,11 @@ const QuestionCards = () => {
       toValue,
       { duration: animationSpeed },
       (finished) => {
-        card.value = finished ? withDelay(700, withTiming(0)) : toValue
+        if (finished) {
+          console.log('IFFF')
+          card.value =
+            !displayScore && !skip ? withDelay(700, withTiming(0)) : toValue
+        }
       }
     )
   }
