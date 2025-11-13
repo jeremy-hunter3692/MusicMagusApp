@@ -3,13 +3,14 @@ import { Image, Text, View, StyleSheet, Pressable } from 'react-native'
 import { getDataForAnnotated } from '../functions/functions.js'
 import AnnotatedContext from './AnnotatedContext.js'
 import ThemeContext from './ThemeContext.js'
+import AnnotatedAccidentalCards from './AnnotatedAccidentalCards.js'
 import { ScrollView } from 'react-native-gesture-handler'
 
 const AnnotatedCard = () => {
   const [zoomInText, setZoomInText] = useState(null)
   const { annotatedCard, setAnnotatedMode, annotatedBackGroundColor } =
     useContext(AnnotatedContext)
-  const { font, theme } = useContext(ThemeContext)
+  const { font, theme, dimensions } = useContext(ThemeContext)
   const { bottomRText, bottomLText, topRtext, topLText } =
     getDataForAnnotated(annotatedCard)
   const fontColor = 'white'
@@ -139,6 +140,10 @@ const AnnotatedCard = () => {
             <Text style={styles.textMain}>{bottomRText}</Text>
           </View>
         </Pressable>
+        <AnnotatedAccidentalCards
+          keyCard={annotatedCard?.value}
+          dimensions={dimensions}
+        />
       </View>
     </View>
   )

@@ -21,7 +21,7 @@ let isAnimated = true
 const QuestionCards = () => {
   const flipAnswerCardAnimation = useSharedValue(0)
   const flipScoreCardAnimation = useSharedValue(0)
-  console.log('top', flipAnswerCardAnimation.value)
+  // console.log('top', flipAnswerCardAnimation.value)
   const {
     font: { fontScale, fontStyle },
     cardSize,
@@ -48,12 +48,6 @@ const QuestionCards = () => {
   let skip = attemptCount > 2 ? true : false
   let alterationSizing = choosingKey ? 0.7 : annotated ? 1.2 : 1
 
-  // console.log(
-  //   'context',
-  //   showAnswerCard,
-  //   answerCard?.name,
-  //   flipAnswerCardAnimation.value
-  // )
 
   useEffect(() => {
     if (!skip && !displayScore && !showAnswerCard) {

@@ -297,22 +297,22 @@ export function GameContextProvider({ children }) {
     setDronePlaying((x) => !x)
   }
 
-  console.log('CONTEXt', {
-    questionCards,
-    blankCard,
-    questionType,
-    displayInputCardArray,
-    showAnswerCard,
-    scoreCardDisplay,
-    scoreCircles,
-    questionNumber,
-    userScore,
-    attemptCount,
-    choosingKey,
-    droneAudioSrc,
-    droneType,
-    dronePlaying,
-  })
+  // console.log('CONTEXt in GAMECONTEXT', {
+  //   questionCards,
+  //   blankCard,
+  //   questionType,
+  //   displayInputCardArray,
+  //   showAnswerCard,
+  //   scoreCardDisplay,
+  //   scoreCircles,
+  //   questionNumber,
+  //   userScore,
+  //   attemptCount,
+  //   choosingKey,
+  //   droneAudioSrc,
+  //   droneType,
+  //   dronePlaying,
+  // })
   return (
     <GameContext.Provider
       value={{
