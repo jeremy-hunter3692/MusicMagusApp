@@ -79,7 +79,6 @@ const QuestionCards = () => {
   }
 
   const handleFlip = (toValue, card) => {
-    console.log('handleFlip fired toValue:', toValue)
     const animationSpeed = 1000
     cancelAnimation(card)
     card.value = withTiming(
@@ -87,7 +86,6 @@ const QuestionCards = () => {
       { duration: animationSpeed },
       (finished) => {
         if (finished) {
-          console.log('IFFF')
           card.value =
             !displayScore && !skip ? withDelay(700, withTiming(0)) : toValue
         }

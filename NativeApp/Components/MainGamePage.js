@@ -1,4 +1,4 @@
-import React, { useState, useContext, useRef } from 'react'
+import React, { useState, useContext, useRef, useEffect } from 'react'
 import { StyleSheet, View, Text, Pressable } from 'react-native'
 import Circle from './Circle.js'
 import DronePlayer from './DronePlayer.js'
@@ -7,6 +7,8 @@ import DisplayCardsGrid from './DisplayInputCardsGrid.js'
 import QuestionIconButtons from './QuestionTypeIconButtons.js'
 import AnnotatedContext from './AnnotatedContext.js'
 import ThemeContext from './ThemeContext.js'
+import { preloadSounds } from './AudioManager.js'
+import { noteAudioSrc } from '../data/NotesAudiosSrc.js'
 
 import { useGameContext, useUpdateGameContext } from './GameContext.js'
 
@@ -15,6 +17,18 @@ const groupedNavMargin = 1
 const MainGamePage = ({ setShowOptions, buttonTheme }) => {
   //Might not need, props should re load the children correctly...?
   const [dronePlaying, setDronePlaying] = useState(true)
+
+  useEffect(() => {
+    const allSingleNotes = []
+    noteAudioSrc.forEach((note) => {
+      allSingleNotes.push(note.audioSrc[1])
+      allSingleNotes.push(note.audioSrc[2])
+    })
+
+    preloadSounds(allSingleNotes).catch((err) =>
+      console.warn('preload failed', err)
+    )
+  })
 
   const { annotatedCard, annotated, setAnnotatedCard, setAnnotatedMode } =
     useContext(AnnotatedContext)
