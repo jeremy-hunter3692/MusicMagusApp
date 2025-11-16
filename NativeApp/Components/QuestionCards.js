@@ -48,7 +48,6 @@ const QuestionCards = () => {
   let skip = attemptCount > 2 ? true : false
   let alterationSizing = choosingKey ? 0.7 : annotated ? 1.2 : 1
 
-
   useEffect(() => {
     if (!skip && !displayScore && !showAnswerCard) {
       cardsToInit()
@@ -156,9 +155,10 @@ const QuestionCards = () => {
     forAnnotation: {
       padding: 0,
       margin: 0,
+
       flexDirection: 'column',
       justifyContent: 'flex-start',
-      height: cardSize.cardHeight,
+      height: cardSize.cardHeight * alterationSizing,
     },
 
     annotatedText: {
@@ -172,7 +172,7 @@ const QuestionCards = () => {
       alignItems: 'center',
       fontWeight: 'bold',
       maxWidth: cardSize.cardWidth,
-      maxHeight: cardSize.cardHeight,
+      maxHeight: cardSize.cardHeight * alterationSizing,
       fontSize: fontSize,
     },
 
@@ -181,9 +181,11 @@ const QuestionCards = () => {
       margin: 0,
       padding: 0,
       width: cardSize.cardWidth,
-      height: cardSize.cardHeight - 5,
+      height: cardSize.cardHeight * alterationSizing,
+
       flexDirection: 'column',
       justifyContent: 'space-between',
+
       alignItems: 'center',
     },
     annotatedSubText: {
@@ -209,16 +211,7 @@ const QuestionCards = () => {
           choosingKey && { justifyContent: 'flex-start' },
         ]}
       >
-        <View
-          style={[
-            styles.forAnnotation,
-            {
-              justifyContent: 'flex-end',
-              alignItems: 'center',
-              maxHeight: cardSize.height,
-            },
-          ]}
-        >
+        <View style={[styles.forAnnotation]}>
           {annotated ? (
             <View style={styles.annotatedWithSubTextContainer}>
               <Text style={styles.annotatedText}>{'In this key  ➔ '}</Text>
@@ -325,7 +318,7 @@ const QuestionCards = () => {
           style={[
             styles.forAnnotation,
             {
-              justifyContent: 'flex-end',
+              justifyContent: 'flex-start',
               alignContent: 'center',
             },
           ]}

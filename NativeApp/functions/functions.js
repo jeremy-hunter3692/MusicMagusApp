@@ -263,7 +263,6 @@ export function returnScaleCards(keyCard, scaleType) {
 }
 
 export function getDataForAnnotated(inpt) {
-  console.log('in', inpt)
   if (!inpt || !inpt.value) {
     // Return a default object or null if input is missing or malformed
     return {
@@ -330,6 +329,7 @@ Twitter/Instagram: @aleisterjames`,
     }
   } else if (inpt.value.intervals && inpt.value.audioSrc) {
     let relMinorIdx = inpt.idx - 3 < 0 ? inpt.idx - 3 + 12 : inpt.idx - 3
+    let keyName = replaceFlatsForSharps(inpt.value.name, [inpt.value.name])
     let santisedAccidentals = replaceFlatsForSharps(
       inpt.value.name,
       getAccidentalNames(inpt.value)
@@ -341,7 +341,7 @@ Twitter/Instagram: @aleisterjames`,
       ' ' +
       (noOfAccidentals > 0 ? ' (' + santisedAccidentals + ')' : '')
     return {
-      topLText: 'Key: ' + inpt.value.name,
+      topLText: 'Key: ' + keyName,
       topRText: '',
       bottomLText: 'Relative Minor: ' + keys[relMinorIdx]?.name,
       bottomRText: accidentalsText,
