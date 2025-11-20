@@ -22,6 +22,7 @@ import {
   SafeAreaView,
 } from 'react-native'
 import { keys, getIntervalNo } from './data/KeyCards'
+import SplashAnimation from './Components/SplashAnimation.js'
 const annotatedBackGroundColor = 'rgba(21, 14, 35, 0.99)'
 const themeInit = {
   primaryColor: 'purple',
@@ -37,7 +38,6 @@ const secondaryTheme = {
 let themeBool = true
 
 export default function App() {
-
   const [hexKey, setHexKey] = useState(keys[0])
   const [theme, setTheme] = useState(themeInit)
   const [annotatedCard, setAnnotatedCard] = useState()
@@ -46,13 +46,20 @@ export default function App() {
   const [animationsOn, setAnimationsOn] = useState(true)
   const [isRandom, setIsRandom] = useState(false)
   const [showSplash, setShowSplash] = useState(true)
-
+  const [showSplashAnimation, setShowSplashAnimation] = useState(true)
+const splashDurtation = 2000
+const splashAnimation = 4000
   useEffect(() => {
+    
     SplashScreen.preventAutoHideAsync()
     setTimeout(() => {
       setShowSplash(false)
       SplashScreen.hideAsync()
-    }, 2000)
+
+    }, splashDurtation)
+    setTimeout(()=>{
+      setShowSplashAnimation(false)
+    }, splashDurtation + splashAnimation)
   }, [])
 
   const { width, height } = useWindowDimensions()
@@ -137,6 +144,7 @@ export default function App() {
           elevation: 5,
         }}
       >
+        {showSplashAnimation && !showSplash && <SplashAnimation cardSize={cardSize} width={width} height={height} animationTime={splashAnimation} />}
         <ThemeContext.Provider
           value={{
             font,
