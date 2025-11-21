@@ -6,8 +6,8 @@ import HexKeyWithCards from './Components/HexKeyWithCards.js'
 import TheoryCirlces from './Components/TheoryCircles.js'
 import ExploreCards from './Components/ExploreCards.js'
 import ScaleExplore from './Components/ScaleExplore.js'
-import AnimatedSplashScreen from './splashScreen.js'
-import * as SplashScreen from 'expo-splash-screen'
+// import SplashScreen from './splashScreen.js'
+// import * as SplashScreen from 'expo-splash-screen'
 
 // import * as ScreenOrientation from 'expo-screen-orientation'
 
@@ -47,25 +47,23 @@ export default function App() {
   const [isRandom, setIsRandom] = useState(false)
   const [showSplash, setShowSplash] = useState(true)
   const [showSplashAnimation, setShowSplashAnimation] = useState(true)
-const splashDurtation = 2000
-const splashAnimation = 4000
-  useEffect(() => {
-    
-    SplashScreen.preventAutoHideAsync()
-    setTimeout(() => {
-      setShowSplash(false)
-      SplashScreen.hideAsync()
+  const splashDurtation = 2000
+  const splashAnimation = 4000
 
-    }, splashDurtation)
-    setTimeout(()=>{
-      setShowSplashAnimation(false)
-    }, splashDurtation + splashAnimation)
+  useEffect(() => {
+    // SplashScreen.preventAutoHideAsync()
+    // setTimeout(() => {
+    //   setShowSplash(false)
+    //   SplashScreen.hideAsync()
+    // }, splashDurtation)
+    // setTimeout(()=>{
+    //   setShowSplashAnimation(false)
+    // }, splashDurtation + splashAnimation)
   }, [])
 
   const { width, height } = useWindowDimensions()
-
-  if (showSplash) {
-    return <AnimatedSplashScreen />
+  function splashAnimationOff() {
+    setShowSplashAnimation(false)
   }
 
   const font = {
@@ -122,6 +120,19 @@ const splashAnimation = 4000
     borderColor: theme.secondaryColor,
     borderWidth: 3,
   }
+
+  if (showSplashAnimation) {
+    return (
+      <SplashAnimation
+        cardSize={cardSize}
+        width={width}
+        height={height}
+        animationTime={splashAnimation}
+        splashAnimationOff={splashAnimationOff}
+      />
+    )
+  }
+
   return (
     <>
       <SafeAreaView
@@ -144,7 +155,6 @@ const splashAnimation = 4000
           elevation: 5,
         }}
       >
-        {showSplashAnimation && !showSplash && <SplashAnimation cardSize={cardSize} width={width} height={height} animationTime={splashAnimation} />}
         <ThemeContext.Provider
           value={{
             font,
