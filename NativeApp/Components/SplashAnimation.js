@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 
-import { Pressable, Image, StyleSheet } from 'react-native'
+import { Pressable, Image, View } from 'react-native'
 import Animated, {
   useSharedValue,
   useAnimatedStyle,
@@ -39,7 +39,7 @@ const SplashAnimation = ({
       duration: animationTime / 4 || 1000,
     })
     cardRotation.value = withTiming(rotationEnd, {
-      duration: animationTime / 5,
+      duration: animationTime / 2 || 1000,
     })
     setFirstClickDone(true)
   }
@@ -62,31 +62,33 @@ const SplashAnimation = ({
   }
 
   return (
-    <Pressable onPress={triggerAnimation}>
-      <Animated.View
-        style={[
-          {
-            backgroundColor: 'black',
-            width: width,
-            height: height,
-            zIndex: 1,
-            justifyContent: 'center',
-            alignContent: 'center',
-          },
-          animatedStyle,
-        ]}
-      >
-        <Image
-          source={imgSource}
-          testID={`image`}
-          style={{
-            height: height,
-            width: width,
-            resizeMode: 'contain',
-          }}
-        />
-      </Animated.View>
-    </Pressable>
+    <View style={{ flex: 1, backgroundColor: 'black' }}>
+      <Pressable onPress={triggerAnimation}>
+        <Animated.View
+          style={[
+            {
+              backgroundColor: 'black',
+              width: width,
+              height: height,
+              zIndex: 1,
+              justifyContent: 'center',
+              alignContent: 'center',
+            },
+            animatedStyle,
+          ]}
+        >
+          <Image
+            source={imgSource}
+            testID={`image`}
+            style={{
+              height: height,
+              width: width,
+              resizeMode: 'contain',
+            }}
+          />
+        </Animated.View>
+      </Pressable>
+    </View>
   )
 }
 
