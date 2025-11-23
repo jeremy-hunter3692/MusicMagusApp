@@ -6,14 +6,13 @@ import HexKeyWithCards from './Components/HexKeyWithCards.js'
 import TheoryCirlces from './Components/TheoryCircles.js'
 import ExploreCards from './Components/ExploreCards.js'
 import ScaleExplore from './Components/ScaleExplore.js'
-// import SplashScreen from './splashScreen.js'
-// import * as SplashScreen from 'expo-splash-screen'
 
 // import * as ScreenOrientation from 'expo-screen-orientation'
 
 import { GameContextProvider } from './Components/GameContext.js'
 import ThemeContext from './Components/ThemeContext.js'
 import AnnotatedContext from './Components/AnnotatedContext.js'
+import SplashAnimation from './Components/SplashAnimation.js'
 import { StatusBar } from 'expo-status-bar'
 import {
   StyleSheet,
@@ -22,7 +21,7 @@ import {
   SafeAreaView,
 } from 'react-native'
 import { keys, getIntervalNo } from './data/KeyCards'
-import SplashAnimation from './Components/SplashAnimation.js'
+
 const annotatedBackGroundColor = 'rgba(21, 14, 35, 0.99)'
 const themeInit = {
   primaryColor: 'purple',
@@ -45,9 +44,7 @@ export default function App() {
   const [annotatedCardDisplay, setAnnotatedCardDisplay] = useState(false)
   const [animationsOn, setAnimationsOn] = useState(true)
   const [isRandom, setIsRandom] = useState(false)
-  const [showSplash, setShowSplash] = useState(true)
   const [showSplashAnimation, setShowSplashAnimation] = useState(true)
-  const splashDurtation = 2000
   const splashAnimation = 4000
 
   useEffect(() => {
@@ -111,7 +108,7 @@ export default function App() {
   }
 
   const randomMagusModeButton = {
-    margin: 4,
+    margin: 2,
     padding: 4,
     color: theme.primaryColor,
     fontSize: font.fontScale,
@@ -119,6 +116,7 @@ export default function App() {
     borderRadius: 10,
     borderColor: theme.secondaryColor,
     borderWidth: 3,
+    overflow: 'hidden',
   }
 
   if (showSplashAnimation) {

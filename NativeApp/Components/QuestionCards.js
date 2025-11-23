@@ -208,7 +208,11 @@ const QuestionCards = () => {
       <View
         style={[
           styles.questionCardsCont,
-          choosingKey && { justifyContent: 'flex-start' },
+
+          choosingKey && {
+            justifyContent: 'flex-start',
+            alignItems: 'flex-start',
+          },
         ]}
       >
         <View style={[styles.forAnnotation]}>

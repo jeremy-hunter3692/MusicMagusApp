@@ -193,7 +193,7 @@ const OptionsPage = ({
             )}
           </Pressable>
         </View> */}
-        <Pressable style={styles.pressableOptions} onPress={setAnimated}>
+        {/* <Pressable style={styles.pressableOptions} onPress={setAnimated}>
           <View style={[styles.options, { height: boxHeight }]}>
             <Text style={styles.headerText}>Animations: </Text>
             {animationsOn ? (
@@ -210,7 +210,7 @@ const OptionsPage = ({
               </View>
             )}
           </View>
-        </Pressable>
+        </Pressable> */}
       </View>
     </>
   )
