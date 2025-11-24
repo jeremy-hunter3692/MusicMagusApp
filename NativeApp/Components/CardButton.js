@@ -1,5 +1,6 @@
 import React, { useEffect, useState, useContext } from 'react'
 import AnnotatedContext from './AnnotatedContext'
+import { useGameContext } from './GameContext'
 import ThemeContext from './ThemeContext'
 import SingleNotePlayer from './SingleNotePlayer'
 import { Pressable, Image, StyleSheet } from 'react-native'
@@ -34,6 +35,8 @@ const CardButton = ({
     cardSize: { cardWidth, cardHeight },
   } = useContext(ThemeContext)
   const { annotated, setAnnotatedCard } = useContext(AnnotatedContext)
+
+  const { pianoNotesMuted } = useGameContext()
 
   useEffect(() => {
     if (annotated) {
@@ -117,7 +120,11 @@ const CardButton = ({
 
   return (
     <>
-      <SingleNotePlayer audioSrc={noteAudioSrc} shouldPlay={playBool} />
+      <SingleNotePlayer
+        audioSrc={noteAudioSrc}
+        shouldPlay={playBool}
+        mute={pianoNotesMuted}
+      />
       <Pressable
         testID={data?.name}
         onPressIn={() => {

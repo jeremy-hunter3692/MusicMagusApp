@@ -20,8 +20,9 @@ const OptionsPage = ({
     animationsOn,
   } = useContext(ThemeContext)
 
-  const { droneType, dronePlaying } = useGameContext()
-  const { selectDroneAudio, droneOnOffToggle } = useUpdateGameContext()
+  const { droneType, dronePlaying, pianoNotesMuted } = useGameContext()
+  const { selectDroneAudio, droneOnOffToggle, pianoNotesMutedToggle } =
+    useUpdateGameContext()
 
   const numOfBoxes = 4
   const optionsPadding = height / 30
@@ -121,6 +122,10 @@ const OptionsPage = ({
     droneOnOffToggle()
   }
 
+  function pianoNotesMuted() {
+    pianoNotesMutedToggle()
+  }
+
   return (
     <>
       <View style={styles.container}>
@@ -147,6 +152,24 @@ const OptionsPage = ({
           <View style={[styles.options, { height: boxHeight }]}>
             <Text style={styles.headerText}>Drone On/Off:</Text>
             {dronePlaying ? (
+              <View style={styles.on}>
+                <Text style={{ color: 'white', fontSize: onOffButtonSize }}>
+                  on
+                </Text>
+              </View>
+            ) : (
+              <View style={styles.off}>
+                <Text style={{ color: 'black', fontSize: onOffButtonSize }}>
+                  Off
+                </Text>
+              </View>
+            )}
+          </View>
+        </Pressable>
+        <Pressable style={styles.pressableOptions} onPress={pianoNotesMuted}>
+          <View style={[styles.options, { height: boxHeight }]}>
+            <Text style={styles.headerText}>Card Notes On/Off</Text>
+            {pianoNotesMuted ? (
               <View style={styles.on}>
                 <Text style={{ color: 'white', fontSize: onOffButtonSize }}>
                   on

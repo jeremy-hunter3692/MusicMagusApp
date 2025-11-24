@@ -50,6 +50,7 @@ export function GameContextProvider({ children }) {
   //questionType will refer to what the first card is
   const [droneAudioSrc, setDroneAudioSrc] = useState()
   const [dronePlaying, setDronePlaying] = useState(true)
+  const [pianoNotesMuted, setPianoNotesMuted] = useState(false)
   const [scoreCircles, setScoreCircles] = useState(scoreCirclesInit)
   const [questionType, setQuestionType] = useState('Key')
   const [displayInputCardArray, setDisplayInputCardArray] = useState()
@@ -292,6 +293,9 @@ export function GameContextProvider({ children }) {
     droneType = !droneType
     getAndSetDroneAudioSource(questionCards.firstCard.value)
   }
+function pianoNotesMutedToggle(){
+  setPianoNotesMuted((x)=>!x)
+}
 
   function droneOnOffToggle() {
     setDronePlaying((x) => !x)
@@ -330,6 +334,7 @@ export function GameContextProvider({ children }) {
         droneAudioSrc,
         droneType,
         dronePlaying,
+        pianoNotesMuted,
       }}
     >
       <GameUpdateContext.Provider
@@ -345,6 +350,7 @@ export function GameContextProvider({ children }) {
           selectDroneAudio,
           getAudioSrcIdxFromCardReducer,
           droneOnOffToggle,
+          pianoNotesMutedToggle,
         }}
       >
         {children}
