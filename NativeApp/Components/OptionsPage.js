@@ -122,7 +122,7 @@ const OptionsPage = ({
     droneOnOffToggle()
   }
 
-  function pianoNotesMuted() {
+  function pianoNotesMutedToggler() {
     pianoNotesMutedToggle()
   }
 
@@ -166,7 +166,10 @@ const OptionsPage = ({
             )}
           </View>
         </Pressable>
-        <Pressable style={styles.pressableOptions} onPress={pianoNotesMuted}>
+        <Pressable
+          style={styles.pressableOptions}
+          onPress={pianoNotesMutedToggler}
+        >
           <View style={[styles.options, { height: boxHeight }]}>
             <Text style={styles.headerText}>Card Notes On/Off</Text>
             {pianoNotesMuted ? (

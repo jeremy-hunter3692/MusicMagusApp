@@ -17,15 +17,15 @@
     ],
     "ios": {
       "supportsTablet": true,
+      "requiresFullScreen": true,
       "bundleIdentifier": "com.yourcompany.yourappname",
       "infoPlist": {
         "UISupportedInterfaceOrientations": [
-          "UIInterfaceOrientationPortrait",
-          "UIInterfaceOrientationLandscapeLeft",
-          "UIInterfaceOrientationLandscapeRight",
-          "UIInterfaceOrientationPortrait",
+      
           "UIInterfaceOrientationLandscapeLeft",
           "UIInterfaceOrientationLandscapeRight"
+  
+      
         ],
         "ITSAppUsesNonExemptEncryption": false
       },
@@ -48,6 +48,9 @@
     },
     "android": {
       "package": "com.yourcompany.yourappname"
-    }
+    },
+    "plugins": [
+  "expo-screen-orientation"
+]
   }
 }

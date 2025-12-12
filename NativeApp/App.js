@@ -7,7 +7,7 @@ import TheoryCirlces from './Components/TheoryCircles.js'
 import ExploreCards from './Components/ExploreCards.js'
 import ScaleExplore from './Components/ScaleExplore.js'
 
-// import * as ScreenOrientation from 'expo-screen-orientation'
+import * as ScreenOrientation from 'expo-screen-orientation'
 
 import { GameContextProvider } from './Components/GameContext.js'
 import ThemeContext from './Components/ThemeContext.js'
@@ -48,14 +48,16 @@ export default function App() {
   const splashAnimation = 4000
 
   useEffect(() => {
-    // SplashScreen.preventAutoHideAsync()
-    // setTimeout(() => {
-    //   setShowSplash(false)
-    //   SplashScreen.hideAsync()
-    // }, splashDurtation)
-    // setTimeout(()=>{
-    //   setShowSplashAnimation(false)
-    // }, splashDurtation + splashAnimation)
+    async function lock() {
+      try {
+        await ScreenOrientation.lockAsync(
+          ScreenOrientation.OrientationLock.LANDSCAPE
+        )
+      } catch (e) {
+        console.warn('Failed to lock orientation', e)
+      }
+    }
+    lock()
   }, [])
 
   const { width, height } = useWindowDimensions()

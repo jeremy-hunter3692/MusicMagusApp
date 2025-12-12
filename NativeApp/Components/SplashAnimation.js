@@ -18,10 +18,10 @@ const SplashAnimation = ({
 }) => {
   const [firstClickDone, setFirstClickDone] = useState(false)
   const cardSizeScale = useSharedValue(1)
-  const cardRotation = useSharedValue(0)
+  const cardRotation = useSharedValue(-90)
   const cardYRotation = useSharedValue(0)
   const cardWidth = cardSize.width / 2 || 0.3
-  const rotationEnd = 90
+  const rotationEnd = 0
 
   const animatedStyle = useAnimatedStyle(() => {
     return {
@@ -62,7 +62,12 @@ const SplashAnimation = ({
   }
 
   return (
-    <View style={{ flex: 1, backgroundColor: 'black' }}>
+    <View
+      style={{
+        flex: 1,
+        backgroundColor: 'black',
+      }}
+    >
       <Pressable onPress={triggerAnimation}>
         <Animated.View
           style={[
