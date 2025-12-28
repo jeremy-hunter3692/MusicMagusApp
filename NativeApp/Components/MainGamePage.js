@@ -16,7 +16,6 @@ const groupedNavMargin = 1
 
 const MainGamePage = ({ setShowOptions, buttonTheme }) => {
   //Might not need, props should re load the children correctly...?
-  const [dronePlaying, setDronePlaying] = useState(true)
 
   useEffect(() => {
     const allSingleNotes = []
@@ -47,6 +46,7 @@ const MainGamePage = ({ setShowOptions, buttonTheme }) => {
     displayInputCardArray,
     choosingKey,
     droneAudioSrc,
+    dronePlaying,
   } = useGameContext()
 
   const { setRandomisedQuestionsSameType } = useUpdateGameContext()
@@ -76,7 +76,7 @@ const MainGamePage = ({ setShowOptions, buttonTheme }) => {
       justifyContent: 'space-between',
       backgroundColor: theme.secondaryColor,
       marginBottom: groupedNavMargin,
-      flex: 0.3,
+      flex: 0.35,
       paddingHorizontal: navBarInset,
       marginHorizontal: -navBarInset,
     },
@@ -91,7 +91,7 @@ const MainGamePage = ({ setShowOptions, buttonTheme }) => {
       justifyContent: 'flex-end',
       alignItems: 'center',
       margin: groupedNavMargin,
-      flex: 0.3,
+      flex: 0.4,
 
       padding: 0,
     },
@@ -109,6 +109,7 @@ const MainGamePage = ({ setShowOptions, buttonTheme }) => {
     optionText: {
       color: 'black',
       fontSize: fontSize,
+      marginRight: 10,
     },
     scoreCircles: {
       fontWeight: 'bold',
@@ -226,8 +227,7 @@ const MainGamePage = ({ setShowOptions, buttonTheme }) => {
         </View>
       </View>
 
-      {droneAudioSrc && dronePlaying && !annotated ? (
-        // <View></View>
+      {dronePlaying && !annotated ? (
         <DronePlayer
           dronePlaying={dronePlaying}
           // reload={droneReload}

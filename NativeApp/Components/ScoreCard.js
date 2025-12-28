@@ -33,15 +33,17 @@ const ScoreCard = ({ skip }) => {
       height: cardSize.cardHeight - 4,
       width: cardSize.cardWidth - 4,
       justifyContent: 'space-around',
+      alignItems: 'center',
     },
     scoreText: {
       flexDirection: 'column',
       maxWidth: '100%',
       fontWeight: 'bold',
       justifyContent: 'flex-end',
+
       alignSelf: 'center',
       color: 'black',
-      fontSize: fontSize,
+      fontSize: Math.ceil(fontSize * 0.8),
     },
     quoteText: {
       maxWidth: '100%',
@@ -50,7 +52,7 @@ const ScoreCard = ({ skip }) => {
       justifyContent: 'center',
       alignSelf: 'center',
       color: 'black',
-      fontSize: fontSize * 0.8,
+      fontSize: Math.ceil(fontSize * 0.7),
     },
     buttonText: {
       textAlign: 'center',

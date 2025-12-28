@@ -23,7 +23,7 @@ async function loadSound(uri) {
   if (!uri) return null
   if (soundCache.has(uri)) return soundCache.get(uri)
   try {
-    const { sound } = await Audio.Sound.createAsync(uri, { volume: 0.6, isLooping: false })
+    const { sound } = await Audio.Sound.createAsync(uri, { volume: 0.5, isLooping: false })
     sound.setOnPlaybackStatusUpdate((status) => {
       if (status?.didJustFinish) sound.setPositionAsync(0).catch(() => {})
     })

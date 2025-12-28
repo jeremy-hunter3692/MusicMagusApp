@@ -70,7 +70,7 @@ const QuestionCards = () => {
   function cardsToInit() {
     flipScoreCardAnimation.value = 0
     flipAnswerCardAnimation.value = 0
-    console.log('cardsToInit fired', flipAnswerCardAnimation.value)
+    // console.log('cardsToInit fired in qcards' , flipAnswerCardAnimation.value)
   }
 
   function droneSetter() {

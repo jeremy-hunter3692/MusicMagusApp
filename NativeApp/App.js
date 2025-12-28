@@ -29,7 +29,7 @@ const themeInit = {
   annotatedBackGroundColor: annotatedBackGroundColor,
 }
 const secondaryTheme = {
-  primaryColor: '#19af59',
+  primaryColor: '#13482aff',
   secondaryColor: 'purple',
   annotatedBackGroundColor: annotatedBackGroundColor,
 }
@@ -71,7 +71,7 @@ export default function App() {
     fontType: 'Arial',
   }
   // const cardWidth = width > height ? width * 0.1 : width * 0.14
-  const cardHeight = (height / 4) * 1.1
+  const cardHeight = (height / 4) * 1.08
 
   const cardSize = {
     cardWidth: cardHeight * (2 / 3),

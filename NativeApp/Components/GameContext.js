@@ -48,7 +48,7 @@ export function useUpdateGameContext() {
 
 export function GameContextProvider({ children }) {
   //questionType will refer to what the first card is
-  const [droneAudioSrc, setDroneAudioSrc] = useState()
+  const [droneAudioSrc, setDroneAudioSrc] = useState(null)
   const [dronePlaying, setDronePlaying] = useState(true)
   const [pianoNotesMuted, setPianoNotesMuted] = useState(false)
   const [scoreCircles, setScoreCircles] = useState(scoreCirclesInit)
@@ -64,7 +64,6 @@ export function GameContextProvider({ children }) {
   const [abBool, setabBool] = useState(true)
   const [choosingKey, setChoosingKey] = useState(false)
   const [scoreCardDisplay, setScoreCardDisplay] = useState(false)
-
   useEffect(() => {
     let cardsInit = loadNewQuestionCards(false, keys[0], false, false)
     setQuestionCards(cardsInit)
@@ -76,6 +75,7 @@ export function GameContextProvider({ children }) {
     abBool,
     isRandomAllQuestionTypes
   ) {
+    console.log('load new q cards')
     let questionCardsReturnObj
     let newFirstCard =
       !firstCardStart | isRandomisedQuestionSameType
@@ -148,6 +148,7 @@ export function GameContextProvider({ children }) {
     let droneAudioType = droneType ? DoubleBassDrones : SynthDrones
     //TO DO  double check what findNoteEquivalent is for and rename it better
     let source = findNoteEquivalentInGivenArray(card, droneAudioType)
+    console.log('drone source in ctx', source)
     setDroneAudioSrc(source?.audioSrc)
     setDronePlaying(true)
   }
@@ -206,7 +207,7 @@ export function GameContextProvider({ children }) {
   function nextQuestionReloadTimeOut(fastReload = false) {
     attemptCount = 0
     let delaySpeed = fastReload ? 200 : newAnswerDelay
-    setDroneAudioSrc(null)
+    // setDroneAudioSrc(null)
     isReloading = true
     let questionChangingTimeOut = setTimeout(() => {
       reload()
@@ -248,7 +249,7 @@ export function GameContextProvider({ children }) {
       setChoosingKey((x) => false)
     } else {
       setChoosingKey((x) => true)
-      setDroneAudioSrc(null)
+      // setDroneAudioSrc(null)
       setDisplayInputCardArray(keys)
     }
   }
@@ -269,8 +270,7 @@ export function GameContextProvider({ children }) {
 
   function userAnswerSetter(inpt) {
     if (inpt.value.name === questionCards?.answerCard.name) {
-      setDronePlaying(false)
-      setDroneAudioSrc(null)
+      // setDroneAudioSrc(null)
       questionNumber++
       setShowAnswerCard(true)
     }
@@ -293,9 +293,9 @@ export function GameContextProvider({ children }) {
     droneType = !droneType
     getAndSetDroneAudioSource(questionCards.firstCard.value)
   }
-function pianoNotesMutedToggle(){
-  setPianoNotesMuted((x)=>!x)
-}
+  function pianoNotesMutedToggle() {
+    setPianoNotesMuted((x) => !x)
+  }
 
   function droneOnOffToggle() {
     setDronePlaying((x) => !x)
