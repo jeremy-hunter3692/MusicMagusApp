@@ -25,6 +25,7 @@ const QuestionCards = () => {
   const {
     font: { fontScale, fontStyle },
     cardSize,
+    theme,
   } = useContext(ThemeContext)
   const fontSize =
     typeof fontScale === 'number' && !isNaN(fontScale)
@@ -156,6 +157,7 @@ const QuestionCards = () => {
       padding: 0,
       margin: 0,
 
+      borderRadius: 8,
       flexDirection: 'column',
       justifyContent: 'flex-start',
       height: cardSize.cardHeight * alterationSizing,
@@ -170,27 +172,47 @@ const QuestionCards = () => {
       justifyContent: 'center',
       alignContent: 'center',
       alignItems: 'center',
-      fontWeight: 'bold',
+
       maxWidth: cardSize.cardWidth,
       maxHeight: cardSize.cardHeight * alterationSizing,
       fontSize: fontSize,
     },
 
+    annotatedQuestionCardText: {
+      flexDirection: 'row',
+      margin: 0,
+      padding: 4,
+      marginHorizontal: 6,
+      color: 'white',
+      borderWidth: 2,
+
+      borderColor: theme.secondaryColor,
+      borderRadius: 8,
+      justifyContent: 'center',
+      alignContent: 'center',
+      alignItems: 'center',
+      fontWeight: 'bold',
+      maxWidth: cardSize.cardWidth * 1.2,
+      maxHeight: cardSize.cardHeight * alterationSizing,
+      fontSize: fontSize * 1.2,
+    },
     annotatedWithSubTextContainer: {
       flex: 1,
       margin: 0,
       padding: 0,
       width: cardSize.cardWidth,
       height: cardSize.cardHeight * alterationSizing,
-
       flexDirection: 'column',
       justifyContent: 'space-between',
-
       alignItems: 'center',
     },
     annotatedSubText: {
+      borderWidth: 1,
+
+      borderColor: theme.primaryColor,
+      borderRadius: 8,
       margin: 0,
-      padding: 0,
+      padding: 1,
       color: 'white',
       fontSize: Math.ceil(fontSize * 0.8),
       fontStyle: 'italic',
@@ -208,7 +230,6 @@ const QuestionCards = () => {
       <View
         style={[
           styles.questionCardsCont,
-
           choosingKey && {
             justifyContent: 'flex-start',
             alignItems: 'flex-start',
@@ -218,7 +239,9 @@ const QuestionCards = () => {
         <View style={[styles.forAnnotation]}>
           {annotated ? (
             <View style={styles.annotatedWithSubTextContainer}>
-              <Text style={styles.annotatedText}>{'In this key  ➔ '}</Text>
+              <Text style={styles.annotatedQuestionCardText}>
+                {'In this key \n ➔ '}
+              </Text>
 
               <Text style={styles.annotatedSubText}>
                 {`Click this card to change key`}
@@ -240,12 +263,14 @@ const QuestionCards = () => {
         </View>
         {choosingKey && (
           <View style={styles.forAnnotation}>
-            <Text style={styles.annotatedText}>{'← Current Key'}</Text>
+            <Text style={styles.annotatedQuestionCardText}>
+              {'← Current Key'}
+            </Text>
           </View>
         )}
         <View style={styles.forAnnotation}>
           {annotated && (
-            <Text style={styles.annotatedText}>
+            <Text style={styles.annotatedQuestionCardText}>
               {'What interval is this note ➔ '}
             </Text>
           )}
@@ -268,7 +293,7 @@ const QuestionCards = () => {
         </View>
         <View style={styles.forAnnotation}>
           {annotated && (
-            <Text style={styles.annotatedText}>
+            <Text style={styles.annotatedQuestionCardText}>
               {'Answer To be revealed ➔'}
             </Text>
           )}
@@ -328,9 +353,12 @@ const QuestionCards = () => {
           ]}
         >
           {annotated ? (
-            <Text style={styles.annotatedText}>
-              {'Score will appear here at end of round'}
-            </Text>
+            <View style={styles.annotatedWithSubTextContainer}>
+              <Text style={styles.annotatedText}></Text>
+              <Text style={styles.annotatedSubText}>
+                {'Score will appear here at end of round'}
+              </Text>
+            </View>
           ) : null}
         </View>
         <Animated.View

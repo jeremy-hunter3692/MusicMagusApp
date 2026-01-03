@@ -155,6 +155,10 @@ const MainGamePage = ({ setShowOptions, buttonTheme }) => {
       alignItems: 'flex-start',
     },
     annotatedText: {
+      borderWidth: 1,
+      borderColor: theme.primaryColor,
+      borderRadius: 8,
+      padding: 2,
       color: 'white',
       fontWeight: 'bold',
       fontSize: fontSize,
@@ -239,7 +243,12 @@ const MainGamePage = ({ setShowOptions, buttonTheme }) => {
       {annotated && (
         <View style={styles.topAnnotatedText}>
           <View>
-            <Text style={[styles.annotatedText, { fontSize: fontSize * 0.8 }]}>
+            <Text
+              style={[
+                styles.annotatedText,
+                { fontSize: fontSize * 0.6, borderWidth: 0 },
+              ]}
+            >
               Key Interval Note
             </Text>
             <Text style={styles.annotatedText}>
@@ -250,7 +259,11 @@ const MainGamePage = ({ setShowOptions, buttonTheme }) => {
             <Text
               style={[
                 styles.annotatedText,
-                { fontStyle: 'italic', fontSize: Math.ceil(fontSize * 0.7) },
+                {
+                  fontStyle: 'italic',
+                  fontSize: Math.ceil(fontSize * 0.6),
+                  borderWidth: 0,
+                },
               ]}
               numberOfLines={2}
             >
@@ -260,6 +273,14 @@ const MainGamePage = ({ setShowOptions, buttonTheme }) => {
             <Text style={styles.annotatedText}>Score tracker ↑</Text>
           </View>
           <View>
+            <Text
+              style={[
+                styles.annotatedText,
+                { borderWidth: 0, fontSize: Math.ceil(fontSize * 0.6) },
+              ]}
+            >
+              Click on the cards for more information 
+            </Text>
             <Text style={styles.annotatedText}> Options here ↑ </Text>
           </View>
         </View>
@@ -283,7 +304,7 @@ const MainGamePage = ({ setShowOptions, buttonTheme }) => {
               </Pressable>
             </View>
           ) : (
-            <Text style={styles.annotatedText}> </Text>
+            <Text style={[styles.annotatedText, { borderWidth: 0 }]}> </Text>
           )}
         </>
         {displayInputCardArray && <DisplayCardsGrid />}
