@@ -1,0 +1,56 @@
+{
+  "expo": {
+
+    "name": "MagusCards",
+    "slug": "Magus-Cards",
+    "version": "1.0.0",
+    "orientation": "landscape",
+    "icon": "./assets/magusCardIcon.png",
+    "userInterfaceStyle": "light",
+    "splash": {
+      "image": "./assets/iconReplacement.png",
+      "resizeMode": "contain",
+   "backgroundColor": "#000000"
+    },
+    "assetBundlePatterns": [
+      "**/*"
+    ],
+    "ios": {
+      "supportsTablet": true,
+      "requiresFullScreen": true,
+      "bundleIdentifier": "com.yourcompany.yourappname",
+      "infoPlist": {
+        "UISupportedInterfaceOrientations": [
+      
+          "UIInterfaceOrientationLandscapeLeft",
+          "UIInterfaceOrientationLandscapeRight"
+  
+      
+        ],
+        "ITSAppUsesNonExemptEncryption": false
+      },
+      "android": {
+        "adaptiveIcon": {
+          "foregroundImage": "./assets/adaptive-icon.png",
+          "backgroundColor": " #000000",
+          "package": "com.yourcompany.yourappname",
+          "permissions": []
+        }
+      },
+      "web": {
+        "favicon": "./assets/favicon.png"
+      }
+    },
+    "extra": {
+      "eas": {
+        "projectId": "572a1e58-6da5-4eb8-9a8d-7868e8526c15"
+      }
+    },
+    "android": {
+      "package": "com.yourcompany.yourappname"
+    },
+    "plugins": [
+  "expo-screen-orientation"
+]
+  }
+}
