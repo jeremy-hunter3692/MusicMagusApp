@@ -21,7 +21,6 @@ let isAnimated = true
 const QuestionCards = () => {
   const flipAnswerCardAnimation = useSharedValue(0)
   const flipScoreCardAnimation = useSharedValue(0)
-  // console.log('top', flipAnswerCardAnimation.value)
   const {
     font: { fontScale, fontStyle },
     cardSize,
@@ -71,7 +70,6 @@ const QuestionCards = () => {
   function cardsToInit() {
     flipScoreCardAnimation.value = 0
     flipAnswerCardAnimation.value = 0
-    // console.log('cardsToInit fired in qcards' , flipAnswerCardAnimation.value)
   }
 
   function droneSetter() {
@@ -330,9 +328,7 @@ const QuestionCards = () => {
                   key={`backCard ${blankCard}`} // Use a unique key based on the answerCard
                   data={blankCard}
                   imgSource={blankCard.value.imgSrc}
-                  onPressPropFunction={() =>
-                    console.log('blankOnPressFunction')
-                  }
+                  onPressPropFunction={() => console.log('blankOnPressFunction')}
                   animationDelay={5}
                   animated={isAnimated}
                   isAnswerCardForAnnotated={true}

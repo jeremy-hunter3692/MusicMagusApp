@@ -205,38 +205,6 @@ const OptionsPage = ({
             )}
           </View>
         </Pressable>
-        {/* <View style={[styles.options, { height: boxHeight }]}>
-          <Text style={styles.headerText}>Randomised Questions: </Text>
-          <Pressable onPress={setRandom}>
-            {isRandomQuestion ? (
-              <View style={styles.on}>
-                <Text style={{ color: 'white' }}>On</Text>
-              </View>
-            ) : (
-              <View style={styles.off}>
-                <Text>Off</Text>
-              </View>
-            )}
-          </Pressable>
-        </View> */}
-        {/* <Pressable style={styles.pressableOptions} onPress={setAnimated}>
-          <View style={[styles.options, { height: boxHeight }]}>
-            <Text style={styles.headerText}>Animations: </Text>
-            {animationsOn ? (
-              <View style={styles.on}>
-                <Text style={{ color: 'white', fontSize: onOffButtonSize }}>
-                  on
-                </Text>
-              </View>
-            ) : (
-              <View style={styles.off}>
-                <Text style={{ color: 'black', fontSize: onOffButtonSize }}>
-                  off
-                </Text>
-              </View>
-            )}
-          </View>
-        </Pressable> */}
       </View>
     </>
   )

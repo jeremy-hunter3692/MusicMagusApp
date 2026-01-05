@@ -95,40 +95,4 @@ const PickShape = ({ questionAB, width }) => {
   )
 }
 
-// const styles = StyleSheet.create({
-//   container: {
-//     justifyContent: 'center',
-//     alignItems: 'center',
-//   },
-//   triangle: {
-//     width: 0,
-//     height: 0,
-
-//     borderStyle: 'solid',
-//     borderRadius: 90,
-//     backgroundColor: 'transparent',
-//     borderLeftColor: 'transparent',
-//     borderRightColor: 'transparent',
-//     borderTopColor: 'blue',
-//     alignItems: 'center',
-//     justifyContent: 'center',
-//     // position: 'absolute', // Ensures overlap of both sides
-//   },
-//   textFront: {
-//     color: 'white',
-//     // position: 'absolute', // Ensures text is centered within the triangle
-//     top: -55,
-//   },
-//   textBack: {
-//     color: 'blue',
-//     // position: 'absolute', // Ensures text is centered within the triangle
-//     top: -55,
-//   },
-//   backCard: {
-//     // Additional styling for back card if needed
-//     backfaceVisibility: 'hidden',
-//     borderTopColor: 'white',
-//   },
-// })
-
 export default PickShape

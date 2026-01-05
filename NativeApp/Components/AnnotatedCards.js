@@ -4,7 +4,6 @@ import { getDataForAnnotated } from '../functions/functions.js'
 import AnnotatedContext from './AnnotatedContext.js'
 import ThemeContext from './ThemeContext.js'
 import AnnotatedAccidentalCards from './AnnotatedAccidentalCards.js'
-import { ScrollView } from 'react-native-gesture-handler'
 
 const AnnotatedCard = () => {
   const [zoomInText, setZoomInText] = useState(null)

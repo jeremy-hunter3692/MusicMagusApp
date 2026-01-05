@@ -8,7 +8,6 @@ import { noteNames } from '../data/NoteCards'
 const size = 100
 
 const HexKeyWithCards = ({ musicKey }) => {
-  console.log(musicKey)
   const [data, setData] = useState([
     false,
     false,
@@ -20,7 +19,7 @@ const HexKeyWithCards = ({ musicKey }) => {
   ])
 
   const [root, setRoot] = useState(noteNames.find((x) => x.name === musicKey))
-  
+
   function clickHandler(inpt) {
     setData((prev) => {
       const newData = [...prev]
@@ -34,7 +33,6 @@ const HexKeyWithCards = ({ musicKey }) => {
   function returnCorrectNoteCard(chosenRoot = musicKey) {
     let rootIdx = noteNames.findIndex((x) => x.name === chosenRoot)
 
-    console.log(root)
     let source = ''
     let length = noteNames.length
 
@@ -42,12 +40,9 @@ const HexKeyWithCards = ({ musicKey }) => {
     let dataSlice = data.slice(1)
 
     if (data[0] === true) {
-      console.log('true place holder note arr')
     } else {
-      // console.log(x, idx)
       let result = dataSlice.map((x, idx) => {
         if (idx != 2 && idx != 6) {
-          // console.log('if', idx, count)
           count = count + 2
           let finalIdx = 0
           finalIdx = count + rootIdx > length ? count - length : count
@@ -56,7 +51,6 @@ const HexKeyWithCards = ({ musicKey }) => {
           finalIdx = data[idx + 1] ? finalIdx - 1 : finalIdx
 
           source = noteNames[finalIdx]
-          // console.log('end of if', finalIdx)
         } else {
           count = count + 1
           let finalIdx = 0
@@ -64,10 +58,8 @@ const HexKeyWithCards = ({ musicKey }) => {
           finalIdx = finalIdx + rootIdx
           finalIdx = data[idx + 1] ? finalIdx + 1 : finalIdx
           source = noteNames[finalIdx]
-          console.log('else', finalIdx, idx, data[idx])
         }
 
-        // console.log(source.name, { idx })
         return (
           <Image
             source={source.imgSrc}
@@ -87,12 +79,10 @@ const HexKeyWithCards = ({ musicKey }) => {
     let skippedArr = data.slice(1)
 
     if (data[0] === true) {
-      console.log('true place holder')
     } else {
       let count = 1
 
       let result = skippedArr.map((x, idx) => {
-        // console.log(idx, count)
         let source = cardsArray[0]
         if (count < 4 || idx === 5) {
           count === 3

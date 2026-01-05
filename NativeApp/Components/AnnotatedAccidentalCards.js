@@ -8,7 +8,6 @@ const AnnotatedAccidentalCards = ({ keyCard, dimensions }) => {
 
   if (keyCard != null && keyCard.intervals != null) {
     const accidentalNames = getAccidentalNames(keyCard)
-    // console.log(' if accidentalNames', accidentalNames, keyCard)
     accidentalNames.map((name) => {
       const noteCard = noteNames.find((note) => note.name === name)
       return noteCard ? images.push(noteCard.imgSrc) : null

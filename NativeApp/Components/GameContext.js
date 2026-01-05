@@ -75,7 +75,6 @@ export function GameContextProvider({ children }) {
     abBool,
     isRandomAllQuestionTypes
   ) {
-    console.log('load new q cards')
     let questionCardsReturnObj
     let newFirstCard =
       !firstCardStart | isRandomisedQuestionSameType
@@ -110,7 +109,7 @@ export function GameContextProvider({ children }) {
         count < 10
       )
       if (count > 10) {
-        console.log('do loop going too long')
+        null
       }
     } else {
       questionCardsReturnObj = isRandomAllQuestionTypes
@@ -148,7 +147,7 @@ export function GameContextProvider({ children }) {
     let droneAudioType = droneType ? DoubleBassDrones : SynthDrones
     //TO DO  double check what findNoteEquivalent is for and rename it better
     let source = findNoteEquivalentInGivenArray(card, droneAudioType)
-    console.log('drone source in ctx', source)
+
     setDroneAudioSrc(source?.audioSrc)
     setDronePlaying(true)
   }
@@ -282,9 +281,7 @@ export function GameContextProvider({ children }) {
     setScoreCircles((prevArry) => updatedArr)
     attemptCount = incrementAttemptCount ? ++attemptCount : 0
     globalQuestionTimeOutID =
-      shouldReload && questionNumber < 12
-        ? nextQuestionReloadTimeOut()
-        : console.log('userAnswerTernary', questionNumber)
+      shouldReload && questionNumber < 12 ? nextQuestionReloadTimeOut() : null
     whichCircle ? userScore++ : ''
     checkForGameOver()
   }
@@ -301,22 +298,6 @@ export function GameContextProvider({ children }) {
     setDronePlaying((x) => !x)
   }
 
-  // console.log('CONTEXt in GAMECONTEXT', {
-  //   questionCards,
-  //   blankCard,
-  //   questionType,
-  //   displayInputCardArray,
-  //   showAnswerCard,
-  //   scoreCardDisplay,
-  //   scoreCircles,
-  //   questionNumber,
-  //   userScore,
-  //   attemptCount,
-  //   choosingKey,
-  //   droneAudioSrc,
-  //   droneType,
-  //   dronePlaying,
-  // })
   return (
     <GameContext.Provider
       value={{

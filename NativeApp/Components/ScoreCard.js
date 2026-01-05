@@ -17,15 +17,7 @@ const ScoreCard = ({ skip }) => {
       ? Math.ceil(fontScale)
       : 8
   const styles = StyleSheet.create({
-    // container: {
-    //   padding: 5,
-    //   //This Three for margin and height and width is to match with images. TO DO: replace with a prop
-    //   margin: 3,
-    //   height: cardSize.cardHeight - 3,
-    //   width: cardSize.cardWidth - 3,
-    //   justifyContent: 'space-around',
-    //   color: 'black',
-    // },
+
     hiddenContainer: {
       padding: 5,
       //This Three for margin and height and width is to match with images. TO DO: replace with a prop

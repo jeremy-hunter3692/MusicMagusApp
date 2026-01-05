@@ -14,22 +14,7 @@ const DisplayInputCardsGrid = ({ reDeal, isAnimated }) => {
   const { annotated } = useContext(AnnotatedContext)
   const renderCount = useRef(0)
   renderCount.current += 1
-  // console.log(' Display Inpt page render count:', renderCount.current)
-  //gpt shit for keys pressed
-  // const viewRef = useRef(null)
-  // useEffect(() => {
-  //   const handleKeyDown = (e) => {
-  //     console.log('key', e.key)
-  //   }
 
-  //   const node = viewRef.current
-  //   if (node) {
-  //     node.addEventListener('keydown', handleKeyDown)
-  //   }
-  //   return () => {
-  //     if (node) node.removeEventListener('keydown', handleKeyDown)
-  //   }
-  // }, [])
   //////////////////////////////
 
   let alterationSizing = choosingKey ? 1 : annotated ? 0.3 : 1

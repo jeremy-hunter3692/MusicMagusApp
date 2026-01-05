@@ -23,7 +23,7 @@ const ExploreCards = () => {
 
   // const { bottomRText, bottomLText, topRtext, topLText } =
   //   getDataForAnnotated(cardFocus)
-  console.log(width / 10, height / 10)
+
 
   const styles = StyleSheet.create({
     container: {

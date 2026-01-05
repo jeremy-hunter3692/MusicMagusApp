@@ -23,16 +23,13 @@ const KeyAndIntervalQuestion = () => {
   let answer
 
   function checkAnswer(inpt) {
-    console.log('inpt', inpt, answer)
     return inpt === answer
   }
 
   function userAnswerSetter(inpt) {
-    answer = getAnswerKeyAndInterval(randomRoot, questionNote,noteNames)
-    // console.log(answer)
+    answer = getAnswerKeyAndInterval(randomRoot, questionNote, noteNames)
     setUserAnswer(inpt)
     setResultDisplay(checkAnswer(inpt))
-    // console.log(checkAnswer(inpt), resultDisplay)
   }
 
   function reload() {
@@ -41,7 +38,6 @@ const KeyAndIntervalQuestion = () => {
     setQuestionNote(returnRandomCard(intervals))
   }
 
-  console.log('CHE', randomRoot, questionNote)
   return (
     <>
       Question component
@@ -52,7 +48,6 @@ const KeyAndIntervalQuestion = () => {
       <Image
         source={questionNote.value.imgSrc}
         style={{ width: 100, height: 170 }}
-        
       />
       <Text>
         Key: {randomRoot.value.name} Note: {questionNote.value.name}

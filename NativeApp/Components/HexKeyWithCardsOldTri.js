@@ -5,44 +5,6 @@ import React, { useState } from 'react'
 const bgcolor = 'white'
 const size = 100
 
-// [
-//   {
-//     alignItems: 'center',
-//     justifyContent: 'center',
-//     width: size,
-//     height: size,
-//     margin: size * 0.1,
-//     padding: 0,
-//     border: 'solid',
-//     borderColor: 'black',
-//     borderRadius: size * 0.5, // Half of the width and height to make it a perfect circle
-//     backgroundColor: 'white',
-//   },
-//   {
-//     alignItems: 'center',
-//     justifyContent: 'center',
-//     width: size,
-//     height: size,
-//     margin: size * 0.1,
-//     padding: 0,
-//     border: 'solid',
-//     borderColor: 'black',
-//     borderRadius: size * 0.5, // Half of the width and height to make it a perfect circle
-//     backgroundColor: 'Red',
-//   },
-//   {
-//     alignItems: 'center',
-//     justifyContent: 'center',
-//     width: size,
-//     height: size,
-//     margin: size * 0.1,
-//     padding: 0,
-//     border: 'solid',
-//     borderColor: 'black',
-//     borderRadius: size * 0.5, // Half of the width and height to make it a perfect circle
-//     backgroundColor: 'Blue',
-//   },
-// ]
 const stylesArr = ['white', 'blue', 'red']
 
 const HexKeyWithCards = ({ musicKey }) => {
@@ -51,11 +13,8 @@ const HexKeyWithCards = ({ musicKey }) => {
     data.map((x) => styleReturn(x))
   )
 
-  // console.log(data[5], stylesArr[data[5]])
-
   function styleReturn(inpt) {
     let color = stylesArr[inpt]
-    console.log('stylereturn', inpt, stylesArr[inpt], color)
     return {
       alignItems: 'center',
       justifyContent: 'center',

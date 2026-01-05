@@ -36,7 +36,6 @@ const ScaleExplore = () => {
   const cardWidth = 100
 
   useEffect(() => {
-    // console.log('use', modeIDX, scale)
     getNewCards()
   }, [rootIDX, modeIDX])
 

@@ -124,7 +124,6 @@ const TheoryCircles = () => {
   const cirlcesData = circleOptionsMap.map((x) => {
     let retObj = { ...x }
     retObj.source = returnAudioSrcForCirlces(keysIdx + x.idxOffset)
-    console.log(retObj)
     return retObj
   })
 
@@ -239,7 +238,6 @@ const TheoryCircles = () => {
         <View style={styles.circlesContainer}>
           {cirlcesData.map((x) => {
             const { text, source, backgroundColor, zIndex } = x
-            console.log(x)
             return (
               <CircleTheorySingle
                 key={text}

@@ -15,7 +15,6 @@ const CircleTheorySingle = ({
   const [note, setNotes] = useState(null)
   //TODOOwas for old problem with Root note Z index might not need
   const fixedCircle = { ...circle[0], ...circle[1] }
-  console.log(selectedBool)
   function cirlcePress() {
     setNotes(data)
   }

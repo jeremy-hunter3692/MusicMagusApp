@@ -382,11 +382,3 @@ export function getScale(rootCard, scaleType, array) {
   })
   return makeScaleArr
 }
-// let idxs = getAllModesOfAKey(keys[11])
-// // console.log(idxs)
-// idxs.forEach((x) => {
-//   // console.log(x)
-//   x.forEach((y) => {
-//     // console.log(keys[y].name)
-//   })
-// })
