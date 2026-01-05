@@ -3,6 +3,7 @@
 
     "name": "MagusCards",
     "slug": "Magus-Cards",
+    
     "version": "1.0.0",
     "orientation": "landscape",
     "icon": "./assets/magusCardIcon.png",
@@ -18,7 +19,7 @@
     "ios": {
       "supportsTablet": true,
       "requiresFullScreen": true,
-      "bundleIdentifier": "com.yourcompany.yourappname",
+      "bundleIdentifier": "com.jeremyhunter.maguscards",
       "infoPlist": {
         "UISupportedInterfaceOrientations": [
       
