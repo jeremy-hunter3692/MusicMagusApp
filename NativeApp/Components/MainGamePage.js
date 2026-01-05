@@ -88,11 +88,11 @@ const MainGamePage = ({ setShowOptions, buttonTheme }) => {
     },
     questionButtonInRightNavbar: {
       flexDirection: 'row',
-      justifyContent: 'flex-end',
+      justifyContent: 'center',
       alignItems: 'center',
       margin: groupedNavMargin,
-      flex: 0.4,
 
+      flex: 1,
       padding: 0,
     },
     rightNavBar: {
@@ -146,7 +146,11 @@ const MainGamePage = ({ setShowOptions, buttonTheme }) => {
       padding: 0,
     },
 
-    annotatedButtonText: { color: theme.primaryColor, fontSize: fontSize },
+    annotatedButtonText: {
+      color: theme.primaryColor,
+      fontSize: fontSize * 1.3,
+    },
+
     topAnnotatedText: {
       flex: 0.75,
       padding: 10,
@@ -206,6 +210,7 @@ const MainGamePage = ({ setShowOptions, buttonTheme }) => {
                 <Text style={styles.annotatedButtonText}>?</Text>
               </Pressable>
             )}
+            <Text style={styles.annotatedButtonText}> </Text>
           </View>
         </View>
         <View testID="scoreTempTest" style={styles.scoreCircles}>
@@ -242,20 +247,17 @@ const MainGamePage = ({ setShowOptions, buttonTheme }) => {
       )}
       {annotated && (
         <View style={styles.topAnnotatedText}>
-          <View>
+          <View style={styles.annotatedText}>
             <Text
               style={[
                 styles.annotatedText,
                 { fontSize: fontSize * 0.6, borderWidth: 0 },
               ]}
             >
-              Key Interval Note
-            </Text>
-            <Text style={styles.annotatedText}>
-              ↑ Change question type here
+              {'Key Interval Note \n ↑ Change question type here'}
             </Text>
           </View>
-          <View style={styles.scoreTrackerAnnotatedText}>
+          <View style={styles.annotatedText}>
             <Text
               style={[
                 styles.annotatedText,
@@ -265,23 +267,31 @@ const MainGamePage = ({ setShowOptions, buttonTheme }) => {
                   borderWidth: 0,
                 },
               ]}
-              numberOfLines={2}
             >
               Full circle for a correct answer and a dot if you got it on your
               second go
             </Text>
-            <Text style={styles.annotatedText}>Score tracker ↑</Text>
+            <Text style={[styles.annotatedText, { borderWidth: 0 }]}>
+              Score tracker ↑
+            </Text>
           </View>
-          <View>
+          <View style={styles.annotatedText}>
             <Text
               style={[
                 styles.annotatedText,
                 { borderWidth: 0, fontSize: Math.ceil(fontSize * 0.6) },
               ]}
             >
-              Click on the cards for more information 
+              Click on the cards for more information
             </Text>
-            <Text style={styles.annotatedText}> Options here ↑ </Text>
+            <Text
+              style={[
+                styles.annotatedText,
+                { borderWidth: 0, fontSize: Math.ceil(fontSize * 0.6) },
+              ]}
+            >
+              Options here ↑
+            </Text>
           </View>
         </View>
       )}
