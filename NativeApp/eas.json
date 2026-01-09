@@ -3,18 +3,30 @@
     "version": ">= 16.13.3",
     "appVersionSource": "remote"
   },
+
   "build": {
+    
+
     "development": {
       "developmentClient": true,
       "distribution": "internal"
-    },
+    }
+  ,
     "preview": {
-      "distribution": "internal"
+      "distribution": "store",
+      "ios": {
+        "simulator": false
+      }
     },
     "production": {
-      "autoIncrement": true
+      "distribution": "store",
+      "ios": {
+        "simulator": false
+      }
     }
-  },
+  }
+
+,
   "submit": {
     "production": {}
   }

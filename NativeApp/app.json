@@ -1,9 +1,7 @@
 {
   "expo": {
-
     "name": "MagusCards",
     "slug": "Magus-Cards",
-    
     "version": "1.0.0",
     "orientation": "landscape",
     "icon": "./assets/magusCardIcon.png",
@@ -11,7 +9,7 @@
     "splash": {
       "image": "./assets/iconReplacement.png",
       "resizeMode": "contain",
-   "backgroundColor": "#000000"
+      "backgroundColor": "#000000"
     },
     "assetBundlePatterns": [
       "**/*"
@@ -22,11 +20,8 @@
       "bundleIdentifier": "com.jeremyhunter.maguscards",
       "infoPlist": {
         "UISupportedInterfaceOrientations": [
-      
           "UIInterfaceOrientationLandscapeLeft",
           "UIInterfaceOrientationLandscapeRight"
-  
-      
         ],
         "ITSAppUsesNonExemptEncryption": false
       },
@@ -51,7 +46,8 @@
       "package": "com.yourcompany.yourappname"
     },
     "plugins": [
-  "expo-screen-orientation"
-]
+      "expo-screen-orientation",
+      "expo-asset"
+    ]
   }
 }
